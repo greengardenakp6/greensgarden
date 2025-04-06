@@ -16,8 +16,6 @@
       --glass-blur: blur(12px);
     }
 
-        .back-home:hover {
-            background: rgba(46, 125, 50, 0.1);
     * {
       margin: 0;
       padding: 0;
@@ -35,6 +33,31 @@
       padding: 50px 20px;
       max-width: 1200px;
       margin: auto;
+    }
+
+    .back-home-btn {
+      display: inline-block;
+      margin-bottom: 30px;
+      padding: 10px 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      color: var(--text-color);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--accent-color);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .back-home-btn i {
+      margin-right: 8px;
+      color: var(--accent-color);
+    }
+
+    .back-home-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     h1 {
@@ -147,24 +170,19 @@
   </style>
 </head>
 <body>
-   </div>
-            <a href="home.html" class="back-home">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
-        </div>
   <div class="container">
+    <a href="index.html" class="back-home-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+
     <h1>Contact Us</h1>
 
     <div class="profile">
-      <img src="logo.png"/>
+      <img src="logo.png" alt="GreenGarden Logo" />
 
       <div class="contact-info">
-        <p><i class="fas fa-phone-alt"></i>9994247214,93422 18352,70107 60297</p>
-          
-        </p><i class="fab fa-whatsapp"></i>9994247214,93422 18352,70107 60297</p>
+        <p><i class="fas fa-phone-alt"></i>9994247214, 93422 18352, 70107 60297</p>
+        <p><i class="fab fa-whatsapp"></i>9994247214, 93422 18352, 70107 60297</p>
         <p><i class="fas fa-envelope"></i> greengarden.com</p>
-        <p><i class="fas fa-map-marker-alt"></i> 123 main Street, vellore,632520</p>
+        <p><i class="fas fa-map-marker-alt"></i>07 Main road, Vellore, Tamil Nadu,632009</p>
       </div>
     </div>
 
@@ -172,23 +190,29 @@
 
     <div class="team">
       <div class="member">
-        <img src="Ak.webp" >
+        <img src="Ak.webp" alt="Akash">
         <h3>Akash</h3>
-        <span>Product Designer & Frontend Developer </span>
+        <span>Product Designer & Frontend Developer</span>
       </div>
 
       <div class="member">
-        <img src="Kp.jpg">
+        <img src="Kp.jpg" alt="Kanish">
         <h3>Kanish</h3>
         <span>Frontend Developer</span>
       </div>
 
       <div class="member">
-        <img src="team3.jpg">
+        <img src="team3.jpg" alt="Dharmendira Prasad">
         <h3>Dharmendira Prasad</h3>
-        <span>Backend developer</span>
+        <span>Backend Developer</span>
       </div>
     </div>
   </div>
+
+  <script>
+    document.querySelector('.back-home-btn').addEventListener('click', function (e) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
