@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Garden Store - Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --secondary: #F5F5F5;
+            --accent: #FFC107;
+            --text-dark: #333;
+            --text-light: #777;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-dark);
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-brand i {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--secondary);
+            border-radius: 30px;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+        }
+
+        .search-bar:focus-within {
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0.5rem;
+            width: 200px;
+            font-size: 0.9rem;
+        }
+
+        .search-bar button {
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-bar button:hover {
+            color: var(--primary);
+        }
+
+        .back-home {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .back-home:hover {
+            background: rgba(46, 125, 50, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            background: var(--white);
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .product-rating {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .search-bar input {
+                width: 150px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="home.html" class="nav-brand">
+                <i class="fas fa-leaf"></i>
+                <span>Premium Garden</span>
+            </a>
+            <div class="nav-links">
+                <a href="home.html" class="nav-link">Home</a>
+                <a href="products.html" class="nav-link active">Products</a>
+                <a href="cart.html" class="nav-link">Cart</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+            </div>
+        </div>
+        
+        <div class="nav-right">
+            <div class="search-bar">
+                <input type="text" placeholder="Search products...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <a href="home.html" class="back-home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Our Premium Products</h1>
+            <div class="filter-controls">
+                <button class="filter-btn">
+                    <i class="fas fa-filter"></i>
+                    Filter
+                </button>
+                <button class="filter-btn">
+                    <i class="fas fa-sort"></i>
+                    Sort
+                </button>
+            </div>
+        </div>
+
+        <div class="products-grid">
+        
+            <div class="product-card" onclick="openProductDetails(1)">
+                <span class="product-badge">New</span>
+                <img src="F1.jpg" alt="Morning Jewel Rose" class="product-image">
+                <div class="product-info">
+                    <span class="product-category">Flower Seeds</span>
+                    <h3 class="product-title">Morning Jewel Rose Seed</h3>
+                    <div class="product-price">₹158</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        (24)
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="product-card" onclick="openProductDetails(2)">
+                <img src="F2.jpg" alt="Winter Daisy" class="product-image">
+                <div class="product-info">
+                    <span class="product-category">Flower Seeds</span>
+                    <h3 class="product-title">Winter Daisy Red Mixed Seed</h3>
+                    <div class="product-price">₹150</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (18)
+                    </div>
+                    
+                </div>
+            </div>
+                
+            <div class="product-card" onclick="openProductDetails(3)">
+                <span class="product-badge">Best Seller</span>
+                <img src="F3.jpg" alt="Bitter Gourd" class="product-image">
+                <div class="product-info">
+                    <span class="product-category">Vegetable Seeds</span>
+                    <h3 class="product-title">Bitter Gourd-kareka seed</h3>
+                    <div class="product-price">₹99</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        (36)
+                    </div>
+                    
+                </div>
+            </div>
+
+    
+            <div class="product-card" onclick="openProductDetails(4)">
+                <img src="F4.jpg" alt="Black Tomato" class="product-image">
+                <div class="product-info">
+                    <span class="product-category">Vegetable Seeds</span>
+                    <h3 class="product-title">Black Tomato</h3>
+                    <div class="product-price">₹110</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        (29)
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="openProductDetails(5)">
+                <img src="F5.jpg" alt="Broccoli Seed" class="product-image">
+                <div class="product-info">
+                    <span class="product-category">Vegetable Seeds</span>
+                    <h3 class="product-title">Broccoli Vegetable Seed</h3>
+                    <div class="product-price">₹89</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (15)
+                    </div>
+                
+                </div>
+            </div>
+
+            <div class="product-card" onclick="openProductDetails(6)">
+                <span class="product-badge">Premium</span>
+                <img src="F6.jpg" alt="Brazilian Wood" class="product-image">
+                <div class="product-info">
+                    <span class="product-category">Plants</span>
+                    <h3 class="product-title">Brazilian Wood Plant</h3>
+                    <div class="product-price">₹550</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        (42)
+                    </div>
+                
+                </div>
+            </div>
+
+        
+            <div class="product-card" onclick="openProductDetails(7)">
+                <img src="F7.jpg" alt="Apple Plant" class="product-image">
+                <div class="product-info">
+                    <span class="product-category">Fruit Plants</span>
+                    <h3 class="product-title">Apple Plant Hybrid</h3>
+                    <div class="product-price">₹100</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        (12)
+                    </div>
+                
+                </div>
+            </div>
+
+            <
+            <div class="product-card" onclick="openProductDetails(8)">
+                <img src="F8.jpg" alt="Cabbage Seed" class="product-image">
+                <div class="product-info">
+                    <span class="product-category">Vegetable Seeds</span>
+                    <h3 class="product-title">Cabbage Seed</h3>
+                    <div class="product-price">₹110</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (21)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    updateWishlistButtons();
+    
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const productCard = this.closest('.product-card');
+            const product = getProductData(productCard);
+            addToCart(product);
+            showNotification('Product added to cart!');
+        });
+    });
+    document.querySelectorAll('.wishlist-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const productCard = this.closest('.product-card');
+            toggleWishlist(productCard, this);
+        });
+    });
+
+    document.querySelector('.search-bar input').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        filterProducts(searchTerm);
+    });
+
+    document.querySelectorAll('.filter-btn').forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            index === 0 ? filterByCategory() : sortProducts();
+        });
+    });
+});
+
+function getProductData(productCard) {
+    return {
+        title: productCard.querySelector('.product-title').textContent,
+        price: parseFloat(productCard.querySelector('.product-price').textContent.replace('₹', '')),
+        category: productCard.querySelector('.product-category').textContent,
+        image: productCard.querySelector('.product-image').src,
+        quantity: 1
+    };
+}
+
+function addToCart(product) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingItem = cart.find(item => item.title === product.title);
+    existingItem ? existingItem.quantity++ : cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function toggleWishlist(productCard, button) {
+    const product = getProductData(productCard);
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    const index = wishlist.findIndex(item => item.title === product.title);
+    
+    if (index === -1) {
+        wishlist.push(product);
+        button.innerHTML = '<i class="fas fa-heart"></i>';
+    } else {
+        wishlist.splice(index, 1);
+        button.innerHTML = '<i class="far fa-heart"></i>';
+    }
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+}
+
+function updateWishlistButtons() {
+    const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    document.querySelectorAll('.wishlist-btn').forEach(button => {
+        const productCard = button.closest('.product-card');
+        const productTitle = productCard.querySelector('.product-title').textContent;
+        button.innerHTML = wishlist.some(item => item.title === productTitle) ?
+            '<i class="fas fa-heart"></i>' :
+            '<i class="far fa-heart"></i>';
+    });
+}
+
+function filterProducts(searchTerm) {
+    document.querySelectorAll('.product-card').forEach(card => {
+        const title = card.querySelector('.product-title').textContent.toLowerCase();
+        const category = card.querySelector('.product-category').textContent.toLowerCase();
+        card.style.display = (title.includes(searchTerm) || category.includes(searchTerm)) ? 'block' : 'none';
+    });
+}
+
+let currentCategory = 'all';
+function filterByCategory() {
+    const categories = ['all', 'Flower Seeds', 'Vegetable Seeds', 'Plants', 'Fruit Plants'];
+    currentCategory = categories[(categories.indexOf(currentCategory) + 1) % categories.length];
+    
+    document.querySelectorAll('.product-card').forEach(card => {
+        const category = card.querySelector('.product-category').textContent;
+        card.style.display = (currentCategory === 'all' || category === currentCategory) ? 'block' : 'none';
+    });
+}
+
+let sortOrder = 'asc';
+function sortProducts() {
+    const grid = document.querySelector('.products-grid');
+    const cards = Array.from(grid.querySelectorAll('.product-card'));
+    
+    cards.sort((a, b) => {
+        const priceA = parseFloat(a.querySelector('.product-price').textContent.replace('₹', ''));
+        const priceB = parseFloat(b.querySelector('.product-price').textContent.replace('₹', ''));
+        return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+    });
+    
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    grid.innerHTML = '';
+    cards.forEach(card => grid.appendChild(card));
+}
+
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 2000);
+}
+
+function openProductDetails(productId) {
+
+    localStorage.setItem('selectedProduct', productId);
+    window.location.href = `productdetails.html?id=${productId}`;
+}
+</script>
