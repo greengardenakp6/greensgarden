@@ -248,7 +248,7 @@
                 </div>
                 <div class="qr-section">
                     <p class="form-label">Scan QR Code</p>
-                    <div class="qr-image">
+                    <div class="qr.png">
                         <!-- Sample QR code - in a real app this would be generated or provided by your payment processor -->
                         <svg width="150" height="150" viewBox="0 0 36 36" fill="#000000">
                             <rect width="36" height="36" fill="#ffffff"/>
@@ -335,7 +335,6 @@
     </div>
 
     <script>
-        // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             // Hide all payment details initially
             document.querySelectorAll('.payment-details').forEach(div => {
@@ -357,7 +356,6 @@
                 div.style.display = 'none';
             });
             
-            // Show the selected payment method details
             const selectedMethod = document.getElementById('payment-method').value;
             if (selectedMethod) {
                 const selectedDiv = document.getElementById(selectedMethod);
@@ -368,20 +366,18 @@
         }
 
         function placeOrder() {
-            // Get form values
+           
             const fullName = document.getElementById("full-name").value;
             const address = document.getElementById("address").value;
             const phone = document.getElementById("phone").value;
             const coupon = document.getElementById("coupon").value;
             const paymentMethod = document.getElementById("payment-method").value;
             
-            // Validate required fields
             if (!fullName || !address || !phone || !paymentMethod) {
                 alert("Please fill in all required fields.");
                 return;
             }
-            
-            // Validate phone number format
+        
             const phoneRegex = /^[0-9]{10}$/;
             if (!phoneRegex.test(phone)) {
                 alert("Please enter a valid 10-digit phone number.");
