@@ -323,20 +323,12 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">Our Products</h1>
-            <div class="filter-controls">
-                <button class="filter-btn">
-                    <i class="fas fa-filter"></i>
-                    Filter
-                </button>
-                <button class="filter-btn">
-                    <i class="fas fa-sort"></i>
-                    Sort
-                </button>
-            </div>
+           <button onclick="sortByLowRange()">Low Range</button>
+<button onclick="sortByHighRange()">High Range</button>
+
+<div> id="product-container"></div> 
         </div>
 
         <div class="products-grid">
@@ -563,41 +555,28 @@ function updateWishlistButtons() {
     });
 }
 
-function filterProducts(searchTerm) {
-    document.querySelectorAll('.product-card').forEach(card => {
-        const title = card.querySelector('.product-title').textContent.toLowerCase();
-        const category = card.querySelector('.product-category').textContent.toLowerCase();
-        card.style.display = (title.includes(searchTerm) || category.includes(searchTerm)) ? 'block' : 'none';
-    });
+// Sort Low to High
+function sortByLowRange() {
+  const sorted = [...products].sort((a, b) => a.price - b.price);
+  renderProducts(sorted);
 }
-
-let currentCategory = 'all';
-function filterByCategory() {
-    const categories = ['all', 'Flower Seeds', 'Vegetable Seeds', 'Plants', 'Fruit Plants'];
-    currentCategory = categories[(categories.indexOf(currentCategory) + 1) % categories.length];
-    
-    document.querySelectorAll('.product-card').forEach(card => {
-        const category = card.querySelector('.product-category').textContent;
-        card.style.display = (currentCategory === 'all' || category === currentCategory) ? 'block' : 'none';
-    });
+function sortByHighRange() {
+  const sorted = [...products].sort((a, b) => b.price - a.price);
+  renderProducts(sorted);
 }
-
-let sortOrder = 'asc';
-function sortProducts() {
-    const grid = document.querySelector('.products-grid');
-    const cards = Array.from(grid.querySelectorAll('.product-card'));
-    
-    cards.sort((a, b) => {
-        const priceA = parseFloat(a.querySelector('.product-price').textContent.replace('₹', ''));
-        const priceB = parseFloat(b.querySelector('.product-price').textContent.replace('₹', ''));
-        return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
-    });
-    
-    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    grid.innerHTML = '';
-    cards.forEach(card => grid.appendChild(card));
-}
-
+function renderProducts(productList) {
+  const container = document.getElementById("product-container");
+  container.innerHTML = ""; // Clear previous
+  productList.forEach(product => {
+    const div = document.createElement("div");
+    div.className = "product-card";
+    div.innerHTML = `
+      <h3>${product.name}</h3>
+      <p>Price: $${product.price}</p>
+    `;
+    container.appendChild(div);
+  });
+      }
 function showNotification(message) {
     const notification = document.createElement('div');
     notification.className = 'notification';
