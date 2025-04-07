@@ -172,28 +172,32 @@
             font-weight: 700;
         }
 
-        .filter-controls {
-            display: flex;
-            gap: 1rem;
-        }
+        .sort-buttons {
+        display: flex;
+        gap: 8px;
+    }
 
-        .low-btn {
-            background: var(--white);
-            border: 1px solid #ddd;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+    .sort-btn {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
 
-        .low-btn:hover {
-            border-color: var(--primary-light);
-            color: var(--primary);
-        }
+    .sort-btn:hover {
+        background: #f0f0f0;
+    }
 
+    .sort-btn.active {
+        background: #4CAF50;
+        color: white;
+        border-color: #4CAF50;
+    }
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -275,7 +279,6 @@
 
         
 
-        /* Responsive */
         @media (max-width: 768px) {
             .navbar {
                 padding: 1rem;
@@ -325,8 +328,19 @@
 
     <main class="main-content">
         <div class="page-header">
-           <button onclick="sortByLowRange()">Low Range</button>
-<button onclick="sortByHighRange()">High Range</button>
+            <h1 class="page-title">Our Products</h1>
+    
+    <div class="sort-buttons">
+        <button class="sort-btn active" data-sort="asc" onclick="sortProducts('asc')">
+            <i class="fas fa-arrow-up"></i>
+            Low-High
+        </button>
+        <button class="sort-btn" data-sort="desc" onclick="sortProducts('desc')">
+            <i class="fas fa-arrow-down"></i>
+            High-Low
+        </button>
+    </div>
+        </div>
         </div>
 
         <div class="products-grid">
@@ -552,29 +566,43 @@ function updateWishlistButtons() {
             '<i class="far fa-heart"></i>';
     });
 }
+    function filterProducts(searchTerm) {
+    document.querySelectorAll('.product-card').forEach(card => {
+        const title = card.querySelector('.product-title').textContent.toLowerCase();
+        const category = card.querySelector('.product-category').textContent.toLowerCase();
+        card.style.display = (title.includes(searchTerm) || category.includes(searchTerm)) ? 'block' : 'none';
+    });
+}
 
-// Sort Low to High
-function sortByLowRange() {
-  const sorted = [...products].sort((a, b) => a.price - b.price);
-  renderProducts(sorted);
+let currentCategory = 'all';
+function filterByCategory() {
+    const categories = ['all', 'Flower Seeds', 'Vegetable Seeds', 'Plants', 'Fruit Plants'];
+    currentCategory = categories[(categories.indexOf(currentCategory) + 1) % categories.length];
+    
+    document.querySelectorAll('.product-card').forEach(card => {
+        const category = card.querySelector('.product-category').textContent;
+        card.style.display = (currentCategory === 'all' || category === currentCategory) ? 'block' : 'none';
+    });
 }
-function sortByHighRange() {
-  const sorted = [...products].sort((a, b) => b.price - a.price);
-  renderProducts(sorted);
+
+function sortProducts(order) {
+    const grid = document.querySelector('.products-grid');
+    const cards = Array.from(grid.querySelectorAll('.product-card'));
+    
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.sort === order);
+    });
+
+    cards.sort((a, b) => {
+        const priceA = parseFloat(a.querySelector('.product-price').textContent.replace(/[^0-9.]/g, ''));
+        const priceB = parseFloat(b.querySelector('.product-price').textContent.replace(/[^0-9.]/g, ''));
+        return order === 'asc' ? priceA - priceB : priceB - priceA;
+    });
+
+    grid.innerHTML = '';
+    cards.forEach(card => grid.appendChild(card));
 }
-function renderProducts(productList) {
-  const container = document.getElementById("product-container");
-  container.innerHTML = ""; // Clear previous
-  productList.forEach(product => {
-    const div = document.createElement("div");
-    div.className = "product-card";
-    div.innerHTML = `
-      <h3>${product.name}</h3>
-      <p>Price: $${product.price}</p>
-    `;
-    container.appendChild(div);
-  });
-      }
+
 function showNotification(message) {
     const notification = document.createElement('div');
     notification.className = 'notification';
