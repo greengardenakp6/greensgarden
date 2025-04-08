@@ -392,11 +392,11 @@
             </div>
             <div class="delivery-row">
                 <span class="delivery-label">Shipping Method:</span>
-                <span class="delivery-value">Standard Delivery (3-5 business days)</span>
+                <span class="delivery-value">Standard Delivery (3-5 days)</span>
             </div>
             <div class="delivery-row">
                 <span class="delivery-label">Delivery Address:</span>
-                <span class="delivery-value">123 Garden Street, Green Valley (Change)</span>
+                <span class="delivery-value">07,Main road, vellore, Green Valley (Change)</span>
             </div>
         </div>
 
@@ -409,14 +409,13 @@
     </div>
 
     <script>
-        // Initialize cart if it doesn't exist
         if (!localStorage.getItem('cart')) {
             localStorage.setItem('cart', JSON.stringify([]));
         }
 
         function calculateDeliveryDate() {
             const today = new Date();
-            // Add 3-5 business days (skip weekends)
+            
             let deliveryDays = 3 + Math.floor(Math.random() * 3); // Random between 3-5 days
             
             let deliveryDate = new Date(today);
@@ -424,7 +423,7 @@
             
             while (daysAdded < deliveryDays) {
                 deliveryDate.setDate(deliveryDate.getDate() + 1);
-                // Skip weekends (0 = Sunday, 6 = Saturday)
+                
                 if (deliveryDate.getDay() !== 0 && deliveryDate.getDay() !== 6) {
                     daysAdded++;
                 }
@@ -446,14 +445,14 @@
             const deliveryDetails = document.getElementById('delivery-details');
             const deliveryDateElement = document.getElementById('delivery-date');
 
-            // Update delivery date
+    
             deliveryDateElement.textContent = calculateDeliveryDate();
 
             container.innerHTML = '';
             let subtotal = 0;
             let itemCount = 0;
 
-            // Update item count in header
+
             itemCount = cart.reduce((total, item) => total + (item.quantity || 1), 0);
             itemCountElement.textContent = `${itemCount} ${itemCount === 1 ? 'Item' : 'Items'}`;
 
@@ -479,7 +478,7 @@
             }
 
             cart.forEach((item, index) => {
-                // Ensure price is treated as a number
+                
                 const price = typeof item.price === 'string' ? 
                     parseFloat(item.price.replace(/[^0-9.-]+/g, '')) : 
                     item.price;
@@ -516,11 +515,11 @@
                 container.innerHTML += itemHTML;
             });
 
-            // Calculate totals
+            
             const tax = subtotal * 0.18; // 18% tax
             const total = subtotal + tax;
 
-            // Update summary
+        
             subtotalElement.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
             taxElement.textContent = `₹${tax.toFixed(2)}`;
             totalElement.textContent = `₹${total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
@@ -534,7 +533,7 @@
                 localStorage.setItem('cart', JSON.stringify(cart));
                 loadCart();
                 
-                // Show feedback
+        
                 const feedback = change > 0 ? 'Increased quantity' : 'Decreased quantity';
                 showToast(feedback);
             }
@@ -575,7 +574,6 @@
                 return;
             }
             
-            // Save cart total for checkout page
             const subtotal = cart.reduce((total, item) => {
                 const price = typeof item.price === 'string' ? 
                     parseFloat(item.price.replace(/[^0-9.-]+/g, '')) : 
@@ -600,7 +598,7 @@
         }
 
         function showToast(message, type = 'success') {
-            // Create toast element
+
             const toast = document.createElement('div');
             toast.style.position = 'fixed';
             toast.style.bottom = '20px';
@@ -618,13 +616,13 @@
             
             document.body.appendChild(toast);
             
-            // Show toast
+            
             setTimeout(() => {
                 toast.style.transform = 'translateY(0)';
                 toast.style.opacity = '1';
             }, 10);
             
-            // Hide after 3 seconds
+        
             setTimeout(() => {
                 toast.style.transform = 'translateY(100px)';
                 toast.style.opacity = '0';
@@ -632,7 +630,7 @@
             }, 3000);
         }
 
-        // Load cart when page loads
+    
         document.addEventListener('DOMContentLoaded', loadCart);
     </script>
 </body>
