@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            padding: 1.5rem 2rem;
+            color: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            background: rgba(255,255,255,0.1);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(-3px);
+        }
+
+        .navbar-title {
+            margin: 0 auto;
+            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+            outline: none;
+        }
+
+        .payment-method {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            appearance: none;
+            background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 1rem center/1rem;
+        }
+
+        .payment-options {
+            margin-top: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .payment-details {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-top: 1rem;
+            animation: slideDown 0.3s ease;
+            display: none;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .qr-image {
+            width: 200px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem auto;
+            background: white;
+        }
+
+        .place-order {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .place-order:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .payment-method-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .payment-method-option:hover {
+            border-color: #2ecc71;
+        }
+
+        .payment-method-option.active {
+            border-color: #2ecc71;
+            background: #f0fdf4;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .qr-image {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="products.html" class="back-button">
+            <i class="fas fa-chevron-left"></i>
+            Back
+        </a>
+        <h1 class="navbar-title">Checkout</h1>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Shipping Information</h2>
+        <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" id="full-name" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Delivery Address</label>
+            <input type="text" class="form-input" id="address" placeholder="Enter your full address" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-input" id="phone" placeholder="Enter your phone number" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Coupon Code (Optional)</label>
+            <input type="text" class="form-input" id="coupon" placeholder="Enter coupon code">
+        </div>
+
+        <h2 class="section-title">Payment Method</h2>
+        <div class="form-group">
+            <select class="form-input payment-method" id="payment-method" onchange="showPaymentFields()" required>
+                <option value="">Select Payment Method</option>
+                <option value="upi">UPI</option>
+                <option value="netbanking">Net Banking</option>
+                <option value="creditcard">Credit/Debit Card</option>
+                <option value="cashondelivery">Cash on Delivery</option>
+            </select>
+        </div>
+
+        <div class="payment-options">
+            <div id="upi" class="payment-details">
+                <div class="form-group">
+                    <label class="form-label">UPI ID</label>
+                    <input type="text" class="form-input" id="upi-id" placeholder="example@upi">
+                </div>
+                <div class="qr-section">
+                    <p class="form-label">Scan QR Code</p>
+                    <div class="qr-image">
+                        <!-- Sample QR code - in a real app this would be generated or provided by your payment processor -->
+                        <svg width="150" height="150" viewBox="0 0 36 36" fill="#000000">
+                            <rect width="36" height="36" fill="#ffffff"/>
+                            <!-- This is just a placeholder for a QR code -->
+                            <rect x="3" y="3" width="6" height="6" fill="#000000"/>
+                            <rect x="12" y="3" width="3" height="3" fill="#000000"/>
+                            <rect x="18" y="3" width="6" height="6" fill="#000000"/>
+                            <rect x="27" y="3" width="3" height="3" fill="#000000"/>
+                            <rect x="3" y="12" width="3" height="3" fill="#000000"/>
+                            <rect x="9" y="12" width="3" height="3" fill="#000000"/>
+                            <rect x="15" y="12" width="3" height="3" fill="#000000"/>
+                            <rect x="21" y="12" width="3" height="3" fill="#000000"/>
+                            <rect x="27" y="12" width="3" height="3" fill="#000000"/>
+                            <rect x="3" y="18" width="6" height="6" fill="#000000"/>
+                            <rect x="12" y="18" width="3" height="3" fill="#000000"/>
+                            <rect x="18" y="18" width="6" height="6" fill="#000000"/>
+                            <rect x="27" y="18" width="3" height="3" fill="#000000"/>
+                            <rect x="3" y="27" width="3" height="3" fill="#000000"/>
+                            <rect x="9" y="27" width="3" height="3" fill="#000000"/>
+                            <rect x="15" y="27" width="3" height="3" fill="#000000"/>
+                            <rect x="21" y="27" width="3" height="3" fill="#000000"/>
+                            <rect x="27" y="27" width="3" height="3" fill="#000000"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div id="netbanking" class="payment-details">
+                <div class="form-group">
+                    <label class="form-label">Bank Name</label>
+                    <select class="form-input" id="bank-name" required>
+                        <option value="">Select Bank</option>
+                        <option value="SBI">State Bank of India</option>
+                        <option value="HDFC">HDFC Bank</option>
+                        <option value="ICICI">ICICI Bank</option>
+                        <option value="Axis">Axis Bank</option>
+                        <option value="Other">Other Bank</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Account Number</label>
+                    <input type="text" class="form-input" id="account-number" placeholder="Enter account number" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">IFSC Code</label>
+                    <input type="text" class="form-input" id="ifsc-code" placeholder="Enter IFSC code" required>
+                </div>
+            </div>
+
+            <div id="creditcard" class="payment-details">
+                <div class="form-group">
+                    <label class="form-label">Card Number</label>
+                    <input type="text" class="form-input" id="card-number" placeholder="1234 5678 9012 3456" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Card Holder Name</label>
+                    <input type="text" class="form-input" id="card-name" placeholder="Name on card" required>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Expiry Date</label>
+                        <input type="text" class="form-input" id="card-expiry" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">CVV</label>
+                        <input type="text" class="form-input" id="card-cvv" placeholder="123" required>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cashondelivery" class="payment-details">
+                <div class="form-group text-center">
+                    <i class="fas fa-box-open" style="font-size: 2rem; color: #2ecc71; margin-bottom: 1rem;"></i>
+                    <p>Pay cash when your order is delivered</p>
+                    <p style="font-size: 0.9rem; color: #64748b; margin-top: 0.5rem;">Extra ₹50 charge may apply</p>
+                </div>
+            </div>
+        </div>
+
+        <button class="place-order" onclick="placeOrder()">
+            <i class="fas fa-shopping-bag"></i>
+            Place Order
+        </button>
+    </div>
+
+    <script>
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide all payment details initially
+            document.querySelectorAll('.payment-details').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            // Load product details if coming from product page
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            if (productId) {
+                // In a real app, you would fetch the product details here
+                console.log("Product ID:", productId);
+            }
+        });
+
+        function showPaymentFields() {
+            // Hide all payment details first
+            document.querySelectorAll('.payment-details').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            // Show the selected payment method details
+            const selectedMethod = document.getElementById('payment-method').value;
+            if (selectedMethod) {
+                const selectedDiv = document.getElementById(selectedMethod);
+                if (selectedDiv) {
+                    selectedDiv.style.display = 'block';
+                }
+            }
+        }
+
+        function placeOrder() {
+            // Get form values
+            const fullName = document.getElementById("full-name").value;
+            const address = document.getElementById("address").value;
+            const phone = document.getElementById("phone").value;
+            const coupon = document.getElementById("coupon").value;
+            const paymentMethod = document.getElementById("payment-method").value;
+            
+            // Validate required fields
+            if (!fullName || !address || !phone || !paymentMethod) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+            
+            // Validate phone number format
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("Please enter a valid 10-digit phone number.");
+                return;
+            }
+
+            // Payment method specific validation
+            let paymentDetails = {};
+            switch(paymentMethod) {
+                case "upi":
+                    const upiId = document.getElementById("upi-id").value;
+                    if (!upiId) {
+                        alert("Please enter your UPI ID");
+                        return;
+                    }
+                    paymentDetails = { upiId: upiId };
+                    break;
+                    
+                case "netbanking":
+                    const bankName = document.getElementById("bank-name").value;
+                    const accountNumber = document.getElementById("account-number").value;
+                    const ifscCode = document.getElementById("ifsc-code").value;
+                    if (!bankName || !accountNumber || !ifscCode) {
+                        alert("Please fill in all bank details");
+                        return;
+                    }
+                    paymentDetails = {
+                        bankName: bankName,
+                        accountNumber: accountNumber,
+                        ifscCode: ifscCode
+                    };
+                    break;
+                    
+                case "creditcard":
+                    const cardNumber = document.getElementById("card-number").value;
+                    const cardName = document.getElementById("card-name").value;
+                    const cardExpiry = document.getElementById("card-expiry").value;
+                    const cardCvv = document.getElementById("card-cvv").value;
+                    
+                    if (!cardNumber || !cardName || !cardExpiry || !cardCvv) {
+                        alert("Please fill in all card details");
+                        return;
+                    }
+                    
+                    // Simple card number validation
+                    if (!/^\d{16}$/.test(cardNumber.replace(/\s/g, ''))) {
+                        alert("Please enter a valid 16-digit card number");
+                        return;
+                    }
+                    
+                    // Simple CVV validation
+                    if (!/^\d{3,4}$/.test(cardCvv)) {
+                        alert("Please enter a valid CVV (3 or 4 digits)");
+                        return;
+                    }
+                    
+                    paymentDetails = {
+                        cardNumber: cardNumber.replace(/\s/g, ''),
+                        cardName: cardName,
+                        cardExpiry: cardExpiry,
+                        cardCvv: cardCvv
+                    };
+                    break;
+                    
+                case "cashondelivery":
+                    paymentDetails = { note: "Pay on delivery" };
+                    break;
+            }
+
+            // Get product details from URL or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            // In a real app, you would fetch the actual product details
+            const product = {
+                id: productId || "prod_" + Math.floor(Math.random() * 10000),
+                name: "Sample Product",
+                price: 999,
+                quantity: 1
+            };
+
+            // Create order object
+            const order = {
+                orderId: "ord_" + Math.floor(Math.random() * 1000000),
+                customer: {
+                    name: fullName,
+                    address: address,
+                    phone: phone
+                },
+                product: product,
+                coupon: coupon || "None",
+                payment: {
+                    method: paymentMethod,
+                    details: paymentDetails
+                },
+                date: new Date().toISOString(),
+                status: paymentMethod === "cashondelivery" ? "Pending" : "Processing"
+            };
+
+            // Save to localStorage (in a real app, you would send this to a server)
+            let orders = JSON.parse(localStorage.getItem("orders")) || [];
+            orders.push(order);
+            localStorage.setItem("orders", JSON.stringify(orders));
+
+            // Show success message and redirect
+            alert(`Order placed successfully!\nOrder ID: ${order.orderId}`);
+            window.location.href = "orders.html";
+        }
+    </script>
+</body>
+</html>
