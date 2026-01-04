@@ -14,7 +14,6 @@
             --background-light: rgba(255, 255, 255, 0.98);
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --whatsapp-green: #25D366;
         }
 
         * {
@@ -33,7 +32,7 @@
             padding-top: 80px;
         }
 
-        /* Navbar */
+       
         .navbar {
             background: var(--background-light);
             backdrop-filter: blur(12px);
@@ -79,7 +78,6 @@
             padding: 0.5rem 0;
             transition: var(--transition);
             font-size: 1.05rem;
-            cursor: pointer;
         }
 
         .nav-item::after {
@@ -136,7 +134,7 @@
             object-fit: cover;
         }
 
-        /* Dropdown Menu */
+       
         .dropdown-menu {
             position: absolute;
             background: var(--background-light);
@@ -174,7 +172,6 @@
             align-items: center;
             gap: 1rem;
             transition: var(--transition);
-            cursor: pointer;
         }
 
         .dropdown-menu a:hover {
@@ -182,204 +179,7 @@
             padding-left: 2rem;
         }
 
-        /* Contact Modal */
-        .contact-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .contact-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        /* WhatsApp Chat */
-        .whatsapp-chat {
-            position: fixed;
-            bottom: 170px;
-            right: 30px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            padding: 1.5rem;
-            width: 320px;
-            display: none;
-            z-index: 1001;
-        }
-
-        .whatsapp-chat.show {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* WhatsApp Float Button */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 100px;
-            right: 30px;
-            background: var(--whatsapp-green);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-            text-decoration: none;
-            z-index: 1000;
-            transition: var(--transition);
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-        }
-
-        /* Contact Info Cards */
-        .contact-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .contact-card {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: var(--transition);
-            cursor: pointer;
-            border: 1px solid #e9ecef;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-            border-color: var(--primary-color);
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .whatsapp-icon {
-            background: #25D366;
-            color: white;
-        }
-
-        .phone-icon {
-            background: #007bff;
-            color: white;
-        }
-
-        .email-icon {
-            background: #dc3545;
-            color: white;
-        }
-
-        .contact-info h4 {
-            margin-bottom: 0.3rem;
-            color: var(--text-dark);
-        }
-
-        .contact-info p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin: 1rem 0;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .btn:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-
-        .btn-whatsapp {
-            background: #25D366;
-        }
-
-        .btn-whatsapp:hover {
-            background: #1da851;
-        }
-
-        /* Main Content */
+      
         .main-content {
             height: calc(100vh - 80px);
             display: flex;
@@ -399,34 +199,6 @@
             max-width: 800px;
             animation: fadeInUp 0.8s ease;
             box-shadow: var(--shadow);
-        }
-
-        .feature-buttons {
-            display: flex;
-            gap: 1rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .feature-btn {
-            background: white;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 0.8rem 1.5rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .feature-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
         }
 
         .cta-button {
@@ -453,34 +225,21 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Footer */
+       
         .footer {
             position: fixed;
             bottom: 0;
             width: 100%;
             text-align: center;
             padding: 1.2rem;
-            background: green;
+            background:green;
             backdrop-filter: blur(12px);
             border-top: 1px solid rgba(0, 0, 0, 0.05);
             font-size: 0.9rem;
             color: black;
         }
 
-        /* Close Buttons */
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-            z-index: 1;
-        }
-
-        /* Media Queries */
+       
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -502,37 +261,10 @@
             .dropdown-menu {
                 top: 65px;
             }
-            
-            .whatsapp-chat {
-                right: 15px;
-                left: 15px;
-                width: auto;
-                bottom: 150px;
-            }
-            
-            .whatsapp-float {
-                right: 15px;
-                bottom: 80px;
-            }
-            
-            .contact-content {
-                padding: 1.5rem;
-            }
-            
-            .feature-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .feature-btn {
-                width: 100%;
-                justify-content: center;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar">
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <div class="brand">Green Garden</div>
@@ -541,295 +273,45 @@
             <a href="products.html" class="nav-item">Products</a>
             <a href="cart.html" class="nav-item">Cart</a>
             <a href="orders.html" class="nav-item">Orders</a>
-            <span class="nav-item" onclick="openContact()">Contact</span>
+            <a href="contact.html" class="nav-item">Contact</a>
         </div>
         <div class="profile" onclick="toggleProfileMenu()">
             <img src="logo.png" alt="Profile">
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
+    
     <div class="dropdown-menu mobile-menu" id="mobile-menu">
         <a href="home.html">🏠 Home</a>
         <a href="products.html">🌿 Products</a>
         <a href="cart.html">🛒 Cart</a>
         <a href="orders.html">📦 Orders</a>
-        <a onclick="openContact()">📞 Contact</a>
+        <a href="contact.html">📞 Contact</a>
     </div>
 
-    <!-- Profile Menu -->
+   
     <div class="dropdown-menu profile-menu" id="profile-menu">
         <a href="#" onclick="logout()">🚪 Logout</a>
     </div>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="welcome-message">
             <h1>Welcome to Green Garden 🌱</h1>
             <p>Your online paradise for plants and gardening essentials</p>
-            
-            <div class="feature-buttons">
-                <button class="feature-btn" onclick="openContact()">
-                    📞 Contact Us
-                </button>
-                <button class="feature-btn" onclick="openWhatsApp()">
-                    💬 WhatsApp Chat
-                </button>
-                <button class="feature-btn" onclick="sendEmail()">
-                    📧 Send Email
-                </button>
-            </div>
-            
-            <div class="contact-cards">
-                <div class="contact-card" onclick="openWhatsApp()">
-                    <div class="contact-icon whatsapp-icon">
-                        💬
-                    </div>
-                    <div class="contact-info">
-                        <h4>WhatsApp Support</h4>
-                        <p>+91 99942 47213</p>
-                        <small>Click to chat instantly</small>
-                    </div>
-                </div>
-                
-                <div class="contact-card" onclick="callPhone()">
-                    <div class="contact-icon phone-icon">
-                        📞
-                    </div>
-                    <div class="contact-info">
-                        <h4>Phone Support</h4>
-                        <p>+91 99942 47213</p>
-                        <small>Mon-Sat: 9AM-7PM</small>
-                    </div>
-                </div>
-                
-                <div class="contact-card" onclick="sendEmail()">
-                    <div class="contact-icon email-icon">
-                        📧
-                    </div>
-                    <div class="contact-info">
-                        <h4>Email Support</h4>
-                        <p>akash520511@gmail.com</p>
-                        <small>24/7 Email Support</small>
-                    </div>
-                </div>
-            </div>
         </div>
         <button class="cta-button" onclick="location.href='products.html'">
             Shop Now ➔
         </button>
     </main>
 
-    <!-- Contact Modal -->
-    <div class="contact-modal" id="contactModal">
-        <div class="contact-content">
-            <button class="close-btn" onclick="closeContact()">×</button>
-            <h2>📞 Contact Green Garden</h2>
-            <p>We're here to help you with all your gardening needs!</p>
-            
-            <div class="contact-cards">
-                <div class="contact-card" onclick="openWhatsApp()">
-                    <div class="contact-icon whatsapp-icon">
-                        💬
-                    </div>
-                    <div class="contact-info">
-                        <h4>WhatsApp</h4>
-                        <p>+91 99942 47213</p>
-                        <small>Instant messaging support</small>
-                    </div>
-                </div>
-                
-                <div class="contact-card" onclick="callPhone()">
-                    <div class="contact-icon phone-icon">
-                        📞
-                    </div>
-                    <div class="contact-info">
-                        <h4>Phone Call</h4>
-                        <p>+91 99942 47213</p>
-                        <small>Call us directly</small>
-                    </div>
-                </div>
-                
-                <div class="contact-card" onclick="sendEmail()">
-                    <div class="contact-icon email-icon">
-                        📧
-                    </div>
-                    <div class="contact-info">
-                        <h4>Email</h4>
-                        <p>akash520511@gmail.com</p>
-                        <small>Send us an email</small>
-                    </div>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">Send us a Message</h3>
-            
-            <div class="form-group">
-                <label>Your Name *</label>
-                <input type="text" id="contactName" placeholder="Enter your name" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Your Email *</label>
-                <input type="email" id="contactEmail" placeholder="Enter your email" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="contactPhone" placeholder="Enter your phone number">
-            </div>
-            
-            <div class="form-group">
-                <label>Message *</label>
-                <textarea id="contactMessage" placeholder="How can we help you?" required></textarea>
-            </div>
-            
-            <button class="btn" onclick="submitContactForm()">
-                📤 Send Message
-            </button>
-            
-            <button class="btn btn-whatsapp" onclick="sendWhatsAppMessage()">
-                💬 Send via WhatsApp
-            </button>
-        </div>
-    </div>
-
-    <!-- WhatsApp Chat Popup -->
-    <div class="whatsapp-chat" id="whatsappChat">
-        <h3>💬 WhatsApp Support</h3>
-        <p>Chat with our gardening experts instantly</p>
-        
-        <div class="contact-card" style="margin: 1rem 0;">
-            <div class="contact-icon whatsapp-icon">
-                💬
-            </div>
-            <div class="contact-info">
-                <h4>Green Garden Support</h4>
-                <p>+91 99942 47213</p>
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <label>Your Message</label>
-            <textarea id="whatsappMessage" placeholder="Type your message here...">Hello Green Garden! I need help with plants.</textarea>
-        </div>
-        
-        <button class="btn btn-whatsapp" onclick="sendDirectWhatsApp()">
-            💬 Open WhatsApp
-        </button>
-        
-        <button class="btn btn-secondary" onclick="closeWhatsAppChat()">
-            Close
-        </button>
-    </div>
-
-    <!-- WhatsApp Float Button -->
-    <a href="#" class="whatsapp-float" onclick="openWhatsAppFloat(event)">
-        💬
-    </a>
-
-    <!-- Footer -->
     <footer class="footer">
         <p>Your online shop for plants and garden tools.</p>
-        <p>© 2025 Green Garden. All rights reserved. | 📞 +91 99942 47213</p>
+        <p>© 2025 Green Garden. All rights reserved.</p>
+    </div>
     </footer>
 
     <script>
-        // Contact information
-        const WHATSAPP_NUMBER = "919994247213";
-        const PHONE_NUMBER = "+919994247213";
-        const EMAIL_ADDRESS = "akash520511@gmail.com";
-
-        // WhatsApp Functions
-        function openWhatsApp() {
-            const message = "Hello Green Garden! I need help with plants.";
-            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-            closeContact();
-        }
-
-        function openWhatsAppFloat(e) {
-            e.preventDefault();
-            const chat = document.getElementById('whatsappChat');
-            chat.classList.toggle('show');
-        }
-
-        function closeWhatsAppChat() {
-            document.getElementById('whatsappChat').classList.remove('show');
-        }
-
-        function sendDirectWhatsApp() {
-            const message = document.getElementById('whatsappMessage').value || "Hello Green Garden! I need help with plants.";
-            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-            closeWhatsAppChat();
-        }
-
-        function sendWhatsAppMessage() {
-            const name = document.getElementById('contactName').value || "Customer";
-            const phone = document.getElementById('contactPhone').value || "";
-            const message = document.getElementById('contactMessage').value || "I need help with plants";
-            
-            const fullMessage = `Hello Green Garden!\n\nName: ${name}\nPhone: ${phone || 'Not provided'}\n\nMessage: ${message}`;
-            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(fullMessage)}`;
-            window.open(url, '_blank');
-        }
-
-        // Phone Call Function
-        function callPhone() {
-            if (confirm(`Call ${PHONE_NUMBER}?`)) {
-                window.location.href = `tel:${PHONE_NUMBER}`;
-            }
-        }
-
-        // Email Function
-        function sendEmail() {
-            const subject = "Green Garden Inquiry";
-            const body = "Hello Green Garden,\n\nI would like to inquire about...";
-            const url = `mailto:${EMAIL_ADDRESS}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = url;
-        }
-
-        // Contact Form Functions
-        function openContact() {
-            document.getElementById('contactModal').style.display = 'flex';
-            closeAllMenus();
-            closeWhatsAppChat();
-        }
-
-        function closeContact() {
-            document.getElementById('contactModal').style.display = 'none';
-        }
-
-        function submitContactForm() {
-            const name = document.getElementById('contactName').value;
-            const email = document.getElementById('contactEmail').value;
-            const message = document.getElementById('contactMessage').value;
-
-            if (!name || !email || !message) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            // Prepare email content
-            const subject = `Green Garden Inquiry from ${name}`;
-            const body = `Name: ${name}\nEmail: ${email}\nPhone: ${document.getElementById('contactPhone').value || 'Not provided'}\n\nMessage:\n${message}`;
-            
-            // Open email client
-            window.location.href = `mailto:${EMAIL_ADDRESS}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            // Show confirmation
-            alert(`Thank you ${name}! Opening your email client...`);
-            closeContact();
-            
-            // Clear form
-            document.getElementById('contactName').value = '';
-            document.getElementById('contactEmail').value = '';
-            document.getElementById('contactPhone').value = '';
-            document.getElementById('contactMessage').value = '';
-        }
-
-        // Menu Functions
+   
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             const profileMenu = document.getElementById('profile-menu');
@@ -844,31 +326,15 @@
             menu.classList.remove('show');
         }
 
-        function closeAllMenus() {
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                menu.classList.remove('show');
-            });
-        }
-
         document.addEventListener('click', function(event) {
             const menus = document.querySelectorAll('.dropdown-menu');
             const profile = document.querySelector('.profile');
             const menuIcon = document.querySelector('.menu-icon');
-            const whatsappChat = document.getElementById('whatsappChat');
-            const whatsappFloat = document.querySelector('.whatsapp-float');
 
-            // Close dropdown menus
             if (!event.target.closest('.dropdown-menu') && 
                 !event.target.closest('.profile') && 
                 !event.target.closest('.menu-icon')) {
                 menus.forEach(menu => menu.classList.remove('show'));
-            }
-
-            // Close WhatsApp chat when clicking outside
-            if (whatsappChat.classList.contains('show') && 
-                !event.target.closest('.whatsapp-chat') && 
-                !event.target.closest('.whatsapp-float')) {
-                whatsappChat.classList.remove('show');
             }
         });
 
@@ -877,35 +343,6 @@
             localStorage.clear();
             window.location.href = "Login.html";
         }
-
-        // Initialize contact cards with click events
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add click events to contact cards
-            document.querySelectorAll('.contact-card').forEach(card => {
-                const text = card.querySelector('.contact-info h4').textContent;
-                if (text.includes('WhatsApp')) {
-                    card.addEventListener('click', openWhatsApp);
-                } else if (text.includes('Phone')) {
-                    card.addEventListener('click', callPhone);
-                } else if (text.includes('Email')) {
-                    card.addEventListener('click', sendEmail);
-                }
-            });
-
-            // Auto-focus on first input when contact modal opens
-            const contactModal = document.getElementById('contactModal');
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.target.style.display === 'flex') {
-                        setTimeout(() => {
-                            document.getElementById('contactName').focus();
-                        }, 300);
-                    }
-                });
-            });
-            
-            observer.observe(contactModal, { attributes: true, attributeFilter: ['style'] });
-        });
     </script>
 </body>
-</html>
+</html> 
