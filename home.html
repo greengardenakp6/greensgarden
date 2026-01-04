@@ -14,6 +14,7 @@
             --background-light: rgba(255, 255, 255, 0.98);
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --whatsapp-green: #25D366;
         }
 
         * {
@@ -27,12 +28,201 @@
             background-image: url('garden.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             min-height: 100vh;
             color: var(--text-dark);
             padding-top: 80px;
         }
 
-       
+        /* Special Offers Alert */
+        .offer-alert {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            position: fixed;
+            top: 80px;
+            width: 100%;
+            z-index: 999;
+            animation: pulse 2s infinite;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.9; }
+            50% { opacity: 1; }
+            100% { opacity: 0.9; }
+        }
+
+        /* Contact Modal */
+        .contact-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        /* Plant Identifier Modal */
+        .plant-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plant-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--primary-color);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-area:hover {
+            background: rgba(44, 140, 74, 0.05);
+        }
+
+        .upload-area img {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 1rem;
+            display: none;
+            border-radius: 10px;
+        }
+
+        /* WhatsApp Float Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: var(--whatsapp-green);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            text-decoration: none;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-chat {
+            position: fixed;
+            bottom: 170px;
+            right: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 1rem;
+            width: 300px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .whatsapp-chat.show {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin: 1rem 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* Navbar */
         .navbar {
             background: var(--background-light);
             backdrop-filter: blur(12px);
@@ -78,6 +268,7 @@
             padding: 0.5rem 0;
             transition: var(--transition);
             font-size: 1.05rem;
+            cursor: pointer;
         }
 
         .nav-item::after {
@@ -134,7 +325,7 @@
             object-fit: cover;
         }
 
-       
+        /* Dropdown Menu */
         .dropdown-menu {
             position: absolute;
             background: var(--background-light);
@@ -172,6 +363,7 @@
             align-items: center;
             gap: 1rem;
             transition: var(--transition);
+            cursor: pointer;
         }
 
         .dropdown-menu a:hover {
@@ -179,7 +371,7 @@
             padding-left: 2rem;
         }
 
-      
+        /* Main Content */
         .main-content {
             height: calc(100vh - 80px);
             display: flex;
@@ -199,6 +391,31 @@
             max-width: 800px;
             animation: fadeInUp 0.8s ease;
             box-shadow: var(--shadow);
+        }
+
+        .feature-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .feature-btn {
+            background: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .feature-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
         }
 
         .cta-button {
@@ -225,21 +442,46 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-       
+        /* Footer */
         .footer {
             position: fixed;
             bottom: 0;
             width: 100%;
             text-align: center;
             padding: 1.2rem;
-            background:green;
+            background: green;
             backdrop-filter: blur(12px);
             border-top: 1px solid rgba(0, 0, 0, 0.05);
             font-size: 0.9rem;
             color: black;
         }
 
-       
+        /* Close Buttons */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Result Display */
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        /* Media Queries */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -261,10 +503,27 @@
             .dropdown-menu {
                 top: 65px;
             }
+            
+            .whatsapp-chat {
+                right: 15px;
+                left: 15px;
+                width: auto;
+            }
+            
+            .whatsapp-float {
+                right: 15px;
+                bottom: 80px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Special Offers Alert -->
+    <div class="offer-alert" id="offerAlert">
+        🎉 Limited Time Offer: Get 20% OFF on all indoor plants! Use code: GREEN20 🎉
+    </div>
+
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <div class="brand">Green Garden</div>
@@ -273,45 +532,285 @@
             <a href="products.html" class="nav-item">Products</a>
             <a href="cart.html" class="nav-item">Cart</a>
             <a href="orders.html" class="nav-item">Orders</a>
-            <a href="contact.html" class="nav-item">Contact</a>
+            <span class="nav-item" onclick="openContact()">Contact</span>
+            <span class="nav-item" onclick="openPlantIdentifier()">Plant ID</span>
         </div>
         <div class="profile" onclick="toggleProfileMenu()">
             <img src="logo.png" alt="Profile">
         </div>
     </nav>
 
-    
+    <!-- Mobile Menu -->
     <div class="dropdown-menu mobile-menu" id="mobile-menu">
         <a href="home.html">🏠 Home</a>
         <a href="products.html">🌿 Products</a>
         <a href="cart.html">🛒 Cart</a>
         <a href="orders.html">📦 Orders</a>
-        <a href="contact.html">📞 Contact</a>
+        <a onclick="openContact()">📞 Contact</a>
+        <a onclick="openPlantIdentifier()">🌱 Plant ID</a>
     </div>
 
-   
+    <!-- Profile Menu -->
     <div class="dropdown-menu profile-menu" id="profile-menu">
         <a href="#" onclick="logout()">🚪 Logout</a>
     </div>
 
+    <!-- Main Content -->
     <main class="main-content">
         <div class="welcome-message">
             <h1>Welcome to Green Garden 🌱</h1>
             <p>Your online paradise for plants and gardening essentials</p>
+            
+            <div class="feature-buttons">
+                <button class="feature-btn" onclick="openContact()">📞 Contact Support</button>
+                <button class="feature-btn" onclick="openPlantIdentifier()">📷 Identify Plant</button>
+                <button class="feature-btn" onclick="toggleWhatsAppChat()">💬 WhatsApp Chat</button>
+            </div>
         </div>
         <button class="cta-button" onclick="location.href='products.html'">
             Shop Now ➔
         </button>
     </main>
 
+    <!-- Contact Modal -->
+    <div class="contact-modal" id="contactModal">
+        <div class="contact-content">
+            <button class="close-btn" onclick="closeContact()">×</button>
+            <h2>📞 Contact Us</h2>
+            <p>Have questions? We're here to help!</p>
+            
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="contactName" placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="contactEmail" placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="contactPhone" placeholder="Enter your phone">
+            </div>
+            
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="contactMessage" placeholder="How can we help you?"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Query Type</label>
+                <select id="contactType">
+                    <option value="general">General Inquiry</option>
+                    <option value="order">Order Related</option>
+                    <option value="plantcare">Plant Care</option>
+                    <option value="technical">Technical Issue</option>
+                </select>
+            </div>
+            
+            <button class="btn" onclick="submitContact()">Send Message</button>
+            <button class="btn btn-secondary" onclick="closeContact()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Plant Identifier Modal -->
+    <div class="plant-modal" id="plantModal">
+        <div class="plant-content">
+            <button class="close-btn" onclick="closePlantIdentifier()">×</button>
+            <h2>🌿 Plant Identifier</h2>
+            <p>Upload a photo to identify your plant</p>
+            
+            <div class="upload-area" onclick="document.getElementById('plantImage').click()">
+                <p>📷 Click to upload plant photo</p>
+                <p style="font-size: 0.9rem; color: #666;">or drag and drop here</p>
+                <img id="previewImage" alt="Preview">
+            </div>
+            <input type="file" id="plantImage" accept="image/*" style="display: none;" onchange="previewImage(event)">
+            
+            <div class="form-group">
+                <label>Additional Details (Optional)</label>
+                <textarea id="plantDetails" placeholder="Where is the plant growing? Any special characteristics?"></textarea>
+            </div>
+            
+            <button class="btn" onclick="identifyPlant()">Identify Plant</button>
+            <button class="btn btn-secondary" onclick="closePlantIdentifier()">Cancel</button>
+            
+            <div class="result" id="plantResult">
+                <h3>🌱 Plant Identification Result:</h3>
+                <p id="plantName">Loading...</p>
+                <p id="plantInfo"></p>
+                <button class="btn" onclick="shopForPlant()">Shop for this Plant</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Chat -->
+    <div class="whatsapp-chat" id="whatsappChat">
+        <h4>💬 WhatsApp Support</h4>
+        <p>Chat with our gardening experts</p>
+        
+        <div class="form-group">
+            <label>Your Message</label>
+            <textarea id="whatsappMessage" placeholder="Type your message here..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="sendWhatsApp()">
+            💬 Send via WhatsApp
+        </button>
+        <button class="btn btn-secondary" onclick="toggleWhatsAppChat()">
+            Close
+        </button>
+    </div>
+
+    <!-- WhatsApp Float Button -->
+    <a href="#" class="whatsapp-float" onclick="toggleWhatsAppChat(event)">
+        💬
+    </a>
+
+    <!-- Footer -->
     <footer class="footer">
         <p>Your online shop for plants and garden tools.</p>
         <p>© 2025 Green Garden. All rights reserved.</p>
-    </div>
     </footer>
 
     <script>
-   
+        // WhatsApp Integration
+        function toggleWhatsAppChat(e) {
+            if(e) e.preventDefault();
+            const chat = document.getElementById('whatsappChat');
+            chat.classList.toggle('show');
+        }
+
+        function sendWhatsApp() {
+            const message = document.getElementById('whatsappMessage').value;
+            const phone = "919876543210"; // Replace with your WhatsApp business number
+            const encodedMessage = encodeURIComponent(message || "Hello Green Garden, I need help with plants.");
+            window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+        }
+
+        // Contact Form
+        function openContact() {
+            document.getElementById('contactModal').style.display = 'flex';
+            closeAllMenus();
+        }
+
+        function closeContact() {
+            document.getElementById('contactModal').style.display = 'none';
+        }
+
+        function submitContact() {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const phone = document.getElementById('contactPhone').value;
+            const message = document.getElementById('contactMessage').value;
+            const type = document.getElementById('contactType').value;
+
+            if (!name || !email || !message) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // In a real app, you would send this to your backend
+            alert(`Thank you ${name}! We'll contact you soon at ${email}`);
+            closeContact();
+            
+            // Clear form
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('contactMessage').value = '';
+        }
+
+        // Plant Identifier
+        function openPlantIdentifier() {
+            document.getElementById('plantModal').style.display = 'flex';
+            closeAllMenus();
+        }
+
+        function closePlantIdentifier() {
+            document.getElementById('plantModal').style.display = 'none';
+        }
+
+        function previewImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('previewImage');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function identifyPlant() {
+            const imageInput = document.getElementById('plantImage');
+            const details = document.getElementById('plantDetails').value;
+            
+            if (!imageInput.files[0]) {
+                alert('Please upload a plant photo');
+                return;
+            }
+
+            // Show loading
+            const result = document.getElementById('plantResult');
+            result.classList.add('show');
+            document.getElementById('plantName').textContent = "Identifying...";
+            document.getElementById('plantInfo').textContent = "";
+
+            // Simulate API call
+            setTimeout(() => {
+                const plantTypes = [
+                    {
+                        name: "Monstera Deliciosa",
+                        info: "Also known as Swiss Cheese Plant. Needs indirect sunlight and moderate watering."
+                    },
+                    {
+                        name: "Snake Plant",
+                        info: "Low maintenance, excellent air purifier. Tolerates low light and irregular watering."
+                    },
+                    {
+                        name: "Peace Lily",
+                        info: "Beautiful white flowers. Prefers shade and moist soil."
+                    },
+                    {
+                        name: "Spider Plant",
+                        info: "Easy to grow, produces baby plants. Great for beginners."
+                    }
+                ];
+
+                const randomPlant = plantTypes[Math.floor(Math.random() * plantTypes.length)];
+                document.getElementById('plantName').textContent = `🌿 ${randomPlant.name}`;
+                document.getElementById('plantInfo').textContent = randomPlant.info;
+            }, 1500);
+        }
+
+        function shopForPlant() {
+            const plantName = document.getElementById('plantName').textContent.replace('🌿 ', '');
+            alert(`Searching for ${plantName} in our store...`);
+            window.location.href = `products.html?search=${encodeURIComponent(plantName)}`;
+        }
+
+        // Special Offers Timer
+        function updateOfferTimer() {
+            const offers = [
+                "🎉 Limited Time Offer: Get 20% OFF on all indoor plants! Use code: GREEN20",
+                "🌟 Free Shipping on orders above ₹999!",
+                "🌱 Buy 2 Get 1 Free on all succulents this week!",
+                "🌸 Spring Sale: Up to 30% OFF on flowering plants!"
+            ];
+            
+            let currentOffer = 0;
+            setInterval(() => {
+                document.getElementById('offerAlert').textContent = offers[currentOffer];
+                currentOffer = (currentOffer + 1) % offers.length;
+            }, 5000);
+        }
+
+        // Menu Functions
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             const profileMenu = document.getElementById('profile-menu');
@@ -324,6 +823,12 @@
             const menu = document.getElementById('mobile-menu');
             profileMenu.classList.toggle('show');
             menu.classList.remove('show');
+        }
+
+        function closeAllMenus() {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
         }
 
         document.addEventListener('click', function(event) {
@@ -343,6 +848,11 @@
             localStorage.clear();
             window.location.href = "Login.html";
         }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateOfferTimer();
+        });
     </script>
 </body>
 </html>
