@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Green Garden</title>
     <link rel="stylesheet" href="login.css">
+    <link rel="manifest" href="/manifest.json">
+
   <style>
               body {
     font-family: Arial, sans-serif;
@@ -93,6 +95,11 @@ footer {
             sessionStorage.setItem('loggedInUser', email);
             window.location.href = 'home.html';
         });
+
+        if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+
     </script>
 </body>
 </html>
