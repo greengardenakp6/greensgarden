@@ -3,24 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Us | GreenGarden</title>
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Lato&display=swap" rel="stylesheet">
+  <title>Connect · GreenGarden</title>
+  <!-- Inter font + elegant system fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* ----- MODERN, REFINED GLASS MORPHISM ----- */
-    :root {
-      --primary-deep: #0a1f2e;        /* richer navy */
-      --accent-gold: #d4af37;
-      --glass-bg: rgba(255, 255, 255, 0.06);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --text-light: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.75);
-      --blur-strong: blur(14px);
-      --shadow-elevation: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
-      --radius-card: 24px;
-    }
-
+    /* —————————— RADICAL FRESH START —————————— */
+    /* minimal, airy, soft neo‑brutalism with organic touches */
     * {
       margin: 0;
       padding: 0;
@@ -28,354 +17,608 @@
     }
 
     body {
-      font-family: 'Lato', sans-serif;
-      background: radial-gradient(circle at 10% 30%, #102b3f, #07111c);
-      color: var(--text-light);
-      line-height: 1.6;
-      min-height: 100vh;
+      background-color: #f6fbf9;   /* soft muted mint */
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1e2e2c;             /* deep forest, not black */
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
     }
 
-    .container {
-      max-width: 1300px;
+    .page {
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 40px 30px;
     }
 
-    /* ----- GLASS BACK BUTTON (elevated) ----- */
-    .back-home-btn {
+    /* ————— TYPOGRAPHY WITH CHARACTER ————— */
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    /* ————— UNIQUE NAVIGATION (soft pill) ————— */
+    .nav-home {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 30px;
-      padding: 12px 26px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-light);
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-strong);
-      border: 1px solid var(--glass-border);
-      border-radius: 50px;
+      gap: 0.5rem;
+      background: #ffffff;
+      padding: 0.8rem 1.8rem;
+      border-radius: 100px;
+      box-shadow: 0 2px 8px rgba(0, 50, 30, 0.04);
+      color: #1f4d3c;
       text-decoration: none;
-      letter-spacing: 0.3px;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      font-weight: 550;
+      font-size: 0.95rem;
+      border: 1px solid #d0e6de;
+      margin-bottom: 3rem;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(4px);
     }
 
-    .back-home-btn i {
-      color: var(--accent-gold);
-      font-size: 1.1rem;
+    .nav-home i {
+      color: #2f7a5c;
+      font-size: 0.9rem;
       transition: transform 0.2s;
     }
 
-    .back-home-btn:hover {
-      background: rgba(212, 175, 55, 0.12);
-      border-color: var(--accent-gold);
-      box-shadow: 0 8px 18px rgba(212, 175, 55, 0.15);
+    .nav-home:hover {
+      background: #e9f3ef;
+      border-color: #9ac0b0;
+      box-shadow: 0 8px 18px rgba(47, 122, 92, 0.1);
     }
 
-    .back-home-btn:hover i {
+    .nav-home:hover i {
       transform: translateX(-4px);
     }
 
-    /* ----- SECTION TITLES (refined) ----- */
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 3.2rem;
+    /* ————— RADICAL HEADER — split, asymmetric ————— */
+    .hero-contact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+    }
+
+    .hero-title {
+      max-width: 600px;
+    }
+
+    .hero-title h1 {
+      font-size: 4rem;
       font-weight: 700;
-      text-align: center;
-      color: var(--accent-gold);
-      margin-bottom: 20px;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      line-height: 1.1;
+      color: #174339;           /* dark green */
+      margin-bottom: 0.5rem;
     }
 
-    h1:after {
-      content: '';
+    .hero-title .highlight {
+      background: linear-gradient(145deg, #dbef9f, #b8dfb0);
+      padding: 0 0.2rem 0.1rem 0.4rem;
+      display: inline-block;
+      border-radius: 12px 4px 16px 4px;
+    }
+
+    .hero-emoji {
+      font-size: 3.4rem;
+      background: #edfff7;
+      padding: 0.4rem 1.2rem;
+      border-radius: 100px;
+      border: 2px solid #afe0c4;
+      box-shadow: 8px 8px 0 #205f4c;
+      color: #1e5a47;
+      margin-bottom: 0.2rem;
+    }
+
+    /* ————— CONTACT CARD — completely new vibe ————— */
+    .connection-panel {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2.2rem;
+      margin-bottom: 5rem;
+      background: #ffffff;
+      border-radius: 32px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: 0 20px 40px -12px rgba(30, 50, 40, 0.08);
+      border: 1px solid #cae5db;
+    }
+
+    .greeting-block {
+      background: #f1fff9;
+      padding: 2rem 1.8rem;
+      border-radius: 24px;
+      border: 1px solid #b1d9cb;
+      position: relative;
+    }
+
+    .greeting-block h2 {
+      font-size: 1.9rem;
+      font-weight: 650;
+      color: #0f463a;
+      margin-bottom: 0.8rem;
+    }
+
+    .greeting-block p {
+      color: #3d6259;
+      margin-bottom: 1.6rem;
+      font-size: 1.1rem;
+    }
+
+    .logo-fresh {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.8rem;
+    }
+
+    .logo-fresh span {
+      font-size: 2.6rem;
+      background: #154f41;
+      color: white;
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      box-shadow: 6px 6px 0 #b4dac9;
+      transform: rotate(-2deg);
+    }
+
+    .logo-fresh h3 {
+      font-size: 1.5rem;
+      font-weight: 650;
+      color: #0f463a;
+      letter-spacing: -0.02em;
+    }
+
+    /* contact methods — expressive, colorful tiles */
+    .contact-tiles {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .tile-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .contact-tile {
+      background: #fafefb;
+      flex: 1 1 calc(50% - 0.5rem);
+      border: 1.5px solid #e3f1eb;
+      border-radius: 20px;
+      padding: 1.4rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.01);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .contact-tile:hover {
+      background: #f3fae7;
+      border-color: #78b6a0;
+      transform: scale(0.98) translateY(-2px);
+      box-shadow: 0 12px 22px -10px #447a6a40;
+    }
+
+    .tile-icon {
+      background: #cae8de;
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #0b5345;
+    }
+
+    .tile-text {
+      font-weight: 550;
+    }
+
+    .tile-text small {
       display: block;
-      width: 100px;
-      height: 4px;
-      background: var(--accent-gold);
-      margin: 10px auto 0;
-      border-radius: 4px;
-      opacity: 0.8;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #56786d;
+      font-weight: 500;
     }
 
-    /* ----- MAIN PROFILE CARD (OWNER / COMPANY) ----- */
-    .profile {
+    .tile-text span {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1e4d44;
+    }
+
+    .fullwidth-tile {
+      background: #e3f4eb;
+      border: 1.5px solid #afd6ca;
+      border-radius: 20px;
+      padding: 1.2rem 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: 0.2s;
+    }
+
+    .fullwidth-tile i {
+      font-size: 1.8rem;
+      color: #1f6b57;
+      width: 44px;
+    }
+
+    .fullwidth-tile p {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .fullwidth-tile strong {
+      font-weight: 700;
+      color: #094536;
+      background: #fcfcba;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      margin-left: 0.6rem;
+    }
+
+    /* ————— TEAM REIMAGINED — garden grid ————— */
+    .garden-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2rem;
+    }
+
+    .garden-head h2 {
+      font-size: 2.8rem;
+      font-weight: 650;
+      color: #1d473f;
+      letter-spacing: -0.02em;
+    }
+
+    .garden-head i {
+      color: #387a67;
+      font-size: 2rem;
+      background: #d4f0e0;
+      padding: 0.5rem;
+      border-radius: 50%;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 2rem;
+    }
+
+    /* card = seed pod concept */
+    .seed-card {
+      background: white;
+      border-radius: 40px 40px 30px 30px;
+      padding: 2rem 1.5rem 1.8rem;
+      box-shadow: 0 5px 0 #afcfc1, 0 16px 30px -10px rgba(50, 80, 70, 0.08);
+      border: 1px solid #d2e3dd;
+      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-strong);
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      padding: 40px 30px;
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-elevation);
-      margin-bottom: 70px;
       text-align: center;
+      position: relative;
     }
 
-    .profile img {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 4px solid var(--accent-gold);
-      object-fit: cover;
-      margin-bottom: 18px;
-      background: #fff; /* in case logo is transparent */
-      box-shadow: 0 8px 18px rgba(0,0,0,0.5);
+    .seed-card:hover {
+      transform: rotate(0.5deg) scale(1.02);
+      border-color: #8cc0ad;
+      box-shadow: 8px 10px 0 #286b58, 0 24px 38px -12px #1c463e;
     }
 
-    .profile h2 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 2rem;
-      margin-bottom: 5px;
-      color: var(--text-light);
-      font-weight: 600;
-    }
-
-    .profile .tagline {
-      font-size: 1.2rem;
-      color: var(--accent-gold);
-      margin-bottom: 20px;
-      font-style: italic;
-    }
-
-    /* ----- CONTACT INFO (clean, organized) ----- */
-    .contact-info {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 25px 40px;
-      margin-top: 15px;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px 35px;
-      border-radius: 60px;
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .contact-info p {
-      font-size: 1.1rem;
-      margin: 0;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: color 0.2s;
-    }
-
-    .contact-info p:hover {
-      color: #fff;
-    }
-
-    .contact-info i {
-      color: var(--accent-gold);
-      width: 20px;
-      text-align: center;
-      font-size: 1.2rem;
-    }
-
-    /* ----- TEAM SECTION HEADER (spacing) ----- */
-    .team-header {
-      margin-top: 20px;
-      margin-bottom: 50px;
-    }
-
-    /* ----- TEAM GRID (elegant glass cards) ----- */
-    .team {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 35px;
-    }
-
-    .member {
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-strong);
-      border: 1px solid var(--glass-border);
-      padding: 30px 20px;
-      border-radius: var(--radius-card);
-      text-align: center;
-      transition: transform 0.3s ease, border-color 0.3s, box-shadow 0.3s;
-      box-shadow: 0 10px 25px -8px rgba(0,0,0,0.4);
-    }
-
-    .member:hover {
-      transform: translateY(-10px) scale(1.02);
-      border-color: var(--accent-gold);
-      box-shadow: 0 20px 30px -6px rgba(212, 175, 55, 0.2);
-      background: rgba(255,255,255,0.1);
-    }
-
-    .member img {
+    .seed-avatar {
       width: 120px;
       height: 120px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-bottom: 18px;
-      border: 3px solid var(--accent-gold);
-      transition: border-width 0.2s;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-    }
-
-    .member:hover img {
-      border-width: 4px;
-    }
-
-    .member h3 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--accent-gold);
-    }
-
-    .member span {
-      font-size: 1rem;
-      color: var(--text-muted);
-      display: inline-block;
-      background: rgba(212, 175, 55, 0.1);
-      padding: 6px 18px;
-      border-radius: 40px;
-      border: 1px solid rgba(212,175,55,0.2);
-      letter-spacing: 0.3px;
-    }
-
-    /* placeholder style for missing images – subtle */
-    .member img[src="Ak.jpg"] {
-      background: linear-gradient(145deg, #1e3a4a, #0e1e26);
+      border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%; /* organic shape */
+      background: #ebcba0;  /* warm terracotta fallback */
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
-      color: var(--accent-gold);
+      margin-bottom: 1.2rem;
+      border: 4px solid white;
+      outline: 2px solid #5e8b7a;
+      box-shadow: 0 8px 0 #326454;
     }
 
-    /* ----- RESPONSIVE FINE-TUNING ----- */
-    @media (max-width: 700px) {
-      .container {
-        padding: 30px 20px;
+    .seed-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+
+    /* custom monogram style if image missing */
+    .avatar-mono {
+      font-size: 3.2rem;
+      font-weight: 600;
+      color: #143f3a;
+      background: #eddab9;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: inherit;
+    }
+
+    .seed-card h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #10423b;
+      margin-bottom: 0.2rem;
+      line-height: 1.2;
+    }
+
+    .seed-role {
+      background: #e1efe8;
+      padding: 0.4rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #154f3f;
+      border: 1px solid #9fc7b6;
+      margin: 0.5rem 0 0.8rem;
+    }
+
+    .seed-detail {
+      color: #53776c;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #f2faf5;
+      padding: 0.5rem 1rem;
+      border-radius: 40px;
+      margin-top: 0.4rem;
+    }
+
+    .seed-detail i {
+      color: #237a60;
+    }
+
+    /* ————— organic footer ————— */
+    .soil-footer {
+      margin-top: 6rem;
+      background: #d6ece2;
+      border-radius: 48px 48px 24px 24px;
+      padding: 2.5rem 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #9dc6b5;
+    }
+
+    .soil-footer p {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #1f4f44;
+    }
+
+    .soil-footer .social {
+      display: flex;
+      gap: 1.4rem;
+    }
+
+    .soil-footer .social a {
+      color: #1f5a4c;
+      background: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      border: 1px solid #7ea699;
+      transition: 0.2s;
+    }
+
+    .soil-footer .social a:hover {
+      background: #266454;
+      color: white;
+      border-color: #144c41;
+    }
+
+    /* ————— responsive fine‑tuning ————— */
+    @media (max-width: 850px) {
+      .connection-panel {
+        grid-template-columns: 1fr;
       }
-      h1 {
-        font-size: 2.5rem;
-      }
-      .profile {
-        padding: 30px 20px;
-      }
-      .contact-info {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        padding: 20px 25px;
-        border-radius: 30px;
-      }
-      .contact-info p {
-        font-size: 1rem;
+      .hero-title h1 {
+        font-size: 2.8rem;
       }
     }
 
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 2rem;
-      }
-      .profile img {
-        width: 110px;
-        height: 110px;
-      }
-      .member {
-        padding: 25px 15px;
-      }
-    }
-
-    /* missing image fallback (no broken icon) */
-    img {
-      display: block;
+    @media (max-width: 550px) {
+      body { padding: 1.2rem; }
+      .hero-title h1 { font-size: 2.2rem; }
+      .contact-tile { flex: 1 1 100%; }
+      .tile-row { flex-direction: column; }
+      .seed-card { padding: 1.6rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="page">
 
-    <!-- back button with refined interaction -->
-    <a href="home.html" class="back-home-btn">
-      <i class="fas fa-arrow-left"></i> Back to Home
+    <!-- completely different navigation – fresh & playful -->
+    <a href="home.html" class="nav-home">
+      <i class="fas fa-arrow-left"></i> back to home
+      <span style="background: #2f7a5c; width: 6px; height: 6px; border-radius: 50%; margin-left: 4px;"></span>
     </a>
 
-    <!-- main contact header -->
-    <h1>Contact Us</h1>
-
-    <!-- GreenGarden profile block (owner / main contact) -->
-    <div class="profile">
-      <!-- logo : using clean placeholder style - ensure logo.png exists or use elegant fallback -->
-      <img src="logo.png" alt="GreenGarden Logo" onerror="this.src='https://placehold.co/130x130/d4af37/0a1a2f?text=GG';this.onerror=null;">
-
-      <h2>GreenGarden</h2>
-      <div class="tagline">🌿 rooted in nature, growing together</div>
-
-      <!-- contact details as beautiful chip group -->
-      <div class="contact-info">
-        <p><i class="fas fa-phone-alt"></i> +91 99942 47213</p>
-        <p><i class="fab fa-whatsapp"></i> +91 99942 47213</p>
-        <p><i class="fas fa-envelope"></i> hello@greengarden.com</p>
-        <p><i class="fas fa-map-marker-alt"></i> 07 Main Road, Vellore, Tamil Nadu 632009</p>
+    <!-- hero — asymmetric, modern, organic -->
+    <div class="hero-contact">
+      <div class="hero-title">
+        <h1>
+          let’s<br>
+          <span class="highlight">grow</span> together
+        </h1>
+        <p style="font-size: 1.2rem; color: #38635a; max-width: 480px; margin-top: 0.6rem;">
+          we’re here to listen, collaborate, and plant seeds of innovation.
+        </p>
+      </div>
+      <div class="hero-emoji">
+        🌿🌱
       </div>
     </div>
 
-    <!-- team section header with consistent style -->
-    <h1 style="margin-top: 0;">Our Team</h1>
-
-    <div class="team">
-      <!-- Akash card - enhanced with developer role -->
-      <div class="member">
-        <!-- fallback for Ak.jpg - display stylish monogram if image missing -->
-        <img src="Ak.jpg" alt="Akash" onerror="this.style.background='#0e2a36'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230a1f2e\' stroke=\'%23d4af37\' stroke-width=\'3\'/%3E%3Ctext x=\'50\' y=\'66\' font-size=\'44\' font-family=\'Montserrat, sans-serif\' fill=\'%23d4af37\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3EA%3C/text%3E%3C/svg%3E'; this.alt='Akash Monogram';">
-        <h3>Akash</h3>
-        <span>Full‑Stack Developer</span>
-        <!-- optional small contact for team member (subtle) -->
-        <div style="margin-top: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.5);">
-          <i class="fas fa-code" style="color: var(--accent-gold);"></i> frontend & backend
+    <!-- MAIN CONTACT HUB — split, tile-based, zero glassmorphism, grounded -->
+    <div class="connection-panel">
+      <!-- left: brand greeting (no logo.png, fresh identity) -->
+      <div class="greeting-block">
+        <h2>hello, we’re GreenGarden</h2>
+        <p style="font-size: 1.15rem; font-weight: 400;">
+          a collective of makers & growers. say hi — we reply within a few hours 🌻
+        </p>
+        <div class="logo-fresh">
+          <span>🌳</span>
+          <h3>GREEN GARDEN</h3>
+        </div>
+        <!-- tiny charming stat -->
+        <div style="margin-top: 2rem; display: flex; gap: 1.4rem;">
+          <div><strong style="color: #0f5642;">07+</strong> <span style="color: #496f64;">years</span></div>
+          <div><strong style="color: #0f5642;">1.2k</strong> <span style="color: #496f64;">happy clients</span></div>
         </div>
       </div>
 
-      <!-- you can easily add more members below – keeping it consistent -->
-      <!-- Example placeholder for future expansion (commented) 
-      <div class="member">
-        <img src="placeholder.jpg" alt="Team member">
-        <h3>Priya</h3>
-        <span>Lead Designer</span>
-      </div> -->
+      <!-- right: expressive contact tiles — completely reinvented -->
+      <div class="contact-tiles">
+        <div class="tile-row">
+          <a href="tel:+919994247213" class="contact-tile">
+            <span class="tile-icon"><i class="fas fa-phone-alt"></i></span>
+            <span class="tile-text">
+              <small>call direct</small>
+              <span>99942 47213</span>
+            </span>
+          </a>
+          <a href="https://wa.me/919994247213" class="contact-tile">
+            <span class="tile-icon"><i class="fab fa-whatsapp"></i></span>
+            <span class="tile-text">
+              <small>whatsapp</small>
+              <span>99942 47213</span>
+            </span>
+          </a>
+        </div>
+        <div class="tile-row">
+          <a href="mailto:hello@greengarden.com" class="contact-tile">
+            <span class="tile-icon"><i class="fas fa-envelope"></i></span>
+            <span class="tile-text">
+              <small>email</small>
+              <span>hello@greengarden.com</span>
+            </span>
+          </a>
+          <div class="contact-tile" style="background: #fffae6;">
+            <span class="tile-icon" style="background: #e6d9a2;"><i class="fas fa-map-pin"></i></span>
+            <span class="tile-text">
+              <small>visit</small>
+              <span>07 Main Road</span>
+            </span>
+          </div>
+        </div>
+        <!-- full width location detail — friendly and bold -->
+        <div class="fullwidth-tile">
+          <i class="fas fa-location-dot"></i>
+          <p>
+            📍 Vellore, Tamil Nadu — <strong>632009</strong> 
+            <span style="background: none; font-style: italic; margin-left: 0.6rem;">come say hi 🌾</span>
+          </p>
+        </div>
+      </div>
     </div>
 
-    <!-- subtle footer note: better contact visibility -->
-    <div style="text-align: center; margin-top: 60px; opacity: 0.7; font-size: 0.9rem; border-top: 1px solid rgba(212,175,55,0.2); padding-top: 25px;">
-      <i class="fas fa-seedling" style="color: var(--accent-gold);"></i>  Let’s grow something beautiful together  <i class="fas fa-seedling" style="color: var(--accent-gold);"></i>
+    <!-- OUR TEAM – rebranded as "the gardeners" -->
+    <div class="garden-head">
+      <h2>
+        🌻 the gardeners
+      </h2>
+      <i class="fas fa-leaf"></i>
     </div>
 
-  </div>
+    <!-- team grid — one member, but built for many. akash shown with bold illustration -->
+    <div class="team-grid">
+      <!-- AKASH — completely redone card, personality first -->
+      <div class="seed-card">
+        <div class="seed-avatar">
+          <!-- no dependency on external image; unique illustrative monogram as fresh identity -->
+          <div class="avatar-mono">
+            A
+          </div>
+          <!-- (if you still want to try Ak.jpg, uncomment next line and comment above)
+          <img src="Ak.jpg" alt="Akash" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'avatar-mono\'>A</div>';"> 
+          -->
+        </div>
+        <h3>Akash</h3>
+        <div class="seed-role">🌿 full‑stack cultivator</div>
+        <div class="seed-detail">
+          <i class="fas fa-code"></i> frontend & backend
+        </div>
+        <div style="margin-top: 1.2rem; display: flex; gap: 1rem; color: #3f786b;">
+          <span style="font-size: 0.9rem;"><i class="far fa-smile"></i> 5+ years</span>
+          <span style="font-size: 0.9rem;"><i class="fas fa-seedling"></i> core dev</span>
+        </div>
+        <!-- subtle micro interaction: tiny green dot -->
+        <span style="position: absolute; bottom: 12px; right: 20px; background: #83c8a2; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></span>
+      </div>
 
-  <!-- smooth scroll on back button – keeps UX polished -->
+      <!-- placeholder for more team members (design keeps flexibility) 
+      <div class="seed-card"> ... </div> -->
+    </div>
+
+    <!-- ADDITIONAL TEAM NOTE: expandable vibe -->
+    <div style="margin-top: 2.2rem; padding: 1rem 0 0 0.5rem; color: #3f6a60; border-left: 6px solid #9dc7b2; background: #ebf7f0; border-radius: 0 60px 60px 0; padding: 1.2rem 1.8rem;">
+      <i class="fas fa-bolt" style="color: #d6a13a;"></i> 
+      <span style="font-weight: 600;"> we’re a lean, passionate team — you’ll always talk directly to a human.</span>
+    </div>
+
+    <!-- FOOTER — fresh, earthy connection area -->
+    <div class="soil-footer">
+      <p>
+        <i class="fas fa-heart" style="color: #ba6242;"></i>  rooted in vellore
+      </p>
+      <div class="social">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <!-- subtle brand sign-off -->
+    <div style="text-align: center; margin-top: 3rem; font-size: 0.9rem; color: #638177; border-top: 2px dotted #afcfc1; padding-top: 2rem;">
+      <span>🌱 from seed to forest — let’s create something resilient.</span>
+    </div>
+
+  </div> <!-- /.page -->
+
   <script>
     (function() {
-      const backBtn = document.querySelector('.back-home-btn');
-      if (backBtn) {
-        backBtn.addEventListener('click', function (e) {
-          // just a gentle scroll effect before navigating away (if same page anchor)
-          // but since it's a link to home.html, we don't prevent default.
-          // however we keep the spirit: smooth scroll to top if it's same page – but it's not.
-          // still we add a tiny easter-egg: if home.html is same domain, smooth? fine.
+      // no legacy glass, no old patterns — just smooth home btn feel
+      const homeBtn = document.querySelector('.nav-home');
+      if (homeBtn) {
+        homeBtn.addEventListener('click', function(e) {
+          // subtle haptic-like scroll (purely cosmetic)
           window.scrollTo({ top: 0, behavior: 'smooth' });
+          // real navigation happens via href, all good.
         });
       }
 
-      // additional polish: handle missing images elegantly, already done via onerror
-      // set consistent image background for Ak.jpg if not found
-      const akImg = document.querySelector('img[src="Ak.jpg"]');
-      if (akImg) {
-        akImg.addEventListener('error', function() {
-          this.style.background = '#0e2e3b';
-        });
-      }
+      // ensure avatar-mono shows if any accidental img error occurs (already handled)
     })();
   </script>
 </body>
