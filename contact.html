@@ -83,9 +83,7 @@
         ::-webkit-scrollbar-track { background: var(--deep-forest); }
         ::-webkit-scrollbar-thumb { background: var(--sage); border-radius: 3px; }
         
-        /* Fix for links */
         a, button { cursor: pointer; }
-        .contact-link { position: relative; z-index: 10; }
     </style>
 </head>
 <body>
@@ -98,7 +96,7 @@ const LOGO_URL = "logo1.jpg";
 const HOME_URL = "home.html"; 
 const DEVELOPER_GITHUB = "https://github.com/akdeveloper07";
 const DEVELOPER_LINKEDIN = "https://www.linkedin.com/in/akashr-ram?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app";
-const EMAIL="akash520511@gmail.com";
+
 const NatureBackground = () => (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="orb w-[400px] h-[400px] bg-[#5b8c5a] top-[-5%] left-[-5%]"></div>
@@ -113,18 +111,13 @@ const BackToHome = () => {
         gsap.fromTo(btnRef.current, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.7, ease: "power2" });
     }, []);
     
-    const handleClick = (e) => {
-        e.preventDefault();
-        window.location.href = "home.html";
-    };
-    
     return (
-        <button onClick={handleClick} ref={btnRef} className="fixed top-6 left-6 z-50 back-btn rounded-full pl-3 pr-5 py-2.5 flex items-center gap-2 text-[#f0ead2] group">
+        <a href={HOME_URL} ref={btnRef} className="fixed top-6 left-6 z-50 back-btn rounded-full pl-3 pr-5 py-2.5 flex items-center gap-2 text-[#f0ead2] group">
             <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span className="text-sm font-medium tracking-wide">Back to home</span>
-        </button>
+        </a>
     );
 };
 
@@ -153,25 +146,10 @@ const ContactCard = ({ icon, label, value, subText, actionLink, actionText, btnC
         gsap.fromTo(cardRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, delay, ease: "power3.out" });
     }, []);
     
-    let btnClasses = "px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg inline-block w-full md:w-auto text-center ";
+    let btnClasses = "px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg ";
     if (btnColor === 'gold') btnClasses += "bg-[#e6b422] text-[#0b2f26] hover:bg-[#f5c542] shadow-[#e6b422]/30";
     else if (btnColor === 'emerald') btnClasses += "bg-[#2b5e42] text-[#f5efe6] border border-[#8ab17d] hover:bg-[#3b7a56]";
     else btnClasses += "bg-white/10 text-[#f5efe6] border border-[#8ab17d]/40 hover:bg-white/20";
-
-    const handleClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        if (actionLink.startsWith('tel:')) {
-            window.location.href = actionLink;
-        } else if (actionLink.startsWith('mailto:')) {
-            window.location.href = actionLink;
-        } else if (actionLink.startsWith('https://wa.me')) {
-            window.open(actionLink, '_blank');
-        } else {
-            window.open(actionLink, '_blank');
-        }
-    };
 
     return (
         <div ref={cardRef} className="glass-card rounded-2xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-sm relative overflow-hidden group">
@@ -186,12 +164,14 @@ const ContactCard = ({ icon, label, value, subText, actionLink, actionText, btnC
                     {subText && <p className="text-[#8ab17d] text-xs mt-1">{subText}</p>}
                 </div>
             </div>
-            <button 
-                onClick={handleClick}
+            <a 
+                href={actionLink}
+                target={actionLink.startsWith('http') && !actionLink.startsWith('tel:') && !actionLink.startsWith('mailto:') ? "_blank" : "_self"}
+                rel="noopener noreferrer"
                 className={btnClasses}
             >
                 {actionText}
-            </button>
+            </a>
         </div>
     );
 };
@@ -232,7 +212,7 @@ const DeveloperCard = ({ onOpenModal, delay }) => {
     }, []);
     return (
         <div ref={devRef} className="mt-14 text-center">
-            <p className="text-[#8ab17d] text-xs uppercase tracking-[0.3em] mb-3">DESIGNED & BUILT BY</p>
+            <p className="text-[#8ab17d] text-xs uppercase tracking-[0.3em] mb-3">DEVELOPED BY</p>
             <div onClick={onOpenModal} className="glass-panel rounded-3xl py-4 px-6 max-w-sm mx-auto cursor-pointer group transition border border-[#e6b422]/20 hover:border-[#e6b422]/60">
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
@@ -297,12 +277,12 @@ const PortfolioModal = ({ isOpen, onClose }) => {
                 <div className="mb-5">
                     <h4 className="text-xs uppercase text-[#8ab17d] mb-2">recent projects</h4>
                     <div className="space-y-2">
-                        <a href="https://akdeveloper07.github.io/FraudBankTranscation/" target="_blank" rel="noopener noreferrer" 
+                        <a href="https://github.com/akdeveloper07/fake-transaction-detection" target="_blank" rel="noopener noreferrer" 
                            className="bg-[#0b2f26]/60 p-3 rounded-xl border border-[#e6b422]/20 flex justify-between hover:border-[#e6b422] transition-all group">
                             <span className="group-hover:text-[#e6b422]">Fake transaction detection</span> 
                             <span className="text-[#e6b422]">MERN</span>
                         </a>
-                        <a href="https://akdeveloper07.github.io/MedLink/" target="_blank" rel="noopener noreferrer" 
+                        <a href="https://github.com/akdeveloper07/medlink-ai" target="_blank" rel="noopener noreferrer" 
                            className="bg-[#0b2f26]/60 p-3 rounded-xl border border-[#e6b422]/20 flex justify-between hover:border-[#e6b422] transition-all group">
                             <span className="group-hover:text-[#e6b422]">MEDLINK AI</span> 
                             <span className="text-[#e6b422]">TensorFlow</span>
@@ -311,10 +291,12 @@ const PortfolioModal = ({ isOpen, onClose }) => {
                 </div>
             
                 <div className="flex gap-2 mt-4">
-                     <a href={DEV_GITHUB} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-center text-white text-sm hover:bg-white/10 transition-colors">GitHub</a>
-                            <a href={DEV_LINKEDIN} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-center text-white text-sm hover:bg-white/10 transition-colors">LinkedIn</a>
-                            <a href={EMAIL} target="_blank" className="flex-1 py-3 rounded-xl bg-[#d4af37] text-[#040f0b] font-semibold text-center text-sm hover:bg-[#f3e5a6] transition-colors">Email</a>
-                        </div>
+                    <a href={DEVELOPER_GITHUB} target="_blank" rel="noopener noreferrer" 
+                        className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">GitHub</a>
+                    <a href={DEVELOPER_LINKEDIN} target="_blank" rel="noopener noreferrer" 
+                        className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">LinkedIn</a>
+                    <a href="mailto:akash520511@gmail.com" 
+                        className="flex-1 py-3 rounded-xl bg-[#e6b422] text-[#0b2f26] font-bold text-center hover:bg-[#f5c542] transition">GMAIL</a>
                 </div>
             </div>
         </div>
@@ -331,73 +313,42 @@ const App = () => {
             <div className="relative z-10 max-w-2xl mx-auto">
                 <Header />
 
-                 <div className="md:col-span-7 glass-premium rounded-3xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-40 h-40 bg-[#d4af37] opacity-5 rounded-full blur-3xl group-hover:opacity-10 transition-opacity duration-500" />
-                        <div className="relative z-10">
-                            <div className="w-12 h-12 rounded-2xl bg-[#1d4e3c] flex items-center justify-center mb-6 border border-[rgba(212,175,55,0.2)]">
-                                <svg className="w-5 h-5 text-[#d4af37]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
-                            </div>
-                            <span className="text-[10px] uppercase tracking-[0.3em] text-[#5a7f6b] font-medium">Call us directly</span>
-                            <h3 className="font-serif text-3xl text-white mt-2 mb-6">+91 99942 47213</h3>
-                            <a href="tel:+919994247213" className="magnetic-btn inline-flex items-center gap-2 px-6 py-3 bg-[#d4af37] text-[#040f0b] rounded-xl font-semibold text-sm">
-                                Call Now
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* WhatsApp Card */}
-                    <div className="md:col-span-5 glass-premium rounded-3xl p-8 relative overflow-hidden group hover:border-[#25D366]/30 transition-colors">
-                        <div className="relative z-10">
-                            <div className="w-12 h-12 rounded-full bg-[#1d4e3c] flex items-center justify-center mb-6">
-                                <svg className="w-6 h-6 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
-                            </div>
-                            <span className="text-[10px] uppercase tracking-[0.3em] text-[#5a7f6b] font-medium">Quick Response</span>
-                            <h3 className="font-serif text-2xl text-white mt-2 mb-6">WhatsApp</h3>
-                            <a href="https://wa.me/919994247213" target="_blank" className="magnetic-btn inline-block w-full text-center py-3 rounded-xl border border-[#25D366] text-[#25D366] font-semibold text-sm hover:bg-[#25D366]/10 transition-colors">
-                                Start Chat
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* Email Card - Wide */}
-                    <div className="md:col-span-12 glass-premium rounded-3xl p-8 relative overflow-hidden">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                            <div className="flex items-center gap-6">
-                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af37] to-[#8a6e1c] flex items-center justify-center shadow-lg">
-                                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
-                                </div>
-                                <div>
-                                    <span className="text-[10px] uppercase tracking-[0.3em] text-[#5a7f6b] font-medium">Email Address</span>
-                                    <h3 className="font-serif text-2xl md:text-3xl text-white mt-1">greengarden2427@gmail.com</h3>
-                                </div>
-                            </div>
-                            <a href="mailto:greengarden2427@gmail.com" className="magnetic-btn flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all group">
-                                <span className="font-medium">Send Email</span>
-                                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* Location Card */}
-                    <div className="md:col-span-8 glass-premium rounded-3xl overflow-hidden relative group">
-                        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#040f0b] via-transparent to-transparent" />
-                        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" 
-                             className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-700" alt="Garden Location" />
-                        <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                            <div className="flex items-end justify-between">
-                                <div>
-                                    <span className="text-[10px] uppercase tracking-[0.3em] text-[#8fa396]">Location</span>
-                                    <h3 className="font-serif text-2xl text-white mt-1">07 Garden Ave, Vellore</h3>
-                                </div>
-                                <a href="https://maps.google.com/?q=Green+Garden+Vellore" target="_blank" className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-lg text-white text-xs border border-white/10 hover:bg-white/20 transition-colors">
-                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                    Directions
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
+                <div className="grid gap-4">
+                    {/* PHONE - Using your correct link */}
+                    <ContactCard 
+                        icon={<svg className="w-6 h-6 text-[#e6b422]" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>}
+                        label="PHONE"
+                        value="+91 99942 47213"
+                        actionLink="tel:+919994247213"              // ✅ YOUR CORRECT PHONE LINK
+                        actionText="Call now"
+                        btnColor="gold"
+                        delay={0.2}
+                    />
+                    
+                    {/* WHATSAPP - Using your correct link */}
+                    <ContactCard 
+                        icon={<svg className="w-6 h-6 text-[#8ab17d]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>}
+                        label="WHATSAPP"
+                        value="Chat with garden team"
+                        actionLink="https://wa.me/919994247213"     // ✅ YOUR CORRECT WHATSAPP LINK
+                        actionText="Start chat"
+                        btnColor="emerald"
+                        delay={0.3}
+                    />
+                    
+                    {/* EMAIL - Using your correct link */}
+                    <ContactCard 
+                        icon={<svg className="w-6 h-6 text-[#e6b422]" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>}
+                        label="EMAIL"
+                        value="greengarden2427@gmail.com"
+                        actionLink="mailto:greengarden2427@gmail.com"  // ✅ YOUR CORRECT EMAIL LINK
+                        actionText="Send email"
+                        btnColor="gold"
+                        delay={0.35}
+                    />
+                
+                    <LocationCard delay={0.45} />
+                </div>
 
                 <DeveloperCard onOpenModal={() => setModalOpen(true)} delay={0.6} />
 
