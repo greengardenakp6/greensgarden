@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact Us | GreenGarden</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Lato&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+  --primary-color: #0a1a2f;
+  --accent-color: #d4af37;
+  --card-bg: rgba(255, 255, 255, 0.1);
+  --text-color: #ffffff;
+  --glass-blur: blur(12px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.container {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+h1 {
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  color: var(--accent-color);
+  margin-bottom: 30px;
+}
+
+.back-home-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 18px;
+  border: 1px solid var(--accent-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+}
+
+.profile, .member {
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-blur);
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.profile img {
+  width: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-color);
+}
+
+.contact-info p {
+  margin: 10px 0;
+}
+
+.contact-info i {
+  color: var(--accent-color);
+  margin-right: 8px;
+}
+
+.team {
+  display: flex;
+  justify-content: center;
+}
+
+.member img {
+  width: 110px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-color);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<a href="home.html" class="back-home-btn">← Back to Home</a>
+
+<h1>Contact Us</h1>
+
+<div class="profile">
+  <img src="logo.png" alt="GreenGarden Logo">
+
+  <h2 style="color:#d4af37;margin-top:15px;">GreenGarden</h2>
+  <p style="color:#cbd5e0;">Smart Gardening • Organic Plants • Home Grow Kits</p>
+
+  <div class="contact-info">
+    <p><i class="fas fa-phone"></i> <a href="tel:9994247213" style="color:white;">9994247213</a></p>
+    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/919994247213" style="color:white;">Chat on WhatsApp</a></p>
+    <p><i class="fas fa-envelope"></i> support@greengarden.in</p>
+    <p><i class="fas fa-map-marker-alt"></i> 07 Main Road, Vellore, Tamil Nadu - 632009</p>
+  </div>
+</div>
+
+<h1>Our Team</h1>
+
+<div class="team">
+  <div class="member">
+    <img src="Ak.jpg">
+    <h3 style="color:#d4af37;">Akash</h3>
+    <p>Founder & Full-Stack Developer</p>
+    <p style="font-size:14px;color:#cbd5e0;">
+      Building GreenGarden to make home gardening simple and affordable 🌱
+    </p>
+  </div>
+</div>
+
+<h1>Why GreenGarden?</h1>
+
+<div class="profile">
+  <p>✔ Real plants from verified nurseries</p>
+  <p>✔ Safe and careful delivery</p>
+  <p>✔ Customer support via WhatsApp</p>
+  <p>✔ 100% satisfaction focused</p>
+</div>
+
+</div>
+</body>
+</html>
