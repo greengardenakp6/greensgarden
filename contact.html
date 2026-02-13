@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact us</title>
+    <title>Contact us — green garden</title>
     <!-- Tailwind + fonts + GSAP + React (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -94,8 +94,8 @@
 const { useState, useEffect, useRef } = React;
 
 // ========== CONFIGURATION ==========
-const LOGO_URL = "logo1.jpg"; // green leaf svg
-const HOME_URL = "home.html";       // change as needed
+const LOGO_URL = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%238ab17d' d='M48.5 10L63 42.5l35 5-25 22 7 33-30-16-30 16 7-33-25-22 35-5z'/%3E%3C/svg%3E"; // green leaf svg (inline)
+const HOME_URL = "#"; // stays on same page for demo (back to home effect)
 const DEVELOPER_GITHUB = "https://github.com/akash-dev";
 const DEVELOPER_LINKEDIN = "https://www.linkedin.com/in/akashr-ram?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app";
 
@@ -108,7 +108,7 @@ const NatureBackground = () => (
     </div>
 );
 
-// ========== BACK TO HOME (FIXED, STYLISH) ==========
+// ========== BACK TO HOME (FIXED) ==========
 const BackToHome = () => {
     const btnRef = useRef(null);
     useEffect(() => {
@@ -124,7 +124,7 @@ const BackToHome = () => {
     );
 };
 
-// ========== HEADER (refreshed organic) ==========
+// ========== HEADER ==========
 const Header = () => {
     const headerRef = useRef(null);
     useEffect(() => {
@@ -134,8 +134,7 @@ const Header = () => {
         <div ref={headerRef} className="relative z-10 flex flex-col items-center mb-14 pt-16 md:pt-6">
             <div className="w-32 h-32 md:w-36 md:h-36 rounded-full bg-gradient-to-b from-[#8ab17d] to-[#2b5e42] p-[3px] shadow-2xl emerald-glow">
                 <div className="w-full h-full rounded-full bg-[#0b2f26] flex items-center justify-center p-4 border border-[#e6b422]/40">
-                    <img src={LOGO_URL} alt="logo1.jpg" className="w-full h-full object-contain drop-shadow-md" 
-                        onError={(e) => e.target.style.display='none'} />
+                    <img src={LOGO_URL} alt="logo" className="w-full h-full object-contain drop-shadow-md" />
                 </div>
             </div>
             <h1 className="font-display text-5xl md:text-7xl gold-text mt-6 mb-2 font-bold tracking-wide drop-shadow-lg">Contact us</h1>
@@ -145,7 +144,7 @@ const Header = () => {
     );
 };
 
-// ========== CONTACT CARD (new earthy palette) ==========
+// ========== CONTACT CARD ==========
 const ContactCard = ({ icon, label, value, subText, actionLink, actionText, btnColor, delay }) => {
     const cardRef = useRef(null);
     useEffect(() => {
@@ -206,7 +205,7 @@ const LocationCard = ({ delay }) => {
     );
 };
 
-// ========== DEVELOPER CARD (with fixed modal trigger) ==========
+// ========== DEVELOPER CARD (modal trigger) ==========
 const DeveloperCard = ({ onOpenModal, delay }) => {
     const devRef = useRef(null);
     useEffect(() => {
@@ -219,7 +218,8 @@ const DeveloperCard = ({ onOpenModal, delay }) => {
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                         <div className="relative">
-                            <img src="Ak1.jpg" 
+                            {/* profile image – Ak1.jpg as inline data (silhouette fallback) */}
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%232b5e42' stroke='%23e6b422' stroke-width='2' /%3E%3Ccircle cx='32' cy='24' r='8' fill='%23f5efe6' /%3E%3Cpath d='M16 48 Q32 58 48 48' stroke='%23f5efe6' stroke-width='4' fill='none' /%3E%3C/svg%3E" 
                                 className="w-16 h-16 rounded-full object-cover border-2 border-[#e6b422] shadow-md" />
                             <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#8ab17d] rounded-full border-2 border-[#0b2f26]"></span>
                         </div>
@@ -236,7 +236,7 @@ const DeveloperCard = ({ onOpenModal, delay }) => {
     );
 };
 
-// ========== PORTFOLIO MODAL – fully functional, links & close ==========
+// ========== PORTFOLIO MODAL ==========
 const PortfolioModal = ({ isOpen, onClose }) => {
     const modalRef = useRef(null);
     const contentRef = useRef(null);
@@ -263,7 +263,7 @@ const PortfolioModal = ({ isOpen, onClose }) => {
                 </button>
 
                 <div className="flex flex-col items-center">
-                    <img src="Ak1.jpg" 
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%232b5e42' stroke='%23e6b422' stroke-width='2' /%3E%3Ccircle cx='32' cy='24' r='8' fill='%23f5efe6' /%3E%3Cpath d='M16 48 Q32 58 48 48' stroke='%23f5efe6' stroke-width='4' fill='none' /%3E%3C/svg%3E" 
                         className="w-24 h-24 rounded-full border-4 border-[#e6b422] object-cover mb-4" />
                     <h2 className="font-display text-3xl gold-text font-bold">Akash</h2>
                     <p className="text-[#8ab17d] text-sm">Fullstack developer</p>
@@ -286,14 +286,13 @@ const PortfolioModal = ({ isOpen, onClose }) => {
                         </div>
                     </div>
                 </div>
-
             
                 <div className="flex gap-2 mt-4">
                     <a href={DEVELOPER_GITHUB} target="_blank" rel="noopener noreferrer" 
                         className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">GitHub</a>
                     <a href={DEVELOPER_LINKEDIN} target="_blank" rel="noopener noreferrer" 
                         className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">LinkedIn</a>
-                    <a href="mailto: akash520511@gmail.com" 
+                    <a href="mailto:akash520511@gmail.com" 
                         className="flex-1 py-3 rounded-xl bg-[#e6b422] text-[#0b2f26] font-bold text-center hover:bg-[#f5c542] transition">GMAIL</a>
                 </div>
             </div>
@@ -313,61 +312,36 @@ const App = () => {
                 <Header />
 
                 <div className="grid gap-4">
-                    
-                        </div>
-
-                        <div className="flex gap-3">
-                            <a href="#" className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-[#FFD700]/10 text-center text-gray-300 hover:text-[#FFD700] transition-colors text-sm font-medium border border-white/5">GitHub</a>
-                            <a href="#" className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-[#FFD700]/10 text-center text-gray-300 hover:text-[#FFD700] transition-colors text-sm font-medium border border-white/5">LinkedIn</a>
-                            <a href="#" className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-[#FFD700]/10 text-center text-gray-300 hover:text-[#FFD700] transition-colors text-sm font-medium border border-white/5">Email</a>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Main App
-        const App = () => {
-            const [modal, setModal] = useState(false);
-
-            return (
-                <div className="relative min-h-screen py-8 px-4">
-                    <ParticleBG />
-                    
-                    <div className="relative z-10 max-w-lg mx-auto flex flex-col justify-center min-h-[calc(100vh-4rem)]">
-                        <Header />
-                        
-                        <div className="w-full space-y-2">
-                            <ContactRow 
-                                icon={<svg className="w-5 h-5 text-[#FFD700]" fill="currentColor" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>}
-                                label="Phone"
-                                value="+91 99942713"
-                                link="tel:+9199942713"
-                                linkText="Call Now"
-                                color="#FFD700"
-                                delay={0.2}
-                            />
-                            
-                            <ContactRow 
-                                icon={<svg className="w-5 h-5 text-[#00A651]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>}
-                                label="WhatsApp"
-                                value="Chat with us"
-                                link="https://wa.me/9199942713"
-                                linkText="Start Chat"
-                                color="#00A651"
-                                delay={0.3}
-                            />
-                             <ContactRow 
-                                icon={<svg className="w-5 h-5 text-[#FFD700]" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>}
-                                label="Email"
-                                value="greengarden@gmail.com"
-                                link="mailto: greengarden@gmail.com"
-                                linkText="Send Email"
-                                color="#FFD700"
-                                delay={0.4}
-                            />
+                    {/* Contact Cards */}
+                    <ContactCard 
+                        icon={<svg className="w-6 h-6 text-[#e6b422]" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>}
+                        label="PHONE"
+                        value="+91 99942 713"
+                        actionLink="tel:+9199942713"
+                        actionText="Call now"
+                        btnColor="gold"
+                        delay={0.2}
+                    />
+                    <ContactCard 
+                        icon={<svg className="w-6 h-6 text-[#8ab17d]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>}
+                        label="WHATSAPP"
+                        value="Chat with garden team"
+                        actionLink="https://wa.me/9199942713"
+                        actionText="Start chat"
+                        btnColor="emerald"
+                        delay={0.3}
+                    />
+                    <ContactCard 
+                        icon={<svg className="w-6 h-6 text-[#e6b422]" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>}
+                        label="EMAIL"
+                        value="greengarden@gmail.com"
+                        actionLink="mailto:greengarden@gmail.com"
+                        actionText="Send email"
+                        btnColor="gold"
+                        delay={0.35}
+                    />
                 
-                    <LocationCard delay={0.4} />
+                    <LocationCard delay={0.45} />
                 </div>
 
                 <DeveloperCard onOpenModal={() => setModalOpen(true)} delay={0.6} />
