@@ -95,7 +95,7 @@
 const { useState, useEffect, useRef } = React;
 
 const LOGO_URL = "logo1.jpg";
-const HOME_URL = "#"; // Changed to # for demo, change to "home.html" for production
+const HOME_URL = "home.html"; // Changed to # for demo, change to "home.html" for production
 const DEVELOPER_GITHUB = "https://github.com/akdeveloper07";
 const DEVELOPER_LINKEDIN = "https://www.linkedin.com/in/akashr-ram?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app";
 
@@ -297,12 +297,12 @@ const PortfolioModal = ({ isOpen, onClose }) => {
                 <div className="mb-5">
                     <h4 className="text-xs uppercase text-[#8ab17d] mb-2">recent projects</h4>
                     <div className="space-y-2">
-                        <a href="https://github.com/akdeveloper07/fake-transaction-detection" target="_blank" rel="noopener noreferrer" 
+                        <a href="https://akdeveloper07.github.io/FraudBankTranscation/" target="_blank" rel="noopener noreferrer" 
                            className="bg-[#0b2f26]/60 p-3 rounded-xl border border-[#e6b422]/20 flex justify-between hover:border-[#e6b422] transition-all group">
                             <span className="group-hover:text-[#e6b422]">Fake transaction detection</span> 
                             <span className="text-[#e6b422]">MERN</span>
                         </a>
-                        <a href="https://github.com/akdeveloper07/medlink-ai" target="_blank" rel="noopener noreferrer" 
+                        <a href="https://akdeveloper07.github.io/MedLink/" target="_blank" rel="noopener noreferrer" 
                            className="bg-[#0b2f26]/60 p-3 rounded-xl border border-[#e6b422]/20 flex justify-between hover:border-[#e6b422] transition-all group">
                             <span className="group-hover:text-[#e6b422]">MEDLINK AI</span> 
                             <span className="text-[#e6b422]">TensorFlow</span>
@@ -315,7 +315,7 @@ const PortfolioModal = ({ isOpen, onClose }) => {
                         className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">GitHub</a>
                     <a href={DEVELOPER_LINKEDIN} target="_blank" rel="noopener noreferrer" 
                         className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">LinkedIn</a>
-                    <a href="mailto:akash520511@gmail.com" 
+                    <a href="akash520511@gmail.com" 
                         className="flex-1 py-3 rounded-xl bg-[#e6b422] text-[#0b2f26] font-bold text-center hover:bg-[#f5c542] transition">GMAIL</a>
                 </div>
             </div>
@@ -337,8 +337,8 @@ const App = () => {
                     <ContactCard 
                         icon={<svg className="w-6 h-6 text-[#e6b422]" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>}
                         label="PHONE"
-                        value="+91 99942 713"
-                        actionLink="tel:+9199942713"
+                        value="+91 99942 47213"
+                        actionLink="tel:+919994247213"
                         actionText="Call now"
                         btnColor="gold"
                         delay={0.2}
@@ -347,7 +347,7 @@ const App = () => {
                         icon={<svg className="w-6 h-6 text-[#8ab17d]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>}
                         label="WHATSAPP"
                         value="Chat with garden team"
-                        actionLink="https://wa.me/9199942713?text=Hello%20Green%20Garden%2C%20I'd%20like%20to%20inquire%20about%20your%20services"
+                        actionLink="https://wa.me/919994247213?text=Hello%20Green%20Garden%2C%20I'd%20like%20to%20inquire%20about%20your%20services"
                         actionText="Start chat"
                         btnColor="emerald"
                         delay={0.3}
@@ -355,7 +355,7 @@ const App = () => {
                     <ContactCard 
                         icon={<svg className="w-6 h-6 text-[#e6b422]" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>}
                         label="EMAIL"
-                        value="greengarden@gmail.com"
+                        value="greengarden2427@gmail.com"
                         actionLink="mailto:greengarden2427@gmail.com?subject=Inquiry%20from%20Green%20Garden%20Website&body=Hello%20Green%20Garden%20team%2C%0A%0AI%27m%20interested%20in%20your%20services.%20Please%20contact%20me%20back.%0A%0AThank%20you%21"
                         actionText="Send email"
                         btnColor="gold"
