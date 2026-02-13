@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact us</title>
+    <!-- Tailwind + fonts + GSAP + React (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-forest: #0b2f26;
+            --emerald: #2b5e42;
+            --sage: #8ab17d;
+            --gold-leaf: #e6b422;
+            --cream: #f5efe6;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-forest);
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+        .font-display { font-family: 'Playfair Display', serif; }
+        /* nature glass */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(138, 177, 125, 0.25);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+        }
+        .glass-card {
+            background: rgba(43, 94, 66, 0.25);
+            border: 1px solid rgba(138, 177, 125, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(43, 94, 66, 0.45);
+            border-color: var(--gold-leaf);
+            box-shadow: 0 20px 30px -10px #00000066, 0 0 0 2px rgba(230, 180, 34, 0.2);
+            transform: translateY(-3px);
+        }
+        .gold-text {
+            background: linear-gradient(145deg, #f5e7b2 0%, #e6b422 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .emerald-glow {
+            box-shadow: 0 0 20px rgba(138, 177, 125, 0.5);
+        }
+        .back-btn {
+            transition: 0.25s ease;
+            border: 1px solid rgba(230, 180, 34, 0.3);
+            background: rgba(11, 47, 38, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        .back-btn:hover {
+            border-color: var(--gold-leaf);
+            color: var(--gold-leaf);
+            transform: translateX(-6px);
+            background: rgba(11, 47, 38, 0.9);
+        }
+        /* floating orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: 0.3;
+            z-index: 0;
+        }
+        .shimmer-bg {
+            background: linear-gradient(90deg, transparent, rgba(230,180,34,0.15), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 4s infinite;
+        }
+        @keyframes shimmer { 0% { background-position: -100% 0; } 100% { background-position: 200% 0; } }
+        /* custom scroll */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--deep-forest); }
+        ::-webkit-scrollbar-thumb { background: var(--sage); border-radius: 3px; }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// ========== CONFIGURATION ==========
+const LOGO_URL = "logo1.jpg"; // green leaf svg
+const HOME_URL = "404.html";       // change as needed
+const DEVELOPER_GITHUB = "https://github.com/akash-dev";
+const DEVELOPER_LINKEDIN = "https://www.linkedin.com/in/akashr-ram?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app";
+
+// ========== BACKGROUND ==========
+const NatureBackground = () => (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="orb w-[400px] h-[400px] bg-[#5b8c5a] top-[-5%] left-[-5%]"></div>
+        <div className="orb w-[600px] h-[600px] bg-[#2b5e42] bottom-[-10%] right-[-5%] opacity-40"></div>
+        <div className="orb w-[300px] h-[300px] bg-[#e6b422] top-[40%] left-[20%] opacity-20 blur-[90px]"></div>
+    </div>
+);
+
+// ========== BACK TO HOME (FIXED, STYLISH) ==========
+const BackToHome = () => {
+    const btnRef = useRef(null);
+    useEffect(() => {
+        gsap.fromTo(btnRef.current, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.7, ease: "power2" });
+    }, []);
+    return (
+        <a href={HOME_URL} ref={btnRef} className="fixed top-6 left-6 z-50 back-btn rounded-full pl-3 pr-5 py-2.5 flex items-center gap-2 text-[#f0ead2] group">
+            <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+            <span className="text-sm font-medium tracking-wide">home</span>
+        </a>
+    );
+};
+
+// ========== HEADER (refreshed organic) ==========
+const Header = () => {
+    const headerRef = useRef(null);
+    useEffect(() => {
+        gsap.fromTo(headerRef.current, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 1.1, ease: "elastic.out(1, 0.5)" });
+    }, []);
+    return (
+        <div ref={headerRef} className="relative z-10 flex flex-col items-center mb-14 pt-16 md:pt-6">
+            <div className="w-32 h-32 md:w-36 md:h-36 rounded-full bg-gradient-to-b from-[#8ab17d] to-[#2b5e42] p-[3px] shadow-2xl emerald-glow">
+                <div className="w-full h-full rounded-full bg-[#0b2f26] flex items-center justify-center p-4 border border-[#e6b422]/40">
+                    <img src={LOGO_URL} alt="logo1.jpg" className="w-full h-full object-contain drop-shadow-md" 
+                        onError={(e) => e.target.style.display='none'} />
+                </div>
+            </div>
+            <h1 className="font-display text-5xl md:text-7xl gold-text mt-6 mb-2 font-bold tracking-wide drop-shadow-lg">reach out</h1>
+            <div className="h-1 w-24 bg-gradient-to-r from-transparent via-[#e6b422] to-transparent mb-3"></div>
+            <p className="text-[#b7cfaa] text-sm md:text-base tracking-[0.2em] uppercase">where gardens meet artistry</p>
+        </div>
+    );
+};
+
+// ========== CONTACT CARD (new earthy palette) ==========
+const ContactCard = ({ icon, label, value, subText, actionLink, actionText, btnColor, delay }) => {
+    const cardRef = useRef(null);
+    useEffect(() => {
+        gsap.fromTo(cardRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, delay, ease: "power3.out" });
+    }, []);
+    let btnClasses = "px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg ";
+    if (btnColor === 'gold') btnClasses += "bg-[#e6b422] text-[#0b2f26] hover:bg-[#f5c542] shadow-[#e6b422]/30";
+    else if (btnColor === 'emerald') btnClasses += "bg-[#2b5e42] text-[#f5efe6] border border-[#8ab17d] hover:bg-[#3b7a56]";
+    else btnClasses += "bg-white/10 text-[#f5efe6] border border-[#8ab17d]/40 hover:bg-white/20";
+
+    return (
+        <div ref={cardRef} className="glass-card rounded-2xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-sm relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#8ab17d]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="flex items-center gap-5 w-full md:w-auto">
+                <div className="w-14 h-14 rounded-2xl bg-[#2b5e42]/40 flex items-center justify-center text-3xl border border-[#e6b422]/20 group-hover:border-[#e6b422]/60 transition-colors">
+                    {icon}
+                </div>
+                <div>
+                    <p className="text-[#b7cfaa] text-xs uppercase tracking-widest">{label}</p>
+                    <p className="text-[#f5efe6] font-bold text-lg md:text-xl">{value}</p>
+                    {subText && <p className="text-[#8ab17d] text-xs mt-1">{subText}</p>}
+                </div>
+            </div>
+            <a href={actionLink} target="_blank" rel="noopener noreferrer" className={btnClasses}>
+                {actionText}
+            </a>
+        </div>
+    );
+};
+
+// ========== LOCATION CARD ==========
+const LocationCard = ({ delay }) => {
+    const locRef = useRef(null);
+    useEffect(() => {
+        gsap.fromTo(locRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, delay });
+    }, []);
+    return (
+        <div ref={locRef} className="glass-card rounded-2xl overflow-hidden backdrop-blur-sm group">
+            <div className="relative h-44 bg-[#1f4a33]">
+                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1000&auto=format&fit=crop" 
+                    className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-700" alt="garden map" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0b2f26] to-transparent"></div>
+                <div className="absolute bottom-3 left-4 flex items-center gap-2 text-[#f5efe6]">
+                    <div className="w-8 h-8 rounded-full bg-[#e6b422] flex items-center justify-center">
+                        <svg className="w-4 h-4 text-[#0b2f26]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    </div>
+                    <span className="font-medium">07 Garden Ave, Vellore</span>
+                </div>
+            </div>
+            <div className="p-4 flex justify-between items-center border-t border-[#8ab17d]/30 bg-[#0b2f26]/60">
+                <div className="flex items-center gap-2">
+                    <span className="relative flex h-3 w-3"><span className="animate-ping absolute h-3 w-3 rounded-full bg-[#8ab17d] opacity-75"></span><span className="relative rounded-full h-3 w-3 bg-[#8ab17d]"></span></span>
+                    <span className="text-xs text-[#d4dcc9]">open today 9am–6pm</span>
+                </div>
+                <a href="https://maps.google.com/?q=Green+Garden+Vellore" target="_blank" className="text-[#e6b422] text-sm font-medium hover:underline">directions →</a>
+            </div>
+        </div>
+    );
+};
+
+// ========== DEVELOPER CARD (with fixed modal trigger) ==========
+const DeveloperCard = ({ onOpenModal, delay }) => {
+    const devRef = useRef(null);
+    useEffect(() => {
+        gsap.fromTo(devRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, delay });
+    }, []);
+    return (
+        <div ref={devRef} className="mt-14 text-center">
+            <p className="text-[#8ab17d] text-xs uppercase tracking-[0.3em] mb-3">crafted by</p>
+            <div onClick={onOpenModal} className="glass-panel rounded-3xl py-4 px-6 max-w-sm mx-auto cursor-pointer group transition border border-[#e6b422]/20 hover:border-[#e6b422]/60">
+                <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                        <div className="relative">
+                            <img src="Ak1.jpg" 
+                                className="w-16 h-16 rounded-full object-cover border-2 border-[#e6b422] shadow-md" />
+                            <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#8ab17d] rounded-full border-2 border-[#0b2f26]"></span>
+                        </div>
+                        <div className="text-left">
+                            <h3 className="font-display text-2xl font-bold gold-text">akash</h3>
+                            <span className="inline-block mt-1 text-xs px-3 py-1 rounded-full bg-[#2b5e42]/50 text-[#f5efe6] border border-[#e6b422]/30">full‑stack & UI</span>
+                        </div>
+                    </div>
+                    <svg className="w-5 h-5 text-[#e6b422] group-hover:translate-x-1 transition" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+                </div>
+                <button className="mt-4 w-full py-2.5 rounded-xl bg-[#e6b422] text-[#0b2f26] text-sm font-bold hover:bg-[#f5c542] transition shadow-lg">view portfolio</button>
+            </div>
+        </div>
+    );
+};
+
+// ========== PORTFOLIO MODAL – fully functional, links & close ==========
+const PortfolioModal = ({ isOpen, onClose }) => {
+    const modalRef = useRef(null);
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            gsap.fromTo(modalRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+            gsap.fromTo(contentRef.current, { scale: 0.8, y: 50 }, { scale: 1, y: 0, duration: 0.5, ease: "back.out(1.2)" });
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        return () => { document.body.style.overflow = 'auto'; };
+    }, [isOpen]);
+
+    if (!isOpen) return null;
+
+    return (
+        <div ref={modalRef} onClick={onClose} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <div ref={contentRef} onClick={(e) => e.stopPropagation()} 
+                className="glass-panel w-full max-w-md rounded-3xl p-6 border-t-2 border-[#e6b422] shadow-2xl relative">
+                <button onClick={onClose} className="absolute top-4 right-4 text-[#b7cfaa] hover:text-white p-2">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+
+                <div className="flex flex-col items-center">
+                    <img src="Ak1.jpg" 
+                        className="w-24 h-24 rounded-full border-4 border-[#e6b422] object-cover mb-4" />
+                    <h2 className="font-display text-3xl gold-text font-bold">akash</h2>
+                    <p className="text-[#8ab17d] text-sm">creative developer</p>
+                </div>
+
+                <div className="my-6 grid grid-cols-2 gap-2 text-sm">
+                    {['React/Next', 'Node.js', 'Tailwind', 'MongoDB', 'GSAP', 'Figma'].map((skill, i) => (
+                        <div key={i} className="bg-[#2b5e42]/30 px-3 py-2 rounded-lg text-[#f0ead2] border border-[#8ab17d]/30 shimmer-bg">{skill}</div>
+                    ))}
+                </div>
+
+                <div className="mb-5">
+                    <h4 className="text-xs uppercase text-[#8ab17d] mb-2">recent projects</h4>
+                    <div className="space-y-2">
+                        <div className="bg-[#0b2f26]/60 p-3 rounded-xl border border-[#e6b422]/20 flex justify-between">
+                            <span>GreenScape booking</span> <span className="text-[#e6b422]">MERN</span>
+                        </div>
+                        <div className="bg-[#0b2f26]/60 p-3 rounded-xl border border-[#e6b422]/20 flex justify-between">
+                            <span>Plant ID app</span> <span className="text-[#e6b422]">TensorFlow</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* WORKING SOCIAL LINKS */}
+                <div className="flex gap-2 mt-4">
+                    <a href={DEVELOPER_GITHUB} target="_blank" rel="noopener noreferrer" 
+                        className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">GitHub</a>
+                    <a href={DEVELOPER_LINKEDIN} target="_blank" rel="noopener noreferrer" 
+                        className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">LinkedIn</a>
+                    <a href="mailto:akash@greengarden.in" 
+                        className="flex-1 py-3 rounded-xl bg-[#e6b422] text-[#0b2f26] font-bold text-center hover:bg-[#f5c542] transition">Hire</a>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// ========== MAIN APP ==========
+const App = () => {
+    const [modalOpen, setModalOpen] = useState(false);
+    return (
+        <div className="min-h-screen relative px-4 py-6">
+            <NatureBackground />
+            <BackToHome />
+
+            <div className="relative z-10 max-w-2xl mx-auto">
+                <Header />
+
+                <div className="grid gap-4">
+                    <ContactCard icon="🌿" label="call" value="+91 99942 77123" subText="direct line" actionLink="tel:+919994277123" actionText="call now" btnColor="gold" delay={0.2} />
+                    <ContactCard icon="🍃" label="whatsapp" value="instant garden chat" subText="response <5min" actionLink="https://wa.me/919994277123" actionText="whatsapp" btnColor="emerald" delay={0.3} />
+                    <ContactCard icon="🌱" label="email" value="hello@greengarden.in" subText="reply within 24h" actionLink="mailto:hello@greengarden.in" actionText="send mail" btnColor="default" delay={0.4} />
+                    <LocationCard delay={0.5} />
+                </div>
+
+                <DeveloperCard onOpenModal={() => setModalOpen(true)} delay={0.6} />
+
+                <div className="mt-10 text-center text-[#5a7f6b] text-xs">
+                    <p>© Green Garden — harmony in every leaf</p>
+                </div>
+            </div>
+
+            <PortfolioModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+        </div>
+    );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
