@@ -95,10 +95,10 @@
 const { useState, useEffect, useRef } = React;
 
 const LOGO_URL = "logo1.jpg";
-const HOME_URL = "home.html"; // Changed to # for demo, change to "home.html" for production
+const HOME_URL = "home.html"; 
 const DEVELOPER_GITHUB = "https://github.com/akdeveloper07";
 const DEVELOPER_LINKEDIN = "https://www.linkedin.com/in/akashr-ram?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app";
-
+const EMAIL="akash520511@gmail.com";
 const NatureBackground = () => (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="orb w-[400px] h-[400px] bg-[#5b8c5a] top-[-5%] left-[-5%]"></div>
@@ -311,12 +311,10 @@ const PortfolioModal = ({ isOpen, onClose }) => {
                 </div>
             
                 <div className="flex gap-2 mt-4">
-                    <a href={DEVELOPER_GITHUB} target="_blank" rel="noopener noreferrer" 
-                        className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">GitHub</a>
-                    <a href={DEVELOPER_LINKEDIN} target="_blank" rel="noopener noreferrer" 
-                        className="flex-1 py-3 rounded-xl bg-white/5 border border-[#8ab17d]/30 text-center text-[#f5efe6] hover:bg-[#2b5e42]/60 transition">LinkedIn</a>
-                    <a href="akash520511@gmail.com" 
-                        className="flex-1 py-3 rounded-xl bg-[#e6b422] text-[#0b2f26] font-bold text-center hover:bg-[#f5c542] transition">GMAIL</a>
+                     <a href={DEV_GITHUB} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-center text-white text-sm hover:bg-white/10 transition-colors">GitHub</a>
+                            <a href={DEV_LINKEDIN} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-center text-white text-sm hover:bg-white/10 transition-colors">LinkedIn</a>
+                            <a href={EMAIL} target="_blank" className="flex-1 py-3 rounded-xl bg-[#d4af37] text-[#040f0b] font-semibold text-center text-sm hover:bg-[#f3e5a6] transition-colors">Email</a>
+                        </div>
                 </div>
             </div>
         </div>
