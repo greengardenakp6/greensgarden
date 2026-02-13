@@ -92,10 +92,11 @@
 <script type="text/babel">
 const { useState, useEffect, useRef } = React;
 
-const LOGO_URL = "logo1.jpg";
+// --- CONFIGURATION ---
+const LOGO_URL = "logo1.jpg"; 
 const HOME_URL = "home.html"; 
 const DEVELOPER_GITHUB = "https://github.com/akdeveloper07";
-const DEVELOPER_LINKEDIN = "https://www.linkedin.com/in/akashr-ram?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app";
+const DEVELOPER_LINKEDIN = "https://www.linkedin.com/in/akashr-ram";
 
 const NatureBackground = () => (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -151,10 +152,16 @@ const ContactCard = ({ icon, label, value, subText, actionLink, actionText, btnC
     else if (btnColor === 'emerald') btnClasses += "bg-[#2b5e42] text-[#f5efe6] border border-[#8ab17d] hover:bg-[#3b7a56]";
     else btnClasses += "bg-white/10 text-[#f5efe6] border border-[#8ab17d]/40 hover:bg-white/20";
 
+    const isExternal = actionLink.startsWith('http');
+
     return (
-        <div ref={cardRef} className="glass-card rounded-2xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-sm relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#8ab17d]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="flex items-center gap-5 w-full md:w-auto">
+        /* ADDED 'relative' CLASS HERE - This fixes the button blocking issue */
+        <div ref={cardRef} className="glass-card relative rounded-2xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-sm overflow-hidden group">
+            
+            {/* ADDED 'pointer-events-none' - Ensures the overlay never blocks clicks */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#8ab17d]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+            
+            <div className="flex items-center gap-5 w-full md:w-auto relative z-10">
                 <div className="w-14 h-14 rounded-2xl bg-[#2b5e42]/40 flex items-center justify-center text-3xl border border-[#e6b422]/20 group-hover:border-[#e6b422]/60 transition-colors">
                     {icon}
                 </div>
@@ -166,9 +173,9 @@ const ContactCard = ({ icon, label, value, subText, actionLink, actionText, btnC
             </div>
             <a 
                 href={actionLink}
-                target={actionLink.startsWith('http') && !actionLink.startsWith('tel:') && !actionLink.startsWith('mailto:') ? "_blank" : "_self"}
+                target={isExternal ? "_blank" : "_self"}
                 rel="noopener noreferrer"
-                className={btnClasses}
+                className={`${btnClasses} relative z-10`}
             >
                 {actionText}
             </a>
@@ -314,34 +321,34 @@ const App = () => {
                 <Header />
 
                 <div className="grid gap-4">
-                    {/* PHONE - Using your correct link */}
+                    {/* PHONE */}
                     <ContactCard 
                         icon={<svg className="w-6 h-6 text-[#e6b422]" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>}
                         label="PHONE"
                         value="+91 99942 47213"
-                        actionLink="tel:+919994247213"              // ✅ YOUR CORRECT PHONE LINK
+                        actionLink="tel:+919994247213"
                         actionText="Call now"
                         btnColor="gold"
                         delay={0.2}
                     />
                     
-                    {/* WHATSAPP - Using your correct link */}
+                    {/* WHATSAPP */}
                     <ContactCard 
                         icon={<svg className="w-6 h-6 text-[#8ab17d]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>}
                         label="WHATSAPP"
                         value="Chat with garden team"
-                        actionLink="https://wa.me/919994247213"     // ✅ YOUR CORRECT WHATSAPP LINK
+                        actionLink="https://wa.me/919994247213"
                         actionText="Start chat"
                         btnColor="emerald"
                         delay={0.3}
                     />
                     
-                    {/* EMAIL - Using your correct link */}
+                    {/* EMAIL */}
                     <ContactCard 
                         icon={<svg className="w-6 h-6 text-[#e6b422]" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>}
                         label="EMAIL"
                         value="greengarden2427@gmail.com"
-                        actionLink="mailto:greengarden2427@gmail.com"  // ✅ YOUR CORRECT EMAIL LINK
+                        actionLink="mailto:greengarden2427@gmail.com"
                         actionText="Send email"
                         btnColor="gold"
                         delay={0.35}
