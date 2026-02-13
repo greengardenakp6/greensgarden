@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Garden - Contact</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-dark: #0A142A;
+            --navy-light: #1A1F3D;
+            --gold: #FFD700;
+            --gold-dark: #D4AF37;
+            --green: #00A651;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 50% 0%, var(--navy-light) 0%, var(--navy-dark) 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .font-display { font-family: 'Playfair Display', serif; }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFD700 0%, #FFF8DC 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .hover-glow {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-glow:hover {
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .shimmer-badge {
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+            background-size: 200% 100%;
+            animation: shimmer 2.5s infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .map-placeholder {
+            background: linear-gradient(135deg, rgba(10, 20, 42, 0.8), rgba(26, 31, 61, 0.8));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-placeholder::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD700' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- Components ---
+
+        // Floating Particle Background
+        const ParticleBG = () => {
+            const canvasRef = useRef(null);
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                let particles = [];
+                const count = 30;
+
+                const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+                resize();
+                window.addEventListener('resize', resize);
+
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 2,
+                        dx: (Math.random() - 0.5) * 0.5,
+                        dy: (Math.random() - 0.5) * 0.5,
+                        alpha: Math.random() * 0.5 + 0.2
+                    });
+                }
+
+                const animate = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => {
+                        p.x += p.dx; p.y += p.dy;
+                        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+                        ctx.fill();
+                    });
+                    requestAnimationFrame(animate);
+                };
+                animate();
+                return () => window.removeEventListener('resize', resize);
+            }, []);
+            return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
+        };
+
+        // Header Component
+        const Header = () => {
+            const ref = useRef(null);
+            useEffect(() => {
+                gsap.fromTo(ref.current, { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power3.out" });
+            }, []);
+
+            return (
+                <div ref={ref} className="text-center mb-8 relative z-10">
+                    <div className="w-24 h-24 md:w-28 md:h-28 mx-auto mb-4 rounded-full border-2 border-[#FFD700] p-1 bg-[#0A142A]/50 float">
+                        <div className="w-full h-full rounded-full flex items-center justify-center border border-[#FFD700]/30 bg-gradient-to-br from-[#0A142A] to-[#1A1F3D]">
+                            <div>
+                                <div className="text-[#00A651] text-lg font-bold tracking-tighter leading-none">GREEN</div>
+                                <div className="text-[#00A651] text-sm font-medium tracking-tight leading-none mt-0.5">GARDEN</div>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 className="font-display text-4xl md:text-5xl gold-gradient-text mb-1">Contact Us</h1>
+                    <p className="text-gray-400 text-sm tracking-wider">We'd love to hear from you</p>
+                </div>
+            );
+        };
+
+        // Contact Card Row Component
+        const ContactRow = ({ icon, label, value, link, linkText, color, delay }) => {
+            const ref = useRef(null);
+
+            useEffect(() => {
+                gsap.fromTo(ref.current, 
+                    { opacity: 0, x: -30 }, 
+                    { opacity: 1, x: 0, duration: 0.6, delay: delay, ease: "power2.out" }
+                );
+            }, []);
+
+            return (
+                <div ref={ref} className="glass-card hover-glow rounded-2xl p-5 mb-4 flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div className="flex items-center gap-4 mb-3 md:mb-0">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0`} 
+                             style={{ background: `linear-gradient(135deg, ${color}15, ${color}05)`, border: `1px solid ${color}30` }}>
+                            {icon}
+                        </div>
+                        <div>
+                            <p className="text-gray-400 text-xs uppercase tracking-wider">{label}</p>
+                            <p className="text-white font-medium text-lg">{value}</p>
+                        </div>
+                    </div>
+                    <a href={link} target="_blank" rel="noopener noreferrer" 
+                       className="px-5 py-2.5 rounded-lg text-sm font-semibold text-center transition-all duration-300 hover:scale-105 active:scale-95"
+                       style={{ background: `linear-gradient(135deg, ${color}, ${color}CC)`, color: label === "Email" ? '#0A142A' : 'white', boxShadow: `0 4px 15px ${color}40` }}>
+                        {linkText}
+                    </a>
+                </div>
+            );
+        };
+
+        // Map Section
+        const MapSection = ({ delay }) => {
+            const ref = useRef(null);
+            const mapLink = "https://www.google.com/maps/search/?api=1&query=Green+Vellore+Tamil+Nadu+62009";
+
+            useEffect(() => {
+                gsap.fromTo(ref.current, 
+                    { opacity: 0, y: 30 }, 
+                    { opacity: 1, y: 0, duration: 0.8, delay: delay, ease: "power2.out" }
+                );
+            }, []);
+
+            return (
+                <div ref={ref} className="glass-card hover-glow rounded-2xl overflow-hidden mb-4">
+                    <div className="map-placeholder h-40 flex items-center justify-center relative">
+                        <div className="absolute inset-0 flex items-center justify-center flex-col z-10">
+                            <div className="w-10 h-10 rounded-full bg-[#FFD700] flex items-center justify-center mb-2 shadow-lg">
+                                <svg className="w-5 h-5 text-[#0A142A]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                            </div>
+                            <span className="text-gray-300 text-sm font-medium">Green Vellore, TN</span>
+                        </div>
+                    </div>
+                    <div className="p-4 flex justify-between items-center border-t border-white/5">
+                        <div>
+                            <p className="text-xs text-gray-400">Address</p>
+                            <p className="text-sm text-white">07 Main Garden Front, Vellore, TN 62009</p>
+                        </div>
+                        <a href={mapLink} target="_blank" className="text-[#FFD700] text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap ml-4">
+                            Directions
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                        </a>
+                    </div>
+                </div>
+            );
+        };
+
+        // Developer Section
+        const DeveloperSection = ({ onClick, delay }) => {
+            const ref = useRef(null);
+
+            useEffect(() => {
+                gsap.fromTo(ref.current, 
+                    { opacity: 0, scale: 0.9 }, 
+                    { opacity: 1, scale: 1, duration: 0.6, delay: delay, ease: "back.out(1.7)" }
+                );
+            }, []);
+
+            return (
+                <div ref={ref} className="mt-8 text-center">
+                    <p className="text-gray-500 text-xs uppercase tracking-widest mb-4">Developed by</p>
+                    <div onClick={onClick} className="glass-card hover-glow rounded-2xl p-6 max-w-sm mx-auto cursor-pointer group">
+                        <div className="flex items-center gap-4">
+                            <div className="relative">
+                                <img 
+                                    src="Ak.jpg"
+                                    className="w-16 h-16 rounded-full border-2 border-[#FFD700]/50 object-cover group-hover:border-[#FFD700] transition-all duration-300"
+                                    alt="Akash"
+                                />
+                                <div className="absolute -bottom-1 -right-1 bg-[#00A651] w-4 h-4 rounded-full border-2 border-[#0A142A]"></div>
+                            </div>
+                            <div className="text-left flex-1">
+                                <h3 className="text-xl font-bold gold-gradient-text">Akash</h3>
+                                <div className="shimmer-badge text-xs font-semibold">
+                                    Fullstack Developer
+                                </div>
+                            </div>
+                            <svg className="w-5 h-5 text-gray-500 group-hover:text-[#FFD700] group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Modal Component
+        const PortfolioModal = ({ isOpen, onClose }) => {
+            const modalRef = useRef(null);
+
+            useEffect(() => {
+                if (isOpen) {
+                    document.body.style.overflow = 'hidden';
+                    gsap.fromTo(modalRef.current, 
+                        { opacity: 0, scale: 0.9, y: 50 }, 
+                        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "power3.out" }
+                    );
+                } else {
+                    document.body.style.overflow = 'auto';
+                }
+            }, [isOpen]);
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+                    <div 
+                        ref={modalRef}
+                        onClick={(e) => e.stopPropagation()}
+                        className="glass-card rounded-3xl p-8 max-w-md w-full relative border-[#FFD700]/20"
+                        style={{ background: 'radial-gradient(circle at top, #1A1F3D, #0A142A)' }}
+                    >
+                        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white p-1 transition-colors">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                        
+                        <div className="text-center mb-6">
+                            <div className="w-24 h-24 rounded-full border-2 border-[#FFD700] mx-auto mb-4 overflow-hidden shadow-lg shadow-[#FFD700]/20">
+                                <img src="Ak.jpg" />
+                            </div>
+                            <h3 className="text-2xl font-bold gold-gradient-text">Akash</h3>
+                            <p className="text-gray-400 text-sm mt-1">Fullstack Developer</p>
+                        </div>
+
+                        <div className="space-y-3 mb-6">
+                            {['React.js', 'Node.js', 'Tailwind CSS', 'MongoDB', 'AWS'].map((skill, i) => (
+                                <div key={i} className="flex items-center justify-between text-sm">
+                                    <span className="text-gray-300">{skill}</span>
+                                    <div className="w-32 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                        <div className="h-full bg-gradient-to-r from-[#D4AF37] to-[#FFD700] rounded-full" style={{ width: `${Math.random() * 40 + 60}%` }}></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-3">
+                            <a href="#" className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-[#FFD700]/10 text-center text-gray-300 hover:text-[#FFD700] transition-colors text-sm font-medium border border-white/5">GitHub</a>
+                            <a href="#" className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-[#FFD700]/10 text-center text-gray-300 hover:text-[#FFD700] transition-colors text-sm font-medium border border-white/5">LinkedIn</a>
+                            <a href="#" className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-[#FFD700]/10 text-center text-gray-300 hover:text-[#FFD700] transition-colors text-sm font-medium border border-white/5">Email</a>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App
+        const App = () => {
+            const [modal, setModal] = useState(false);
+
+            return (
+                <div className="relative min-h-screen py-8 px-4">
+                    <ParticleBG />
+                    
+                    <div className="relative z-10 max-w-lg mx-auto flex flex-col justify-center min-h-[calc(100vh-4rem)]">
+                        <Header />
+                        
+                        <div className="w-full space-y-2">
+                            <ContactRow 
+                                icon={<svg className="w-5 h-5 text-[#FFD700]" fill="currentColor" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>}
+                                label="Phone"
+                                value="+91 99942713"
+                                link="tel:+9199942713"
+                                linkText="Call Now"
+                                color="#FFD700"
+                                delay={0.2}
+                            />
+                            
+                            <ContactRow 
+                                icon={<svg className="w-5 h-5 text-[#00A651]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>}
+                                label="WhatsApp"
+                                value="Chat with us"
+                                link="https://wa.me/9199942713"
+                                linkText="Start Chat"
+                                color="#00A651"
+                                delay={0.3}
+                            />
+
+                            <ContactRow 
+                                icon={<svg className="w-5 h-5 text-[#FFD700]" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>}
+                                label="Email"
+                                value="contact@greengarden.in"
+                                link="mailto:contact@greengarden.in"
+                                linkText="Send Email"
+                                color="#FFD700"
+                                delay={0.4}
+                            />
+
+                            <MapSection delay={0.5} />
+                        </div>
+
+                        <DeveloperSection onClick={() => setModal(true)} delay={0.6} />
+                        
+                        <footer className="mt-10 text-center text-gray-500 text-xs opacity-50">
+                            © 2025 Green Garden. All Rights Reserved.
+                        </footer>
+                    </div>
+
+                    <PortfolioModal isOpen={modal} onClose={() => setModal(false)} />
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
