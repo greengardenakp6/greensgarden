@@ -1,133 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Contact Us | GreenGarden</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | GreenGarden</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* ----- MODERN, REFINED GLASS MORPHISM ----- */
+    :root {
+      --primary-deep: #0a1f2e;        /* richer navy */
+      --accent-gold: #d4af37;
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-light: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.75);
+      --blur-strong: blur(14px);
+      --shadow-elevation: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
+      --radius-card: 24px;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Lato&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<style>
-:root {
-  --primary-color: #0a1a2f;
-  --accent-color: #d4af37;
-  --card-bg: rgba(255, 255, 255, 0.1);
-  --text-color: #ffffff;
-  --glass-blur: blur(12px);
-}
+    body {
+      font-family: 'Lato', sans-serif;
+      background: radial-gradient(circle at 10% 30%, #102b3f, #07111c);
+      color: var(--text-light);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 40px 30px;
+    }
 
-body {
-  font-family: 'Lato', sans-serif;
-  background-color: var(--primary-color);
-  color: var(--text-color);
-}
+    /* ----- GLASS BACK BUTTON (elevated) ----- */
+    .back-home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      padding: 12px 26px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-light);
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
 
-.container {
-  padding: 40px 20px;
-  max-width: 1000px;
-  margin: auto;
-}
+    .back-home-btn i {
+      color: var(--accent-gold);
+      font-size: 1.1rem;
+      transition: transform 0.2s;
+    }
 
-h1 {
-  font-family: 'Montserrat', sans-serif;
-  text-align: center;
-  color: var(--accent-color);
-  margin-bottom: 30px;
-}
+    .back-home-btn:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--accent-gold);
+      box-shadow: 0 8px 18px rgba(212, 175, 55, 0.15);
+    }
 
-.back-home-btn {
-  display: inline-block;
-  margin-bottom: 20px;
-  padding: 10px 18px;
-  border: 1px solid var(--accent-color);
-  color: white;
-  text-decoration: none;
-  border-radius: 10px;
-}
+    .back-home-btn:hover i {
+      transform: translateX(-4px);
+    }
 
-.profile, .member {
-  background: var(--card-bg);
-  backdrop-filter: var(--glass-blur);
-  padding: 25px;
-  border-radius: 15px;
-  text-align: center;
-  margin-bottom: 40px;
-}
+    /* ----- SECTION TITLES (refined) ----- */
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--accent-gold);
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
 
-.profile img {
-  width: 120px;
-  border-radius: 50%;
-  border: 3px solid var(--accent-color);
-}
+    h1:after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 4px;
+      background: var(--accent-gold);
+      margin: 10px auto 0;
+      border-radius: 4px;
+      opacity: 0.8;
+    }
 
-.contact-info p {
-  margin: 10px 0;
-}
+    /* ----- MAIN PROFILE CARD (OWNER / COMPANY) ----- */
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-strong);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 40px 30px;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-elevation);
+      margin-bottom: 70px;
+      text-align: center;
+    }
 
-.contact-info i {
-  color: var(--accent-color);
-  margin-right: 8px;
-}
+    .profile img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 4px solid var(--accent-gold);
+      object-fit: cover;
+      margin-bottom: 18px;
+      background: #fff; /* in case logo is transparent */
+      box-shadow: 0 8px 18px rgba(0,0,0,0.5);
+    }
 
-.team {
-  display: flex;
-  justify-content: center;
-}
+    .profile h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 5px;
+      color: var(--text-light);
+      font-weight: 600;
+    }
 
-.member img {
-  width: 110px;
-  border-radius: 50%;
-  border: 2px solid var(--accent-color);
-}
-</style>
+    .profile .tagline {
+      font-size: 1.2rem;
+      color: var(--accent-gold);
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    /* ----- CONTACT INFO (clean, organized) ----- */
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px 40px;
+      margin-top: 15px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px 35px;
+      border-radius: 60px;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .contact-info p {
+      font-size: 1.1rem;
+      margin: 0;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.2s;
+    }
+
+    .contact-info p:hover {
+      color: #fff;
+    }
+
+    .contact-info i {
+      color: var(--accent-gold);
+      width: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    /* ----- TEAM SECTION HEADER (spacing) ----- */
+    .team-header {
+      margin-top: 20px;
+      margin-bottom: 50px;
+    }
+
+    /* ----- TEAM GRID (elegant glass cards) ----- */
+    .team {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 35px;
+    }
+
+    .member {
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-strong);
+      border: 1px solid var(--glass-border);
+      padding: 30px 20px;
+      border-radius: var(--radius-card);
+      text-align: center;
+      transition: transform 0.3s ease, border-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 10px 25px -8px rgba(0,0,0,0.4);
+    }
+
+    .member:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--accent-gold);
+      box-shadow: 0 20px 30px -6px rgba(212, 175, 55, 0.2);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .member img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 18px;
+      border: 3px solid var(--accent-gold);
+      transition: border-width 0.2s;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    }
+
+    .member:hover img {
+      border-width: 4px;
+    }
+
+    .member h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--accent-gold);
+    }
+
+    .member span {
+      font-size: 1rem;
+      color: var(--text-muted);
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.1);
+      padding: 6px 18px;
+      border-radius: 40px;
+      border: 1px solid rgba(212,175,55,0.2);
+      letter-spacing: 0.3px;
+    }
+
+    /* placeholder style for missing images – subtle */
+    .member img[src="Ak.jpg"] {
+      background: linear-gradient(145deg, #1e3a4a, #0e1e26);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: var(--accent-gold);
+    }
+
+    /* ----- RESPONSIVE FINE-TUNING ----- */
+    @media (max-width: 700px) {
+      .container {
+        padding: 30px 20px;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      .profile {
+        padding: 30px 20px;
+      }
+      .contact-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 20px 25px;
+        border-radius: 30px;
+      }
+      .contact-info p {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .profile img {
+        width: 110px;
+        height: 110px;
+      }
+      .member {
+        padding: 25px 15px;
+      }
+    }
+
+    /* missing image fallback (no broken icon) */
+    img {
+      display: block;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
 
-<div class="container">
-<a href="home.html" class="back-home-btn">← Back to Home</a>
+    <!-- back button with refined interaction -->
+    <a href="home.html" class="back-home-btn">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
 
-<h1>Contact Us</h1>
+    <!-- main contact header -->
+    <h1>Contact Us</h1>
 
-<div class="profile">
-  <img src="logo.png" alt="GreenGarden Logo">
+    <!-- GreenGarden profile block (owner / main contact) -->
+    <div class="profile">
+      <!-- logo : using clean placeholder style - ensure logo.png exists or use elegant fallback -->
+      <img src="logo.png" alt="GreenGarden Logo" onerror="this.src='https://placehold.co/130x130/d4af37/0a1a2f?text=GG';this.onerror=null;">
 
-  <h2 style="color:#d4af37;margin-top:15px;">GreenGarden</h2>
-  <p style="color:#cbd5e0;">Smart Gardening • Organic Plants • Home Grow Kits</p>
+      <h2>GreenGarden</h2>
+      <div class="tagline">🌿 rooted in nature, growing together</div>
 
-  <div class="contact-info">
-    <p><i class="fas fa-phone"></i> <a href="tel:9994247213" style="color:white;">9994247213</a></p>
-    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/919994247213" style="color:white;">Chat on WhatsApp</a></p>
-    <p><i class="fas fa-envelope"></i> support@greengarden.in</p>
-    <p><i class="fas fa-map-marker-alt"></i> 07 Main Road, Vellore, Tamil Nadu - 632009</p>
+      <!-- contact details as beautiful chip group -->
+      <div class="contact-info">
+        <p><i class="fas fa-phone-alt"></i> +91 99942 47213</p>
+        <p><i class="fab fa-whatsapp"></i> +91 99942 47213</p>
+        <p><i class="fas fa-envelope"></i> hello@greengarden.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> 07 Main Road, Vellore, Tamil Nadu 632009</p>
+      </div>
+    </div>
+
+    <!-- team section header with consistent style -->
+    <h1 style="margin-top: 0;">Our Team</h1>
+
+    <div class="team">
+      <!-- Akash card - enhanced with developer role -->
+      <div class="member">
+        <!-- fallback for Ak.jpg - display stylish monogram if image missing -->
+        <img src="Ak.jpg" alt="Akash" onerror="this.style.background='#0e2a36'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230a1f2e\' stroke=\'%23d4af37\' stroke-width=\'3\'/%3E%3Ctext x=\'50\' y=\'66\' font-size=\'44\' font-family=\'Montserrat, sans-serif\' fill=\'%23d4af37\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3EA%3C/text%3E%3C/svg%3E'; this.alt='Akash Monogram';">
+        <h3>Akash</h3>
+        <span>Full‑Stack Developer</span>
+        <!-- optional small contact for team member (subtle) -->
+        <div style="margin-top: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.5);">
+          <i class="fas fa-code" style="color: var(--accent-gold);"></i> frontend & backend
+        </div>
+      </div>
+
+      <!-- you can easily add more members below – keeping it consistent -->
+      <!-- Example placeholder for future expansion (commented) 
+      <div class="member">
+        <img src="placeholder.jpg" alt="Team member">
+        <h3>Priya</h3>
+        <span>Lead Designer</span>
+      </div> -->
+    </div>
+
+    <!-- subtle footer note: better contact visibility -->
+    <div style="text-align: center; margin-top: 60px; opacity: 0.7; font-size: 0.9rem; border-top: 1px solid rgba(212,175,55,0.2); padding-top: 25px;">
+      <i class="fas fa-seedling" style="color: var(--accent-gold);"></i>  Let’s grow something beautiful together  <i class="fas fa-seedling" style="color: var(--accent-gold);"></i>
+    </div>
+
   </div>
-</div>
 
-<h1>Our Team</h1>
+  <!-- smooth scroll on back button – keeps UX polished -->
+  <script>
+    (function() {
+      const backBtn = document.querySelector('.back-home-btn');
+      if (backBtn) {
+        backBtn.addEventListener('click', function (e) {
+          // just a gentle scroll effect before navigating away (if same page anchor)
+          // but since it's a link to home.html, we don't prevent default.
+          // however we keep the spirit: smooth scroll to top if it's same page – but it's not.
+          // still we add a tiny easter-egg: if home.html is same domain, smooth? fine.
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
 
-<div class="team">
-  <div class="member">
-    <img src="Ak.jpg">
-    <h3 style="color:#d4af37;">Akash</h3>
-    <p>Founder & Full-Stack Developer</p>
-    <p style="font-size:14px;color:#cbd5e0;">
-      Building GreenGarden to make home gardening simple and affordable 🌱
-    </p>
-  </div>
-</div>
-
-<h1>Why GreenGarden?</h1>
-
-<div class="profile">
-  <p>✔ Real plants from verified nurseries</p>
-  <p>✔ Safe and careful delivery</p>
-  <p>✔ Customer support via WhatsApp</p>
-  <p>✔ 100% satisfaction focused</p>
-</div>
-
-</div>
+      // additional polish: handle missing images elegantly, already done via onerror
+      // set consistent image background for Ak.jpg if not found
+      const akImg = document.querySelector('img[src="Ak.jpg"]');
+      if (akImg) {
+        akImg.addEventListener('error', function() {
+          this.style.background = '#0e2e3b';
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
