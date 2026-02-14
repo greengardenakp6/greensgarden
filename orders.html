@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- jsPDF for Invoice Generation -->
+    
+    <!-- jsPDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
@@ -24,7 +25,6 @@
             --white: #ffffff;
             --glass-bg: rgba(255, 255, 255, 0.75);
             --glass-border: rgba(255, 255, 255, 0.4);
-            --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.15);
             --shadow-card: 0 30px 60px rgba(0,0,0,0.12);
             --transition-premium: cubic-bezier(0.25, 0.46, 0.45, 0.94);
             --status-pending: #f59e0b;
@@ -52,12 +52,9 @@
             z-index: -1;
         }
 
-        /* --- ANIMATIONS --- */
         @keyframes slideDown { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- NAVBAR --- */
         .navbar {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
@@ -73,10 +70,8 @@
         .back-btn:hover { background: var(--primary-green); color: white; transform: translateX(-5px); }
         .navbar-title { flex: 1; text-align: center; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--primary-green); }
 
-        /* --- LAYOUT --- */
         .main-container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
 
-        /* --- TOOLBAR (Filter/Search) --- */
         .toolbar {
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
@@ -98,7 +93,6 @@
         .search-box input { width: 100%; padding: 10px 15px 10px 40px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.6); font-family: inherit; outline: none; }
         .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
 
-        /* --- ORDER CARD --- */
         .order-card {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -142,9 +136,10 @@
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid rgba(0,0,0,0.02);
+            flex-wrap: wrap; gap: 15px;
         }
         .order-total { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
-        .order-actions { display: flex; gap: 10px; }
+        .order-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         
         .btn-icon {
             padding: 8px 15px;
@@ -163,7 +158,6 @@
         .btn-icon.primary { background: var(--primary-green); color: white; }
         .btn-icon.primary:hover { background: var(--primary-light); }
 
-        /* Empty State */
         .empty-state { text-align: center; padding: 4rem 2rem; background: var(--glass-bg); border-radius: 20px; border: 1px solid var(--glass-border); }
         .empty-icon { font-size: 4rem; color: var(--accent-gold); opacity: 0.5; margin-bottom: 20px; }
 
@@ -175,7 +169,6 @@
         .modal-header { background: var(--primary-green); color: white; padding: 20px; text-align: center; }
         .modal-body { padding: 30px; }
         
-        /* Timeline */
         .timeline { position: relative; padding-left: 30px; }
         .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #e0e0e0; }
         .timeline-item { position: relative; margin-bottom: 25px; }
@@ -185,12 +178,11 @@
         .timeline-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
         .timeline-title { font-weight: 600; }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .toolbar { flex-direction: column; align-items: stretch; }
             .search-box { width: 100%; }
-            .order-footer { flex-direction: column; gap: 15px; align-items: flex-start; }
-            .order-actions { width: 100%; justify-content: space-between; }
+            .order-footer { flex-direction: column; align-items: flex-start; }
+            .order-actions { width: 100%; justify-content: flex-start; }
         }
     </style>
 </head>
@@ -203,14 +195,12 @@
     </nav>
 
     <div class="main-container">
-        
-        <!-- Toolbar -->
         <div class="toolbar">
             <div class="filter-group">
-                <button class="filter-btn active" onclick="filterOrders('all')">All</button>
-                <button class="filter-btn" onclick="filterOrders('Pending')">Pending</button>
-                <button class="filter-btn" onclick="filterOrders('Shipped')">Shipped</button>
-                <button class="filter-btn" onclick="filterOrders('Delivered')">Delivered</button>
+                <button class="filter-btn active" onclick="filterOrders('all', event)">All</button>
+                <button class="filter-btn" onclick="filterOrders('Pending', event)">Pending</button>
+                <button class="filter-btn" onclick="filterOrders('Shipped', event)">Shipped</button>
+                <button class="filter-btn" onclick="filterOrders('Delivered', event)">Delivered</button>
             </div>
             <div class="search-box">
                 <i class="fas fa-search"></i>
@@ -218,9 +208,7 @@
             </div>
         </div>
 
-        <!-- Orders Container -->
         <div id="ordersContainer"></div>
-
     </div>
 
     <!-- Tracking Modal -->
@@ -231,46 +219,67 @@
                 <p id="modalOrderId" style="opacity:0.8; font-size:0.9rem;"></p>
             </div>
             <div class="modal-body">
-                <div class="timeline" id="timelineContent">
-                    <!-- Filled by JS -->
-                </div>
+                <div class="timeline" id="timelineContent"></div>
                 <button onclick="closeModal()" style="margin-top:20px; width:100%; padding:12px; background:var(--primary-green); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600;">Close</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 1. INITIALIZATION & DATA ---
-        // Initialize orders if not present (for demo purposes)
+        // --- 1. DATA INITIALIZATION ---
         if (!localStorage.getItem('orders')) {
             const demoOrders = [
-                { orderId: "ORD84521", date: new Date(Date.now() - 86400000).toISOString(), status: "Shipped", items: [{name: "Monstera Plant", price: "₹1,299", image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=300"}], total: "₹1,299", paymentMethod: "UPI", customer: { name: "Demo User", address: "123 Garden St" } },
-                { orderId: "ORD12345", date: new Date(Date.now() - 172800000).toISOString(), status: "Delivered", items: [{name: "Garden Tool Set", price: "₹599", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=300"}], total: "₹599", paymentMethod: "COD", customer: { name: "Demo User", address: "123 Garden St" } }
+                { 
+                    orderId: "ORD84521", 
+                    date: new Date(Date.now() - 86400000).toISOString(), 
+                    status: "Shipped", 
+                    items: [{name: "Monstera Plant", price: "Rs. 1,299", image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=300", quantity: 1}], 
+                    total: "Rs. 1,299", 
+                    paymentMethod: "UPI", 
+                    customer: { name: "Demo User", address: "123 Garden St" } 
+                },
+                { 
+                    orderId: "ORD12345", 
+                    date: new Date(Date.now() - 172800000).toISOString(), 
+                    status: "Delivered", 
+                    items: [{name: "Garden Tool Set", price: "Rs. 599", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=300", quantity: 1}], 
+                    total: "Rs. 599", 
+                    paymentMethod: "COD", 
+                    customer: { name: "Demo User", address: "123 Garden St" } 
+                }
             ];
             localStorage.setItem('orders', JSON.stringify(demoOrders));
         }
 
         let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        let currentFilter = 'all';
+
+        // Real-time sync listener
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'orders') {
+                orders = JSON.parse(e.newValue) || [];
+                renderOrders(orders);
+            }
+        });
 
         // --- 2. RENDERING ---
         function renderOrders(data) {
             const container = document.getElementById('ordersContainer');
             container.innerHTML = '';
+            const sortedData = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            if (data.length === 0) {
+            if (sortedData.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon"><i class="fas fa-seedling"></i></div>
                         <h3 style="font-family:'Playfair Display'; color:var(--primary-green);">No Orders Found</h3>
-                        <p style="margin-top:10px; color:var(--text-muted);">Looks like you haven't placed any orders yet.</p>
+                        <p style="margin-top:10px; color:var(--text-muted);">Looks like you haven't placed any orders matching this criteria.</p>
                         <a href="products.html" class="btn-icon primary" style="margin-top:20px; display:inline-block; text-decoration:none;">Start Shopping</a>
                     </div>
                 `;
                 return;
             }
 
-            data.forEach((order, index) => {
+            sortedData.forEach((order, index) => {
                 const statusClass = order.status.toLowerCase();
                 const card = document.createElement('div');
                 card.className = 'order-card';
@@ -294,9 +303,7 @@
                         </div>
                         <div class="status-badge status-${statusClass}">${order.status}</div>
                     </div>
-                    <div class="order-body">
-                        ${itemsHtml}
-                    </div>
+                    <div class="order-body">${itemsHtml}</div>
                     <div class="order-footer">
                         <div class="order-total">Total: ${order.total}</div>
                         <div class="order-actions">
@@ -310,39 +317,124 @@
             });
         }
 
-        // --- 3. FILTER & SEARCH ---
-        function filterOrders(status) {
-            currentFilter = status;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            let filtered = orders;
-            if (status !== 'all') {
-                filtered = orders.filter(o => o.status === status);
-            }
-            renderOrders(filtered);
-        }
+        // --- 3. ACTIONS ---
 
-        function searchOrders() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = orders.filter(o => o.orderId.toLowerCase().includes(query));
-            renderOrders(filtered);
-        }
-
-        // --- 4. ACTIONS ---
+        // REORDER FUNCTION
         function reorder(orderId) {
             const order = orders.find(o => o.orderId === orderId);
-            if (order) {
-                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (!order) return;
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            order.items.forEach(item => {
+                // Check if item already exists in cart
+                const existingIndex = cart.findIndex(c => c.name === item.name);
+                if (existingIndex > -1) {
+                    cart[existingIndex].quantity += 1;
+                } else {
+                    // Ensure all necessary properties exist
+                    cart.push({
+                        name: item.name,
+                        price: item.price,
+                        image: item.image,
+                        quantity: 1
+                    });
+                }
+            });
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('Items added to cart successfully!');
+        }
+
+        // INVOICE FUNCTION (FIXED)
+        function downloadInvoice(orderId) {
+            try {
+                // Check if library is loaded
+                if (typeof window.jspdf === 'undefined') {
+                    alert("Error: PDF Library failed to load. Check internet connection.");
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const order = orders.find(o => o.orderId === orderId);
+                if (!order) return;
+
+                const doc = new jsPDF();
+                
+                // Helper function to sanitize text (replace Rupee symbol)
+                const cleanText = (text) => (text || "").replace(/₹/g, "Rs. ");
+
+                // Header
+                doc.setFontSize(22);
+                doc.setTextColor(23, 78, 30); 
+                doc.text("Green Garden", 105, 20, null, null, "center");
+                
+                doc.setFontSize(12);
+                doc.setTextColor(100);
+                doc.text("Premium Plants & Garden Essentials", 105, 28, null, null, "center");
+
+                doc.setDrawColor(23, 78, 30);
+                doc.line(20, 35, 190, 35);
+
+                // Order Info
+                doc.setFontSize(12);
+                doc.setTextColor(0);
+                doc.text(`Invoice: #${order.orderId}`, 20, 45);
+                doc.text(`Date: ${new Date(order.date).toLocaleDateString()}`, 20, 52);
+                doc.text(`Status: ${order.status}`, 20, 59);
+
+                // Bill To
+                doc.text("Bill To:", 20, 75);
+                doc.setTextColor(100);
+                if(order.customer) {
+                    doc.text(order.customer.name || "Guest", 20, 82);
+                    doc.text(order.customer.address || "N/A", 20, 89);
+                } else {
+                    doc.text("Guest", 20, 82);
+                }
+
+                // Items Table Header
+                doc.setTextColor(0);
+                doc.setFillColor(240, 240, 240);
+                doc.rect(20, 100, 170, 10, 'F');
+                doc.text("Item", 22, 107);
+                doc.text("Price", 160, 107);
+
+                // Items
+                let y = 117;
                 order.items.forEach(item => {
-                    cart.push({ ...item, quantity: 1 }); // Reset quantity to 1 for reorder
+                    doc.setTextColor(50);
+                    // Clean text to avoid font errors
+                    const name = cleanText(item.name);
+                    const price = cleanText(item.price);
+                    
+                    doc.text(name, 22, y);
+                    doc.setTextColor(0);
+                    doc.text(price, 160, y);
+                    y += 10;
                 });
-                localStorage.setItem('cart', JSON.stringify(cart));
-                alert('Items added to cart!');
-                window.location.href = 'cart.html';
+
+                // Total
+                doc.setDrawColor(200);
+                doc.line(20, y, 190, y);
+                doc.setFontSize(14);
+                doc.setTextColor(23, 78, 30);
+                doc.text(`Total: ${cleanText(order.total)}`, 160, y + 10);
+
+                // Footer
+                doc.setFontSize(10);
+                doc.setTextColor(150);
+                doc.text("Thank you for shopping with Green Garden!", 105, 280, null, null, "center");
+
+                doc.save(`Invoice_${order.orderId}.pdf`);
+            
+            } catch (error) {
+                console.error("PDF Generation Error:", error);
+                alert("Failed to generate invoice. Please try again.");
             }
         }
 
+        // TRACKING FUNCTION
         function openTracking(orderId) {
             const order = orders.find(o => o.orderId === orderId);
             if (!order) return;
@@ -350,7 +442,6 @@
             document.getElementById('modalOrderId').textContent = `#${order.orderId}`;
             const timeline = document.getElementById('timelineContent');
             
-            // Simple logic to simulate timeline based on status
             const steps = [
                 { title: "Order Placed", date: new Date(order.date).toLocaleString() },
                 { title: "Processing", date: "Completed" },
@@ -381,82 +472,22 @@
             document.getElementById('trackingModal').classList.remove('show');
         }
 
-        // --- 5. INVOICE GENERATION (jsPDF) ---
-        function downloadInvoice(orderId) {
-            const { jsPDF } = window.jspdf;
-            const order = orders.find(o => o.orderId === orderId);
-            if (!order) return;
+        // --- 4. FILTER & SEARCH ---
+        function filterOrders(status, e) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            if(e && e.target) e.target.classList.add('active');
 
-            const doc = new jsPDF();
-            
-            // Header
-            doc.setFontSize(22);
-            doc.setTextColor(23, 78, 30); // Green
-            doc.text("Green Garden", 105, 20, null, null, "center");
-            doc.setFontSize(12);
-            doc.setTextColor(100);
-            doc.text("Premium Plants & Garden Essentials", 105, 28, null, null, "center");
-
-            doc.setDrawColor(23, 78, 30);
-            doc.line(20, 35, 190, 35);
-
-            // Order Info
-            doc.setFontSize(12);
-            doc.setTextColor(0);
-            doc.text(`Invoice: #${order.orderId}`, 20, 45);
-            doc.text(`Date: ${new Date(order.date).toLocaleDateString()}`, 20, 52);
-            doc.text(`Status: ${order.status}`, 20, 59);
-
-            // Bill To
-            doc.text("Bill To:", 20, 75);
-            doc.setTextColor(100);
-            doc.text(order.customer.name, 20, 82);
-            doc.text(order.customer.address, 20, 89);
-
-            // Items Table Header
-            doc.setTextColor(0);
-            doc.setFillColor(240, 240, 240);
-            doc.rect(20, 100, 170, 10, 'F');
-            doc.text("Item", 22, 107);
-            doc.text("Price", 160, 107);
-
-            // Items
-            let y = 117;
-            order.items.forEach(item => {
-                doc.setTextColor(50);
-                doc.text(item.name, 22, y);
-                doc.setTextColor(0);
-                doc.text(item.price, 160, y);
-                y += 10;
-            });
-
-            // Total
-            doc.setDrawColor(200);
-            doc.line(20, y, 190, y);
-            doc.setFontSize(14);
-            doc.setTextColor(23, 78, 30);
-            doc.text(`Total: ${order.total}`, 160, y + 10);
-
-            // Footer
-            doc.setFontSize(10);
-            doc.setTextColor(150);
-            doc.text("Thank you for shopping with Green Garden!", 105, 280, null, null, "center");
-
-            doc.save(`Invoice_${order.orderId}.pdf`);
+            let filtered = orders;
+            if (status !== 'all') {
+                filtered = orders.filter(o => o.status === status);
+            }
+            renderOrders(filtered);
         }
 
-        // --- 6. REAL-TIME COMMUNICATION HELPERS ---
-        // These are triggered by checkout, but callable here for logic
-        function sendWhatsAppOrder(order) {
-            const msg = `🌿 *Green Garden Order #${order.orderId}*\n📅 ${new Date(order.date).toLocaleDateString()}\n🛒 Items: ${order.items.length}\n💳 Paid via ${order.paymentMethod}\n📍 ${order.customer.address}`;
-            const url = `https://wa.me/911234567890?text=${encodeURIComponent(msg)}`; // Replace number
-            window.open(url, '_blank');
-        }
-
-        function sendOrderEmail(order) {
-            const subject = `Green Garden Order #${order.orderId}`;
-            const body = `Thank you for your order!\n\nOrder ID: ${order.orderId}\nTotal: ${order.total}`;
-            window.location.href = `mailto:support@greengarden.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        function searchOrders() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = orders.filter(o => o.orderId.toLowerCase().includes(query));
+            renderOrders(filtered);
         }
 
         // Initial Load
