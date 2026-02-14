@@ -130,7 +130,8 @@
             color: var(--primary-dark);
             margin-bottom: 24px;
         }
-      .product-description {
+        
+        .product-description {
             color: var(--text-light);
             margin-bottom: 32px;
             font-size: 16px;
@@ -248,6 +249,7 @@
         .btn-icon {
             width: 20px;
             height: 20px;
+            fill: currentColor;
         }
 
         .product-meta {
@@ -268,6 +270,24 @@
             width: 18px;
             height: 18px;
             fill: var(--primary);
+        }
+
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
         }
 
         @media (max-width: 768px) {
@@ -304,7 +324,7 @@
 <body>
     <div class="navbar">
         <button class="back-button" onclick="window.location.href='products.html'">
-            <svg viewBox="0 0 24 24" class="btn-icon">
+            <svg viewBox="0 0 24 24">
                 <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
             </svg>
             Back
@@ -312,9 +332,13 @@
         <div class="navbar-title">GreenGarden</div>
     </div>
 
+    <div class="notification" id="notification">
+        Item added to cart!
+    </div>
+
     <div class="product-container">
         <div class="product-gallery">
-            <img id="product-image" src="" alt="Product Image">
+            <img id="product-image" src="" alt="Product Image" onerror="this.src='https://via.placeholder.com/400x400?text=Product+Image'">
         </div>
 
         <div class="product-info">
@@ -369,540 +393,92 @@
     </div>
 
     <script>
+        // Fixed product array with unique IDs
         const products = [
-            
-  { 
-    id: 1, 
-    name: "Morning Jewel Rose Seed", 
-    price: "₹158", 
-    image: "F1.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 25,
-    stock: 50
-  },
-  { 
-    id: 2, 
-    name: "Winter Daisy Red Mixed Seed", 
-    price: "₹150", 
-    image: "F2.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 30,
-    stock: 45
-  },
-  { 
-    id: 3, 
-    name: "Bitter Gourd-kareka seed", 
-    price: "₹99", 
-    image: "F3.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 42,
-    stock: 60
-  },
-  { 
-    id: 4, 
-    name: "Black Tomato", 
-    price: "₹110", 
-    image: "F4.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 38,
-    stock: 55
-  },
-  { 
-    id: 5, 
-    name: "Broccoli Vegetable Seed", 
-    price: "₹89", 
-    image: "F5.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 47,
-    stock: 70
-  },
-  { 
-    id: 6, 
-    name: "Brazilian Wood Plant", 
-    price: "₹550", 
-    image: "F6.jpg",
-    category: "Plants",
-    rating: 3,
-    reviews: 18,
-    stock: 15
-  },
-  { 
-    id: 7, 
-    name: "Apple Plant Hybrid", 
-    price: "₹100", 
-    image: "F7.jpg",
-    category: "Fruit Plants",
-    rating: 3,
-    reviews: 29,
-    stock: 40
-  },
-  { 
-    id: 8, 
-    name: "Cabbage Seed", 
-    price: "₹110", 
-    image: "F8.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 35,
-    stock: 65
-  },
-  { 
-    id: 9, 
-    name: "Chinese Cabbage", 
-    price: "₹111", 
-    image: "F9.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 27,
-    stock: 50
-  },
-  { 
-    id: 10, 
-    name: "Amaranthus Vegetable Seed", 
-    price: "₹130", 
-    image: "F10.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 33,
-    stock: 58
-  },
-  { 
-    id: 11, 
-    name: "Farm Cauliflower Violetto", 
-    price: "₹120", 
-    image: "F11.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 41,
-    stock: 47
-  },
-  { 
-    id: 12, 
-    name: "Kamal Seed(200g)", 
-    price: "₹149", 
-    image: "F12.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 52,
-    stock: 72
-  },
-  { 
-    id: 13, 
-    name: "6 Birds Hanging Home Decor", 
-    price: "₹160", 
-    image: "F13.jpg",
-    category: "Garden Decor",
-    rating: 3,
-    reviews: 64,
-    stock: 38
-  },
-  { 
-    id: 14, 
-    name: "Blue Ceramic Pot", 
-    price: "₹200", 
-    image: "F14.jpg",
-    category: "Planters",
-    rating: 3,
-    reviews: 73,
-    stock: 42
-  },
-  { 
-    id: 15, 
-    name: "Multicolor Plastic Pot", 
-    price: "₹400", 
-    image: "F15.jpg",
-    category: "Planters",
-    rating: 3,
-    reviews: 56,
-    stock: 29
-  },
-  { 
-    id: 16, 
-    name: "Signal Bicycle Pot Stand", 
-    price: "₹199", 
-    image: "F16.jpg",
-    category: "Plant Stands",
-    rating: 3,
-    reviews: 48,
-    stock: 35
-  },
-  { 
-    id: 17, 
-    name: "Crystal Shaped Plastic Flower Pot", 
-    price: "₹299", 
-    image: "F17.jpg",
-    category: "Planters",
-    rating: 3,
-    reviews: 62,
-    stock: 41
-  },
-  { 
-    id: 18, 
-    name: "Organic Potting Mix", 
-    price: "₹360", 
-    image: "F18.jpg",
-    category: "Plant Care",
-    rating: 3,
-    reviews: 84,
-    stock: 67
-  },
-  { 
-    id: 19, 
-    name: "6 Tier Metal Pot Stand", 
-    price: "₹999", 
-    image: "F19.jpg",
-    category: "Plant Stands",
-    rating: 3,
-    reviews: 37,
-    stock: 18
-  },
-  { 
-    id: 20, 
-    name: "Yellow Kalanchoe Flower Seed", 
-    price: "₹149", 
-    image: "F20.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 59,
-    stock: 63
-  },
-  { 
-    id: 21, 
-    name: "sky fruit Seeds(400g)", 
-    price: "₹349", 
-    image: "F21.jpg",
-    category: "Fruit Seeds",
-    rating: 3,
-    reviews: 23,
-    stock: 32
-  },
-  { 
-    id: 22, 
-    name: "long luki seed(25 per pkt)", 
-    price: "₹110", 
-    image: "F22.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 31,
-    stock: 54
-  },
-  { 
-    id: 23, 
-    name: "Castor seed(100g)", 
-    price: "₹169", 
-    image: "F23.jpg",
-    category: "Oil Seeds",
-    rating: 3,
-    reviews: 45,
-    stock: 39
-  },
-  { 
-    id: 24, 
-    name: "Black Avacodo tree seed(1 per pkt)", 
-    price: "₹129", 
-    image: "F24.jpg",
-    category: "Fruit Seeds",
-    rating: 3,
-    reviews: 28,
-    stock: 22
-  },
-  { 
-    id: 25, 
-    name: "gobhee seeds(10 per pkt)", 
-    price: "₹129", 
-    image: "F25.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 36,
-    stock: 48
-  },
-  { 
-    id: 26, 
-    name: "Halim seeds(300g)", 
-    price: "₹270", 
-    image: "F26.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 51,
-    stock: 57
-  },
-  { 
-    id: 27, 
-    name: "carrot seeds(1 per pkt)", 
-    price: "₹199", 
-    image: "F27.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 67,
-    stock: 43
-  },
-  { 
-    id: 28, 
-    name: "Green grass seeds(3000 per pkt)", 
-    price: "₹118", 
-    image: "F28.jpg",
-    category: "Lawn Seeds",
-    rating: 3,
-    reviews: 79,
-    stock: 85
-  },
-  { 
-    id: 29, 
-    name: "Hybrid dahlia seeds(50 per pkt)", 
-    price: "₹125", 
-    image: "F29.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 63,
-    stock: 71
-  },
-  { 
-    id: 30, 
-    name: "Ash gourd seeds(40 per pkt)", 
-    price: "₹159", 
-    image: "F30.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 42,
-    stock: 53
-  },
-
-  { 
-    id: 31, 
-    name: "black carrot seeds (120 per pkt)", 
-    price: "₹149", 
-    image: "F31.jpg.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 87,
-    stock: 78
-  },
-  { 
-    id: 32, 
-    name: "Long Slender PepperSeeds (200 per pkt)", 
-    price: "₹145", 
-    image: "F32.jpg.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 95,
-    stock: 38
-  },
-  { 
-    id: 33, 
-    name: "Ash Gourd Seeds (40 per pkt)", 
-    price: "₹159", 
-    image: "F33.jpg.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 16,
-    stock: 28
-  },
-  { 
-    id: 33, 
-    name: "Lotua Seeds (30 per pkt)", 
-    price: "₹119", 
-    image: "F33.jpg.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 76,
-    stock: 28
-  },
-  { 
-    id: 34, 
-    name: "Halam Seeds (200g)", 
-    price: "₹189", 
-    image: "F34.jpg.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 67,
-    stock: 78
-  },
-  { 
-    id: 35, 
-    name: "Hot chilli organic Seeds (200 per pkt)", 
-    price: "₹119", 
-    image: "F35.jpg.jpg",
-    category: "Vegetable Seeds",
-    rating: 3,
-    reviews: 56,
-    stock: 8
-  },
-  { 
-    id: 36, 
-    name: "Raganigandha flower Seeds (4 per pkt)", 
-    price: "₹109", 
-    image: "F36.jpg.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 40,
-    stock: 74
-  },
-  { 
-    id: 37, 
-    name: "Sword Lily plant (hybrid,pack of 1)", 
-    price: "₹120", 
-    image: "F37.jpg.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 40,
-    stock: 45
-  },
-  { 
-    id: 38, 
-    name: "HARSINGAR seed(20 per pkt)", 
-    price: "₹129", 
-    image: "F38.jpg.jpg",
-    category: "Flower seeds",
-    rating: 3,
-    reviews: 90,
-    stock: 34
-  },
-  { 
-    id: 39, 
-    name: "French yellow marigold seed(50 per pkt)", 
-    price: "₹145", 
-    image: "F39.jpg.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 76,
-    stock: 93
-  },
-  { 
-    id: 40, 
-    name: "Beej Band Seeds (100 per pkt)", 
-    price: "₹199", 
-    image: "F40.jpg.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 140,
-    stock: 45
-  },
-  { 
-    id: 41, 
-    name: "Rose plant(Hybrid,pack of 1)", 
-    price: "₹129", 
-    image: "F41.jpg.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 150,
-    stock: 35
-  },
-  { 
-    id: 40, 
-    name: "Black soil manure(10kg,Powder)", 
-    price: "₹219", 
-    image: "F423.jpg.jpg",
-    category: "plant manure",
-    rating: 3,
-    reviews: 30,
-    stock: 63
-  },
-  { 
-    id: 43, 
-    name: "Red Banana plant(Hybrid, pack of 1)", 
-    price: "₹149", 
-    image: "F43.jpg.jpg",
-    category: "Fruit Seeds",
-    rating: 3,
-    reviews: 15,
-    stock: 25
-  },
-  { 
-    id: 44, 
-    name: "Hibiscus plant(Hybrid,pack of 1)", 
-    price: "₹115", 
-    image: "F44.jpg.jpg",
-    category: "Flower Seeds",
-    rating: 3,
-    reviews: 10,
-    stock: 34
-  },
-  { 
-    id: 45, 
-    name: "Natural plant manure(1kg,cake)", 
-    price: "₹135", 
-    image: "F45.jpg.jpg",
-    category: "Plant manure",
-    rating: 3,
-    reviews: 140,
-    stock: 45
-  },
-  { 
-    id: 46, 
-    name: "Flower Holder-metal 5 pot planter stand", 
-    price: "₹870", 
-    image: "F46.jpg.jpg",
-    category: "Pot stand",
-    rating: 3,
-    reviews: 63,
-    stock: 76
-  },
-  { 
-    id: 47, 
-    name: "Organic DAP plant Growth Boost(1.5 kg)", 
-    price: "₹220", 
-    image: "F47.jpg.jpg",
-    category: "Plant fertilizer",
-    rating: 3,
-    reviews: 40,
-    stock: 87
-  },
-  { 
-    id: 48, 
-    name: "Gardenplus 3pcs plant Growth (150 ml, Liquid)", 
-    price: "₹209", 
-    image: "F48.jpg.jpg",
-    category: "Plans growth Fertilizer",
-    rating: 3,
-    reviews: 10,
-    stock: 20
-  },
-  { 
-    id: 49, 
-    name: "Magnesium sulfate for plants (500 g)", 
-    price: "₹139", 
-    image: "F49.jpg.jpg",
-    category: "Plant fertilizer",
-    rating: 3,
-    reviews: 45,
-    stock: 25
-  },
-  { 
-    id: 50, 
-    name: "Miracle grow all purpose manure(400 g,powder)", 
-    price: "₹450", 
-    image: "F50.jpg.jpg",
-    category: "Plant manure",
-    rating: 3,
-    reviews: 59,
-    stock: 65
-  }
+            { id: 1, name: "Morning Jewel Rose Seed", price: "₹158", image: "F1.jpg", category: "Flower Seeds", stock: 50 },
+            { id: 2, name: "Winter Daisy Red Mixed Seed", price: "₹150", image: "F2.jpg", category: "Flower Seeds", stock: 45 },
+            { id: 3, name: "Bitter Gourd-kareka seed", price: "₹99", image: "F3.jpg", category: "Vegetable Seeds", stock: 60 },
+            { id: 4, name: "Black Tomato", price: "₹110", image: "F4.jpg", category: "Vegetable Seeds", stock: 55 },
+            { id: 5, name: "Broccoli Vegetable Seed", price: "₹89", image: "F5.jpg", category: "Vegetable Seeds", stock: 70 },
+            { id: 6, name: "Brazilian Wood Plant", price: "₹550", image: "F6.jpg", category: "Plants", stock: 15 },
+            { id: 7, name: "Apple Plant Hybrid", price: "₹100", image: "F7.jpg", category: "Fruit Plants", stock: 40 },
+            { id: 8, name: "Cabbage Seed", price: "₹110", image: "F8.jpg", category: "Vegetable Seeds", stock: 65 },
+            { id: 9, name: "Chinese Cabbage", price: "₹111", image: "F9.jpg", category: "Vegetable Seeds", stock: 50 },
+            { id: 10, name: "Amaranthus Vegetable Seed", price: "₹130", image: "F10.jpg", category: "Vegetable Seeds", stock: 58 },
+            { id: 11, name: "Farm Cauliflower Violetto", price: "₹120", image: "F11.jpg", category: "Vegetable Seeds", stock: 47 },
+            { id: 12, name: "Kamal Seed(200g)", price: "₹149", image: "F12.jpg", category: "Flower Seeds", stock: 72 },
+            { id: 13, name: "6 Birds Hanging Home Decor", price: "₹160", image: "F13.jpg", category: "Garden Decor", stock: 38 },
+            { id: 14, name: "Blue Ceramic Pot", price: "₹200", image: "F14.jpg", category: "Planters", stock: 42 },
+            { id: 15, name: "Multicolor Plastic Pot", price: "₹400", image: "F15.jpg", category: "Planters", stock: 29 },
+            { id: 16, name: "Signal Bicycle Pot Stand", price: "₹199", image: "F16.jpg", category: "Plant Stands", stock: 35 },
+            { id: 17, name: "Crystal Shaped Plastic Flower Pot", price: "₹299", image: "F17.jpg", category: "Planters", stock: 41 },
+            { id: 18, name: "Organic Potting Mix", price: "₹360", image: "F18.jpg", category: "Plant Care", stock: 67 },
+            { id: 19, name: "6 Tier Metal Pot Stand", price: "₹999", image: "F19.jpg", category: "Plant Stands", stock: 18 },
+            { id: 20, name: "Yellow Kalanchoe Flower Seed", price: "₹149", image: "F20.jpg", category: "Flower Seeds", stock: 63 },
+            { id: 21, name: "Sky Fruit Seeds(400g)", price: "₹349", image: "F21.jpg", category: "Fruit Seeds", stock: 32 },
+            { id: 22, name: "Long Luki Seed(25 per pkt)", price: "₹110", image: "F22.jpg", category: "Vegetable Seeds", stock: 54 },
+            { id: 23, name: "Castor Seed(100g)", price: "₹169", image: "F23.jpg", category: "Oil Seeds", stock: 39 },
+            { id: 24, name: "Black Avocado Tree Seed(1 per pkt)", price: "₹129", image: "F24.jpg", category: "Fruit Seeds", stock: 22 },
+            { id: 25, name: "Gobhee Seeds(10 per pkt)", price: "₹129", image: "F25.jpg", category: "Vegetable Seeds", stock: 48 },
+            { id: 26, name: "Halim Seeds(300g)", price: "₹270", image: "F26.jpg", category: "Vegetable Seeds", stock: 57 },
+            { id: 27, name: "Carrot Seeds(1 per pkt)", price: "₹199", image: "F27.jpg", category: "Vegetable Seeds", stock: 43 },
+            { id: 28, name: "Green Grass Seeds(3000 per pkt)", price: "₹118", image: "F28.jpg", category: "Lawn Seeds", stock: 85 },
+            { id: 29, name: "Hybrid Dahlia Seeds(50 per pkt)", price: "₹125", image: "F29.jpg", category: "Flower Seeds", stock: 71 },
+            { id: 30, name: "Ash Gourd Seeds(40 per pkt)", price: "₹159", image: "F30.jpg", category: "Vegetable Seeds", stock: 53 },
+            { id: 31, name: "Black Carrot Seeds (120 per pkt)", price: "₹149", image: "F31.jpg", category: "Vegetable Seeds", stock: 78 },
+            { id: 32, name: "Long Slender Pepper Seeds (200 per pkt)", price: "₹145", image: "F32.jpg", category: "Vegetable Seeds", stock: 38 },
+            { id: 33, name: "Ash Gourd Seeds (40 per pkt)", price: "₹159", image: "F33.jpg", category: "Vegetable Seeds", stock: 28 },
+            { id: 34, name: "Lotua Seeds (30 per pkt)", price: "₹119", image: "F34.jpg", category: "Flower Seeds", stock: 28 },
+            { id: 35, name: "Halam Seeds (200g)", price: "₹189", image: "F35.jpg", category: "Vegetable Seeds", stock: 78 },
+            { id: 36, name: "Hot Chilli Organic Seeds (200 per pkt)", price: "₹119", image: "F36.jpg", category: "Vegetable Seeds", stock: 8 },
+            { id: 37, name: "Raganigandha Flower Seeds (4 per pkt)", price: "₹109", image: "F37.jpg", category: "Flower Seeds", stock: 74 },
+            { id: 38, name: "Sword Lily Plant (hybrid,pack of 1)", price: "₹120", image: "F38.jpg", category: "Flower Plants", stock: 45 },
+            { id: 39, name: "Harsingar Seed(20 per pkt)", price: "₹129", image: "F39.jpg", category: "Flower Seeds", stock: 34 },
+            { id: 40, name: "French Yellow Marigold Seed(50 per pkt)", price: "₹145", image: "F40.jpg", category: "Flower Seeds", stock: 93 },
+            { id: 41, name: "Beej Band Seeds (100 per pkt)", price: "₹199", image: "F41.jpg", category: "Flower Seeds", stock: 45 },
+            { id: 42, name: "Rose Plant(Hybrid,pack of 1)", price: "₹129", image: "F42.jpg", category: "Flower Plants", stock: 35 },
+            { id: 43, name: "Black Soil Manure(10kg,Powder)", price: "₹219", image: "F43.jpg", category: "Plant Manure", stock: 63 },
+            { id: 44, name: "Red Banana Plant(Hybrid, pack of 1)", price: "₹149", image: "F44.jpg", category: "Fruit Plants", stock: 25 },
+            { id: 45, name: "Hibiscus Plant(Hybrid,pack of 1)", price: "₹115", image: "F45.jpg", category: "Flower Plants", stock: 34 },
+            { id: 46, name: "Natural Plant Manure(1kg,cake)", price: "₹135", image: "F46.jpg", category: "Plant Manure", stock: 45 },
+            { id: 47, name: "Flower Holder-metal 5 pot planter stand", price: "₹870", image: "F47.jpg", category: "Pot Stand", stock: 76 },
+            { id: 48, name: "Organic DAP Plant Growth Boost(1.5 kg)", price: "₹220", image: "F48.jpg", category: "Plant Fertilizer", stock: 87 },
+            { id: 49, name: "Gardenplus 3pcs Plant Growth (150 ml, Liquid)", price: "₹209", image: "F49.jpg", category: "Plant Growth Fertilizer", stock: 20 },
+            { id: 50, name: "Magnesium Sulfate for Plants (500 g)", price: "₹139", image: "F50.jpg", category: "Plant Fertilizer", stock: 25 },
+            { id: 51, name: "Miracle Grow All Purpose Manure(400 g,powder)", price: "₹450", image: "F51.jpg", category: "Plant Manure", stock: 65 }
         ];
 
         function getProductIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
             const id = parseInt(params.get("id"));
-            return isNaN(id) ? 1 : id; // Default to 1 if no valid ID found
+            return isNaN(id) ? 1 : id;
         }
 
-        // Display product details on page load
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
         function displayProductDetails() {
             const productId = getProductIdFromUrl();
-            const product = products.find(p => p.id === productId) || products[0]; // Fallback to first product if not found
+            const product = products.find(p => p.id === productId);
             
-            document.getElementById("product-image").src = product.image;
-            document.getElementById("product-name").textContent = product.name;
-            document.getElementById("product-price").textContent = product.price;
+            if (product) {
+                document.getElementById("product-image").src = product.image;
+                document.getElementById("product-name").textContent = product.name;
+                document.getElementById("product-price").textContent = product.price;
+            } else {
+                // Fallback if product not found
+                window.location.href = 'products.html';
+            }
             
-            // Initialize quantity controls
             updateQuantity(0);
         }
-
 
         function updateQuantity(delta) {
             const quantityInput = document.getElementById('quantity');
@@ -910,50 +486,99 @@
             quantity = Math.max(1, Math.min(99, quantity + delta));
             quantityInput.value = quantity;
             
-
-            document.querySelector('.minus').disabled = quantity <= 1;
-            document.querySelector('.plus').disabled = quantity >= 99;
+            const minusBtn = document.querySelector('.minus');
+            const plusBtn = document.querySelector('.plus');
+            
+            if (minusBtn) minusBtn.disabled = quantity <= 1;
+            if (plusBtn) plusBtn.disabled = quantity >= 99;
         }
 
         function addToCart() {
-            const productId = getProductIdFromUrl();
-            const quantity = parseInt(document.getElementById('quantity').value) || 1;
-            const product = products.find(p => p.id === productId);
-            
-            if (product) {
-                let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                const existingItem = cart.find(item => item.id === productId);
-
-                if (existingItem) {
-                    existingItem.quantity += quantity;
-                } else {
-                    cart.push({
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        image: product.image,
-                        quantity: quantity
-                    });
-                }
+            try {
+                const productId = getProductIdFromUrl();
+                const quantity = parseInt(document.getElementById('quantity').value) || 1;
+                const product = products.find(p => p.id === productId);
                 
-                localStorage.setItem("cart", JSON.stringify(cart));
-                alert(`${quantity} ${product.name}(s) added to cart!`);
+                if (product) {
+                    // Get existing cart or initialize empty array
+                    let cart = [];
+                    const savedCart = localStorage.getItem("cart");
+                    
+                    if (savedCart) {
+                        try {
+                            cart = JSON.parse(savedCart);
+                        } catch (e) {
+                            console.error("Error parsing cart:", e);
+                            cart = [];
+                        }
+                    }
+                    
+                    // Ensure cart is an array
+                    if (!Array.isArray(cart)) {
+                        cart = [];
+                    }
+                    
+                    const existingItemIndex = cart.findIndex(item => item.id === productId);
+                    
+                    // Parse price to number for storage (remove ₹ symbol)
+                    const priceNumber = parseInt(product.price.replace('₹', ''));
+                    
+                    if (existingItemIndex >= 0) {
+                        // Update existing item
+                        cart[existingItemIndex].quantity += quantity;
+                    } else {
+                        // Add new item
+                        cart.push({
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            priceNumber: priceNumber,
+                            image: product.image,
+                            quantity: quantity
+                        });
+                    }
+                    
+                    // Save back to localStorage
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    
+                    // Show success message
+                    showNotification(`${quantity} ${product.name} added to cart!`);
+                    
+                    // Optional: Update cart count if you have a cart counter somewhere
+                    if (typeof updateCartCount === 'function') {
+                        updateCartCount();
+                    }
+                }
+            } catch (error) {
+                console.error("Error adding to cart:", error);
+                alert("Failed to add item to cart. Please try again.");
             }
         }
 
         function buyNow() {
             addToCart();
-            window.location.href = 'buy.html';
+            // Small delay to ensure cart is updated before redirect
+            setTimeout(() => {
+                window.location.href = 'buy.html';
+            }, 100);
         }
+
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             displayProductDetails();
             
-        
-            document.getElementById('quantity').addEventListener('input', function() {
-                let value = parseInt(this.value) || 1;
-                this.value = Math.max(1, Math.min(99, value));
-                updateQuantity(0);
-            });
+            const quantityInput = document.getElementById('quantity');
+            if (quantityInput) {
+                quantityInput.addEventListener('input', function() {
+                    let value = parseInt(this.value);
+                    if (isNaN(value) || value < 1) {
+                        this.value = 1;
+                    } else if (value > 99) {
+                        this.value = 99;
+                    }
+                    updateQuantity(0);
+                });
+            }
         });
     </script>
 </body>
