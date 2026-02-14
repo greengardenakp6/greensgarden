@@ -27,7 +27,7 @@
             --glass-border: rgba(255, 255, 255, 0.4);
             --shadow-card: 0 30px 60px rgba(0,0,0,0.12);
             --transition-premium: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --status-pending: #f59e0b;
+            --status-processing: #f59e0b; /* Using Amber for Processing */
             --status-shipped: #3b82f6;
             --status-delivered: #10b981;
         }
@@ -118,7 +118,9 @@
         .order-meta span { font-size: 0.85rem; color: var(--text-muted); }
         
         .status-badge { padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .status-pending { background: rgba(245, 158, 11, 0.15); color: var(--status-pending); }
+        
+        /* Status Colors */
+        .status-processing { background: rgba(245, 158, 11, 0.15); color: var(--status-processing); }
         .status-shipped { background: rgba(59, 130, 246, 0.15); color: var(--status-shipped); }
         .status-delivered { background: rgba(16, 185, 129, 0.15); color: var(--status-delivered); }
 
@@ -198,7 +200,8 @@
         <div class="toolbar">
             <div class="filter-group">
                 <button class="filter-btn active" onclick="filterOrders('all', event)">All</button>
-                <button class="filter-btn" onclick="filterOrders('Pending', event)">Pending</button>
+                <!-- Changed 'Pending' to 'Processing' to match screenshot -->
+                <button class="filter-btn" onclick="filterOrders('Processing', event)">Processing</button>
                 <button class="filter-btn" onclick="filterOrders('Shipped', event)">Shipped</button>
                 <button class="filter-btn" onclick="filterOrders('Delivered', event)">Delivered</button>
             </div>
@@ -232,18 +235,18 @@
                 { 
                     orderId: "ORD84521", 
                     date: new Date(Date.now() - 86400000).toISOString(), 
-                    status: "Shipped", 
-                    items: [{name: "Monstera Plant", price: "Rs. 1,299", image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=300", quantity: 1}], 
-                    total: "Rs. 1,299", 
+                    status: "Processing", // Changed to Processing
+                    items: [{name: "Winter Daisy Red Mixed Seed", price: "Rs. 150", image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=300", quantity: 1}], 
+                    total: "Rs. 150", 
                     paymentMethod: "UPI", 
                     customer: { name: "Demo User", address: "123 Garden St" } 
                 },
                 { 
                     orderId: "ORD12345", 
-                    date: new Date(Date.now() - 172800000).toISOString(), 
-                    status: "Delivered", 
-                    items: [{name: "Garden Tool Set", price: "Rs. 599", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=300", quantity: 1}], 
-                    total: "Rs. 599", 
+                    date: new Date().toISOString(), 
+                    status: "Processing", // Changed to Processing
+                    items: [{name: "Bitter Gourd - Karela Seed", price: "Rs. 99", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=300", quantity: 1}], 
+                    total: "Rs. 99", 
                     paymentMethod: "COD", 
                     customer: { name: "Demo User", address: "123 Garden St" } 
                 }
@@ -319,7 +322,6 @@
 
         // --- 3. ACTIONS ---
 
-        // REORDER FUNCTION
         function reorder(orderId) {
             const order = orders.find(o => o.orderId === orderId);
             if (!order) return;
@@ -327,12 +329,10 @@
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             
             order.items.forEach(item => {
-                // Check if item already exists in cart
                 const existingIndex = cart.findIndex(c => c.name === item.name);
                 if (existingIndex > -1) {
                     cart[existingIndex].quantity += 1;
                 } else {
-                    // Ensure all necessary properties exist
                     cart.push({
                         name: item.name,
                         price: item.price,
@@ -346,10 +346,8 @@
             alert('Items added to cart successfully!');
         }
 
-        // INVOICE FUNCTION (FIXED)
         function downloadInvoice(orderId) {
             try {
-                // Check if library is loaded
                 if (typeof window.jspdf === 'undefined') {
                     alert("Error: PDF Library failed to load. Check internet connection.");
                     return;
@@ -361,10 +359,8 @@
 
                 const doc = new jsPDF();
                 
-                // Helper function to sanitize text (replace Rupee symbol)
                 const cleanText = (text) => (text || "").replace(/₹/g, "Rs. ");
 
-                // Header
                 doc.setFontSize(22);
                 doc.setTextColor(23, 78, 30); 
                 doc.text("Green Garden", 105, 20, null, null, "center");
@@ -376,14 +372,12 @@
                 doc.setDrawColor(23, 78, 30);
                 doc.line(20, 35, 190, 35);
 
-                // Order Info
                 doc.setFontSize(12);
                 doc.setTextColor(0);
                 doc.text(`Invoice: #${order.orderId}`, 20, 45);
                 doc.text(`Date: ${new Date(order.date).toLocaleDateString()}`, 20, 52);
                 doc.text(`Status: ${order.status}`, 20, 59);
 
-                // Bill To
                 doc.text("Bill To:", 20, 75);
                 doc.setTextColor(100);
                 if(order.customer) {
@@ -393,18 +387,15 @@
                     doc.text("Guest", 20, 82);
                 }
 
-                // Items Table Header
                 doc.setTextColor(0);
                 doc.setFillColor(240, 240, 240);
                 doc.rect(20, 100, 170, 10, 'F');
                 doc.text("Item", 22, 107);
                 doc.text("Price", 160, 107);
 
-                // Items
                 let y = 117;
                 order.items.forEach(item => {
                     doc.setTextColor(50);
-                    // Clean text to avoid font errors
                     const name = cleanText(item.name);
                     const price = cleanText(item.price);
                     
@@ -414,14 +405,12 @@
                     y += 10;
                 });
 
-                // Total
                 doc.setDrawColor(200);
                 doc.line(20, y, 190, y);
                 doc.setFontSize(14);
                 doc.setTextColor(23, 78, 30);
                 doc.text(`Total: ${cleanText(order.total)}`, 160, y + 10);
 
-                // Footer
                 doc.setFontSize(10);
                 doc.setTextColor(150);
                 doc.text("Thank you for shopping with Green Garden!", 105, 280, null, null, "center");
@@ -430,11 +419,10 @@
             
             } catch (error) {
                 console.error("PDF Generation Error:", error);
-                alert("Failed to generate invoice. Please try again.");
+                alert("Failed to generate invoice.");
             }
         }
 
-        // TRACKING FUNCTION
         function openTracking(orderId) {
             const order = orders.find(o => o.orderId === orderId);
             if (!order) return;
@@ -444,8 +432,8 @@
             
             const steps = [
                 { title: "Order Placed", date: new Date(order.date).toLocaleString() },
-                { title: "Processing", date: "Completed" },
-                { title: "Shipped", date: order.status === "Pending" ? "Pending" : "In Transit" },
+                { title: "Processing", date: "Preparing your order" },
+                { title: "Shipped", date: order.status === "Processing" ? "Pending" : "In Transit" },
                 { title: "Delivered", date: order.status === "Delivered" ? "Arrived" : "Estimated: 3-5 Days" }
             ];
 
@@ -454,8 +442,9 @@
                 if (order.status === 'Delivered') statusClass = 'completed';
                 else if (order.status === 'Shipped' && i < 3) statusClass = 'completed';
                 else if (order.status === 'Shipped' && i === 2) statusClass = 'active';
-                else if (order.status === 'Pending' && i < 2) statusClass = 'completed';
-                else if (order.status === 'Pending' && i === 1) statusClass = 'active';
+                // Logic for Processing status
+                else if (order.status === 'Processing' && i < 2) statusClass = 'completed';
+                else if (order.status === 'Processing' && i === 1) statusClass = 'active';
 
                 return `
                     <div class="timeline-item ${statusClass}">
