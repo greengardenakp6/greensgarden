@@ -3,363 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Green Garden</title>
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- Fonts & Icons -->
+    <title>Secure Checkout | Green Garden</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --primary-green: #174e1e;
-            --primary-light: #2e7d32;
-            --accent-gold: #d4af37;
-            --error: #d32f2f;
-            --white: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --text-main: #1a1a1a;
-            --text-muted: #555;
-            --shadow-card: 0 30px 60px rgba(0,0,0,0.12);
-            --transition-premium: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --primary: #0f3d1a; --primary-light: #1b6b2b; --accent: #cfa364;
+            --surface: rgba(255, 255, 255, 0.96); --text-main: #0a1f0f; --text-muted: #5a6d5e;
+            --shadow-soft: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; background: #051008; color: var(--text-main); overflow-x: hidden; position: relative; }
+        
+        /* Animated Background */
+        .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(135deg, #052e16 0%, #0a3818 50%, #051008 100%); overflow: hidden; }
+        .bg-blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; animation: float 20s infinite; }
+        .blob-1 { top: -10%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, var(--primary-light), transparent); }
+        .blob-2 { bottom: -20%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, var(--accent), transparent); opacity: 0.2; animation-delay: -5s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -50px) scale(1.1); } }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Navbar */
+        .navbar { background: rgba(10, 31, 15, 0.8); backdrop-filter: blur(20px); padding: 1rem 3rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; }
+        .back-btn { display: flex; align-items: center; gap: 10px; text-decoration: none; color: white; font-weight: 600; padding: 10px 20px; border-radius: 50px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
+        .back-btn:hover { background: var(--accent); color: #000; }
+        .brand { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: white; }
+        .secure-badge { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            color: var(--text-main);
-            position: relative;
-            overflow-x: hidden;
-            padding-bottom: 100px;
-        }
+        /* Layout */
+        .container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; max-width: 1200px; margin: 0 auto; padding: 50px 30px; }
 
-        body::before {
-            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.1));
-            z-index: -1;
-        }
+        /* Cards */
+        .card { background: var(--surface); border-radius: 24px; box-shadow: var(--shadow-soft); padding: 35px; position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; color: var(--primary); }
+        .section-title i { color: var(--accent); }
 
-        /* --- ANIMATIONS --- */
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        /* Summary */
+        .summary-item { display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.04); }
+        .summary-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 12px; }
+        .item-info h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+        .item-price { margin-left: auto; font-weight: 700; color: var(--primary); }
+        .totals-grid { margin-top: 25px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; color: var(--text-muted); }
+        .total-final { font-size: 1.3rem; font-weight: 700; color: var(--text-main); font-family: 'Playfair Display', serif; }
 
-        /* --- NAVBAR & PROGRESS --- */
-        .navbar {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            padding: 1rem 3rem;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-            position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(255,255,255,0.6);
-            animation: slideDown 0.8s var(--transition-premium);
-        }
-        .nav-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-        .back-btn { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); font-weight: 600; padding: 8px 16px; border-radius: 50px; background: rgba(0,0,0,0.03); transition: all 0.3s; }
-        .back-btn:hover { background: var(--primary-green); color: white; }
-        .navbar-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primary-green); }
-        .secure-badge { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--primary-green); font-weight: 600; }
+        /* Form */
+        .form-group { margin-bottom: 20px; position: relative; }
+        .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #ccc; z-index: 2; pointer-events: none; }
+        .form-input { width: 100%; padding: 16px 16px 16px 48px; border: 2px solid #f0f0f0; background: #fff; border-radius: 12px; font-size: 0.95rem; transition: all 0.3s; }
+        .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(15, 61, 26, 0.05); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-        /* Progress Bar */
-        .progress-container { width: 100%; display: flex; justify-content: space-between; position: relative; }
-        .progress-container::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #e0e0e0; z-index: 0; transform: translateY(-50%); }
-        .progress-line { position: absolute; top: 50%; left: 0; width: 0%; height: 2px; background: var(--primary-green); z-index: 1; transform: translateY(-50%); transition: width 0.5s var(--transition-premium); }
-        .step { position: relative; z-index: 2; background: white; padding: 0 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .step-circle { width: 30px; height: 30px; border-radius: 50%; background: #e0e0e0; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; transition: all 0.4s; }
-        .step-text { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
-        .step.active .step-circle { background: var(--primary-green); box-shadow: 0 0 0 3px rgba(23, 78, 30, 0.2); }
-        .step.active .step-text { color: var(--primary-green); font-weight: 600; }
-        .step.completed .step-circle { background: var(--accent-gold); }
-        .step.completed .step-text { color: var(--primary-green); }
+        /* Payment */
+        .payment-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 25px; }
+        .payment-card { background: rgba(255,255,255,0.5); border: 2px solid #eee; border-radius: 12px; padding: 15px 10px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .payment-card.active { border-color: var(--primary); background: rgba(15, 61, 26, 0.05); }
+        .payment-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 5px; display: block; }
+        .payment-card span { font-weight: 600; font-size: 0.75rem; }
+        .payment-details-box { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.5s; background: #f9fafb; border-radius: 12px; }
+        .payment-details-box.active { max-height: 300px; opacity: 1; margin-bottom: 20px; padding: 20px; border: 1px solid #eee; }
 
-        /* --- LAYOUT --- */
-        .main-container { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; max-width: 1300px; margin: 0 auto; padding: 30px; }
+        /* Button */
+        .btn-place-order { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 15px 30px rgba(15, 61, 26, 0.3); }
+        .btn-place-order:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(15, 61, 26, 0.4); }
 
-        /* --- CARDS --- */
-        .card { background: var(--glass-bg); backdrop-filter: blur(25px); border-radius: 24px; border: 1px solid var(--glass-border); box-shadow: var(--shadow-card); padding: 30px; transition: transform 0.5s var(--transition-premium); animation: fadeUp 0.8s backwards; }
-        .section-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--primary-green); }
-        .section-title i { color: var(--accent-gold); }
-
-        /* --- URGENCY TIMER --- */
-        .urgency-banner { background: linear-gradient(90deg, var(--primary-green), var(--primary-light)); color: white; padding: 12px 20px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; font-weight: 500; font-size: 0.95rem; box-shadow: 0 5px 15px rgba(23, 78, 30, 0.3); animation: pulse 3s infinite; }
-        .timer { font-weight: 700; font-family: monospace; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 6px; }
-
-        /* --- ORDER SUMMARY --- */
-        .summary-item { display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .summary-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 10px; }
-        .item-info h4 { font-size: 0.95rem; margin-bottom: 4px; }
-        .item-info p { font-size: 0.8rem; color: var(--text-muted); }
-        .item-price { margin-left: auto; font-weight: 700; color: var(--primary-green); }
-
-        /* Order Bump */
-        .order-bump { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--accent-gold); border-radius: 12px; padding: 15px; margin: 20px 0; cursor: pointer; transition: all 0.3s; }
-        .order-bump:hover { transform: translateY(-2px); }
-        .bump-header { display: flex; align-items: center; gap: 15px; }
-        .bump-checkbox { width: 20px; height: 20px; accent-color: var(--primary-green); }
-        .bump-content h4 { color: var(--primary-green); font-size: 0.95rem; margin-bottom: 2px; }
-        .bump-content p { font-size: 0.8rem; color: var(--text-muted); }
-        .bump-price { margin-left: auto; font-weight: 700; color: var(--accent-gold); }
-
-        /* Promo Code */
-        .promo-group { display: flex; gap: 10px; margin-bottom: 5px; }
-        .promo-input { flex: 1; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; background: white; font-family: inherit; }
-        .btn-apply { padding: 0 20px; background: var(--text-main); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        .promo-hint { font-size: 0.8rem; color: var(--primary-green); margin-bottom: 15px; cursor: pointer; font-weight: 500; }
-        .promo-success { color: var(--primary-green); font-size: 0.85rem; margin-bottom: 15px; font-weight: 600; }
-
-        /* Summary Totals */
-        .totals-grid { display: grid; gap: 8px; font-size: 0.9rem; color: var(--text-muted); margin-top: 20px; }
-        .total-row { display: flex; justify-content: space-between; }
-        .total-final { border-top: 2px solid rgba(0,0,0,0.1); margin-top: 10px; padding-top: 10px; font-size: 1.2rem; font-weight: 700; color: var(--text-main); font-family: 'Playfair Display', serif; }
-
-        /* --- FORM STYLING --- */
-        .form-group { margin-bottom: 15px; position: relative; }
-        .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #aaa; z-index: 2; pointer-events: none; transition: color 0.3s; }
-        .form-input { width: 100%; padding: 14px 14px 14px 45px; border: 2px solid rgba(0,0,0,0.05); background: rgba(255, 255, 255, 0.8); border-radius: 10px; font-size: 0.95rem; transition: all 0.3s; outline: none; font-family: inherit; }
-        .form-input:focus { border-color: var(--primary-green); background: white; box-shadow: 0 0 0 3px rgba(23, 78, 30, 0.1); }
-        .form-input:focus + .input-icon { color: var(--primary-green); }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-        /* Trust Badges */
-        .trust-badges { display: flex; justify-content: space-between; margin-bottom: 25px; background: rgba(255,255,255,0.5); padding: 15px; border-radius: 12px; }
-        .trust-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; }
-        .trust-item i { color: var(--primary-green); font-size: 1.2rem; }
-        .trust-item span { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
-
-        /* Payment Methods */
-        .payment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
-        .payment-card { background: rgba(255,255,255,0.4); border: 2px solid transparent; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s; }
-        .payment-card:hover { transform: translateY(-2px); }
-        .payment-card.active { border-color: var(--primary-green); background: rgba(23, 78, 30, 0.05); }
-        .payment-card i { font-size: 1.5rem; color: var(--primary-green); margin-bottom: 5px; display: block; }
-        .payment-card span { font-weight: 600; font-size: 0.9rem; }
-
-        .wallet-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .wallet-btn { padding: 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; border: none; width: 100%; }
-        .apple-pay { background: black; color: white; }
-        .google-pay { background: white; color: black; border: 1px solid #ddd; }
-        .wallet-btn:hover { opacity: 0.9; transform: scale(1.02); }
-
-        /* Payment Details Box */
-        .payment-details-box { max-height: 0; overflow: hidden; opacity: 0; background: rgba(255,255,255,0.5); border-radius: 12px; margin-bottom: 0; transition: all 0.5s var(--transition-premium); }
-        .payment-details-box.active { max-height: 400px; opacity: 1; margin-bottom: 20px; padding: 20px; border: 1px solid rgba(0,0,0,0.05); }
-
-        /* Floating CTA (Mobile) */
-        .floating-cta { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 20px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 90; display: flex; justify-content: space-between; align-items: center; transform: translateY(100%); transition: transform 0.4s ease; }
+        /* Mobile CTA */
+        .floating-cta { position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px 30px; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); box-shadow: 0 -10px 40px rgba(0,0,0,0.1); z-index: 90; display: flex; justify-content: space-between; align-items: center; transform: translateY(100%); transition: transform 0.4s ease; }
         .floating-cta.visible { transform: translateY(0); }
-        .floating-price { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; }
-        .floating-btn { padding: 12px 30px; background: var(--primary-green); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
-
-        /* Primary Button */
-        .btn-place-order { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary-green), #2e7d32); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 10px 20px rgba(23, 78, 30, 0.2); position: relative; overflow: hidden; }
-        .btn-place-order::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
-        .btn-place-order:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(23, 78, 30, 0.3); }
-        .btn-place-order:hover::after { left: 100%; }
-        .btn-place-order:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
         /* Modal */
-        .success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 200; opacity: 0; visibility: hidden; transition: all 0.4s; }
+        .success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 61, 26, 0.9); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 200; opacity: 0; visibility: hidden; transition: all 0.4s; }
         .success-overlay.show { opacity: 1; visibility: visible; }
-        .success-modal { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%; transform: scale(0.8); transition: transform 0.5s var(--transition-premium); box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
+        .success-modal { background: white; padding: 40px; border-radius: 30px; text-align: center; max-width: 420px; width: 90%; transform: scale(0.8); transition: transform 0.5s; }
         .success-overlay.show .success-modal { transform: scale(1); }
-        .success-icon { width: 70px; height: 70px; background: #e8f5e9; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; color: var(--primary-green); font-size: 2rem; }
-        .success-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 10px; }
-        .success-desc { color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; }
-        .btn-done { width: 100%; padding: 14px; background: var(--primary-green); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; }
+        .success-icon { width: 80px; height: 80px; background: var(--primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 25px; color: white; font-size: 2rem; }
 
-        /* Responsive */
         @media (max-width: 900px) {
-            .main-container { grid-template-columns: 1fr; padding: 15px; }
-            .order-summary-card { order: 2; }
-            .checkout-form-card { order: 1; }
+            .container { grid-template-columns: 1fr; padding: 20px; }
+            .payment-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+    <div class="bg-container">
+        <div class="bg-blob blob-1"></div>
+        <div class="bg-blob blob-2"></div>
+    </div>
 
     <nav class="navbar">
-        <div class="nav-top">
-            <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
-            <div class="navbar-title">Secure Checkout</div>
-            <div class="secure-badge"><i class="fas fa-lock"></i> SSL Secured</div>
-        </div>
-        <div class="progress-container">
-            <div class="progress-line" id="progressLine"></div>
-            <div class="step active" id="step1"><div class="step-circle"><i class="fas fa-truck"></i></div><span class="step-text">Shipping</span></div>
-            <div class="step" id="step2"><div class="step-circle"><i class="fas fa-credit-card"></i></div><span class="step-text">Payment</span></div>
-            <div class="step" id="step3"><div class="step-circle"><i class="fas fa-check"></i></div><span class="step-text">Confirm</span></div>
-        </div>
+        <a href="cart.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+        <div class="brand">Secure Checkout</div>
+        <div class="secure-badge"><i class="fas fa-lock"></i> SSL Protected</div>
     </nav>
 
-    <div class="main-container">
-        
-        <!-- LEFT: Order Summary -->
-        <div class="card order-summary-card">
-            <h3 class="section-title"><i class="fas fa-leaf"></i> Your Order</h3>
-            
-            <div class="urgency-banner">
-                <span><i class="fas fa-shipping-fast"></i> Order in next <span id="timer">10:59</span></span>
-                <span style="font-size:0.8rem; opacity:0.9; text-align:right;">for Same-Day<br>Dispatch</span>
-            </div>
+    <div class="container">
+        <div class="card summary-card" style="animation: fadeIn 0.8s ease backwards;">
+            <h3 class="section-title"><i class="fas fa-seedling"></i> Your Order</h3>
+            <div id="summaryItems"></div>
 
-            <div id="summaryItems">
-                <!-- Items loaded dynamically -->
-            </div>
-
-            <label class="order-bump" onchange="toggleBump()">
-                <div class="bump-header">
-                    <input type="checkbox" class="bump-checkbox" id="bumpCheck">
-                    <div class="bump-content">
-                        <h4><i class="fas fa-seedling"></i> Add Premium Plant Food</h4>
-                        <p>Essential nutrients for growth.</p>
-                    </div>
-                    <div class="bump-price">+₹199</div>
+            <label class="order-bump" onchange="toggleBump()" style="display:flex; align-items:center; gap:15px; background:rgba(207,163,100,0.08); border:1px solid rgba(207,163,100,0.3); border-radius:16px; padding:20px; margin:25px 0; cursor:pointer;">
+                <input type="checkbox" id="bumpCheck" style="display:none;">
+                <i class="fas fa-flask" style="font-size:1.5rem; color:var(--accent);"></i>
+                <div style="flex:1;">
+                    <h4 style="color:var(--primary); font-size:0.95rem; margin-bottom:2px; font-weight:700;">Add Premium Fertilizer</h4>
+                    <p style="font-size:0.8rem; color:var(--text-muted);">Essential nutrients for growth.</p>
                 </div>
+                <div style="font-weight:700; color:var(--accent); font-size:1.1rem;">+₹199</div>
             </label>
 
-            <div class="promo-group">
-                <input type="text" id="promoInput" class="promo-input" placeholder="Promo Code">
-                <button class="btn-apply" onclick="applyPromo()">Apply</button>
+            <div style="display:flex; gap:10px; margin-bottom:15px;">
+                <input type="text" id="promoInput" class="form-input" style="padding-left:15px;" placeholder="Promo Code">
+                <button style="padding:0 20px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer;" onclick="applyPromo()">Apply</button>
             </div>
-            <div class="promo-hint" onclick="document.getElementById('promoInput').value='GREEN10'; applyPromo();">
-                <i class="fas fa-tag"></i> Try code: <strong>GREEN10</strong> for 10% OFF
-            </div>
-            <div id="promoMsg" class="promo-success" style="display:none;"></div>
+            <div id="promoMsg" style="height: 20px; font-size:0.85rem; font-weight:600; margin-bottom:15px;"></div>
 
             <div class="totals-grid">
                 <div class="total-row"><span>Subtotal</span><span id="subtotalDisplay">₹0</span></div>
-                <div class="total-row" id="discountRow" style="display:none;"><span>Discount</span><span id="discountDisplay">-₹0</span></div>
-                <div class="total-row"><span>Shipping</span><span style="color: var(--primary-green); font-weight: 600;">FREE</span></div>
+                <div class="total-row" id="discountRow" style="display:none;"><span>Discount</span><span id="discountDisplay" style="color:var(--primary);">-₹0</span></div>
+                <div class="total-row"><span>Shipping</span><span style="color: var(--primary); font-weight: 600;">FREE</span></div>
                 <div class="total-row total-final"><span>Total</span><span id="totalDisplay">₹0</span></div>
             </div>
         </div>
 
-        <!-- RIGHT: Checkout Form -->
-        <div class="card checkout-form-card">
-            
-            <div class="trust-badges">
-                <div class="trust-item"><i class="fas fa-shield-alt"></i><span>Buyer Protection</span></div>
-                <div class="trust-item"><i class="fas fa-undo"></i><span>30-Day Guarantee</span></div>
-                <div class="trust-item"><i class="fas fa-award"></i><span>100k+ Happy Plants</span></div>
+        <div class="card form-card" style="animation: fadeIn 0.8s ease 0.2s backwards;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:30px; background:rgba(15,61,26,0.03); padding:15px; border-radius:12px;">
+                <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; font-size:0.7rem; font-weight:700; color:var(--text-muted);"><i class="fas fa-shield-alt" style="color:var(--primary); font-size:1.2rem;"></i><span>Protection</span></div>
+                <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; font-size:0.7rem; font-weight:700; color:var(--text-muted);"><i class="fas fa-undo" style="color:var(--primary); font-size:1.2rem;"></i><span>Guarantee</span></div>
+                <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; font-size:0.7rem; font-weight:700; color:var(--text-muted);"><i class="fas fa-award" style="color:var(--primary); font-size:1.2rem;"></i><span>Quality</span></div>
             </div>
 
-            <div class="step-content">
-                <h3 class="section-title"><i class="fas fa-shipping-fast"></i> Shipping Address</h3>
+            <div>
+                <h3 class="section-title"><i class="fas fa-truck"></i> Shipping Details</h3>
                 <div class="grid-2">
                     <div class="form-group">
                         <input type="text" id="full-name" class="form-input" placeholder="Full Name" required>
                         <i class="fas fa-user input-icon"></i>
                     </div>
                     <div class="form-group">
-                        <input type="tel" id="phone" class="form-input" placeholder="Phone (10 digits)" required>
+                        <input type="tel" id="phone" class="form-input" placeholder="Phone Number" required>
                         <i class="fas fa-phone-alt input-icon"></i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="address" class="form-input" placeholder="Street Address" required>
+                    <input type="text" id="address" class="form-input" placeholder="Delivery Address" required>
                     <i class="fas fa-map-marker-alt input-icon"></i>
                 </div>
             </div>
 
-            <div class="step-content" style="margin-top: 30px;">
-                <h3 class="section-title"><i class="fas fa-credit-card"></i> Payment Method</h3>
-                
-                <div class="wallet-buttons">
-                    <button class="wallet-btn apple-pay" onclick="payWithWallet('apple')"><i class="fab fa-apple"></i> Pay</button>
-                    <button class="wallet-btn google-pay" onclick="payWithWallet('google')"><i class="fab fa-google"></i> Pay</button>
-                </div>
-
-                <div style="text-align:center; margin: 15px 0; color:#999; font-size:0.8rem;">OR PAY WITH CARD</div>
-
+            <div style="margin-top: 30px;">
+                <h3 class="section-title"><i class="fas fa-wallet"></i> Payment Method</h3>
                 <div class="payment-grid">
-                    <div class="payment-card" onclick="selectPayment('creditcard', this)">
-                        <i class="fas fa-credit-card-blank"></i><span>Card</span>
-                    </div>
-                    <div class="payment-card" onclick="selectPayment('upi', this)">
-                        <i class="fas fa-qrcode"></i><span>UPI</span>
-                    </div>
-                    <div class="payment-card" onclick="selectPayment('netbanking', this)">
-                        <i class="fas fa-university"></i><span>Net Banking</span>
-                    </div>
-                    <div class="payment-card" onclick="selectPayment('cod', this)">
-                        <i class="fas fa-money-bill-wave"></i><span>COD</span>
-                    </div>
+                    <div class="payment-card" onclick="selectPayment('creditcard', this)"><i class="fas fa-credit-card"></i><span>Card</span></div>
+                    <div class="payment-card" onclick="selectPayment('upi', this)"><i class="fas fa-qrcode"></i><span>UPI</span></div>
+                    <div class="payment-card" onclick="selectPayment('netbanking', this)"><i class="fas fa-university"></i><span>Bank</span></div>
+                    <div class="payment-card" onclick="selectPayment('cod', this)"><i class="fas fa-money-bill-wave"></i><span>COD</span></div>
                 </div>
 
                 <div id="payment-fields">
                     <div id="creditcard-fields" class="payment-details-box">
-                        <div class="form-group">
-                            <input type="text" id="card-number" class="form-input" placeholder="Card Number" maxlength="19">
-                            <i class="fas fa-credit-card input-icon"></i>
-                        </div>
+                        <div class="form-group"><input type="text" id="card-number" class="form-input" placeholder="Card Number" maxlength="19"><i class="fas fa-credit-card input-icon"></i></div>
                         <div class="grid-2">
-                            <div class="form-group">
-                                <input type="text" id="card-expiry" class="form-input" placeholder="MM/YY" maxlength="5">
-                                <i class="fas fa-calendar input-icon"></i>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" id="card-cvv" class="form-input" placeholder="CVV" maxlength="4">
-                                <i class="fas fa-lock input-icon"></i>
-                            </div>
+                            <div class="form-group"><input type="text" id="card-expiry" class="form-input" placeholder="MM/YY" maxlength="5"><i class="fas fa-calendar input-icon"></i></div>
+                            <div class="form-group"><input type="password" id="card-cvv" class="form-input" placeholder="CVV" maxlength="4"><i class="fas fa-lock input-icon"></i></div>
                         </div>
                     </div>
                     <div id="upi-fields" class="payment-details-box">
-                        <div class="form-group">
-                            <input type="text" id="upi-id" class="form-input" placeholder="Enter UPI ID (name@upi)">
-                            <i class="fas fa-at input-icon"></i>
-                        </div>
+                        <div class="form-group"><input type="text" id="upi-id" class="form-input" placeholder="Enter UPI ID (name@upi)"><i class="fas fa-at input-icon"></i></div>
                     </div>
                     <div id="netbanking-fields" class="payment-details-box">
-                        <select id="bank-name" class="form-input" style="padding-left: 45px; cursor: pointer;">
-                            <option value="">Select Bank</option>
-                            <option value="SBI">State Bank of India</option>
-                            <option value="HDFC">HDFC Bank</option>
-                            <option value="ICICI">ICICI Bank</option>
-                            <option value="Axis">Axis Bank</option>
-                        </select>
-                        <i class="fas fa-university input-icon"></i>
+                        <div class="form-group">
+                            <select id="bank-name" class="form-input" style="padding-left: 48px; cursor: pointer;">
+                                <option value="">Select Bank</option>
+                                <option value="SBI">State Bank of India</option>
+                                <option value="HDFC">HDFC Bank</option>
+                            </select>
+                            <i class="fas fa-university input-icon"></i>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <button class="btn-place-order" id="placeOrderBtn" onclick="placeOrder()">
-                <span>Place Order</span>
-                <i class="fas fa-arrow-right"></i>
+                <span>Pay Securely</span> <i class="fas fa-lock"></i>
             </button>
         </div>
     </div>
 
     <div class="floating-cta" id="floatingCta">
-        <div class="floating-price">
-            <span style="font-size: 0.8rem; color: #777; display:block;">Total Amount</span>
-            <span id="floatingTotal">₹0</span>
+        <div>
+            <span style="font-size: 0.8rem; color: #777; display:block;">Total Payable</span>
+            <span id="floatingTotal" style="font-size:1.2rem; font-weight:800; color:var(--primary);">₹0</span>
         </div>
-        <button class="floating-btn" onclick="document.getElementById('placeOrderBtn').click()">Pay Now</button>
+        <button class="btn-place-order" style="width:auto; padding:12px 30px; margin:0;" onclick="document.getElementById('placeOrderBtn').click()">Pay Now</button>
     </div>
 
     <div id="successModal" class="success-overlay">
         <div class="success-modal">
             <div class="success-icon"><i class="fas fa-check"></i></div>
-            <h2 class="success-title">Order Confirmed!</h2>
-            <p class="success-desc">Thank you for shopping with Green Garden.</p>
-            <p style="font-weight: 600; color: var(--text-main); margin-bottom: 20px;">Order ID: <span id="orderIdDisplay" style="color: var(--primary-green);">#ORD12345</span></p>
-            <button onclick="window.location.href='home.html'" class="btn-done">Back to Home</button>
+            <h2 style="font-family:'Playfair Display'; font-size:1.8rem; margin-bottom:10px; color:var(--primary);">Order Confirmed!</h2>
+            <p style="color:var(--text-muted); margin-bottom:20px;">Your plants are getting ready for their journey.</p>
+            <p style="font-weight: 700; margin-bottom: 20px;">Order ID: <span id="orderIdDisplay" style="color: var(--accent);">#ORD12345</span></p>
+            <button onclick="window.location.href='home.html'" style="width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:700;">Back to Home</button>
         </div>
     </div>
+    <style>@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }</style>
 
     <script>
-        // --- STATE ---
         let cartItems = [];
         let selectedPayment = null;
         let subtotal = 0;
@@ -367,16 +218,13 @@
         let bumpAdded = false;
         const BUMP_PRICE = 199;
 
-        // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             loadCart();
-            startTimer();
             setupInputMasking();
             setupFloatingCTA();
             loadSavedForm();
         });
 
-        // --- LOAD CART & CALCULATE ---
         function loadCart() {
             cartItems = JSON.parse(localStorage.getItem('cart')) || [];
             const container = document.getElementById('summaryItems');
@@ -384,77 +232,46 @@
             subtotal = 0;
 
             if (cartItems.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#777; padding: 20px;">Your cart is empty. <a href="products.html" style="color:var(--primary-green)">Shop now</a></p>';
+                container.innerHTML = '<p style="text-align:center; color:#777; padding: 40px 20px; grid-column: 1/-1;">Your cart is empty. <a href="products.html" style="color:var(--primary)">Shop now</a></p>';
                 document.getElementById('placeOrderBtn').disabled = true;
-                document.querySelector('.floating-btn').disabled = true;
                 return;
             }
 
             cartItems.forEach(item => {
-                // Parse price safely
-                let priceNum = 0;
-                if(item.price) {
-                     // Remove currency symbols and commas
-                     priceNum = parseFloat(item.price.toString().replace(/[^0-9.]/g, ''));
-                }
-                if (isNaN(priceNum)) priceNum = 0;
-                
+                let priceNum = item.priceNumber || parseFloat(item.price.replace(/[^0-9.]/g, '')) || 0;
                 subtotal += priceNum * (item.quantity || 1);
 
                 const div = document.createElement('div');
                 div.className = 'summary-item';
                 div.innerHTML = `
-                    <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.name}">
-                    <div class="item-info">
-                        <h4>${item.name}</h4>
-                        <p>Qty: ${item.quantity || 1}</p>
-                    </div>
-                    <div class="item-price">${item.price}</div>
-                `;
+                    <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60'">
+                    <div class="item-info"><h4>${item.name}</h4><p>Qty: ${item.quantity || 1}</p></div>
+                    <div class="item-price">₹${priceNum.toLocaleString()}</div>`;
                 container.appendChild(div);
             });
-
             updateTotals();
         }
 
-        // --- URGENCY TIMER ---
-        function startTimer() {
-            let time = 659; 
-            const display = document.getElementById('timer');
-            const timerInterval = setInterval(() => {
-                const minutes = Math.floor(time / 60);
-                const seconds = time % 60;
-                display.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-                if (--time < 0) {
-                    clearInterval(timerInterval);
-                    display.textContent = "EXPIRED";
-                }
-            }, 1000);
-        }
-
-        // --- ORDER BUMP & PROMO ---
         function toggleBump() {
-            bumpAdded = document.getElementById('bumpCheck').checked;
+            bumpAdded = !bumpAdded;
+            const label = document.querySelector('.order-bump');
+            label.style.background = bumpAdded ? 'rgba(207, 163, 100, 0.15)' : 'rgba(207, 163, 100, 0.08)';
             updateTotals();
         }
 
         function applyPromo() {
             const code = document.getElementById('promoInput').value.toUpperCase();
             const msg = document.getElementById('promoMsg');
-            const row = document.getElementById('discountRow');
-
             if (code === 'GREEN10') {
                 discount = Math.round(subtotal * 0.10);
-                msg.innerHTML = '<i class="fas fa-check-circle"></i> Code Applied! 10% OFF';
-                msg.style.color = 'var(--primary-green)';
-                msg.style.display = 'block';
-                row.style.display = 'flex';
+                msg.innerHTML = '<i class="fas fa-check-circle"></i> Code Applied!';
+                msg.style.color = 'var(--primary)';
+                document.getElementById('discountRow').style.display = 'flex';
             } else {
                 discount = 0;
                 msg.innerHTML = '<i class="fas fa-times-circle"></i> Invalid Code';
-                msg.style.color = 'var(--error)';
-                msg.style.display = 'block';
-                row.style.display = 'none';
+                msg.style.color = '#e74c3c';
+                document.getElementById('discountRow').style.display = 'none';
             }
             updateTotals();
         }
@@ -462,94 +279,54 @@
         function updateTotals() {
             let total = subtotal + (bumpAdded ? BUMP_PRICE : 0);
             let finalTotal = total - discount;
-
             document.getElementById('subtotalDisplay').textContent = `₹${total.toLocaleString()}`;
             document.getElementById('discountDisplay').textContent = `-₹${discount.toLocaleString()}`;
             document.getElementById('totalDisplay').textContent = `₹${finalTotal.toLocaleString()}`;
-            document.getElementById('floatingTotal').textContent = `₹${finalTotal.toLocaleString()}`;
+            const ft = document.getElementById('floatingTotal');
+            if(ft) ft.textContent = `₹${finalTotal.toLocaleString()}`;
         }
 
-        // --- PAYMENT LOGIC ---
         function selectPayment(method, element) {
             selectedPayment = method;
             document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
             element.classList.add('active');
-            
             document.querySelectorAll('.payment-details-box').forEach(d => d.classList.remove('active'));
-            const detailBox = document.getElementById(method + '-fields');
-            if(detailBox) detailBox.classList.add('active');
-            
-            // Progress bar update
-            document.getElementById('progressLine').style.width = '50%';
-            document.querySelectorAll('.step')[1].classList.add('active');
+            const box = document.getElementById(method + '-fields');
+            if(box) box.classList.add('active');
         }
 
-        function payWithWallet(type) {
-            if(validateForm()) {
-                processOrder(type);
-            }
-        }
-
-        // --- VALIDATION & PROCESSING ---
         function validateForm() {
             const name = document.getElementById("full-name").value;
             const phone = document.getElementById("phone").value;
             const address = document.getElementById("address").value;
-
-            if (!name || !phone || !address) {
-                alert("Please fill in all shipping details.");
-                return false;
-            }
-            if (phone.length < 10) {
-                alert("Please enter a valid phone number.");
-                return false;
-            }
-            if (cartItems.length === 0) {
-                alert("Your cart is empty.");
-                return false;
-            }
+            if (!name || !phone || !address) { alert("Please fill in all shipping details."); return false; }
+            if (phone.length < 10) { alert("Please enter a valid phone number."); return false; }
             return true;
         }
 
         function placeOrder() {
             if(!validateForm()) return;
+            if (!selectedPayment) { alert("Please select a payment method."); return; }
             
-            if (!selectedPayment) {
-                alert("Please select a payment method.");
-                return;
-            }
-            processOrder(selectedPayment);
-        }
-
-        function processOrder(method) {
             const btn = document.getElementById('placeOrderBtn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             
-            // Update Progress Bar
-            document.getElementById('progressLine').style.width = '100%';
-            const steps = document.querySelectorAll('.step');
-            steps[0].classList.add('completed');
-            steps[1].classList.add('completed');
-            steps[2].classList.add('active');
-
             setTimeout(() => {
                 const orderId = "ORD" + Math.floor(Math.random() * 100000);
                 document.getElementById('orderIdDisplay').innerText = orderId;
                 
-                // Save order
                 const order = {
                     id: orderId,
                     items: cartItems,
                     total: document.getElementById('totalDisplay').textContent,
-                    date: new Date().toDateString(),
-                    status: "Processing"
+                    date: new Date().toISOString(),
+                    status: "Processing",
+                    customer: { name: document.getElementById("full-name").value, address: document.getElementById("address").value }
                 };
                 let orders = JSON.parse(localStorage.getItem("orders")) || [];
                 orders.push(order);
                 localStorage.setItem("orders", JSON.stringify(orders));
-
-                // Clear cart
                 localStorage.removeItem('cart');
 
                 document.getElementById('successModal').classList.add('show');
@@ -557,19 +334,11 @@
             }, 2000);
         }
 
-        // --- UTILITIES ---
         function setupInputMasking() {
-            document.getElementById('phone').addEventListener('input', function (e) {
-                let x = e.target.value.replace(/\D/g, '').match(/(\d{0,5})(\d{0,5})/);
-                e.target.value = x[1] + (x[2] ? ' ' + x[2] : '');
-            });
-            document.getElementById('card-number').addEventListener('input', function (e) {
+            document.getElementById('phone').addEventListener('input', (e) => e.target.value = e.target.value.replace(/\D/g, '').substring(0, 10));
+            document.getElementById('card-number').addEventListener('input', (e) => {
                 let x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
                 e.target.value = x[1] + (x[2] ? ' ' + x[2] : '') + (x[3] ? ' ' + x[3] : '') + (x[4] ? ' ' + x[4] : '');
-            });
-            document.getElementById('card-expiry').addEventListener('input', function (e) {
-                let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})/);
-                e.target.value = x[1] + (x[2] ? '/' + x[2] : '');
             });
         }
 
@@ -587,8 +356,7 @@
             const floatingCta = document.getElementById('floatingCta');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (!entry.isIntersecting) floatingCta.classList.add('visible');
-                    else floatingCta.classList.remove('visible');
+                    floatingCta.classList.toggle('visible', !entry.isIntersecting);
                 });
             }, { threshold: 0.1 });
             observer.observe(btn);
