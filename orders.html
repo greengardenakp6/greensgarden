@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * {
@@ -221,6 +222,112 @@
             100% { transform: scale(1); }
         }
 
+        /* Admin Badge */
+        .admin-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a1a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .admin-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 40, 20, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            max-width: 400px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 40px 70px rgba(0, 0, 0, 0.5);
+            animation: modalSlide 0.4s ease;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: #1a4d2e;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #6a9a6a;
+            font-size: 14px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #e5f0dd;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #22863a;
+            box-shadow: 0 0 0 3px rgba(34, 134, 58, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #22863a, #22c55e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(34, 134, 58, 0.3);
+        }
+
+        .login-error {
+            color: #dc2626;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
         /* Main Container */
         .container {
             max-width: 1000px;
@@ -238,6 +345,11 @@
             border-radius: 32px;
             border: 1px solid rgba(200, 220, 180, 0.5);
             box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .page-title {
@@ -245,12 +357,6 @@
             font-size: 2.2rem;
             font-weight: 700;
             color: #1a4d2e;
-            margin-bottom: 8px;
-        }
-
-        .page-subtitle {
-            color: #5a8a5a;
-            font-size: 0.95rem;
         }
 
         /* Order Card Premium */
@@ -568,9 +674,21 @@
             box-shadow: 0 12px 24px -6px rgba(34, 134, 58, 0.5);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #16a34a, #22c55e);
+        .btn-scanner {
+            background: linear-gradient(135deg, #7b2eda, #9f4ef5);
             color: white;
+            box-shadow: 0 6px 18px -4px rgba(123, 46, 218, 0.4);
+        }
+
+        .btn-scanner:hover {
+            background: linear-gradient(145deg, #6723b8, #7b2eda);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 24px -6px rgba(123, 46, 218, 0.5);
+        }
+
+        .btn-scanner:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* Empty State */
@@ -626,7 +744,7 @@
             box-shadow: 0 12px 28px -4px rgba(34, 134, 58, 0.5);
         }
 
-        /* ===== PREMIUM CANVA-STYLE INVOICE MODAL ===== */
+        /* ===== PREMIUM INVOICE MODAL - EXACTLY LIKE SCREENSHOT ===== */
         .invoice-modal {
             position: fixed;
             top: 0;
@@ -645,151 +763,69 @@
 
         .invoice-card {
             background: white;
-            max-width: 650px;
+            max-width: 600px;
             width: 100%;
-            border-radius: 24px;
+            border-radius: 8px;
             padding: 35px;
             box-shadow: 0 40px 70px rgba(0, 0, 0, 0.3);
             position: relative;
             font-family: 'Inter', sans-serif;
             animation: modalSlide 0.4s ease;
-            border: 1px solid rgba(200, 220, 180, 0.5);
-        }
-
-        @keyframes modalSlide {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .invoice-close {
             position: absolute;
-            top: 20px;
-            right: 25px;
+            top: 15px;
+            right: 20px;
             font-size: 24px;
             cursor: pointer;
             color: #666;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: 0.2s;
-            background: #f5f5f5;
         }
 
         .invoice-close:hover {
-            background: #22863a;
-            color: white;
+            background: #f0f0f0;
+            color: #333;
         }
 
-        /* Premium Canva-style header with decorative elements */
         .invoice-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #eaeaea;
-            position: relative;
-        }
-
-        .invoice-header::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #22863a, #4ade80);
-            border-radius: 2px;
-        }
-
-        .invoice-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .invoice-logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #22863a, #22c55e);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 8px 16px rgba(34, 134, 58, 0.2);
-        }
-
-        .invoice-brand-text h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: #1a4d2e;
-            font-weight: 700;
-        }
-
-        .invoice-brand-text span {
-            font-size: 0.7rem;
-            color: #6a9a6a;
-            letter-spacing: 1px;
-        }
-
-        .invoice-scanner-badge {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: #1a1a1a;
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
-        }
-
-        .invoice-title-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            text-align: left;
             margin-bottom: 25px;
         }
 
-        .invoice-title-section h1 {
-            font-size: 32px;
+        .invoice-header h1 {
+            font-size: 28px;
             font-weight: 700;
-            color: #1a4d2e;
-            font-family: 'Playfair Display', serif;
+            color: #333;
+            margin-bottom: 5px;
         }
 
         .invoice-number {
-            color: #6a9a6a;
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .invoice-date {
+            color: #666;
             font-size: 14px;
         }
 
-        .invoice-details-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            background: #f8fcf5;
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 25px;
+        .invoice-to {
+            margin: 20px 0;
+            font-size: 14px;
+            color: #333;
         }
 
-        .invoice-detail-item label {
-            font-size: 0.7rem;
-            color: #6a9a6a;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .invoice-detail-item p {
-            font-weight: 600;
-            color: #1a4d2e;
-            margin-top: 4px;
+        .invoice-to p {
+            margin: 4px 0;
         }
 
         .invoice-table {
@@ -801,15 +837,15 @@
 
         .invoice-table th {
             text-align: left;
-            padding: 12px 8px;
-            border-bottom: 2px solid #1a4d2e;
-            color: #1a4d2e;
+            padding: 10px 5px;
+            border-bottom: 2px solid #333;
+            color: #333;
             font-weight: 600;
         }
 
         .invoice-table td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #eaeaea;
+            padding: 8px 5px;
+            border-bottom: 1px solid #ddd;
             color: #555;
         }
 
@@ -820,9 +856,9 @@
 
         .invoice-summary {
             margin: 20px 0;
-            padding: 20px;
-            background: #f8fcf5;
-            border-radius: 12px;
+            padding: 15px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
         }
 
         .summary-row {
@@ -834,122 +870,61 @@
         }
 
         .summary-row.total {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            color: #1a4d2e;
+            color: #333;
             margin-top: 8px;
             padding-top: 8px;
-            border-top: 2px dashed #c8e0b8;
+            border-top: 1px dashed #ddd;
         }
 
         .company-details {
             margin: 20px 0;
-            padding: 20px;
-            background: linear-gradient(145deg, #f8fcf5, #ffffff);
-            border-radius: 12px;
-            border-left: 4px solid #22863a;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
         }
 
         .company-details p {
-            margin: 4px 0;
-            color: #555;
+            margin: 2px 0;
+        }
+
+        .company-details a {
+            color: #22863a;
+            text-decoration: none;
         }
 
         .payment-info {
             margin: 20px 0;
-            padding: 20px;
-            background: #f8fcf5;
-            border-radius: 12px;
+            font-size: 14px;
+            color: #555;
         }
 
         .payment-info h3 {
             font-size: 16px;
             font-weight: 600;
-            color: #1a4d2e;
+            color: #333;
             margin-bottom: 10px;
         }
 
         .payment-info p {
-            margin: 6px 0;
-            color: #555;
+            margin: 4px 0;
         }
 
         .terms {
             margin: 20px 0;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 8px;
             font-size: 12px;
             color: #777;
-            font-style: italic;
+            line-height: 1.5;
         }
 
-        .scanner-section {
-            margin: 20px 0;
-            padding: 20px;
-            background: linear-gradient(145deg, #e8f3e0, #ffffff);
-            border-radius: 16px;
-            border: 1px dashed #22863a;
-        }
-
-        .scanner-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 15px 0;
-        }
-
-        .scanner-step {
-            flex: 1 1 200px;
-            padding: 12px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        }
-
-        .scanner-step .step-number {
-            width: 24px;
-            height: 24px;
-            background: #22863a;
-            color: white;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            margin-right: 8px;
-        }
-
-        .scanner-step h4 {
+        .terms h3 {
             font-size: 14px;
-            color: #1a4d2e;
-            margin-bottom: 5px;
-        }
-
-        .scanner-step p {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .scan-btn {
-            background: linear-gradient(135deg, #22863a, #22c55e);
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 50px;
             font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            box-shadow: 0 8px 20px rgba(34, 134, 58, 0.3);
-        }
-
-        .scan-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(34, 134, 58, 0.4);
+            color: #333;
+            margin-bottom: 5px;
         }
 
         .download-btn {
@@ -957,7 +932,7 @@
             color: white;
             border: none;
             padding: 14px 24px;
-            border-radius: 50px;
+            border-radius: 6px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
@@ -973,6 +948,99 @@
         .download-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(34, 134, 58, 0.3);
+        }
+
+        /* Scanner Section in Invoice */
+        .scanner-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(145deg, #e8f3e0, #ffffff);
+            border-radius: 12px;
+            border: 1px solid #22863a;
+        }
+
+        .scanner-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .scanner-step {
+            flex: 1 1 200px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .scanner-step .step-number {
+            width: 22px;
+            height: 22px;
+            background: #22863a;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            margin-right: 6px;
+        }
+
+        .scanner-step h4 {
+            font-size: 13px;
+            color: #1a4d2e;
+            margin-bottom: 3px;
+        }
+
+        .scanner-step p {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .scan-result-table {
+            width: 100%;
+            margin: 10px 0;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .scan-result-table th {
+            background: #22863a;
+            color: white;
+            padding: 6px;
+            text-align: left;
+        }
+
+        .scan-result-table td {
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .scanner-btn {
+            background: linear-gradient(135deg, #7b2eda, #9f4ef5);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .scanner-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(123, 46, 218, 0.3);
+        }
+
+        .scanner-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* Track Modal */
@@ -1186,14 +1254,8 @@
                 justify-content: center;
             }
 
-            .invoice-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-
-            .invoice-details-grid {
-                grid-template-columns: 1fr;
+            .invoice-card {
+                padding: 20px;
             }
         }
 
@@ -1206,8 +1268,8 @@
                 padding: 10px 14px;
             }
 
-            .invoice-card {
-                padding: 20px;
+            .scanner-steps {
+                flex-direction: column;
             }
         }
     </style>
@@ -1243,8 +1305,26 @@
                 <span>Cart</span>
                 <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
             </a>
+            <div class="admin-badge" onclick="showLoginModal()">
+                <i class="fas fa-shield-alt"></i>
+                <span>Admin</span>
+            </div>
         </div>
     </nav>
+
+    <!-- Login Modal (Admin Only) -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Admin Access</h2>
+                <p>Enter credentials to use scanner</p>
+            </div>
+            <input type="text" id="username" class="login-input" placeholder="Username" value="admin">
+            <input type="password" id="password" class="login-input" placeholder="Password" value="admin123">
+            <button class="login-btn" onclick="adminLogin()">Login</button>
+            <div id="loginError" class="login-error">Invalid credentials</div>
+        </div>
+    </div>
 
     <!-- Main Container -->
     <div class="container">
@@ -1280,6 +1360,9 @@
     <script>
         // ========== INITIALIZATION ==========
         const { jsPDF } = window.jspdf;
+
+        // Admin state
+        let isAdminLoggedIn = false;
 
         // Scroll shrink effect
         window.addEventListener('scroll', function() {
@@ -1323,31 +1406,36 @@
             }, 3000);
         }
 
+        // ========== ADMIN LOGIN ==========
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function adminLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple hardcoded credentials (in real app, use secure backend)
+            if (username === 'admin' && password === 'admin123') {
+                isAdminLoggedIn = true;
+                document.getElementById('loginModal').style.display = 'none';
+                showToast('✅ Admin access granted', 'shield-alt');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        // Close login modal when clicking outside
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
         // ========== HELPER FUNCTIONS ==========
         function formatDate(dateStr) {
             if (!dateStr) return 'N/A';
             return dateStr;
-        }
-
-        function generateOrderId() {
-            return 'GG' + Date.now().toString(36).toUpperCase();
-        }
-
-        // ========== SIMULATED INVENTORY ==========
-        let inventory = JSON.parse(localStorage.getItem('inventory')) || {
-            'Rose Plant': 10,
-            'Tulsi Plant': 8,
-            'Tomato Seeds': 15,
-            'Default': 20
-        };
-
-        function updateInventory(item, quantity) {
-            if (!inventory[item]) {
-                inventory[item] = 0;
-            }
-            inventory[item] += quantity;
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            showToast(`📦 Stock updated: ${item} +${quantity}`, 'box');
         }
 
         // ========== REAL-TIME STATUS SIMULATION ==========
@@ -1413,7 +1501,134 @@
             showToast(`${addedCount} item${addedCount > 1 ? 's' : ''} added to cart!`, 'shopping-cart');
         }
 
-        // ========== PDF INVOICE GENERATION ==========
+        // ========== SCANNER FUNCTION - ADMIN ONLY, SAVES TO EXCEL ==========
+        function scanBill(order) {
+            if (!isAdminLoggedIn) {
+                showLoginModal();
+                showToast('🔒 Admin login required', 'lock');
+                return;
+            }
+
+            const scanBtn = document.querySelector('.scanner-btn');
+            if (scanBtn) {
+                scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+                scanBtn.disabled = true;
+            }
+
+            showToast('📸 Scanner activated...', 'camera');
+
+            setTimeout(() => {
+                // Step 1: Extract items from order or use sample data
+                const scannedItems = order.items || [
+                    { name: 'Rose Plant', quantity: 5, price: 100 },
+                    { name: 'Tulsi Plant', quantity: 3, price: 60 },
+                    { name: 'Tomato Seeds', quantity: 2, price: 40 }
+                ];
+
+                // Step 2: Calculate totals
+                const subtotal = scannedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * 0.15;
+                const total = subtotal + tax;
+
+                // Step 3: Create Excel data
+                const excelData = [
+                    ['ITEM NAME', 'PRICE', 'QTY', 'TOTAL'],
+                    ...scannedItems.map(item => [
+                        item.name,
+                        `Rs.${item.price.toFixed(2)}`,
+                        item.quantity,
+                        `Rs.${(item.price * item.quantity).toFixed(2)}`
+                    ]),
+                    [],
+                    ['SUB TOTAL', '', '', `Rs.${subtotal.toFixed(2)}`],
+                    ['TAX', '', '', `Rs.${tax.toFixed(2)}`],
+                    ['TOTAL', '', '', `Rs.${total.toFixed(2)}`],
+                    [],
+                    ['SCAN DETAILS'],
+                    ['Date:', new Date().toLocaleString()],
+                    ['Order ID:', order.id || 'N/A'],
+                    ['Scanned by:', 'Admin']
+                ];
+
+                // Step 4: Create and download Excel file
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(excelData);
+                XLSX.utils.book_append_sheet(wb, ws, 'Scan Data');
+                
+                // Auto-size columns (approximate)
+                const colWidths = [
+                    { wch: 30 }, // ITEM NAME
+                    { wch: 15 }, // PRICE
+                    { wch: 10 }, // QTY
+                    { wch: 15 }  // TOTAL
+                ];
+                ws['!cols'] = colWidths;
+
+                // Generate filename with timestamp
+                const filename = `Scan_${order.id || 'Order'}_${new Date().toISOString().slice(0,10)}.xlsx`;
+                XLSX.writeFile(wb, filename);
+
+                // Step 5: Update invoice modal with scan results
+                const content = document.getElementById('invoiceContent');
+                
+                // Create HTML for scan results
+                const scanResults = `
+                    <div class="scanner-section">
+                        <h3 style="color:#1a4d2e; margin-bottom:15px;">📸 Scan Complete</h3>
+                        
+                        <div class="scanner-steps">
+                            <div class="scanner-step">
+                                <span class="step-number">1</span>
+                                <h4>Bill Scanned</h4>
+                                <p>${scannedItems.length} items detected</p>
+                            </div>
+                            <div class="scanner-step">
+                                <span class="step-number">2</span>
+                                <h4>Data Extracted</h4>
+                                <p>Auto-converted to digital</p>
+                            </div>
+                            <div class="scanner-step">
+                                <span class="step-number">3</span>
+                                <h4>Excel Saved</h4>
+                                <p>${filename}</p>
+                            </div>
+                        </div>
+
+                        <table class="scan-result-table">
+                            <tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+                            ${scannedItems.map(item => `
+                                <tr>
+                                    <td>${item.name}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>Rs.${item.price}</td>
+                                    <td>Rs.${item.price * item.quantity}</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+
+                        <div style="margin-top:15px; padding:10px; background:#f0fdf4; border-radius:8px;">
+                            <p><strong>📊 Excel file saved automatically</strong></p>
+                            <p style="font-size:12px; color:#666;">Inventory updated • Records saved • No paper needed</p>
+                        </div>
+                    </div>
+                `;
+
+                // Insert scan results before download button
+                const downloadBtn = content.querySelector('.download-btn');
+                if (downloadBtn) {
+                    downloadBtn.insertAdjacentHTML('beforebegin', scanResults);
+                }
+
+                if (scanBtn) {
+                    scanBtn.innerHTML = '<i class="fas fa-check-circle"></i> Scanned & Saved to Excel';
+                    scanBtn.disabled = false;
+                }
+
+                showToast('✅ Bill scanned & saved to Excel!', 'file-excel');
+            }, 2000);
+        }
+
+        // ========== PDF INVOICE GENERATION - EXACTLY LIKE SCREENSHOT ==========
         function generatePDFInvoice(order) {
             const doc = new jsPDF({
                 orientation: 'portrait',
@@ -1424,73 +1639,43 @@
             // Colors
             const primaryGreen = '#1a4d2e';
             const accentGreen = '#22863a';
-            const lightGreen = '#e5f0dd';
-            const darkText = '#1a1a1a';
+            const darkText = '#333333';
             const grayText = '#666666';
 
-            // Header
-            doc.setFillColor(26, 77, 46);
-            doc.rect(0, 0, 210, 40, 'F');
-
-            // Logo Icon (simplified)
-            doc.setFillColor(255, 255, 255);
-            doc.roundedRect(15, 8, 24, 24, 4, 4, 'F');
-            doc.setFillColor(34, 134, 58);
-            doc.roundedRect(17, 10, 20, 20, 3, 3, 'F');
-            
-            // Leaf icon text
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(12);
-            doc.text('GG', 27, 20, { align: 'center' });
-
-            // Company Name
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(18);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Green Garden', 45, 18);
-            
-            doc.setFontSize(8);
-            doc.setFont('helvetica', 'normal');
-            doc.text('HEIRLOOM SEEDS', 45, 24);
-
-            // INVOICE Title
-            doc.setTextColor(26, 77, 46);
+            // Header - INVOICE
             doc.setFontSize(28);
             doc.setFont('helvetica', 'bold');
-            doc.text('INVOICE', 15, 55);
+            doc.setTextColor(0, 0, 0);
+            doc.text('INVOICE', 15, 25);
 
-            // Invoice # and Date
+            // Invoice number and date
             doc.setFontSize(10);
-            doc.setTextColor(100, 100, 100);
-            doc.text(`INVOICE #${order.id || '123456'}`, 15, 63);
-            doc.text(`DATE : ${formatDate(order.date)}`, 15, 68);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`INVOICE #${order.id || '123456'}`, 15, 35);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`DATE : ${formatDate(order.date)}`, 15, 40);
 
             // Invoice To
-            doc.text('INVOICE TO :', 15, 78);
             doc.setFont('helvetica', 'bold');
-            doc.setTextColor(26, 26, 26);
-            doc.text(order.customer || 'John Doe', 42, 78);
+            doc.text('INVOICE TO :', 15, 50);
             doc.setFont('helvetica', 'normal');
-            doc.setTextColor(100, 100, 100);
-            doc.text(`PHONE ${order.phone || '+123-456-789'}`, 42, 83);
+            doc.text(order.customer || 'John Doe', 42, 50);
+            doc.text(`PHONE ${order.phone || '+123-456-789'}`, 42, 55);
 
             // Items Table Header
-            let yPos = 95;
-            doc.setFillColor(240, 240, 240);
-            doc.rect(15, yPos - 5, 180, 8, 'F');
-            
-            doc.setTextColor(26, 26, 26);
-            doc.setFontSize(10);
+            let yPos = 70;
             doc.setFont('helvetica', 'bold');
-            doc.text('ITEM NAME', 20, yPos);
-            doc.text('PRICE', 120, yPos);
-            doc.text('QTY', 145, yPos);
+            doc.text('ITEM NAME', 15, yPos);
+            doc.text('PRICE', 110, yPos);
+            doc.text('QTY', 140, yPos);
             doc.text('TOTAL', 170, yPos);
+            yPos += 5;
+            doc.line(15, yPos, 195, yPos);
 
             // Items
-            yPos += 8;
+            yPos += 5;
             doc.setFont('helvetica', 'normal');
-            doc.setTextColor(80, 80, 80);
+            doc.setTextColor(100, 100, 100);
             
             let subtotal = 0;
             (order.items || []).forEach((item, index) => {
@@ -1504,34 +1689,37 @@
                     yPos = 20;
                 }
 
-                doc.text(item.name || 'Lorem ipsum dolor', 20, yPos);
-                doc.text(`Rs.${price.toFixed(2)}`, 125, yPos, { align: 'right' });
-                doc.text(String(qty), 150, yPos, { align: 'center' });
+                doc.text(item.name || 'Lorem ipsum dolor', 15, yPos);
+                doc.text(`Rs.${price.toFixed(2)}`, 115, yPos, { align: 'right' });
+                doc.text(String(qty), 145, yPos, { align: 'center' });
                 doc.text(`Rs.${total.toFixed(2)}`, 185, yPos, { align: 'right' });
                 
-                yPos += 7;
+                yPos += 6;
             });
 
             // Sub Total, Tax, Total
-            yPos += 10;
+            yPos += 5;
+            const tax = subtotal * 0.15;
+            const total = subtotal + tax;
+
             doc.setFont('helvetica', 'bold');
-            doc.setTextColor(26, 26, 26);
+            doc.setTextColor(0, 0, 0);
             doc.text('SUB TOTAL', 140, yPos);
             doc.text(`Rs.${subtotal.toFixed(2)}`, 185, yPos, { align: 'right' });
-
-            yPos += 7;
-            const tax = subtotal * 0.15;
+            yPos += 6;
             doc.text('TAX', 140, yPos);
             doc.text(`Rs.${tax.toFixed(2)}`, 185, yPos, { align: 'right' });
-
-            yPos += 7;
+            yPos += 6;
             doc.setFontSize(12);
-            doc.setFont('helvetica', 'bold');
             doc.text('TOTAL', 140, yPos);
-            doc.text(`Rs.${(subtotal + tax).toFixed(2)}`, 185, yPos, { align: 'right' });
+            doc.text(`Rs.${total.toFixed(2)}`, 185, yPos, { align: 'right' });
+
+            // Divider
+            yPos += 10;
+            doc.line(15, yPos, 195, yPos);
 
             // Company Details
-            yPos += 20;
+            yPos += 10;
             doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(100, 100, 100);
@@ -1543,12 +1731,12 @@
 
             // Payment Info
             yPos += 25;
-            doc.setTextColor(26, 26, 26);
+            doc.setTextColor(0, 0, 0);
             doc.setFont('helvetica', 'bold');
             doc.text('PAYMENT INFO', 15, yPos);
             
             doc.setFont('helvetica', 'normal');
-            doc.setTextColor(80, 80, 80);
+            doc.setTextColor(100, 100, 100);
             doc.text('Email: email@example.com', 15, yPos + 7);
             doc.text('Account No.: 123456789', 15, yPos + 12);
             doc.text('Account Name: Green Garden', 15, yPos + 17);
@@ -1556,109 +1744,19 @@
             // Terms
             yPos += 25;
             doc.setFont('helvetica', 'bold');
-            doc.setTextColor(26, 26, 26);
+            doc.setTextColor(0, 0, 0);
             doc.text('TERMS AND CONDITIONS', 15, yPos);
             
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
-            doc.setTextColor(120, 120, 120);
-            doc.text('Lorem ipsum dolor sit amet, tincidunt euismod nibh ut aliquet.', 15, yPos + 7);
-            doc.text('Proin sed odio id elit sodales ultricies.', 15, yPos + 12);
+            doc.setTextColor(150, 150, 150);
+            doc.text('Lorem ipsum dolor sit amet, tincidunt euismod nibh ut aliquet. Proin sed odio id elit sodales ultricies.', 15, yPos + 7);
 
             // Save PDF
             doc.save(`Invoice_${order.id || 'Order'}.pdf`);
         }
 
-        // ========== SCANNER FUNCTION - READS BILL AND UPDATES INVENTORY ==========
-        function scanBill(order) {
-            // Simulate camera scan with a beautiful animation
-            const scanBtn = document.querySelector('.scan-btn');
-            if (scanBtn) {
-                scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
-                scanBtn.disabled = true;
-            }
-
-            showToast('📸 Opening camera to scan bill...', 'camera');
-
-            setTimeout(() => {
-                // Step 1: Simulate scanning - extract items from order
-                const scannedItems = order.items || [
-                    { name: 'Rose Plant', quantity: 5, price: 100 },
-                    { name: 'Tulsi Plant', quantity: 3, price: 60 },
-                    { name: 'Tomato Seeds', quantity: 2, price: 40 }
-                ];
-
-                // Step 2: Convert to digital data
-                let scannedData = '<div style="margin:15px 0; padding:15px; background:#e8f3e0; border-radius:12px;">';
-                scannedData += '<h4 style="color:#1a4d2e; margin-bottom:10px;">📋 Scanned Bill Data</h4>';
-                scannedData += '<table style="width:100%; font-size:13px;">';
-                scannedData += '<tr><th>Item</th><th>Qty</th><th>Price</th></tr>';
-                
-                let total = 0;
-                scannedItems.forEach(item => {
-                    scannedData += `<tr><td>${item.name}</td><td>${item.quantity}</td><td>₹${item.price}</td></tr>`;
-                    total += (item.price * item.quantity);
-                });
-                scannedData += `<tr><td colspan="2"><strong>Total</strong></td><td><strong>₹${total}</strong></td></tr>`;
-                scannedData += '</table>';
-                scannedData += '<p style="margin-top:10px; font-size:12px; color:#666;">✅ No typing needed</p>';
-                scannedData += '</div>';
-
-                // Step 3: Update inventory for each item
-                scannedItems.forEach(item => {
-                    updateInventory(item.name, item.quantity);
-                });
-
-                // Step 4: Show inventory update
-                let inventoryHtml = '<div style="margin:15px 0; padding:15px; background:#fff3cd; border-radius:12px;">';
-                inventoryHtml += '<h4 style="color:#856404;">📦 Stock Updated</h4>';
-                scannedItems.forEach(item => {
-                    inventoryHtml += `<p>${item.name} stock +${item.quantity}</p>`;
-                });
-                inventoryHtml += '<p style="font-size:12px; color:#666; margin-top:10px;">Inventory updated instantly 📊</p>';
-                inventoryHtml += '</div>';
-
-                // Step 5: Show saved for records
-                const savedHtml = '<div style="margin:15px 0; padding:15px; background:#d1fae5; border-radius:12px;">' +
-                    '<h4 style="color:#065f46;">🧾 Saved for Records</h4>' +
-                    '<p>• For accounting</p><p>• For GST</p><p>• For future reference</p>' +
-                    '<p style="font-size:12px; color:#666; margin-top:10px;">No paper needed 📁</p>' +
-                    '</div>';
-
-                // Update invoice modal with scan results
-                const content = document.getElementById('invoiceContent');
-                const currentHtml = content.innerHTML;
-                
-                // Insert scanner results before the download button
-                const scannerResults = `
-                    <div class="scanner-section" style="animation: fadeIn 0.5s;">
-                        <h3 style="color:#1a4d2e; margin-bottom:15px;">📸 Scan Results</h3>
-                        ${scannedData}
-                        ${inventoryHtml}
-                        ${savedHtml}
-                        <div style="background:#f0fdf4; padding:15px; border-radius:12px; margin-top:15px;">
-                            <h4 style="color:#22863a;">🏆 Final Result</h4>
-                            <p><span style="color:#dc2626;">❌ Without scanner</span> → Type everything manually</p>
-                            <p><span style="color:#16a34a;">✅ With scanner</span> → Just scan → Everything is done</p>
-                        </div>
-                    </div>
-                `;
-
-                // Insert before download button
-                const insertPos = currentHtml.lastIndexOf('<button class="download-btn"');
-                const newHtml = currentHtml.slice(0, insertPos) + scannerResults + currentHtml.slice(insertPos);
-                content.innerHTML = newHtml;
-
-                if (scanBtn) {
-                    scanBtn.innerHTML = '<i class="fas fa-check-circle"></i> Scanned!';
-                    scanBtn.disabled = false;
-                }
-
-                showToast('✅ Bill scanned successfully! Inventory updated.', 'check-circle');
-            }, 2000);
-        }
-
-        // ========== SHOW INVOICE MODAL - PREMIUM CANVA STYLE ==========
+        // ========== SHOW INVOICE MODAL - EXACTLY LIKE SCREENSHOT ==========
         function showInvoice(order) {
             const modal = document.getElementById('invoiceModal');
             const content = document.getElementById('invoiceContent');
@@ -1676,47 +1774,22 @@
             const tax = subtotal * 0.15;
             const total = subtotal + tax;
 
+            // Determine if scanner button should be enabled
+            const scannerDisabled = !isAdminLoggedIn ? 'disabled' : '';
+            const scannerTitle = !isAdminLoggedIn ? 'Login as admin to use scanner' : '';
+
             content.innerHTML = `
                 <button class="invoice-close" onclick="closeInvoiceModal()">&times;</button>
                 
                 <div class="invoice-header">
-                    <div class="invoice-brand">
-                        <div class="invoice-logo-icon">
-                            <i class="fas fa-seedling"></i>
-                        </div>
-                        <div class="invoice-brand-text">
-                            <h2>Green Garden</h2>
-                            <span>Heirloom Seeds</span>
-                        </div>
-                    </div>
-                    <div class="invoice-scanner-badge">
-                        <i class="fas fa-qrcode"></i>
-                        <span>Scanner Ready</span>
-                    </div>
-                </div>
-
-                <div class="invoice-title-section">
                     <h1>INVOICE</h1>
-                    <p class="invoice-number">#${order.id || '123456'}</p>
+                    <div class="invoice-number">INVOICE #${order.id || '123456'}</div>
+                    <div class="invoice-date">DATE : ${formatDate(order.date)}</div>
                 </div>
 
-                <div class="invoice-details-grid">
-                    <div class="invoice-detail-item">
-                        <label>Invoice Date</label>
-                        <p>${formatDate(order.date)}</p>
-                    </div>
-                    <div class="invoice-detail-item">
-                        <label>Due Date</label>
-                        <p>${formatDate(order.date)}</p>
-                    </div>
-                    <div class="invoice-detail-item">
-                        <label>Invoice To</label>
-                        <p>${order.customer || 'John Doe'}</p>
-                    </div>
-                    <div class="invoice-detail-item">
-                        <label>Phone</label>
-                        <p>${order.phone || '+123-456-789'}</p>
-                    </div>
+                <div class="invoice-to">
+                    <p><strong>INVOICE TO :</strong> ${order.customer || 'John Doe'}</p>
+                    <p><strong>PHONE</strong> ${order.phone || '+123-456-789'}</p>
                 </div>
 
                 <table class="invoice-table">
@@ -1767,14 +1840,14 @@
                     <p>Lorem ipsum dolor sit amet, tincidunt euismod nibh ut aliquet. Proin sed odio id elit sodales ultricies.</p>
                 </div>
 
-                <button class="scan-btn" onclick='scanBill(${JSON.stringify(order).replace(/'/g, "\\'")})'>
+                <button class="scanner-btn" onclick="scanBill(${JSON.stringify(order).replace(/'/g, "\\'")})" ${scannerDisabled} title="${scannerTitle}">
                     <i class="fas fa-camera"></i>
-                    Scan Bill (Auto-update Inventory)
+                    ${isAdminLoggedIn ? 'Scan & Save to Excel' : '🔒 Admin Only Scanner'}
                 </button>
 
                 <button class="download-btn" onclick='generatePDFInvoice(${JSON.stringify(order).replace(/'/g, "\\'")})'>
-                    <i class="fas fa-download"></i>
-                    Download Invoice PDF
+                    <i class="fas fa-file-pdf"></i>
+                    Download PDF Invoice
                 </button>
             `;
 
