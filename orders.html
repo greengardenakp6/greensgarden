@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- QR Code library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <!-- PDF generation library -->
+    <!-- PDF generation library (html2pdf + dependencies) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
@@ -575,52 +575,69 @@
             alert('✅ All items added to your cart!');
         }
 
-        // ---------- DOWNLOAD INVOICE AS PDF (using html2pdf) ----------
+        // ---------- DOWNLOAD INVOICE AS PDF (FIXED - WORKING) ----------
         function downloadInvoicePDF(order) {
+            // Create a hidden container for PDF generation
             const element = document.createElement('div');
+            element.style.position = 'absolute';
+            element.style.left = '-9999px';
+            element.style.top = '-9999px';
+            element.style.width = '600px';
+            element.style.padding = '30px';
+            element.style.background = '#f5fdee';
+            element.style.border = '2px solid #b8daaa';
+            element.style.borderRadius = '20px';
+            element.style.fontFamily = "'Inter', sans-serif";
+            
+            // Build invoice HTML
             element.innerHTML = `
-                <div style="font-family: 'Inter', sans-serif; max-width:600px; margin:0 auto; padding:30px; background:#f5fdee; border:2px solid #b8daaa; border-radius:20px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px dashed #a9cc9b; padding-bottom:20px; margin-bottom:20px;">
-                        <div style="display:flex; align-items:center; gap:15px;">
-                            <div style="background:linear-gradient(145deg, #0b3d2e, #1e7f4f); padding:12px 18px; border-radius:30px; color:white; font-weight:800; font-size:1.2rem;">🌱 GG</div>
-                            <div style="font-size:1.5rem; font-weight:700; color:#1a4f1a;">Tax Invoice</div>
-                        </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px dashed #a9cc9b; padding-bottom:20px; margin-bottom:20px;">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <div style="background:linear-gradient(145deg, #0b3d2e, #1e7f4f); padding:12px 18px; border-radius:30px; color:white; font-weight:800; font-size:1.2rem;">🌱 GG</div>
+                        <div style="font-size:1.5rem; font-weight:700; color:#1a4f1a;">Tax Invoice</div>
                     </div>
-                    <div style="margin-bottom:15px;">
-                        <div><strong>Order ID:</strong> ${order.id}</div>
-                        <div><strong>Date:</strong> ${formatDate(order.date)}</div>
-                        <div><strong>Payment:</strong> ${order.method || 'N/A'}</div>
-                        <div><strong>Customer:</strong> ${order.delivery?.name || 'N/A'}</div>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <div><strong>Order ID:</strong> ${order.id}</div>
+                    <div><strong>Date:</strong> ${formatDate(order.date)}</div>
+                    <div><strong>Payment:</strong> ${order.method || 'N/A'}</div>
+                    <div><strong>Customer:</strong> ${order.delivery?.name || 'N/A'}</div>
+                </div>
+                ${order.items.map(item => `
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #d7eace;">
+                        <span>${item.name} × ${item.quantity}</span>
+                        <span>₹${(item.price * item.quantity).toLocaleString('en-IN')}</span>
                     </div>
-                    ${order.items.map(item => `
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #d7eace;">
-                            <span>${item.name} × ${item.quantity}</span>
-                            <span>₹${(item.price * item.quantity).toLocaleString('en-IN')}</span>
-                        </div>
-                    `).join('')}
-                    <div style="display:flex; justify-content:space-between; font-weight:700; padding:8px 0;">
-                        <span>Subtotal</span>
-                        <span>₹${order.total.toLocaleString('en-IN')}</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between;">
-                        <span>Shipping</span>
-                        <span style="color:#2e7d32;">FREE</span>
-                    </div>
-                    <div style="font-size:1.3rem; font-weight:700; color:#1f711f; margin-top:15px; text-align:right;">
-                        Total: ₹${order.total.toLocaleString('en-IN')}
-                    </div>
-                    <div style="margin-top:25px; text-align:center; color:#3f653f;">
-                        <i class="fas fa-seedling" style="color:#2f5e3c;"></i> Thank you for growing with Green Garden
-                    </div>
+                `).join('')}
+                <div style="display:flex; justify-content:space-between; font-weight:700; padding:8px 0;">
+                    <span>Subtotal</span>
+                    <span>₹${order.total.toLocaleString('en-IN')}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <span>Shipping</span>
+                    <span style="color:#2e7d32;">FREE</span>
+                </div>
+                <div style="font-size:1.3rem; font-weight:700; color:#1f711f; margin-top:15px; text-align:right;">
+                    Total: ₹${order.total.toLocaleString('en-IN')}
+                </div>
+                <div style="margin-top:25px; text-align:center; color:#3f653f;">
+                    <i class="fas fa-seedling" style="color:#2f5e3c;"></i> Thank you for growing with Green Garden
                 </div>
             `;
 
+            // Append to body, generate PDF, then remove
+            document.body.appendChild(element);
+            
+            // Use html2pdf with proper configuration
             html2pdf().from(element).set({
                 margin: [0.5, 0.5, 0.5, 0.5],
                 filename: `Invoice_${order.id}.pdf`,
-                html2canvas: { scale: 2 },
+                html2canvas: { scale: 2, letterRendering: true },
                 jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            }).save();
+            }).save().then(() => {
+                // Clean up after save
+                document.body.removeChild(element);
+            });
         }
 
         // ---------- SHOW INVOICE MODAL with logo left, scanner right ----------
@@ -673,8 +690,12 @@
             `;
             modal.style.display = 'flex';
 
+            // Clear previous QR code if any
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            
             // Generate QR code
-            new QRCode(document.getElementById("qrcode"), {
+            new QRCode(qrContainer, {
                 text: qrData,
                 width: 70,
                 height: 70,
@@ -683,7 +704,9 @@
                 correctLevel: QRCode.CorrectLevel.H
             });
 
-            document.getElementById('downloadInvoiceBtn').addEventListener('click', () => {
+            // Attach download event listener
+            document.getElementById('downloadInvoiceBtn').addEventListener('click', function(e) {
+                e.preventDefault();
                 downloadInvoicePDF(order);
             });
         }
