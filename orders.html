@@ -33,7 +33,7 @@
             --transition-premium: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* ===== PREMIUM NAVBAR (green garden signature) ===== */
+        /* ===== PREMIUM NAVBAR ===== */
         .navbar {
             position: sticky;
             top: 0;
@@ -249,15 +249,15 @@
             background: transparent;
             border: 1.5px solid #578b57;
             color: #246324;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 60px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: var(--transition-premium);
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .btn-outline:hover {
             background: #578b57;
@@ -269,10 +269,10 @@
             background: linear-gradient(135deg, #376b37, #4f934f);
             border: none;
             color: white;
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 60px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: var(--transition-premium);
             display: inline-flex;
@@ -394,6 +394,64 @@
             justify-content: center;
             box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
+        .download-btn {
+            background: #2a5f2a;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-top: 20px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .download-btn:hover {
+            background: #1b421b;
+        }
+
+        /* track details modal */
+        .track-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(20, 50, 20, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2100;
+            padding: 20px;
+        }
+        .track-card {
+            background: #f0fae8;
+            max-width: 450px;
+            width: 100%;
+            border-radius: 48px;
+            padding: 32px;
+            border: 2px solid #b8daaa;
+        }
+        .track-step-item {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            align-items: center;
+        }
+        .track-dot {
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: #bdd0b3;
+        }
+        .track-dot.completed {
+            background: #2a8e2a;
+            box-shadow: 0 0 0 4px rgba(42,142,42,0.2);
+        }
+        .track-info {
+            flex: 1;
+        }
 
         @media (max-width: 600px) {
             .order-header {
@@ -428,10 +486,17 @@
         <!-- orders dynamically inserted -->
     </div>
 
-    <!-- premium invoice modal (hidden by default) -->
+    <!-- invoice modal -->
     <div id="invoiceModal" class="invoice-modal">
         <div class="invoice-card" id="invoiceContent">
             <!-- dynamic invoice -->
+        </div>
+    </div>
+
+    <!-- track details modal -->
+    <div id="trackModal" class="track-modal">
+        <div class="track-card" id="trackContent">
+            <!-- dynamic track info -->
         </div>
     </div>
 
@@ -449,8 +514,61 @@
             return dateStr;
         }
 
-        // generate invoice HTML for a given order
-        function generateInvoiceHTML(order) {
+        // ---------- REORDER: automatically add all items to cart ----------
+        function reorder(order) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            order.items.forEach(item => {
+                const existing = cart.find(c => c.id === item.id);
+                if (existing) {
+                    existing.quantity += item.quantity;
+                } else {
+                    cart.push({ 
+                        id: item.id, 
+                        name: item.name, 
+                        price: item.price, 
+                        image: item.image, 
+                        quantity: item.quantity 
+                    });
+                }
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('✅ All items added to your cart!');
+        }
+
+        // ---------- DOWNLOAD INVOICE (as .txt file) ----------
+        function downloadInvoice(order) {
+            let invoiceText = `GREEN GARDEN INVOICE\n`;
+            invoiceText += `====================\n`;
+            invoiceText += `Order ID: ${order.id}\n`;
+            invoiceText += `Date: ${formatDate(order.date)}\n`;
+            invoiceText += `Payment: ${order.method || 'N/A'}\n`;
+            invoiceText += `-------------------\n`;
+            order.items.forEach(item => {
+                invoiceText += `${item.name} x ${item.quantity}  ₹${item.price * item.quantity}\n`;
+            });
+            invoiceText += `-------------------\n`;
+            invoiceText += `Subtotal: ₹${order.total}\n`;
+            invoiceText += `Shipping: FREE\n`;
+            invoiceText += `Total: ₹${order.total}\n`;
+            invoiceText += `====================\n`;
+            invoiceText += `Thank you for growing with Green Garden 🌱`;
+
+            const blob = new Blob([invoiceText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Invoice_${order.id}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ---------- SHOW INVOICE MODAL with download button ----------
+        function showInvoice(order) {
+            const modal = document.getElementById('invoiceModal');
+            const content = document.getElementById('invoiceContent');
+            
             const itemsList = order.items.map(item => `
                 <div class="invoice-row">
                     <span>${item.name} × ${item.quantity}</span>
@@ -458,7 +576,7 @@
                 </div>
             `).join('');
 
-            return `
+            content.innerHTML = `
                 <div class="invoice-header">
                     <div class="invoice-logo">🌱 GG</div>
                     <div class="invoice-title">Tax Invoice</div>
@@ -483,33 +601,64 @@
                 <div class="invoice-footer">
                     <i class="fas fa-seedling" style="color:#2f5e3c;"></i> Thank you for growing with Green Garden
                 </div>
+                <button class="download-btn" id="downloadInvoiceBtn"><i class="fas fa-download"></i> Download Invoice</button>
                 <div class="invoice-close" onclick="document.getElementById('invoiceModal').style.display='none'">&times;</div>
             `;
-        }
-
-        // show invoice modal
-        function showInvoice(order) {
-            const modal = document.getElementById('invoiceModal');
-            const content = document.getElementById('invoiceContent');
-            content.innerHTML = generateInvoiceHTML(order);
             modal.style.display = 'flex';
+
+            document.getElementById('downloadInvoiceBtn').addEventListener('click', () => {
+                downloadInvoice(order);
+            });
         }
 
-        // reorder function (adds all items to cart)
-        function reorder(order) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            order.items.forEach(item => {
-                const existing = cart.find(c => c.id === item.id);
-                if (existing) {
-                    existing.quantity += item.quantity;
-                } else {
-                    cart.push({ ...item }); // clone
-                }
+        // ---------- SHOW TRACK DETAILS (real-time simulation like Flipkart) ----------
+        function showTrackDetails(order) {
+            const modal = document.getElementById('trackModal');
+            const content = document.getElementById('trackContent');
+            
+            // simulate tracking steps based on status
+            const status = order.status || 'Processing';
+            let steps = [
+                { label: 'Order placed', done: true },
+                { label: 'Processing', done: status !== 'Processing' ? true : false },
+                { label: 'Shipped', done: (status === 'Shipped' || status === 'Delivered') ? true : false },
+                { label: 'Delivered', done: status === 'Delivered' ? true : false }
+            ];
+
+            let stepsHtml = '';
+            steps.forEach(step => {
+                stepsHtml += `
+                    <div class="track-step-item">
+                        <div class="track-dot ${step.done ? 'completed' : ''}"></div>
+                        <div class="track-info">
+                            <strong>${step.label}</strong>
+                            ${step.done ? '<span style="color:#1f711f;"> ✓ Completed</span>' : '<span style="color:#8b9e8b;"> Pending</span>'}
+                        </div>
+                    </div>
+                `;
             });
-            localStorage.setItem('cart', JSON.stringify(cart));
-            alert('Items added to your cart 🌱');
-            // optionally redirect to cart
-            // window.location.href = 'cart.html';
+
+            // estimated delivery
+            let deliveryDate = new Date();
+            deliveryDate.setDate(deliveryDate.getDate() + (status === 'Delivered' ? 0 : 3));
+            const estDelivery = status === 'Delivered' ? 'Delivered' : `Estimated: ${deliveryDate.toLocaleDateString('en-IN')}`;
+
+            content.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h3 style="color:#1d4d1d;">📦 Tracking Details</h3>
+                    <span style="cursor:pointer; font-size:1.8rem;" onclick="document.getElementById('trackModal').style.display='none'">&times;</span>
+                </div>
+                <div style="background:#e0f0da; border-radius:30px; padding:20px; margin-bottom:20px;">
+                    <strong>Order ID:</strong> ${order.id}<br>
+                    <strong>Status:</strong> ${status}<br>
+                    <strong>Expected by:</strong> ${estDelivery}
+                </div>
+                ${stepsHtml}
+                <div style="text-align:center; margin-top:20px;">
+                    <button class="btn-outline" onclick="document.getElementById('trackModal').style.display='none'">Close</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
         }
 
         // ========== LOAD ORDERS ==========
@@ -529,12 +678,12 @@
                 return;
             }
 
-            // reverse to show newest first
+            container.innerHTML = ''; // clear
+
             orders.slice().reverse().forEach(order => {
                 const orderDiv = document.createElement('div');
                 orderDiv.className = 'order-card';
 
-                // order header
                 let headerHtml = `
                     <div class="order-header">
                         <div class="order-header-item"><span>ORDER ID</span><strong>${order.id}</strong></div>
@@ -544,7 +693,6 @@
                     </div>
                 `;
 
-                // products
                 let productsHtml = '';
                 order.items.forEach(item => {
                     productsHtml += `
@@ -562,7 +710,7 @@
                     `;
                 });
 
-                // tracker (dummy based on status)
+                // tracker steps based on status
                 const status = order.status || 'Processing';
                 let trackerSteps = '';
                 if (status === 'Delivered') {
@@ -605,7 +753,7 @@
                 container.appendChild(orderDiv);
             });
 
-            // attach event listeners after rendering
+            // attach event listeners
             document.querySelectorAll('.invoice-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const orderId = e.currentTarget.dataset.orderId;
@@ -624,14 +772,18 @@
 
             document.querySelectorAll('.track-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    // dummy track: alert with tracking simulation
-                    alert('📦 Your package is on its way! (Tracking simulation)');
+                    const orderId = e.currentTarget.dataset.orderId;
+                    const order = orders.find(o => o.id === orderId);
+                    if (order) showTrackDetails(order);
                 });
             });
         }
 
-        // close modal when clicking outside
+        // close modals when clicking outside
         document.getElementById('invoiceModal').addEventListener('click', function(e) {
+            if (e.target === this) this.style.display = 'none';
+        });
+        document.getElementById('trackModal').addEventListener('click', function(e) {
             if (e.target === this) this.style.display = 'none';
         });
 
