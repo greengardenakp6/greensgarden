@@ -626,7 +626,7 @@
             box-shadow: 0 12px 28px -4px rgba(34, 134, 58, 0.5);
         }
 
-        /* ===== INVOICE MODAL - EXACTLY LIKE SCREENSHOT ===== */
+        /* ===== PREMIUM CANVA-STYLE INVOICE MODAL ===== */
         .invoice-modal {
             position: fixed;
             top: 0;
@@ -645,73 +645,151 @@
 
         .invoice-card {
             background: white;
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 40px 70px rgba(0, 0, 0, 0.3);
             position: relative;
             font-family: 'Inter', sans-serif;
-            animation: modalSlide 0.3s ease;
+            animation: modalSlide 0.4s ease;
+            border: 1px solid rgba(200, 220, 180, 0.5);
         }
 
         @keyframes modalSlide {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .invoice-close {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 20px;
+            right: 25px;
             font-size: 24px;
             cursor: pointer;
             color: #666;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: 0.2s;
+            background: #f5f5f5;
         }
 
         .invoice-close:hover {
-            background: #f0f0f0;
-            color: #333;
+            background: #22863a;
+            color: white;
+        }
+
+        /* Premium Canva-style header with decorative elements */
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eaeaea;
+            position: relative;
+        }
+
+        .invoice-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #22863a, #4ade80);
+            border-radius: 2px;
+        }
+
+        .invoice-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .invoice-logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #22863a, #22c55e);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 8px 16px rgba(34, 134, 58, 0.2);
+        }
+
+        .invoice-brand-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #1a4d2e;
+            font-weight: 700;
+        }
+
+        .invoice-brand-text span {
+            font-size: 0.7rem;
+            color: #6a9a6a;
+            letter-spacing: 1px;
+        }
+
+        .invoice-scanner-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a1a;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
         }
 
         .invoice-title-section {
-            text-align: left;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 25px;
         }
 
         .invoice-title-section h1 {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 700;
-            color: #333;
-            margin-bottom: 4px;
+            color: #1a4d2e;
+            font-family: 'Playfair Display', serif;
         }
 
         .invoice-number {
-            color: #666;
+            color: #6a9a6a;
             font-size: 14px;
         }
 
-        .invoice-date {
-            margin-top: 8px;
-            font-size: 14px;
-            color: #555;
+        .invoice-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: #f8fcf5;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
         }
 
-        .invoice-to {
-            margin: 20px 0;
-            font-size: 14px;
-            color: #555;
+        .invoice-detail-item label {
+            font-size: 0.7rem;
+            color: #6a9a6a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .invoice-to p {
-            margin: 4px 0;
+        .invoice-detail-item p {
+            font-weight: 600;
+            color: #1a4d2e;
+            margin-top: 4px;
         }
 
         .invoice-table {
@@ -723,15 +801,15 @@
 
         .invoice-table th {
             text-align: left;
-            padding: 10px 8px;
-            border-bottom: 2px solid #333;
-            color: #333;
+            padding: 12px 8px;
+            border-bottom: 2px solid #1a4d2e;
+            color: #1a4d2e;
             font-weight: 600;
         }
 
         .invoice-table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #eee;
+            padding: 12px 8px;
+            border-bottom: 1px solid #eaeaea;
             color: #555;
         }
 
@@ -742,9 +820,9 @@
 
         .invoice-summary {
             margin: 20px 0;
-            padding: 20px 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
+            padding: 20px;
+            background: #f8fcf5;
+            border-radius: 12px;
         }
 
         .summary-row {
@@ -756,45 +834,122 @@
         }
 
         .summary-row.total {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            color: #333;
+            color: #1a4d2e;
             margin-top: 8px;
             padding-top: 8px;
-            border-top: 1px dashed #ddd;
+            border-top: 2px dashed #c8e0b8;
         }
 
         .company-details {
             margin: 20px 0;
-            padding: 20px 0;
-            border-bottom: 1px solid #ddd;
-            font-size: 14px;
+            padding: 20px;
+            background: linear-gradient(145deg, #f8fcf5, #ffffff);
+            border-radius: 12px;
+            border-left: 4px solid #22863a;
+        }
+
+        .company-details p {
+            margin: 4px 0;
             color: #555;
-            line-height: 1.6;
         }
 
         .payment-info {
             margin: 20px 0;
-            font-size: 14px;
-            color: #555;
+            padding: 20px;
+            background: #f8fcf5;
+            border-radius: 12px;
         }
 
         .payment-info h3 {
             font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: #1a4d2e;
             margin-bottom: 10px;
         }
 
         .payment-info p {
             margin: 6px 0;
+            color: #555;
         }
 
         .terms {
             margin: 20px 0;
-            font-size: 13px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 12px;
             color: #777;
-            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .scanner-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(145deg, #e8f3e0, #ffffff);
+            border-radius: 16px;
+            border: 1px dashed #22863a;
+        }
+
+        .scanner-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .scanner-step {
+            flex: 1 1 200px;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .scanner-step .step-number {
+            width: 24px;
+            height: 24px;
+            background: #22863a;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+
+        .scanner-step h4 {
+            font-size: 14px;
+            color: #1a4d2e;
+            margin-bottom: 5px;
+        }
+
+        .scanner-step p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .scan-btn {
+            background: linear-gradient(135deg, #22863a, #22c55e);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            box-shadow: 0 8px 20px rgba(34, 134, 58, 0.3);
+        }
+
+        .scan-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(34, 134, 58, 0.4);
         }
 
         .download-btn {
@@ -802,7 +957,7 @@
             color: white;
             border: none;
             padding: 14px 24px;
-            border-radius: 8px;
+            border-radius: 50px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
@@ -1030,6 +1185,16 @@
             .action-btns {
                 justify-content: center;
             }
+
+            .invoice-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .invoice-details-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1166,6 +1331,23 @@
 
         function generateOrderId() {
             return 'GG' + Date.now().toString(36).toUpperCase();
+        }
+
+        // ========== SIMULATED INVENTORY ==========
+        let inventory = JSON.parse(localStorage.getItem('inventory')) || {
+            'Rose Plant': 10,
+            'Tulsi Plant': 8,
+            'Tomato Seeds': 15,
+            'Default': 20
+        };
+
+        function updateInventory(item, quantity) {
+            if (!inventory[item]) {
+                inventory[item] = 0;
+            }
+            inventory[item] += quantity;
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            showToast(`📦 Stock updated: ${item} +${quantity}`, 'box');
         }
 
         // ========== REAL-TIME STATUS SIMULATION ==========
@@ -1387,7 +1569,96 @@
             doc.save(`Invoice_${order.id || 'Order'}.pdf`);
         }
 
-        // ========== SHOW INVOICE MODAL - EXACTLY LIKE SCREENSHOT ==========
+        // ========== SCANNER FUNCTION - READS BILL AND UPDATES INVENTORY ==========
+        function scanBill(order) {
+            // Simulate camera scan with a beautiful animation
+            const scanBtn = document.querySelector('.scan-btn');
+            if (scanBtn) {
+                scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+                scanBtn.disabled = true;
+            }
+
+            showToast('📸 Opening camera to scan bill...', 'camera');
+
+            setTimeout(() => {
+                // Step 1: Simulate scanning - extract items from order
+                const scannedItems = order.items || [
+                    { name: 'Rose Plant', quantity: 5, price: 100 },
+                    { name: 'Tulsi Plant', quantity: 3, price: 60 },
+                    { name: 'Tomato Seeds', quantity: 2, price: 40 }
+                ];
+
+                // Step 2: Convert to digital data
+                let scannedData = '<div style="margin:15px 0; padding:15px; background:#e8f3e0; border-radius:12px;">';
+                scannedData += '<h4 style="color:#1a4d2e; margin-bottom:10px;">📋 Scanned Bill Data</h4>';
+                scannedData += '<table style="width:100%; font-size:13px;">';
+                scannedData += '<tr><th>Item</th><th>Qty</th><th>Price</th></tr>';
+                
+                let total = 0;
+                scannedItems.forEach(item => {
+                    scannedData += `<tr><td>${item.name}</td><td>${item.quantity}</td><td>₹${item.price}</td></tr>`;
+                    total += (item.price * item.quantity);
+                });
+                scannedData += `<tr><td colspan="2"><strong>Total</strong></td><td><strong>₹${total}</strong></td></tr>`;
+                scannedData += '</table>';
+                scannedData += '<p style="margin-top:10px; font-size:12px; color:#666;">✅ No typing needed</p>';
+                scannedData += '</div>';
+
+                // Step 3: Update inventory for each item
+                scannedItems.forEach(item => {
+                    updateInventory(item.name, item.quantity);
+                });
+
+                // Step 4: Show inventory update
+                let inventoryHtml = '<div style="margin:15px 0; padding:15px; background:#fff3cd; border-radius:12px;">';
+                inventoryHtml += '<h4 style="color:#856404;">📦 Stock Updated</h4>';
+                scannedItems.forEach(item => {
+                    inventoryHtml += `<p>${item.name} stock +${item.quantity}</p>`;
+                });
+                inventoryHtml += '<p style="font-size:12px; color:#666; margin-top:10px;">Inventory updated instantly 📊</p>';
+                inventoryHtml += '</div>';
+
+                // Step 5: Show saved for records
+                const savedHtml = '<div style="margin:15px 0; padding:15px; background:#d1fae5; border-radius:12px;">' +
+                    '<h4 style="color:#065f46;">🧾 Saved for Records</h4>' +
+                    '<p>• For accounting</p><p>• For GST</p><p>• For future reference</p>' +
+                    '<p style="font-size:12px; color:#666; margin-top:10px;">No paper needed 📁</p>' +
+                    '</div>';
+
+                // Update invoice modal with scan results
+                const content = document.getElementById('invoiceContent');
+                const currentHtml = content.innerHTML;
+                
+                // Insert scanner results before the download button
+                const scannerResults = `
+                    <div class="scanner-section" style="animation: fadeIn 0.5s;">
+                        <h3 style="color:#1a4d2e; margin-bottom:15px;">📸 Scan Results</h3>
+                        ${scannedData}
+                        ${inventoryHtml}
+                        ${savedHtml}
+                        <div style="background:#f0fdf4; padding:15px; border-radius:12px; margin-top:15px;">
+                            <h4 style="color:#22863a;">🏆 Final Result</h4>
+                            <p><span style="color:#dc2626;">❌ Without scanner</span> → Type everything manually</p>
+                            <p><span style="color:#16a34a;">✅ With scanner</span> → Just scan → Everything is done</p>
+                        </div>
+                    </div>
+                `;
+
+                // Insert before download button
+                const insertPos = currentHtml.lastIndexOf('<button class="download-btn"');
+                const newHtml = currentHtml.slice(0, insertPos) + scannerResults + currentHtml.slice(insertPos);
+                content.innerHTML = newHtml;
+
+                if (scanBtn) {
+                    scanBtn.innerHTML = '<i class="fas fa-check-circle"></i> Scanned!';
+                    scanBtn.disabled = false;
+                }
+
+                showToast('✅ Bill scanned successfully! Inventory updated.', 'check-circle');
+            }, 2000);
+        }
+
+        // ========== SHOW INVOICE MODAL - PREMIUM CANVA STYLE ==========
         function showInvoice(order) {
             const modal = document.getElementById('invoiceModal');
             const content = document.getElementById('invoiceContent');
@@ -1408,15 +1679,44 @@
             content.innerHTML = `
                 <button class="invoice-close" onclick="closeInvoiceModal()">&times;</button>
                 
-                <div class="invoice-title-section">
-                    <h1>INVOICE</h1>
-                    <div class="invoice-number">INVOICE #${order.id || '123456'}</div>
-                    <div class="invoice-date">DATE : ${formatDate(order.date)}</div>
+                <div class="invoice-header">
+                    <div class="invoice-brand">
+                        <div class="invoice-logo-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="invoice-brand-text">
+                            <h2>Green Garden</h2>
+                            <span>Heirloom Seeds</span>
+                        </div>
+                    </div>
+                    <div class="invoice-scanner-badge">
+                        <i class="fas fa-qrcode"></i>
+                        <span>Scanner Ready</span>
+                    </div>
                 </div>
 
-                <div class="invoice-to">
-                    <p><strong>INVOICE TO :</strong> ${order.customer || 'John Doe'}</p>
-                    <p><strong>PHONE</strong> ${order.phone || '+123-456-789'}</p>
+                <div class="invoice-title-section">
+                    <h1>INVOICE</h1>
+                    <p class="invoice-number">#${order.id || '123456'}</p>
+                </div>
+
+                <div class="invoice-details-grid">
+                    <div class="invoice-detail-item">
+                        <label>Invoice Date</label>
+                        <p>${formatDate(order.date)}</p>
+                    </div>
+                    <div class="invoice-detail-item">
+                        <label>Due Date</label>
+                        <p>${formatDate(order.date)}</p>
+                    </div>
+                    <div class="invoice-detail-item">
+                        <label>Invoice To</label>
+                        <p>${order.customer || 'John Doe'}</p>
+                    </div>
+                    <div class="invoice-detail-item">
+                        <label>Phone</label>
+                        <p>${order.phone || '+123-456-789'}</p>
+                    </div>
                 </div>
 
                 <table class="invoice-table">
@@ -1467,9 +1767,14 @@
                     <p>Lorem ipsum dolor sit amet, tincidunt euismod nibh ut aliquet. Proin sed odio id elit sodales ultricies.</p>
                 </div>
 
+                <button class="scan-btn" onclick='scanBill(${JSON.stringify(order).replace(/'/g, "\\'")})'>
+                    <i class="fas fa-camera"></i>
+                    Scan Bill (Auto-update Inventory)
+                </button>
+
                 <button class="download-btn" onclick='generatePDFInvoice(${JSON.stringify(order).replace(/'/g, "\\'")})'>
                     <i class="fas fa-download"></i>
-                    Download Invoice
+                    Download Invoice PDF
                 </button>
             `;
 
