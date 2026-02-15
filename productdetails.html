@@ -32,7 +32,7 @@
             --transition-premium: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* ===== 🌿 PREMIUM NAVBAR (fully responsive) ===== */
+        /* ===== 🌿 PREMIUM NAVBAR ===== */
         .navbar {
             position: sticky;
             top: 0;
@@ -52,7 +52,6 @@
         }
 
         .navbar:hover {
-            transform: translateY(-2px);
             box-shadow: 0 16px 40px rgba(46, 204, 113, 0.6);
         }
 
@@ -83,18 +82,26 @@
             text-shadow: 0 0 15px rgba(46,204,113,0.9);
         }
 
-        /* search box - mobile friendly */
+        /* search container */
+        .search-container {
+            position: relative;
+            flex-grow: 1;
+            max-width: 350px;
+            margin: 0 20px;
+        }
+
+        /* search box */
         .search-box {
             background: rgba(255,255,255,0.15);
             border: 1px solid rgba(255,255,255,0.25);
             border-radius: 30px;
-            padding: 10px 16px;
+            padding: 10px 20px 10px 40px; /* space for icon */
             color: white;
-            width: 180px;
+            width: 100%;
             outline: none;
             backdrop-filter: blur(10px);
             transition: all 0.4s ease;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         .search-box::placeholder {
@@ -102,12 +109,21 @@
         }
 
         .search-box:focus {
-            width: 220px;
             background: rgba(255,255,255,0.25);
             box-shadow: 0 0 25px rgba(46,204,113,0.7);
+            border-color: rgba(255,255,255,0.5);
         }
 
-        /* nav buttons - compact on mobile */
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.7);
+            pointer-events: none; /* let clicks pass through */
+        }
+
+        /* nav buttons */
         .navbar-actions {
             display: flex;
             gap: 8px;
@@ -131,9 +147,7 @@
             white-space: nowrap;
         }
 
-        .nav-btn i {
-            font-size: 0.9rem;
-        }
+        .nav-btn i { font-size: 0.9rem; }
 
         .nav-btn:hover {
             background: #2ecc71;
@@ -142,7 +156,7 @@
             box-shadow: 0 0 20px rgba(46,204,113,0.8);
         }
 
-        /* main container - mobile first */
+        /* main container */
         .container {
             max-width: 1350px;
             margin: 20px auto;
@@ -367,7 +381,7 @@
         }
         .cart-toast.show { opacity: 1; }
 
-        /* tablet and up */
+        /* responsive */
         @media (min-width: 768px) {
             .container {
                 grid-template-columns: 1.1fr 1.3fr;
@@ -383,21 +397,17 @@
                 padding: 16px 40px;
                 flex-wrap: nowrap;
             }
-            .search-box {
-                width: 220px;
-            }
-            .search-box:focus {
-                width: 300px;
-            }
-            .nav-btn {
-                padding: 10px 22px;
-                font-size: 0.95rem;
-            }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
+            .search-container {
+                order: 3; /* move search to bottom on mobile */
+                width: 100%;
+                max-width: none;
+                margin: 10px 0 0 0;
+            }
             .navbar-actions .nav-btn span {
-                display: none; /* hide text, keep icons on very small */
+                display: none;
             }
             .nav-btn {
                 padding: 10px;
@@ -416,7 +426,11 @@
             <span class="logo-sub">heirloom seeds</span>
         </a>
 
-        <input type="text" placeholder="Search..." class="search-box">
+        <!-- Search Form -->
+        <form action="products.html" method="GET" class="search-container" id="searchForm">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="search" placeholder="Search for seeds, plants..." class="search-box" id="searchInput">
+        </form>
 
         <div class="navbar-actions">
             <a href="cart.html" class="nav-btn"><i class="fas fa-shopping-bag"></i><span>Cart</span></a>
@@ -431,7 +445,7 @@
         <!-- left gallery -->
         <div class="card gallery-col">
             <div class="main-image">
-                <img id="product-image" src="https://via.placeholder.com/500/ebf5df/3f683f?text=🌱+garden" alt="product">
+                <img id="product-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="product">
             </div>
             <div class="action-buttons">
                 <button class="btn btn-cart" id="addToCartBtn"><i class="fas fa-cart-plus"></i> add</button>
@@ -493,7 +507,7 @@
             }
         });
 
-        // COMPLETE PRODUCT DATABASE (from your list)
+        // PRODUCT DATABASE
         const products = [
             { id: 1, name: "Morning Jewel Rose Seed", price: 158, image: "F1.jpg", category: "Flower Seeds", rating: 4.2 },
             { id: 2, name: "Winter Daisy Red Mixed Seed", price: 150, image: "F2.jpg", category: "Flower Seeds", rating: 4.5 },
@@ -549,6 +563,52 @@
 
         let currentProduct = null;
 
+        // Helper to create local placeholder images
+        function createPlaceholder(text) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 500;
+            canvas.height = 500;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#daefcc';
+            ctx.fillRect(0, 0, 500, 500);
+            
+            ctx.strokeStyle = '#3f683f';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(10, 10, 480, 480);
+
+            ctx.fillStyle = '#2f5e2f';
+            ctx.font = 'bold 36px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            const words = text.split(' ');
+            let line = '';
+            let lines = [];
+            const maxWidth = 400;
+            
+            words.forEach(word => {
+                const testLine = line + word + ' ';
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && line !== '') {
+                    lines.push(line.trim());
+                    line = word + ' ';
+                } else {
+                    line = testLine;
+                }
+            });
+            lines.push(line.trim());
+
+            const lineHeight = 45;
+            const startY = 250 - (lines.length - 1) * lineHeight / 2;
+            
+            lines.forEach((l, i) => {
+                ctx.fillText(l, 250, startY + (i * lineHeight));
+            });
+
+            return canvas.toDataURL();
+        }
+
         function getProductIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
             const id = parseInt(params.get("id"));
@@ -560,15 +620,7 @@
             currentProduct = products.find(p => p.id === productId) || products[0];
 
             const imgElement = document.getElementById("product-image");
-            if (currentProduct.image) {
-                if (currentProduct.image.startsWith("F")) {
-                    imgElement.src = `https://via.placeholder.com/500/daefcc/3f683f?text=${encodeURIComponent(currentProduct.name.substring(0,20))}`;
-                } else {
-                    imgElement.src = currentProduct.image;
-                }
-            } else {
-                imgElement.src = 'https://via.placeholder.com/500/e3f2d9/2f5e2f?text=🌰+seed';
-            }
+            imgElement.src = createPlaceholder(currentProduct.name);
 
             document.getElementById("product-name").textContent = currentProduct.name;
             document.getElementById("product-category").textContent = currentProduct.category;
@@ -594,54 +646,53 @@
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        // ===== WORKING ADD TO CART =====
         function addToCart() {
             if (!currentProduct) return;
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
-            if (existingIndex > -1) {
-                cart[existingIndex].quantity += 1;
-            } else {
-                cart.push({
-                    id: currentProduct.id,
-                    name: currentProduct.name,
-                    price: currentProduct.price,
-                    image: currentProduct.image || 'https://via.placeholder.com/80/e5f2db/2f5e2f?text=🌱',
-                    quantity: 1
-                });
+            
+            try {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
+                
+                if (existingIndex > -1) {
+                    cart[existingIndex].quantity += 1;
+                } else {
+                    cart.push({
+                        id: currentProduct.id,
+                        name: currentProduct.name,
+                        price: currentProduct.price,
+                        image: currentProduct.image,
+                        quantity: 1
+                    });
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showToast('added to basket 🌿');
+            } catch (e) {
+                console.error("Error saving to cart", e);
+                showToast('Error: Storage full or blocked');
             }
-            localStorage.setItem('cart', JSON.stringify(cart));
-            showToast('added to basket 🌿');
         }
 
-        // ===== WORKING BUY NOW =====
         function buyNow() {
             if (!currentProduct) return;
-            addToCart(); // add to cart then go to cart page
+            addToCart(); 
             window.location.href = 'cart.html';
         }
 
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             displayProductDetails();
-
-            // fresh listeners
-            const addBtn = document.getElementById('addToCartBtn');
-            const buyBtn = document.getElementById('buyNowBtn');
-
-            // Remove any previous listeners by cloning
-            const newAddBtn = addBtn.cloneNode(true);
-            const newBuyBtn = buyBtn.cloneNode(true);
-            addBtn.parentNode.replaceChild(newAddBtn, addBtn);
-            buyBtn.parentNode.replaceChild(newBuyBtn, buyBtn);
-
-            document.getElementById('addToCartBtn').addEventListener('click', (e) => {
-                e.preventDefault();
-                addToCart();
-            });
-
-            document.getElementById('buyNowBtn').addEventListener('click', (e) => {
-                e.preventDefault();
-                buyNow();
+            document.getElementById('addToCartBtn').addEventListener('click', addToCart);
+            document.getElementById('buyNowBtn').addEventListener('click', buyNow);
+            
+            // Search form is handled by HTML form action, no extra JS needed 
+            // unless you want to validate empty input.
+            const searchForm = document.getElementById('searchForm');
+            searchForm.addEventListener('submit', (e) => {
+                const input = document.getElementById('searchInput');
+                if (!input.value.trim()) {
+                    e.preventDefault(); // Stop if empty
+                }
             });
         });
     </script>
