@@ -4,267 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders | Green Garden</title>
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- jsPDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <style>
-        :root {
-            --primary-green: #174e1e;
-            --primary-light: #2e7d32;
-            --accent-gold: #d4af37;
-            --text-main: #1a1a1a;
-            --text-muted: #555;
-            --white: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --shadow-card: 0 30px 60px rgba(0,0,0,0.12);
-            --transition-premium: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --status-processing: #f59e0b; /* Using Amber for Processing */
-            --status-shipped: #3b82f6;
-            --status-delivered: #10b981;
-        }
-
+        :root { --primary: #0f3d1a; --accent: #cfa364; --text-main: #1a1a1a; --text-muted: #666; --surface: #ffffff; --bg: #f4f7f6; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; background: var(--bg); position: relative; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(#1b6b2b 1px, transparent 1px); background-size: 40px 40px; opacity: 0.03; z-index: -1; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            color: var(--text-main);
-            position: relative;
-            overflow-x: hidden;
-        }
+        /* Navbar */
+        .navbar { background: var(--surface); padding: 1.2rem 3rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100; }
+        .back-btn { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); font-weight: 600; padding: 10px 20px; border-radius: 50px; background: #f5f5f5; transition: all 0.3s; }
+        .back-btn:hover { background: var(--primary); color: white; }
+        .navbar-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); }
 
-        body::before {
-            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.1));
-            z-index: -1;
-        }
+        /* Toolbar */
+        .toolbar { background: var(--surface); padding: 20px; border-radius: 16px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.02); }
+        .filter-group { display: flex; gap: 10px; }
+        .filter-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid #eee; background: #fff; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            padding: 1.2rem 3rem;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-            position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(255,255,255,0.6);
-            animation: slideDown 0.8s var(--transition-premium);
-        }
-        .back-btn { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); font-weight: 600; padding: 10px 20px; border-radius: 50px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); transition: all 0.4s; }
-        .back-btn:hover { background: var(--primary-green); color: white; transform: translateX(-5px); }
-        .navbar-title { flex: 1; text-align: center; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--primary-green); }
-
-        .main-container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-
-        .toolbar {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            border: 1px solid var(--glass-border);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: space-between;
-            align-items: center;
-            animation: slideInUp 0.8s backwards;
-        }
-        .filter-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        .filter-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.5); color: var(--text-muted); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; }
-        .filter-btn.active { background: var(--primary-green); color: white; box-shadow: 0 4px 10px rgba(23,78,30,0.2); }
-        .search-box { position: relative; width: 250px; }
-        .search-box input { width: 100%; padding: 10px 15px 10px 40px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.6); font-family: inherit; outline: none; }
-        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-
-        .order-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-card);
-            margin-bottom: 25px;
-            overflow: hidden;
-            transition: transform 0.3s var(--transition-premium);
-            animation: slideInUp 0.8s backwards;
-        }
-        .order-card:hover { transform: translateY(-3px); }
-        
-        .order-header {
-            padding: 20px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            background: rgba(255,255,255,0.3);
-        }
-        .order-meta h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary-green); margin-bottom: 4px; }
-        .order-meta span { font-size: 0.85rem; color: var(--text-muted); }
-        
-        .status-badge { padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        /* Status Colors */
-        .status-processing { background: rgba(245, 158, 11, 0.15); color: var(--status-processing); }
-        .status-shipped { background: rgba(59, 130, 246, 0.15); color: var(--status-shipped); }
-        .status-delivered { background: rgba(16, 185, 129, 0.15); color: var(--status-delivered); }
+        /* Order Card */
+        .order-card { background: var(--surface); border-radius: 16px; border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.02); margin-bottom: 20px; overflow: hidden; transition: transform 0.3s; }
+        .order-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .order-header { padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; background: #fafafa; }
+        .order-meta h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary); margin-bottom: 4px; }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .status-processing { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .status-shipped { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .status-delivered { background: rgba(16, 185, 129, 0.1); color: #10b981; }
 
         .order-body { padding: 20px 25px; }
         .order-item { display: flex; gap: 15px; margin-bottom: 15px; }
-        .order-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
-        .item-info { flex: 1; }
-        .item-info h4 { font-size: 0.95rem; margin-bottom: 4px; }
-        .item-info p { font-size: 0.85rem; color: var(--text-muted); }
-
-        .order-footer {
-            padding: 15px 25px;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid rgba(0,0,0,0.02);
-            flex-wrap: wrap; gap: 15px;
-        }
-        .order-total { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
-        .order-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .order-item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
         
-        .btn-icon {
-            padding: 8px 15px;
-            border-radius: 8px;
-            border: none;
-            background: rgba(0,0,0,0.03);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-icon:hover { background: var(--primary-green); color: white; }
-        .btn-icon.primary { background: var(--primary-green); color: white; }
-        .btn-icon.primary:hover { background: var(--primary-light); }
+        .order-footer { padding: 15px 25px; background: #fafafa; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+        .order-total { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; }
+        .btn-icon { padding: 8px 15px; border-radius: 8px; border: 1px solid #eee; background: white; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+        .btn-icon:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .empty-state { text-align: center; padding: 4rem 2rem; background: var(--glass-bg); border-radius: 20px; border: 1px solid var(--glass-border); }
-        .empty-icon { font-size: 4rem; color: var(--accent-gold); opacity: 0.5; margin-bottom: 20px; }
-
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s; }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: white; width: 90%; max-width: 500px; border-radius: 20px; overflow: hidden; transform: scale(0.9); transition: transform 0.3s; }
-        .modal-overlay.show .modal-content { transform: scale(1); }
-        .modal-header { background: var(--primary-green); color: white; padding: 20px; text-align: center; }
-        .modal-body { padding: 30px; }
-        
-        .timeline { position: relative; padding-left: 30px; }
-        .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #e0e0e0; }
-        .timeline-item { position: relative; margin-bottom: 25px; }
-        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: #e0e0e0; border: 2px solid white; }
-        .timeline-item.completed::before { background: var(--primary-green); }
-        .timeline-item.active::before { background: var(--accent-gold); box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2); }
-        .timeline-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
-        .timeline-title { font-weight: 600; }
+        /* Empty State */
+        .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 16px; border: 1px solid #eee; }
+        .empty-state i { font-size: 3rem; color: var(--accent); opacity: 0.5; margin-bottom: 15px; }
 
         @media (max-width: 768px) {
-            .toolbar { flex-direction: column; align-items: stretch; }
-            .search-box { width: 100%; }
-            .order-footer { flex-direction: column; align-items: flex-start; }
-            .order-actions { width: 100%; justify-content: flex-start; }
+            .toolbar { flex-direction: column; gap: 15px; }
+            .order-footer { flex-direction: column; gap: 15px; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <a href="home.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
         <div class="navbar-title">My Orders</div>
         <div style="width: 100px;"></div>
     </nav>
 
-    <div class="main-container">
+    <div style="max-width: 1000px; margin: 0 auto; padding: 40px 20px;">
         <div class="toolbar">
             <div class="filter-group">
                 <button class="filter-btn active" onclick="filterOrders('all', event)">All</button>
-                <!-- Changed 'Pending' to 'Processing' to match screenshot -->
                 <button class="filter-btn" onclick="filterOrders('Processing', event)">Processing</button>
                 <button class="filter-btn" onclick="filterOrders('Shipped', event)">Shipped</button>
                 <button class="filter-btn" onclick="filterOrders('Delivered', event)">Delivered</button>
             </div>
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search Order ID..." id="searchInput" onkeyup="searchOrders()">
+            <div style="position:relative;">
+                <i class="fas fa-search" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); color:#ccc;"></i>
+                <input type="text" placeholder="Search Order ID..." id="searchInput" onkeyup="searchOrders()" style="padding:10px 15px 10px 40px; border-radius:8px; border:1px solid #eee; font-family:inherit;">
             </div>
         </div>
 
         <div id="ordersContainer"></div>
     </div>
 
-    <!-- Tracking Modal -->
-    <div id="trackingModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 style="font-family:'Playfair Display';">Order Tracking</h3>
-                <p id="modalOrderId" style="opacity:0.8; font-size:0.9rem;"></p>
-            </div>
-            <div class="modal-body">
-                <div class="timeline" id="timelineContent"></div>
-                <button onclick="closeModal()" style="margin-top:20px; width:100%; padding:12px; background:var(--primary-green); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600;">Close</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // --- 1. DATA INITIALIZATION ---
+        // 1. DATA INIT
         if (!localStorage.getItem('orders')) {
             const demoOrders = [
-                { 
-                    orderId: "ORD84521", 
-                    date: new Date(Date.now() - 86400000).toISOString(), 
-                    status: "Processing", // Changed to Processing
-                    items: [{name: "Winter Daisy Red Mixed Seed", price: "Rs. 150", image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=300", quantity: 1}], 
-                    total: "Rs. 150", 
-                    paymentMethod: "UPI", 
-                    customer: { name: "Demo User", address: "123 Garden St" } 
-                },
-                { 
-                    orderId: "ORD12345", 
-                    date: new Date().toISOString(), 
-                    status: "Processing", // Changed to Processing
-                    items: [{name: "Bitter Gourd - Karela Seed", price: "Rs. 99", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=300", quantity: 1}], 
-                    total: "Rs. 99", 
-                    paymentMethod: "COD", 
-                    customer: { name: "Demo User", address: "123 Garden St" } 
-                }
+                { orderId: "ORD84521", date: new Date(Date.now() - 86400000).toISOString(), status: "Shipped", items: [{name: "Winter Daisy Red Mixed Seed", price: "Rs. 150", image: "https://via.placeholder.com/60", quantity: 1}], total: "Rs. 150", paymentMethod: "UPI", customer: { name: "Demo User", address: "123 Garden St" } },
+                { orderId: "ORD12345", date: new Date().toISOString(), status: "Processing", items: [{name: "Bitter Gourd - Karela Seed", price: "Rs. 99", image: "https://via.placeholder.com/60", quantity: 1}], total: "Rs. 99", paymentMethod: "COD", customer: { name: "Demo User", address: "123 Garden St" } }
             ];
             localStorage.setItem('orders', JSON.stringify(demoOrders));
         }
 
         let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-        // Real-time sync listener
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'orders') {
-                orders = JSON.parse(e.newValue) || [];
-                renderOrders(orders);
-            }
-        });
-
-        // --- 2. RENDERING ---
+        // 2. RENDER
         function renderOrders(data) {
             const container = document.getElementById('ordersContainer');
             container.innerHTML = '';
@@ -273,12 +101,11 @@
             if (sortedData.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon"><i class="fas fa-seedling"></i></div>
-                        <h3 style="font-family:'Playfair Display'; color:var(--primary-green);">No Orders Found</h3>
-                        <p style="margin-top:10px; color:var(--text-muted);">Looks like you haven't placed any orders matching this criteria.</p>
-                        <a href="products.html" class="btn-icon primary" style="margin-top:20px; display:inline-block; text-decoration:none;">Start Shopping</a>
-                    </div>
-                `;
+                        <i class="fas fa-box-open"></i>
+                        <h3 style="font-family:'Playfair Display'; color:var(--primary); margin-top:10px;">No Orders Found</h3>
+                        <p style="margin-top:5px; color:#777;">Looks like you haven't placed any orders yet.</p>
+                        <a href="products.html" class="btn-icon" style="margin-top:20px; text-decoration:none; background:var(--primary); color:white; border-color:var(--primary);">Start Shopping</a>
+                    </div>`;
                 return;
             }
 
@@ -286,33 +113,31 @@
                 const statusClass = order.status.toLowerCase();
                 const card = document.createElement('div');
                 card.className = 'order-card';
-                card.style.animationDelay = `${index * 0.1}s`;
                 
                 const itemsHtml = order.items.map(item => `
                     <div class="order-item">
                         <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.name}">
-                        <div class="item-info">
-                            <h4>${item.name}</h4>
-                            <p>${item.price} x ${item.quantity || 1}</p>
+                        <div style="flex:1;">
+                            <h4 style="font-size:0.95rem; font-weight:600;">${item.name}</h4>
+                            <p style="font-size:0.85rem; color:var(--text-muted);">${item.price} x ${item.quantity || 1}</p>
                         </div>
                     </div>
                 `).join('');
 
                 card.innerHTML = `
                     <div class="order-header">
-                        <div class="order-meta">
+                        <div>
                             <h3>#${order.orderId}</h3>
-                            <span>${new Date(order.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                            <span style="font-size:0.85rem; color:var(--text-muted);">${new Date(order.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                         </div>
                         <div class="status-badge status-${statusClass}">${order.status}</div>
                     </div>
                     <div class="order-body">${itemsHtml}</div>
                     <div class="order-footer">
                         <div class="order-total">Total: ${order.total}</div>
-                        <div class="order-actions">
+                        <div style="display:flex; gap:10px;">
                             <button class="btn-icon" onclick="downloadInvoice('${order.orderId}')"><i class="fas fa-file-pdf"></i> Invoice</button>
-                            <button class="btn-icon" onclick="openTracking('${order.orderId}')"><i class="fas fa-truck"></i> Track</button>
-                            <button class="btn-icon primary" onclick="reorder('${order.orderId}')"><i class="fas fa-redo"></i> Reorder</button>
+                            <button class="btn-icon" onclick="alert('Tracking feature coming soon!')"><i class="fas fa-truck"></i> Track</button>
                         </div>
                     </div>
                 `;
@@ -320,172 +145,58 @@
             });
         }
 
-        // --- 3. ACTIONS ---
-
-        function reorder(orderId) {
-            const order = orders.find(o => o.orderId === orderId);
-            if (!order) return;
-
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            order.items.forEach(item => {
-                const existingIndex = cart.findIndex(c => c.name === item.name);
-                if (existingIndex > -1) {
-                    cart[existingIndex].quantity += 1;
-                } else {
-                    cart.push({
-                        name: item.name,
-                        price: item.price,
-                        image: item.image,
-                        quantity: 1
-                    });
-                }
-            });
-
-            localStorage.setItem('cart', JSON.stringify(cart));
-            alert('Items added to cart successfully!');
-        }
-
+        // 3. ACTIONS
         function downloadInvoice(orderId) {
             try {
-                if (typeof window.jspdf === 'undefined') {
-                    alert("Error: PDF Library failed to load. Check internet connection.");
-                    return;
-                }
-
+                if (typeof window.jspdf === 'undefined') { alert("Error: PDF Library failed to load."); return; }
                 const { jsPDF } = window.jspdf;
                 const order = orders.find(o => o.orderId === orderId);
                 if (!order) return;
 
                 const doc = new jsPDF();
-                
-                const cleanText = (text) => (text || "").replace(/₹/g, "Rs. ");
+                doc.setFontSize(22); doc.setTextColor(23, 78, 30); doc.text("Green Garden", 105, 20, null, null, "center");
+                doc.setFontSize(10); doc.setTextColor(150); doc.text("Premium Plants & Garden Essentials", 105, 28, null, null, "center");
+                doc.setDrawColor(23, 78, 30); doc.line(20, 35, 190, 35);
 
-                doc.setFontSize(22);
-                doc.setTextColor(23, 78, 30); 
-                doc.text("Green Garden", 105, 20, null, null, "center");
-                
-                doc.setFontSize(12);
-                doc.setTextColor(100);
-                doc.text("Premium Plants & Garden Essentials", 105, 28, null, null, "center");
-
-                doc.setDrawColor(23, 78, 30);
-                doc.line(20, 35, 190, 35);
-
-                doc.setFontSize(12);
-                doc.setTextColor(0);
+                doc.setFontSize(12); doc.setTextColor(0);
                 doc.text(`Invoice: #${order.orderId}`, 20, 45);
                 doc.text(`Date: ${new Date(order.date).toLocaleDateString()}`, 20, 52);
-                doc.text(`Status: ${order.status}`, 20, 59);
-
+                
                 doc.text("Bill To:", 20, 75);
                 doc.setTextColor(100);
-                if(order.customer) {
-                    doc.text(order.customer.name || "Guest", 20, 82);
-                    doc.text(order.customer.address || "N/A", 20, 89);
-                } else {
-                    doc.text("Guest", 20, 82);
-                }
+                if(order.customer) { doc.text(order.customer.name || "Guest", 20, 82); doc.text(order.customer.address || "N/A", 20, 89); }
+                else { doc.text("Guest", 20, 82); }
 
-                doc.setTextColor(0);
-                doc.setFillColor(240, 240, 240);
-                doc.rect(20, 100, 170, 10, 'F');
-                doc.text("Item", 22, 107);
-                doc.text("Price", 160, 107);
+                doc.setTextColor(0); doc.setFillColor(240, 240, 240); doc.rect(20, 100, 170, 10, 'F');
+                doc.text("Item", 22, 107); doc.text("Price", 160, 107);
 
                 let y = 117;
                 order.items.forEach(item => {
-                    doc.setTextColor(50);
-                    const name = cleanText(item.name);
-                    const price = cleanText(item.price);
-                    
-                    doc.text(name, 22, y);
-                    doc.setTextColor(0);
-                    doc.text(price, 160, y);
+                    doc.text(item.name, 22, y);
+                    doc.text(item.price, 160, y);
                     y += 10;
                 });
 
-                doc.setDrawColor(200);
-                doc.line(20, y, 190, y);
-                doc.setFontSize(14);
-                doc.setTextColor(23, 78, 30);
-                doc.text(`Total: ${cleanText(order.total)}`, 160, y + 10);
-
-                doc.setFontSize(10);
-                doc.setTextColor(150);
-                doc.text("Thank you for shopping with Green Garden!", 105, 280, null, null, "center");
-
+                doc.setFontSize(14); doc.setTextColor(23, 78, 30); doc.text(`Total: ${order.total}`, 160, y + 10);
                 doc.save(`Invoice_${order.orderId}.pdf`);
-            
-            } catch (error) {
-                console.error("PDF Generation Error:", error);
-                alert("Failed to generate invoice.");
-            }
+            } catch (error) { alert("Failed to generate invoice."); }
         }
 
-        function openTracking(orderId) {
-            const order = orders.find(o => o.orderId === orderId);
-            if (!order) return;
-
-            document.getElementById('modalOrderId').textContent = `#${order.orderId}`;
-            const timeline = document.getElementById('timelineContent');
-            
-            const steps = [
-                { title: "Order Placed", date: new Date(order.date).toLocaleString() },
-                { title: "Processing", date: "Preparing your order" },
-                { title: "Shipped", date: order.status === "Processing" ? "Pending" : "In Transit" },
-                { title: "Delivered", date: order.status === "Delivered" ? "Arrived" : "Estimated: 3-5 Days" }
-            ];
-
-            timeline.innerHTML = steps.map((step, i) => {
-                let statusClass = '';
-                if (order.status === 'Delivered') statusClass = 'completed';
-                else if (order.status === 'Shipped' && i < 3) statusClass = 'completed';
-                else if (order.status === 'Shipped' && i === 2) statusClass = 'active';
-                // Logic for Processing status
-                else if (order.status === 'Processing' && i < 2) statusClass = 'completed';
-                else if (order.status === 'Processing' && i === 1) statusClass = 'active';
-
-                return `
-                    <div class="timeline-item ${statusClass}">
-                        <div class="timeline-date">${step.date}</div>
-                        <div class="timeline-title">${step.title}</div>
-                    </div>
-                `;
-            }).join('');
-
-            document.getElementById('trackingModal').classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('trackingModal').classList.remove('show');
-        }
-
-        // --- 4. FILTER & SEARCH ---
+        // 4. FILTER & SEARCH
         function filterOrders(status, e) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             if(e && e.target) e.target.classList.add('active');
-
-            let filtered = orders;
-            if (status !== 'all') {
-                filtered = orders.filter(o => o.status === status);
-            }
+            let filtered = status === 'all' ? orders : orders.filter(o => o.status === status);
             renderOrders(filtered);
         }
 
         function searchOrders() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = orders.filter(o => o.orderId.toLowerCase().includes(query));
-            renderOrders(filtered);
+            renderOrders(orders.filter(o => o.orderId.toLowerCase().includes(query)));
         }
 
-        // Initial Load
+        // Init
         renderOrders(orders);
-
-        // Close modal on outside click
-        document.getElementById('trackingModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
     </script>
 </body>
 </html>
