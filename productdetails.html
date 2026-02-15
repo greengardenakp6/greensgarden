@@ -423,7 +423,7 @@
     <nav class="navbar" id="mainNavbar">
         <a href="products.html" class="logo">
             Green Garden      
-            <span class="logo-sub">heirloom seeds</span>
+           
         </a>
 
         <form action="products.html" method="GET" class="search-container" id="searchForm">
@@ -438,7 +438,7 @@
         </div>
     </nav>
 
-    <div id="cartToast" class="cart-toast"><i class="fas fa-check-circle" style="color:#d0f0b0;"></i> added to your basket</div>
+    <div id="cartToast" class="cart-toast"><i class="fas fa-check-circle" style="color:#d0f0b0;"></i> Add to cart</div>
 
     <div class="container">
         <div class="card gallery-col">
@@ -447,8 +447,8 @@
                 <img id="product-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="product">
             </div>
             <div class="action-buttons">
-                <button class="btn btn-cart" id="addToCartBtn"><i class="fas fa-cart-plus"></i> add</button>
-                <button class="btn btn-buy" id="buyNowBtn"><i class="fas fa-bolt"></i> buy</button>
+                <button class="btn btn-cart" id="addToCartBtn"><i class="fas fa-cart-plus"></i> Add to cart</button>
+                <button class="btn btn-buy" id="buyNowBtn"><i class="fas fa-bolt"></i> Buy Now</button>
             </div>
         </div>
 
@@ -680,10 +680,16 @@
             }
         }
 
-        function buyNow() {
+        function Addtocart() {
             if (!currentProduct) return;
             addToCart(); 
             window.location.href = 'cart.html';
+        }
+        
+          function buyNow() {
+            if (!currentProduct) return;
+            buyNow(); 
+            window.location.href = 'buy.html';
         }
 
         // Initialize on page load
