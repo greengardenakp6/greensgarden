@@ -95,7 +95,7 @@
             background: rgba(255,255,255,0.15);
             border: 1px solid rgba(255,255,255,0.25);
             border-radius: 30px;
-            padding: 10px 20px 10px 40px; /* space for icon */
+            padding: 10px 20px 10px 40px;
             color: white;
             width: 100%;
             outline: none;
@@ -120,7 +120,7 @@
             top: 50%;
             transform: translateY(-50%);
             color: rgba(255,255,255,0.7);
-            pointer-events: none; /* let clicks pass through */
+            pointer-events: none;
         }
 
         /* nav buttons */
@@ -401,7 +401,7 @@
 
         @media (max-width: 600px) {
             .search-container {
-                order: 3; /* move search to bottom on mobile */
+                order: 3;
                 width: 100%;
                 max-width: none;
                 margin: 10px 0 0 0;
@@ -426,7 +426,6 @@
             <span class="logo-sub">heirloom seeds</span>
         </a>
 
-        <!-- Search Form -->
         <form action="products.html" method="GET" class="search-container" id="searchForm">
             <i class="fas fa-search search-icon"></i>
             <input type="text" name="search" placeholder="Search for seeds, plants..." class="search-box" id="searchInput">
@@ -442,9 +441,9 @@
     <div id="cartToast" class="cart-toast"><i class="fas fa-check-circle" style="color:#d0f0b0;"></i> added to your basket</div>
 
     <div class="container">
-        <!-- left gallery -->
         <div class="card gallery-col">
             <div class="main-image">
+                <!-- Image src will be set by JS -->
                 <img id="product-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="product">
             </div>
             <div class="action-buttons">
@@ -453,7 +452,6 @@
             </div>
         </div>
 
-        <!-- right details -->
         <div class="card details-col">
             <h1 class="product-title" id="product-name">Loading ...</h1>
             <div>
@@ -563,7 +561,7 @@
 
         let currentProduct = null;
 
-        // Helper to create local placeholder images
+        // Helper to create local placeholder images (USED AS FALLBACK)
         function createPlaceholder(text) {
             const canvas = document.createElement('canvas');
             canvas.width = 500;
@@ -620,7 +618,16 @@
             currentProduct = products.find(p => p.id === productId) || products[0];
 
             const imgElement = document.getElementById("product-image");
-            imgElement.src = createPlaceholder(currentProduct.name);
+            
+            // === IMAGE LOGIC ===
+            // 1. Try to load the actual image from the database (e.g., F1.jpg)
+            imgElement.src = currentProduct.image;
+
+            // 2. If the image fails to load (file not found), show the placeholder
+            imgElement.onerror = function() {
+                this.onerror = null; // prevent infinite loop
+                this.src = createPlaceholder(currentProduct.name);
+            };
 
             document.getElementById("product-name").textContent = currentProduct.name;
             document.getElementById("product-category").textContent = currentProduct.category;
@@ -685,13 +692,11 @@
             document.getElementById('addToCartBtn').addEventListener('click', addToCart);
             document.getElementById('buyNowBtn').addEventListener('click', buyNow);
             
-            // Search form is handled by HTML form action, no extra JS needed 
-            // unless you want to validate empty input.
             const searchForm = document.getElementById('searchForm');
             searchForm.addEventListener('submit', (e) => {
                 const input = document.getElementById('searchInput');
                 if (!input.value.trim()) {
-                    e.preventDefault(); // Stop if empty
+                    e.preventDefault();
                 }
             });
         });
