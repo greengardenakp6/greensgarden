@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- QR Code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <!-- PDF generation library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -116,6 +120,17 @@
             max-width: 1100px;
             margin: 30px auto;
             padding: 0 20px;
+        }
+
+        /* cart badge */
+        .cart-badge {
+            background-color: #cfa364;
+            color: #0b3d2e;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 5px;
         }
 
         /* order card premium */
@@ -319,7 +334,7 @@
             transform: scale(1.05);
         }
 
-        /* premium invoice modal */
+        /* premium invoice modal - updated with logo left and scanner right */
         .invoice-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -333,7 +348,7 @@
         }
         .invoice-card {
             background: #f5fdee;
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
             border-radius: 48px;
             padding: 32px;
@@ -343,11 +358,16 @@
         }
         .invoice-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
             border-bottom: 2px dashed #a9cc9b;
             padding-bottom: 20px;
             margin-bottom: 20px;
+        }
+        .invoice-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         .invoice-logo {
             background: linear-gradient(145deg, #0b3d2e, #1e7f4f);
@@ -358,9 +378,21 @@
             font-size: 1.2rem;
         }
         .invoice-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #1a4f1a;
+        }
+        .invoice-qr {
+            width: 80px;
+            height: 80px;
+            background: white;
+            padding: 5px;
+            border-radius: 16px;
+            border: 1px solid #b8daaa;
+        }
+        #qrcode {
+            width: 70px;
+            height: 70px;
         }
         .invoice-row {
             display: flex;
@@ -478,7 +510,7 @@
         <div class="nav-links">
             <a href="products.html" class="nav-link"><i class="fas fa-leaf"></i> Shop</a>
             <a href="orders.html" class="nav-link active"><i class="fas fa-box"></i> Orders</a>
-            <a href="cart.html" class="nav-link"><i class="fas fa-shopping-bag"></i> Cart</a>
+            <a href="cart.html" class="nav-link" id="cartLink"><i class="fas fa-shopping-bag"></i> Cart <span id="cartCount" class="cart-badge">0</span></a>
         </div>
     </nav>
 
@@ -508,6 +540,13 @@
             else navbar.classList.remove('shrink');
         });
 
+        // ========== UPDATE CART BADGE ==========
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
         // ========== HELPER FUNCTIONS ==========
         function formatDate(dateStr) {
             if (!dateStr) return 'N/A';
@@ -532,39 +571,59 @@
                 }
             });
             localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
             alert('✅ All items added to your cart!');
         }
 
-        // ---------- DOWNLOAD INVOICE (as .txt file) ----------
-        function downloadInvoice(order) {
-            let invoiceText = `GREEN GARDEN INVOICE\n`;
-            invoiceText += `====================\n`;
-            invoiceText += `Order ID: ${order.id}\n`;
-            invoiceText += `Date: ${formatDate(order.date)}\n`;
-            invoiceText += `Payment: ${order.method || 'N/A'}\n`;
-            invoiceText += `-------------------\n`;
-            order.items.forEach(item => {
-                invoiceText += `${item.name} x ${item.quantity}  ₹${item.price * item.quantity}\n`;
-            });
-            invoiceText += `-------------------\n`;
-            invoiceText += `Subtotal: ₹${order.total}\n`;
-            invoiceText += `Shipping: FREE\n`;
-            invoiceText += `Total: ₹${order.total}\n`;
-            invoiceText += `====================\n`;
-            invoiceText += `Thank you for growing with Green Garden 🌱`;
+        // ---------- DOWNLOAD INVOICE AS PDF (using html2pdf) ----------
+        function downloadInvoicePDF(order) {
+            const element = document.createElement('div');
+            element.innerHTML = `
+                <div style="font-family: 'Inter', sans-serif; max-width:600px; margin:0 auto; padding:30px; background:#f5fdee; border:2px solid #b8daaa; border-radius:20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px dashed #a9cc9b; padding-bottom:20px; margin-bottom:20px;">
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <div style="background:linear-gradient(145deg, #0b3d2e, #1e7f4f); padding:12px 18px; border-radius:30px; color:white; font-weight:800; font-size:1.2rem;">🌱 GG</div>
+                            <div style="font-size:1.5rem; font-weight:700; color:#1a4f1a;">Tax Invoice</div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <div><strong>Order ID:</strong> ${order.id}</div>
+                        <div><strong>Date:</strong> ${formatDate(order.date)}</div>
+                        <div><strong>Payment:</strong> ${order.method || 'N/A'}</div>
+                        <div><strong>Customer:</strong> ${order.delivery?.name || 'N/A'}</div>
+                    </div>
+                    ${order.items.map(item => `
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #d7eace;">
+                            <span>${item.name} × ${item.quantity}</span>
+                            <span>₹${(item.price * item.quantity).toLocaleString('en-IN')}</span>
+                        </div>
+                    `).join('')}
+                    <div style="display:flex; justify-content:space-between; font-weight:700; padding:8px 0;">
+                        <span>Subtotal</span>
+                        <span>₹${order.total.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>Shipping</span>
+                        <span style="color:#2e7d32;">FREE</span>
+                    </div>
+                    <div style="font-size:1.3rem; font-weight:700; color:#1f711f; margin-top:15px; text-align:right;">
+                        Total: ₹${order.total.toLocaleString('en-IN')}
+                    </div>
+                    <div style="margin-top:25px; text-align:center; color:#3f653f;">
+                        <i class="fas fa-seedling" style="color:#2f5e3c;"></i> Thank you for growing with Green Garden
+                    </div>
+                </div>
+            `;
 
-            const blob = new Blob([invoiceText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Invoice_${order.id}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            html2pdf().from(element).set({
+                margin: [0.5, 0.5, 0.5, 0.5],
+                filename: `Invoice_${order.id}.pdf`,
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            }).save();
         }
 
-        // ---------- SHOW INVOICE MODAL with download button ----------
+        // ---------- SHOW INVOICE MODAL with logo left, scanner right ----------
         function showInvoice(order) {
             const modal = document.getElementById('invoiceModal');
             const content = document.getElementById('invoiceContent');
@@ -576,15 +635,23 @@
                 </div>
             `).join('');
 
+            // Create QR code data - order details for scanning
+            const qrData = `Order ID: ${order.id}\nDate: ${order.date}\nTotal: ₹${order.total}\nCustomer: ${order.delivery?.name || 'N/A'}`;
+
             content.innerHTML = `
                 <div class="invoice-header">
-                    <div class="invoice-logo">🌱 GG</div>
-                    <div class="invoice-title">Tax Invoice</div>
+                    <div class="invoice-logo-area">
+                        <div class="invoice-logo">🌱 GG</div>
+                        <div class="invoice-title">Tax Invoice</div>
+                    </div>
+                    <div class="invoice-qr" id="qrcode"></div>
                 </div>
                 <div style="margin-bottom:15px;">
                     <div><strong>Order ID:</strong> ${order.id}</div>
                     <div><strong>Date:</strong> ${formatDate(order.date)}</div>
                     <div><strong>Payment:</strong> ${order.method || 'N/A'}</div>
+                    <div><strong>Customer:</strong> ${order.delivery?.name || 'N/A'}</div>
+                    <div><strong>Phone:</strong> ${order.delivery?.phone || 'N/A'}</div>
                 </div>
                 ${itemsList}
                 <div class="invoice-row" style="font-weight:700;">
@@ -601,17 +668,27 @@
                 <div class="invoice-footer">
                     <i class="fas fa-seedling" style="color:#2f5e3c;"></i> Thank you for growing with Green Garden
                 </div>
-                <button class="download-btn" id="downloadInvoiceBtn"><i class="fas fa-download"></i> Download Invoice</button>
+                <button class="download-btn" id="downloadInvoiceBtn"><i class="fas fa-download"></i> Download PDF</button>
                 <div class="invoice-close" onclick="document.getElementById('invoiceModal').style.display='none'">&times;</div>
             `;
             modal.style.display = 'flex';
 
+            // Generate QR code
+            new QRCode(document.getElementById("qrcode"), {
+                text: qrData,
+                width: 70,
+                height: 70,
+                colorDark: "#1f3a1f",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
             document.getElementById('downloadInvoiceBtn').addEventListener('click', () => {
-                downloadInvoice(order);
+                downloadInvoicePDF(order);
             });
         }
 
-        // ---------- SHOW TRACK DETAILS (real-time simulation like Flipkart) ----------
+        // ---------- SHOW TRACK DETAILS (real-time simulation) ----------
         function showTrackDetails(order) {
             const modal = document.getElementById('trackModal');
             const content = document.getElementById('trackContent');
@@ -787,7 +864,11 @@
             if (e.target === this) this.style.display = 'none';
         });
 
-        document.addEventListener('DOMContentLoaded', loadOrders);
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrders();
+            updateCartBadge();
+        });
     </script>
 </body>
 </html>
