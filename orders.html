@@ -19,7 +19,6 @@
             font-family: 'Inter', sans-serif;
             color: #1f2e1f;
         }
-        /* navbar */
         .navbar {
             background: #1a3b2e;
             padding: 16px 32px;
@@ -75,7 +74,6 @@
         .nav-link:hover { background: #2d5a47; color: white; }
         .nav-link.active { background: #4caf7a; color: #1a3b2e; font-weight: 600; }
 
-        /* main container */
         .container { max-width: 1000px; margin: 40px auto; padding: 0 24px; }
         .page-header { margin-bottom: 30px; }
         .page-title {
@@ -97,7 +95,6 @@
         }
         .order-grid { display: flex; flex-direction: column; gap: 28px; }
 
-        /* order card */
         .order-card {
             background: #ffffffec;
             backdrop-filter: blur(2px);
@@ -160,7 +157,6 @@
         .meta-item span { font-size: 12px; color: #4d6b55; letter-spacing: 0.3px; }
         .meta-item strong { font-size: 1.1rem; color: #1a3b2e; font-weight: 700; }
 
-        /* Tracking status timeline */
         .tracking-timeline {
             background: #e9f4ec;
             border-radius: 20px;
@@ -266,18 +262,23 @@
         }
         .btn-primary:hover { background: #2d6a4a; transform: translateY(-2px); }
 
-        /* MODAL – scrollable */
+        /* MODAL - Fixed scrolling */
         .modal {
-            position: fixed; top:0; left:0; width:100%; height:100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(30, 50, 30, 0.5);
             backdrop-filter: blur(6px);
             display: none;
-            align-items: center;
+            align-items: flex-start; /* Changed from center to flex-start */
             justify-content: center;
             z-index: 1000;
             padding: 20px;
-            overflow-y: auto;
+            overflow-y: auto; /* This enables scrolling */
         }
+        
         .invoice-card {
             max-width: 560px;
             width: 100%;
@@ -285,10 +286,14 @@
             background: white;
             border-radius: 32px;
             box-shadow: 0 30px 60px rgba(10,40,10,0.4);
-            overflow: hidden;
             animation: floatIn 0.3s;
+            /* Remove overflow hidden to allow content to determine height */
         }
-        @keyframes floatIn { 0%{opacity:0; transform:scale(0.96);} 100%{opacity:1;} }
+        
+        @keyframes floatIn { 
+            0%{opacity:0; transform:scale(0.96);} 
+            100%{opacity:1; transform:scale(1);} 
+        }
 
         .inv-head-garden {
             background: linear-gradient(135deg, #1a3b2e, #2f7654);
@@ -311,7 +316,10 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        .inv-body { padding: 32px 30px; }
+        .inv-body { 
+            padding: 32px 30px; 
+        }
+        
         .inv-title-section {
             display: flex; justify-content: space-between; align-items: baseline;
             border-bottom: 2px solid #d5eeda; padding-bottom: 16px; margin-bottom: 20px;
@@ -342,26 +350,85 @@
         .inv-table-mini {
             width: 100%; border-collapse: collapse; margin: 18px 0;
         }
-        .inv-table-mini th { font-size: 11px; color: #6c9176; text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid #b7dac1; }
-        .inv-table-mini td { padding: 12px 4px; border-bottom: 1px solid #e3f0e5; }
-        .inv-table-mini td:last-child { text-align: right; font-weight: 600; }
+        .inv-table-mini th { 
+            font-size: 11px; 
+            color: #6c9176; 
+            text-transform: uppercase; 
+            padding-bottom: 10px; 
+            border-bottom: 1px solid #b7dac1; 
+            text-align: left;
+        }
+        .inv-table-mini th:last-child,
+        .inv-table-mini td:last-child { 
+            text-align: right; 
+        }
+        .inv-table-mini td { 
+            padding: 12px 4px; 
+            border-bottom: 1px solid #e3f0e5; 
+        }
 
         .invoice-total-card {
-            background: #f2fbf4; padding: 18px; border-radius: 20px; width: fit-content; margin-left: auto; margin-top: 10px;
+            background: #f2fbf4; 
+            padding: 18px; 
+            border-radius: 20px; 
+            width: fit-content; 
+            margin-left: auto; 
+            margin-top: 10px;
         }
-        .total-row { display: flex; gap: 40px; justify-content: space-between; font-size: 1rem; padding: 6px 0; }
-        .grand-total { border-top: 2px solid #1a3b2e; margin-top: 10px; padding-top: 12px; font-weight: 800; color: #1a3b2e; }
+        .total-row { 
+            display: flex; 
+            gap: 40px; 
+            justify-content: space-between; 
+            font-size: 1rem; 
+            padding: 6px 0; 
+        }
+        .grand-total { 
+            border-top: 2px solid #1a3b2e; 
+            margin-top: 10px; 
+            padding-top: 12px; 
+            font-weight: 800; 
+            color: #1a3b2e; 
+        }
 
         .inv-footer-note {
-            background: #f5fcf6; padding: 22px; border-radius: 20px; margin-top: 20px; font-size: 12px; color: #395e45;
-            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px;
+            background: #f5fcf6; 
+            padding: 22px; 
+            border-radius: 20px; 
+            margin-top: 20px; 
+            font-size: 12px; 
+            color: #395e45;
+            display: flex; 
+            justify-content: space-between; 
+            flex-wrap: wrap; 
+            gap: 15px;
         }
+        
         .toast-message {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
-            background: #1f3e2b; color: white; padding: 14px 34px; border-radius: 50px;
-            font-weight: 500; box-shadow: 0 10px 25px rgba(0,20,0,0.3); transition: 0.3s; opacity: 0; z-index: 2000;
+            position: fixed; 
+            bottom: 30px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(80px);
+            background: #1f3e2b; 
+            color: white; 
+            padding: 14px 34px; 
+            border-radius: 50px;
+            font-weight: 500; 
+            box-shadow: 0 10px 25px rgba(0,20,0,0.3); 
+            transition: 0.3s; 
+            opacity: 0; 
+            z-index: 2000;
         }
-        .toast-message.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast-message.show { 
+            transform: translateX(-50%) translateY(0); 
+            opacity: 1; 
+        }
+        
+        .download-btn-container {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
     </style>
 </head>
 <body>
@@ -389,56 +456,51 @@
     <div id="orderList" class="order-grid"></div>
 </div>
 
-<!-- Invoice modal (scrollable via .modal overflow) -->
+<!-- Invoice modal -->
 <div id="invoiceModal" class="modal">
     <div class="invoice-card" id="invoiceContent"></div>
 </div>
 
-<div id="toast" class="toast-message">✨ updated</div>
+<div id="toast" class="toast-message"></div>
 
 <script>
-    // Make functions globally available
-    let globalOrders = [];
-
-    // ensure jsPDF
+    // Ensure jsPDF is available
     const { jsPDF } = window.jspdf || {};
 
-    // ----- SAMPLE ORDERS with tracking details -----
+    // ----- FIXED SAMPLE ORDERS with proper data -----
     const defaultOrders = [
         {
-            id: 'MG2204A',
-            date: '12/04/2025',
+            id: 'ORD43671',
+            date: '2026-02-14', // Using YYYY-MM-DD format for reliable parsing
             customer: 'John Doe',
             address: '45, Hibiscus Street, Greenfield 400067',
             mobile: '+91 98765 43210',
             method: 'Credit Card',
-            status: 'Processing',
+            status: 'Shipped',
             tracking: {
-                placed: '12/04/2025',
-                processed: '13/04/2025',
-                shipped: null,
+                placed: '2026-02-14',
+                processed: '2026-02-15',
+                shipped: '2026-02-16',
                 outForDelivery: null,
                 delivered: null
             },
             items: [
-                { id: 101, name: 'Monstera Deliciosa', price: 120, quantity: 2, image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=80&h=80&fit=crop' },
-                { id: 102, name: 'Snake Plant', price: 65, quantity: 1, image: 'https://images.unsplash.com/photo-1593691509543-c55fb32d8de5?w=80&h=80&fit=crop' },
-                { id: 103, name: 'Organic Basil Seeds', price: 40, quantity: 3, image: 'https://images.unsplash.com/photo-1596283379431-43c8b6b4f978?w=80&h=80&fit=crop' }
+                { id: 101, name: 'Morning Jewel Rose Seed', price: 158, quantity: 6, image: 'https://images.unsplash.com/photo-1597843786279-43e6b5c289e1?w=80&h=80&fit=crop' }
             ],
-            total: 120*2 + 65 + 40*3
+            total: 158 * 6
         },
         {
             id: 'MG2219K',
-            date: '02/05/2025',
+            date: '2026-02-10',
             customer: 'Jane Miller',
             address: 'Flat 202, Palm Grove, Bangalore 560078',
             mobile: '+91 99887 66554',
             method: 'PayPal',
-            status: 'Shipped',
+            status: 'Processing',
             tracking: {
-                placed: '02/05/2025',
-                processed: '03/05/2025',
-                shipped: '05/05/2025',
+                placed: '2026-02-10',
+                processed: '2026-02-11',
+                shipped: null,
                 outForDelivery: null,
                 delivered: null
             },
@@ -446,31 +508,32 @@
                 { id: 201, name: 'Lavender Plant', price: 90, quantity: 2, image: 'https://images.unsplash.com/photo-1597843786279-43e6b5c289e1?w=80&h=80&fit=crop' },
                 { id: 202, name: 'Cherry Tomato Seeds', price: 55, quantity: 1, image: 'https://images.unsplash.com/photo-1595348020946-82d8a9c6c6db?w=80&h=80&fit=crop' }
             ],
-            total: 90*2 + 55
+            total: (90 * 2) + 55
         },
         {
             id: 'MG2301B',
-            date: '15/02/2025',
+            date: '2026-02-01',
             customer: 'Ravi Kapoor',
             address: '8/2, Garden Avenue, Delhi 110021',
             mobile: '+91 98760 12345',
             method: 'UPI',
             status: 'Delivered',
             tracking: {
-                placed: '15/02/2025',
-                processed: '16/02/2025',
-                shipped: '18/02/2025',
-                outForDelivery: '20/02/2025',
-                delivered: '20/02/2025'
+                placed: '2026-02-01',
+                processed: '2026-02-02',
+                shipped: '2026-02-03',
+                outForDelivery: '2026-02-05',
+                delivered: '2026-02-05'
             },
             items: [
                 { id: 301, name: 'Peace Lily', price: 150, quantity: 1, image: 'https://images.unsplash.com/photo-1593691509543-c55fb32d8de5?w=80&h=80&fit=crop' },
                 { id: 302, name: 'Mint Plant', price: 35, quantity: 4, image: 'https://images.unsplash.com/photo-1618832337140-2f8350d6cdb3?w=80&h=80&fit=crop' }
             ],
-            total: 150 + 35*4
+            total: 150 + (35 * 4)
         }
     ];
 
+    // Initialize localStorage
     if (!localStorage.getItem('orders')) {
         localStorage.setItem('orders', JSON.stringify(defaultOrders));
     }
@@ -482,10 +545,49 @@
         setTimeout(() => t.classList.remove('show'), 2800);
     }
 
-    // ----- render orders with tracking timeline -----
+    // Safe number conversion
+    function toNumber(value) {
+        const num = Number(value);
+        return isNaN(num) ? 0 : num;
+    }
+
+    // Format date safely
+    function formatDate(dateString) {
+        if (!dateString) return '—';
+        
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return '—';
+            
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        } catch (e) {
+            return '—';
+        }
+    }
+
+    // Calculate delivery date safely
+    function getDeliveryDate(orderDate) {
+        if (!orderDate) return '—';
+        
+        try {
+            const date = new Date(orderDate);
+            if (isNaN(date.getTime())) return '—';
+            
+            date.setDate(date.getDate() + 5);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        } catch (e) {
+            return '—';
+        }
+    }
+
+    // ----- render orders -----
     function renderOrders() {
         const orders = JSON.parse(localStorage.getItem('orders')) || [];
-        globalOrders = orders;
         const container = document.getElementById('orderList');
         container.innerHTML = '';
 
@@ -494,14 +596,26 @@
             if (order.status === 'Shipped') statusClass = 'status-shipped';
             else if (order.status === 'Delivered') statusClass = 'status-delivered';
 
-            // Build tracking steps based on status & tracking object
-            const track = order.tracking || { placed: order.date, processed: '', shipped: '', outForDelivery: '', delivered: '' };
+            // Calculate total safely
+            const orderTotal = order.items.reduce((sum, item) => {
+                return sum + (toNumber(item.price) * toNumber(item.quantity));
+            }, 0);
+
+            // Build tracking steps
+            const track = order.tracking || { 
+                placed: order.date, 
+                processed: '', 
+                shipped: '', 
+                outForDelivery: '', 
+                delivered: '' 
+            };
+            
             const steps = [
-                { label: 'Placed', key: 'placed', date: track.placed || order.date },
-                { label: 'Processed', key: 'processed', date: track.processed },
-                { label: 'Shipped', key: 'shipped', date: track.shipped },
-                { label: 'Out for delivery', key: 'outForDelivery', date: track.outForDelivery },
-                { label: 'Delivered', key: 'delivered', date: track.delivered }
+                { label: 'PLACED', date: track.placed },
+                { label: 'PROCESSED', date: track.processed },
+                { label: 'SHIPPED', date: track.shipped },
+                { label: 'OUT FOR DELIVERY', date: track.outForDelivery },
+                { label: 'DELIVERED', date: track.delivered }
             ];
 
             let completedUntil = 0;
@@ -513,24 +627,27 @@
                 let stepClass = '';
                 if (idx < completedUntil) stepClass = 'completed';
                 else if (idx === completedUntil && order.status !== 'Delivered') stepClass = 'active';
-                const dateDisplay = step.date ? step.date : '—';
+                
                 return `<div class="track-step ${stepClass}">
                     <div class="step-icon"><i class="fas ${idx === 0 ? 'fa-check-circle' : (idx === 4 ? 'fa-home' : 'fa-truck')}"></i></div>
                     <span class="step-label">${step.label}</span>
-                    <span class="step-date">${dateDisplay}</span>
+                    <span class="step-date">${formatDate(step.date)}</span>
                 </div>`;
             }).join('');
 
-            const productsHtml = order.items.map(item => `
-                <div class="product-row">
-                    <img src="${item.image}" class="prod-img" alt="${item.name}" loading="lazy">
-                    <div class="prod-info">
-                        <div class="prod-name">${item.name}</div>
-                        <div class="prod-meta">Qty: ${item.quantity} × ₹${item.price}</div>
+            const productsHtml = order.items.map(item => {
+                const itemTotal = toNumber(item.price) * toNumber(item.quantity);
+                return `
+                    <div class="product-row">
+                        <img src="${item.image}" class="prod-img" alt="${item.name}" loading="lazy">
+                        <div class="prod-info">
+                            <div class="prod-name">${item.name}</div>
+                            <div class="prod-meta">Qty: ${item.quantity} × ₹${item.price}</div>
+                        </div>
+                        <div class="prod-price">₹${itemTotal}</div>
                     </div>
-                    <div class="prod-price">₹${item.price * item.quantity}</div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             const card = document.createElement('div');
             card.className = 'order-card';
@@ -541,10 +658,10 @@
                 </div>
                 <div class="order-body">
                     <div class="order-meta-grid">
-                        <div class="meta-item"><span>📅 Date</span><strong>${order.date}</strong></div>
-                        <div class="meta-item"><span>💰 Total</span><strong>₹${order.total}</strong></div>
-                        <div class="meta-item"><span>💳 Payment</span><strong>${order.method}</strong></div>
-                        <div class="meta-item"><span>📦 Items</span><strong>${order.items.length}</strong></div>
+                        <div class="meta-item"><span>Date</span><strong>${formatDate(order.date)}</strong></div>
+                        <div class="meta-item"><span>Total</span><strong>₹${orderTotal}</strong></div>
+                        <div class="meta-item"><span>Payment</span><strong>${order.method || 'Credit Card'}</strong></div>
+                        <div class="meta-item"><span>Items</span><strong>${order.items.length}</strong></div>
                     </div>
 
                     <!-- TRACKING TIMELINE -->
@@ -553,6 +670,7 @@
                     </div>
 
                     ${productsHtml}
+                    
                     <div class="order-footer-actions">
                         <div style="font-size:0.9rem;color:#4f735a;"><i class="fas fa-truck"></i> Live tracking</div>
                         <div style="display:flex; gap:12px;">
@@ -566,16 +684,20 @@
         });
     }
 
-    // ----- reorder -----
+    // ----- reorder function -----
     window.reorderItems = function(orderId) {
         const orders = JSON.parse(localStorage.getItem('orders'));
         const order = orders.find(o => o.id === orderId);
         if (!order) return;
+        
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         order.items.forEach(incoming => {
             const exists = cart.find(c => c.id === incoming.id);
-            if (exists) exists.quantity += incoming.quantity;
-            else cart.push({ ...incoming });
+            if (exists) {
+                exists.quantity = toNumber(exists.quantity) + toNumber(incoming.quantity);
+            } else {
+                cart.push({ ...incoming });
+            }
         });
         localStorage.setItem('cart', JSON.stringify(cart));
         showToast(`🛒 Items from #${orderId} added to cart`);
@@ -587,14 +709,13 @@
         const order = orders.find(o => o.id === orderId);
         if (!order) return;
 
-        const subtotal = order.items.reduce((a, i) => a + (i.price * i.quantity), 0);
+        // Calculate totals safely
+        const subtotal = order.items.reduce((a, i) => {
+            return a + (toNumber(i.price) * toNumber(i.quantity));
+        }, 0);
+        
         const tax = Math.round(subtotal * 0.12);
         const grandTotal = subtotal + tax;
-
-        const parts = order.date.split('/');
-        const rawDate = new Date(`${parts[1]}/${parts[0]}/${parts[2]}`);
-        rawDate.setDate(rawDate.getDate() + 5);
-        const deliveryStr = rawDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 
         const modalContent = document.getElementById('invoiceContent');
         modalContent.innerHTML = `
@@ -603,58 +724,92 @@
                     <i class="fas fa-tree"></i>
                     <div class="inv-brand-text">
                         <h2>Modern Garden</h2>
-                        <span>EST. 2020 · HEIRLOOM</span>
+                        <span>HEIRLOOM & ORGANIC</span>
                     </div>
                 </div>
                 <div class="inv-qr-block" id="invoiceQrTarget" style="width:80px; height:80px;"></div>
             </div>
             <div class="inv-body">
                 <div class="inv-title-section">
-                    <h1>Invoice</h1>
+                    <h1>INVOICE</h1>
                     <span class="inv-badge">#${order.id}</span>
                 </div>
 
                 <div class="two-col">
                     <div class="col-bill">
-                        <h4>BILL TO</h4>
-                        <p>${order.customer}</p>
+                        <h4>INVOICE TO</h4>
+                        <p><strong>${order.customer}</strong></p>
                         <p>${order.address}</p>
                         <p>📞 ${order.mobile}</p>
                     </div>
-                    <div class="col-bill">
-                        <h4>INVOICE DATE</h4>
-                        <p>${order.date}</p>
+                    <div class="col-bill" style="text-align:right;">
+                        <h4>DATE</h4>
+                        <p><strong>${formatDate(order.date)}</strong></p>
                         <h4 style="margin-top:10px;">PAYMENT</h4>
-                        <p>${order.method}</p>
+                        <p><strong>${order.method || 'Credit Card'}</strong></p>
                     </div>
                 </div>
 
                 <div class="delivery-chip">
-                    <i class="fas fa-leaf"></i>
-                    <span>Estimated delivery: ${deliveryStr}</span>
+                    <i class="fas fa-truck"></i>
+                    <span>Estimated delivery: ${getDeliveryDate(order.date)}</span>
                 </div>
 
                 <table class="inv-table-mini">
-                    <thead><tr><th>Item</th><th>Rate</th><th>Qty</th><th>Amount</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>ITEM NAME</th>
+                            <th>PRICE</th>
+                            <th>QTY</th>
+                            <th>TOTAL</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        ${order.items.map(it => `<tr><td>${it.name}</td><td>₹${it.price}</td><td>${it.quantity}</td><td>₹${it.price * it.quantity}</td></tr>`).join('')}
+                        ${order.items.map(it => {
+                            const itemTotal = toNumber(it.price) * toNumber(it.quantity);
+                            return `
+                                <tr>
+                                    <td>${it.name}</td>
+                                    <td>₹${it.price}</td>
+                                    <td>${it.quantity}</td>
+                                    <td>₹${itemTotal}</td>
+                                </tr>
+                            `;
+                        }).join('')}
                     </tbody>
                 </table>
 
                 <div class="invoice-total-card">
-                    <div class="total-row"><span>Subtotal</span><span>₹${subtotal}</span></div>
-                    <div class="total-row"><span>Tax (12%)</span><span>₹${tax}</span></div>
-                    <div class="total-row grand-total"><span>Total</span><span>₹${grandTotal}</span></div>
+                    <div class="total-row"><span>SUB TOTAL</span><span>₹${subtotal}</span></div>
+                    <div class="total-row"><span>TAX (12%)</span><span>₹${tax}</span></div>
+                    <div class="total-row grand-total"><span>TOTAL</span><span>₹${grandTotal}</span></div>
                 </div>
 
                 <div class="inv-footer-note">
-                    <div><i class="fas fa-seedling"></i> UPI / Card</div>
-                    <div><button class="btn btn-primary" style="padding:8px 24px;" onclick="downloadInvoicePDF('${order.id}')"><i class="fas fa-download"></i> Download PDF</button></div>
+                    <div>
+                        <h4 style="font-size:12px; margin-bottom:5px;">PAYMENT INFO</h4>
+                        <p>Email: payment@moderngarden.com</p>
+                        <p>Account No: 123456789</p>
+                    </div>
+                    <div style="text-align:right;">
+                        <h4 style="font-size:12px; margin-bottom:5px;">CONTACT</h4>
+                        <p>345 Avenue, Central City</p>
+                        <p>+012 345 678</p>
+                    </div>
+                </div>
+
+                <div class="download-btn-container">
+                    <p style="font-size:11px; color:#666; margin-bottom:15px;">
+                        TERMS AND CONDITIONS: Lorem ipsum dolor sit amet, tincidunt euismod nibh ut aliquet.
+                    </p>
+                    <button class="btn btn-primary" onclick="downloadInvoicePDF('${order.id}')">
+                        <i class="fas fa-download"></i> Download Invoice
+                    </button>
                 </div>
             </div>
         `;
 
-        // QR code
+        // Generate QR Code
         setTimeout(() => {
             const qrDiv = document.getElementById('invoiceQrTarget');
             qrDiv.innerHTML = '';
@@ -666,18 +821,21 @@
                     colorDark: '#1a3b2e',
                     colorLight: '#f9fff9'
                 });
-            } else {
-                qrDiv.innerHTML = '<span style="font-size:9px;">QR error</span>';
             }
         }, 50);
 
-        document.getElementById('invoiceModal').style.display = 'flex';
+        // Show modal
+        const modal = document.getElementById('invoiceModal');
+        modal.style.display = 'flex';
+        
+        // Scroll to top of modal
+        setTimeout(() => {
+            modal.scrollTop = 0;
+        }, 100);
     };
 
-    // ----- DOWNLOAD PDF (FIXED & FULLY WORKING) -----
+    // ----- DOWNLOAD PDF FUNCTION -----
     window.downloadInvoicePDF = function(orderId) {
-        console.log('Downloading invoice for order:', orderId);
-        
         const orders = JSON.parse(localStorage.getItem('orders'));
         const order = orders.find(o => o.id === orderId);
         
@@ -695,11 +853,15 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
-            const subtotal = order.items.reduce((a, i) => a + (i.price * i.quantity), 0);
+            // Calculate totals safely
+            const subtotal = order.items.reduce((a, i) => {
+                return a + (toNumber(i.price) * toNumber(i.quantity));
+            }, 0);
+            
             const tax = Math.round(subtotal * 0.12);
             const total = subtotal + tax;
 
-            // Header with green background
+            // Header
             doc.setFillColor(26, 59, 46);
             doc.rect(0, 0, 220, 35, 'F');
             doc.setTextColor(255, 255, 255);
@@ -707,33 +869,27 @@
             doc.setFont('helvetica', 'bold');
             doc.text('Modern Garden', 20, 22);
             doc.setFontSize(8);
-            doc.text('INVOICE · heirloom plants', 20, 30);
+            doc.text('HEIRLOOM & ORGANIC', 20, 30);
 
             // Invoice details
             doc.setTextColor(0, 0, 0);
-            doc.setFontSize(16);
-            doc.text(`Invoice #${order.id}`, 150, 25);
+            doc.setFontSize(20);
+            doc.text('INVOICE', 20, 50);
+            
             doc.setFontSize(10);
-            doc.text(`Date: ${order.date}`, 150, 32);
+            doc.text(`Invoice #: ${order.id}`, 150, 45);
+            doc.text(`Date: ${formatDate(order.date)}`, 150, 52);
 
             // Bill to
             doc.setFontSize(11);
-            doc.text(`Bill to: ${order.customer}`, 20, 50);
-            doc.setFontSize(9);
-            doc.text(order.address, 20, 57);
-            doc.text(`Phone: ${order.mobile}`, 20, 64);
+            doc.text('Bill To:', 20, 70);
+            doc.setFontSize(10);
+            doc.text(order.customer, 20, 78);
+            doc.text(order.address, 20, 86);
+            doc.text(`Phone: ${order.mobile}`, 20, 94);
 
-            // delivery
-            const parts = order.date.split('/');
-            const d = new Date(`${parts[1]}/${parts[0]}/${parts[2]}`);
-            d.setDate(d.getDate() + 5);
-            const deliv = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
-            doc.setTextColor(46, 125, 50);
-            doc.text(`Est. delivery: ${deliv}`, 20, 74);
-            doc.setTextColor(0, 0, 0);
-
-            // table header
-            let y = 88;
+            // Items table header
+            let y = 110;
             doc.setFillColor(225, 240, 225);
             doc.rect(20, y-5, 170, 8, 'F');
             doc.setFont('helvetica', 'bold');
@@ -744,47 +900,51 @@
             doc.setFont('helvetica', 'normal');
             y += 8;
 
+            // Items
             order.items.forEach(it => {
-                doc.text(it.name.substring(0,18), 22, y);
+                const itemTotal = toNumber(it.price) * toNumber(it.quantity);
+                doc.text(it.name.substring(0, 25), 22, y);
                 doc.text(`₹${it.price}`, 100, y);
                 doc.text(String(it.quantity), 135, y);
-                doc.text(`₹${it.price * it.quantity}`, 165, y);
+                doc.text(`₹${itemTotal}`, 165, y);
                 y += 8;
             });
 
+            // Totals
             y += 8;
             doc.text(`Subtotal: ₹${subtotal}`, 130, y);
-            y += 6;
+            y += 7;
             doc.text(`Tax (12%): ₹${tax}`, 130, y);
-            y += 8;
+            y += 10;
             doc.setFont('helvetica', 'bold');
             doc.text(`TOTAL: ₹${total}`, 130, y);
 
             // Footer
             doc.setFontSize(9);
             doc.setTextColor(100);
-            doc.text('Thank you for supporting Modern Garden!', 70, 270);
-            doc.text('Terms: Live plants replaced if damaged.', 60, 277);
+            doc.text('Modern Garden - 345 Avenue, Central City', 105, 260, { align: 'center' });
+            doc.text('+012 345 678 | contact@moderngarden.com', 105, 267, { align: 'center' });
+            doc.text('Thank you for your purchase!', 105, 280, { align: 'center' });
 
-            // Save the PDF
             doc.save(`Invoice_${order.id}.pdf`);
-            showToast(`✅ PDF downloaded: Invoice_${order.id}.pdf`);
+            showToast(`✅ Invoice downloaded: Invoice_${order.id}.pdf`);
             
-            // Keep modal open
         } catch (error) {
-            console.error('PDF generation error:', error);
-            showToast('Error generating PDF. Check console.');
+            console.error('PDF error:', error);
+            showToast('Error generating PDF');
         }
     };
 
-    // close modal when clicking outside
+    // Close modal when clicking outside
     document.querySelectorAll('.modal').forEach(m => {
         m.addEventListener('click', (e) => {
-            if (e.target === m) m.style.display = 'none';
+            if (e.target === m) {
+                m.style.display = 'none';
+            }
         });
     });
 
-    // initial render
+    // Initial render
     renderOrders();
 </script>
 </body>
