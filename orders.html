@@ -2,794 +2,790 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>My Orders · Green Garden</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders · Modern Garden</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
     <style>
-        :root {
-            --primary-green: #22863a;
-            --dark-green: #1a4d2e;
-            --light-green: #f0fdf4;
-            --accent-gold: #d97706;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-        }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            background: var(--bg-color);
+            background: #f1f7f2;
             font-family: 'Inter', sans-serif;
-            color: #333;
-            line-height: 1.5;
+            color: #1f2e1f;
         }
-
-        /* Navbar */
+        /* navbar */
         .navbar {
+            background: #1a3b2e;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,40,0,0.08);
             position: sticky;
             top: 0;
             z-index: 100;
-            background: linear-gradient(135deg, var(--dark-green) 0%, #2e7d32 100%);
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             text-decoration: none;
             color: white;
         }
-
         .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 12px;
+            width: 48px; height: 48px;
+            background: #4caf7a;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            backdrop-filter: blur(4px);
+            font-size: 24px;
+            color: #1a3b2e;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-
         .logo-text h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            letter-spacing: 0.5px;
-        }
-        
-        .logo-text span {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.8;
-        }
-
-        .nav-links { display: flex; gap: 8px; align-items: center; }
-        .nav-link {
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.1;
             color: white;
+            letter-spacing: -0.5px;
+        }
+        .logo-text span {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #b7e0c0;
+            font-weight: 400;
+        }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-link {
+            color: #e0f0e5;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 8px 18px;
+            border-radius: 30px;
             font-weight: 500;
-            font-size: 0.85rem;
             transition: 0.2s;
         }
-        .nav-link:hover { background: rgba(255,255,255,0.15); }
-        .nav-link.active { background: rgba(255,255,255,0.25); }
+        .nav-link:hover { background: #2d5a47; color: white; }
+        .nav-link.active { background: #4caf7a; color: #1a3b2e; font-weight: 600; }
 
-        .cart-badge {
-            background: var(--accent-gold);
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 5px;
-            vertical-align: middle;
-        }
-
-        .admin-badge {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Container */
-        .container {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .page-header {
-            margin-bottom: 30px;
-        }
-
+        /* main container */
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 24px; }
+        .page-header { margin-bottom: 30px; }
         .page-title {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            color: var(--dark-green);
+            font-size: 38px;
+            color: #1a3b2e;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
         }
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: -8px; left: 0;
+            width: 60px; height: 4px;
+            background: #4caf7a;
+            border-radius: 4px;
+        }
+        .order-grid { display: flex; flex-direction: column; gap: 28px; }
 
-        /* Order Card */
+        /* order card */
         .order-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-            margin-bottom: 20px;
+            background: #ffffffec;
+            backdrop-filter: blur(2px);
+            border-radius: 28px;
+            box-shadow: 0 12px 30px -8px rgba(30,60,30,0.12);
             overflow: hidden;
-            transition: 0.3s;
+            border: 1px solid rgba(100,160,120,0.2);
+            transition: all 0.25s ease;
         }
-        .order-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
-
-        .order-status-banner {
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f0f0f0;
+        .order-card:hover {
+            box-shadow: 0 20px 35px -6px #2b5a3b40;
+            transform: scale(1.01);
         }
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .status-processing { background: #fff8e1; color: #f57c00; }
-        .status-shipped { background: #e3f2fd; color: #1976d2; }
-        .status-delivered { background: #e8f5e9; color: #2e7d32; }
-
-        .order-body {
-            padding: 20px;
-        }
-
-        .order-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed #eee;
-        }
-        .meta-item span { font-size: 11px; color: #888; text-transform: uppercase; display: block; }
-        .meta-item strong { font-size: 14px; color: #333; }
-
-        .prod-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 10px 0;
-            border-bottom: 1px solid #f9f9f9;
-        }
-        .prod-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
-        .prod-info { flex: 1; }
-        .prod-name { font-weight: 600; font-size: 14px; }
-        .prod-meta { font-size: 12px; color: #666; }
-        .prod-price { font-weight: 700; color: var(--primary-green); font-size: 14px; }
-
-        .order-footer {
-            margin-top: 20px;
+        .order-header {
+            padding: 20px 30px;
+            background: linear-gradient(95deg, #f8fffa, #f0f9f0);
+            border-bottom: 1px solid #cdedd6;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
+        }
+        .order-id-badge {
+            background: #1a3b2e;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            box-shadow: 0 3px 8px rgba(0,30,0,0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .status-processing { background: #fff1cf; color: #b45b0a; border-left: 5px solid #f90; }
+        .status-shipped { background: #d5ecff; color: #0a5b8c; border-left: 5px solid #1976d2; }
+        .status-delivered { background: #d9f0da; color: #1f6d2f; border-left: 5px solid #2e7d32; }
+
+        .order-body { padding: 28px 30px; }
+        .order-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px,1fr));
+            gap: 16px;
+            background: #f3faf5;
+            padding: 18px 20px;
+            border-radius: 22px;
+            margin-bottom: 24px;
+            border: 1px dashed #9fd3aa;
+        }
+        .meta-item span { font-size: 12px; color: #4d6b55; letter-spacing: 0.3px; }
+        .meta-item strong { font-size: 1.1rem; color: #1a3b2e; font-weight: 700; }
+
+        /* Tracking status timeline */
+        .tracking-timeline {
+            background: #e9f4ec;
+            border-radius: 20px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .track-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-width: 70px;
+            position: relative;
+            flex: 1;
+        }
+        .track-step .step-icon {
+            width: 40px; height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a3b2e;
+            border: 2px solid #8fc0a9;
+            margin-bottom: 6px;
+            font-size: 1.2rem;
+        }
+        .track-step.completed .step-icon {
+            background: #1a3b2e;
+            color: white;
+            border-color: #1a3b2e;
+        }
+        .track-step.active .step-icon {
+            border-color: #f90;
+            background: #fff3e0;
+            color: #b45b0a;
+            border-width: 3px;
+        }
+        .step-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #3c6147;
+        }
+        .step-date {
+            font-size: 0.65rem;
+            color: #3f6b4c;
+            font-weight: 500;
         }
 
+        .product-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid #e1f0e4;
+        }
+        .product-row:last-child { border-bottom: none; }
+        .prod-img {
+            width: 64px; height: 64px; border-radius: 16px;
+            object-fit: cover;
+            border: 2px solid #c0e0c0;
+            box-shadow: 0 4px 8px rgba(0,30,0,0.1);
+        }
+        .prod-info { flex: 1; }
+        .prod-name { font-weight: 700; font-size: 1rem; color: #1a3b2e; }
+        .prod-meta { font-size: 0.85rem; color: #4b7256; }
+        .prod-price { font-weight: 800; color: #1a3b2e; background: #e3f1e6; padding: 5px 12px; border-radius: 30px; }
+
+        .order-footer-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
         .btn {
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 12px 28px;
+            border-radius: 40px;
             font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
             cursor: pointer;
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            border: 1px solid #ddd;
+            gap: 10px;
             background: white;
-            color: #333;
-            text-decoration: none;
+            border: 1px solid #b0d0b0;
+            color: #1f3b2a;
         }
-        .btn:hover { background: #f5f5f5; transform: translateY(-1px); }
-        .btn-primary { background: var(--primary-green); color: white; border: none;; }
-        .btn-primary:hover { background: var(--dark-green); }
-        .btn-scanner { background: #6366f1; color: white; border: none; }
-        .btn-scanner:hover { background: #4f46e5; }
+        .btn:hover { background: #ebf9eb; }
+        .btn-primary {
+            background: #1a3b2e;
+            border: none;
+            color: white;
+            box-shadow: 0 8px 14px -8px #1a3b2e;
+        }
+        .btn-primary:hover { background: #2d6a4a; transform: translateY(-2px); }
 
-        /* Modals */
+        /* MODAL – scrollable */
         .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(30, 50, 30, 0.5);
+            backdrop-filter: blur(6px);
             display: none;
-            /* Changed alignment to allow scrolling */
-            align-items: flex-start; 
+            align-items: center;
             justify-content: center;
             z-index: 1000;
             padding: 20px;
-            /* Added scroll */
-            overflow-y: auto; 
+            overflow-y: auto;
         }
-
-        .login-card {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
+        .invoice-card {
+            max-width: 560px;
             width: 100%;
-            max-width: 400px;
-            margin: auto; /* Center vertically if screen is tall enough */
-            position: relative;
-            top: 50px;
-        }
-
-        /* Premium Invoice Design */
-        .invoice-premium {
+            margin: 30px auto;
             background: white;
-            width: 100%;
-            max-width: 540px;
-            border-radius: 8px;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(10,40,10,0.4);
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            position: relative;
-            font-family: 'Inter', sans-serif;
-            margin: 20px auto; /* Centering and top margin */
+            animation: floatIn 0.3s;
         }
+        @keyframes floatIn { 0%{opacity:0; transform:scale(0.96);} 100%{opacity:1;} }
 
-        .inv-header-bg {
-            background: var(--dark-green);
-            padding: 30px;
+        .inv-head-garden {
+            background: linear-gradient(135deg, #1a3b2e, #2f7654);
+            padding: 28px 28px 20px 28px;
             color: white;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
         }
+        .inv-brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .inv-brand i { font-size: 36px; color: #d4ffb0; }
+        .inv-brand-text h2 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; margin:0; }
+        .inv-brand-text span { opacity:0.9; font-size: 10px; letter-spacing: 2px; }
+        .inv-qr-block {
+            background: white; padding: 8px; border-radius: 18px;
+            display: flex; flex-direction: column; align-items: center;
+        }
 
-        .inv-logo {
+        .inv-body { padding: 32px 30px; }
+        .inv-title-section {
+            display: flex; justify-content: space-between; align-items: baseline;
+            border-bottom: 2px solid #d5eeda; padding-bottom: 16px; margin-bottom: 20px;
+        }
+        .inv-title-section h1 { font-size: 32px; color: #1f402a; font-weight: 300; letter-spacing: -0.5px; }
+        .inv-badge { background: #d0ecd2; color: #1a3b2e; padding: 6px 14px; border-radius: 30px; font-weight: 700; }
+
+        .two-col {
+            display: flex; gap: 25px; margin: 20px 0 25px;
+            background: #f7fff9; padding: 20px; border-radius: 24px;
+        }
+        .col-bill h4 { font-size: 11px; color: #5e8b6f; letter-spacing: 1px; margin-bottom: 8px; }
+        .col-bill p { font-size: 14px; font-weight: 500; color: #1e3d2a; margin: 3px 0; }
+
+        .delivery-chip {
+            background: #e7f6e9;
+            border: 1px solid #52b87a;
+            padding: 14px 20px;
+            border-radius: 50px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            margin: 20px 0 25px;
         }
-        .inv-logo i { font-size: 28px; color: #4ade80; }
-        .inv-logo-text h2 { font-family: 'Playfair Display', serif; font-size: 24px; margin: 0; }
-        .inv-logo-text span { font-size: 10px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+        .delivery-chip i { color: #1d7542; font-size: 20px; }
+        .delivery-chip span { font-weight: 700; color: #1a3b2e; font-size: 1rem; }
 
-        .inv-qr-box {
-            background: white;
-            padding: 5px;
-            border-radius: 4px;
+        .inv-table-mini {
+            width: 100%; border-collapse: collapse; margin: 18px 0;
         }
+        .inv-table-mini th { font-size: 11px; color: #6c9176; text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid #b7dac1; }
+        .inv-table-mini td { padding: 12px 4px; border-bottom: 1px solid #e3f0e5; }
+        .inv-table-mini td:last-child { text-align: right; font-weight: 600; }
 
-        .inv-body {
-            padding: 30px;
+        .invoice-total-card {
+            background: #f2fbf4; padding: 18px; border-radius: 20px; width: fit-content; margin-left: auto; margin-top: 10px;
         }
+        .total-row { display: flex; gap: 40px; justify-content: space-between; font-size: 1rem; padding: 6px 0; }
+        .grand-total { border-top: 2px solid #1a3b2e; margin-top: 10px; padding-top: 12px; font-weight: 800; color: #1a3b2e; }
 
-        .inv-title-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--primary-green);
-            padding-bottom: 15px;
+        .inv-footer-note {
+            background: #f5fcf6; padding: 22px; border-radius: 20px; margin-top: 20px; font-size: 12px; color: #395e45;
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px;
         }
-        .inv-title-row h1 { font-size: 32px; color: #333; }
-        .inv-meta-right { text-align: right; font-size: 13px; color: #555; }
-        .inv-meta-right strong { display: block; font-size: 16px; color: #333; margin-bottom: 4px; }
-
-        .inv-billing-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
+        .toast-message {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+            background: #1f3e2b; color: white; padding: 14px 34px; border-radius: 50px;
+            font-weight: 500; box-shadow: 0 10px 25px rgba(0,20,0,0.3); transition: 0.3s; opacity: 0; z-index: 2000;
         }
-        .inv-bill-to h4 { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-        .inv-bill-to p { margin: 2px 0; font-size: 14px; color: #333; }
-
-        .inv-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
-        .inv-table th { text-align: left; font-size: 12px; color: #888; text-transform: uppercase; padding-bottom: 10px; border-bottom: 2px solid #eee; }
-        .inv-table td { padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f5f5f5; }
-        .inv-table .total-row td { border-bottom: none; font-weight: 700; font-size: 16px; color: var(--dark-green); }
-        .text-right { text-align: right; }
-
-        .inv-summary-box {
-            display: flex;
-            justify-content: flex-end;
-        }
-        .inv-summary-contents {
-            width: 220px;
-        }
-        .sum-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        .sum-row.grand-total {
-            border-top: 2px solid var(--dark-green);
-            padding-top: 8px;
-            margin-top: 10px;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--dark-green);
-        }
-
-        .inv-footer-info {
-            background: #f9fafb;
-            padding: 20px;
-            border-top: 1px solid #eee;
-            font-size: 12px;
-            color: #666;
-        }
-        .inv-footer-info h3 { font-size: 14px; color: #333; margin-bottom: 5px; }
-
-        /* Scan Results within Invoice */
-        .scan-results {
-            background: #f0fdf4;
-            border: 1px solid #86efac;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            display: none; /* Hidden by default */
-        }
-        .scan-results h3 { color: var(--primary-green); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .scan-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .step-mini { background: white; padding: 10px; border-radius: 6px; font-size: 11px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .step-mini strong { display: block; color: #333; margin-top: 4px; }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #333;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            z-index: 2000;
-            opacity: 0;
-            transition: 0.3s;
-        }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
+        .toast-message.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <a href="products.html" class="logo">
-            <div class="logo-icon"><i class="fas fa-seedling"></i></div>
-            <div class="logo-text">
-                <h1>Green Garden</h1>
-                <span>Heirloom Seeds</span>
-            </div>
-        </a>
-        <div class="nav-links">
-            <a href="products.html" class="nav-link">Shop</a>
-            <a href="orders.html" class="nav-link active">Orders</a>
-            <a href="cart.html" class="nav-link">Cart <span class="cart-badge" id="cartBadge">0</span></a>
-            <div class="admin-badge" onclick="showLoginModal()">
-                <i class="fas fa-user-shield"></i> Admin
-            </div>
+<nav class="navbar">
+    <a href="#" class="logo">
+        <div class="logo-icon"><i class="fas fa-seedling"></i></div>
+        <div class="logo-text">
+            <h1>Modern Garden</h1>
+            <span>HEIRLOOM & ORGANIC</span>
         </div>
-    </nav>
-
-    <div class="container">
-        <div class="page-header">
-            <h2 class="page-title">My Orders</h2>
-            <p style="color:#666;">Track orders, manage invoices, and scan bills</p>
-        </div>
-        
-        <div id="orderList">
-            <!-- Orders render here -->
-        </div>
+    </a>
+    <div class="nav-links">
+        <a href="#" class="nav-link">Shop</a>
+        <a href="#" class="nav-link active">Orders</a>
+        <a href="#" class="nav-link">Cart</a>
     </div>
+</nav>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="login-card">
-            <h2 style="margin-bottom:15px; font-family:'Playfair Display'; color:var(--dark-green);">Admin Login</h2>
-            <p style="margin-bottom:20px; font-size:14px; color:#666;">Login to enable Scanner & Excel Export.</p>
-            <input type="text" id="username" placeholder="Username" class="login-input" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ddd; border-radius:6px;">
-            <input type="password" id="password" placeholder="Password" class="login-input" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd; border-radius:6px;">
-            <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="adminLogin()">Login</button>
-            <div id="loginError" style="color:red; margin-top:10px; text-align:center; display:none;">Invalid credentials</div>
-        </div>
+<div class="container">
+    <div class="page-header">
+        <h2 class="page-title">My plant orders</h2>
+        <p style="color: #3a624a; margin-top: 12px;">Track status, reorder or download invoice</p>
     </div>
+    <div id="orderList" class="order-grid"></div>
+</div>
 
-    <!-- Invoice Modal -->
-    <div id="invoiceModal" class="modal">
-        <div class="invoice-premium" id="invoiceContent"></div>
-    </div>
+<!-- Invoice modal (scrollable via .modal overflow) -->
+<div id="invoiceModal" class="modal">
+    <div class="invoice-card" id="invoiceContent"></div>
+</div>
 
-    <div id="toast" class="toast">Message</div>
+<div id="toast" class="toast-message">✨ updated</div>
 
-    <script>
-        const { jsPDF } = window.jspdf;
-        let isAdminLoggedIn = false;
+<script>
+    // Make functions globally available
+    let globalOrders = [];
 
-        // Initial Data
-        const sampleOrders = [
-            {
-                id: 'GG123456',
-                date: '05/03/2022',
-                customer: 'John Doe',
-                address: '456 Botany Lane, Green City - 400001',
-                mobile: '+91 98765 43210',
-                method: 'Credit Card',
-                status: 'Processing',
-                items: [
-                    { id: 1, name: 'Rose Plant', price: 100, quantity: 5, image: 'https://via.placeholder.com/50' },
-                    { id: 2, name: 'Tulsi Plant', price: 60, quantity: 3, image: 'https://via.placeholder.com/50' },
-                    { id: 3, name: 'Tomato Seeds', price: 40, quantity: 2, image: 'https://via.placeholder.com/50' },
-                    { id: 4, name: 'Fertilizer Pack', price: 200, quantity: 1, image: 'https://via.placeholder.com/50' },
-                    { id: 5, name: 'Gardening Tools Set', price: 500, quantity: 1, image: 'https://via.placeholder.com/50' }
-                ],
-                total: 200
-            }
-        ];
+    // ensure jsPDF
+    const { jsPDF } = window.jspdf || {};
 
-        function init() {
-            if(!localStorage.getItem('orders')) localStorage.setItem('orders', JSON.stringify(sampleOrders));
-            updateCartBadge();
-            renderOrders();
+    // ----- SAMPLE ORDERS with tracking details -----
+    const defaultOrders = [
+        {
+            id: 'MG2204A',
+            date: '12/04/2025',
+            customer: 'John Doe',
+            address: '45, Hibiscus Street, Greenfield 400067',
+            mobile: '+91 98765 43210',
+            method: 'Credit Card',
+            status: 'Processing',
+            tracking: {
+                placed: '12/04/2025',
+                processed: '13/04/2025',
+                shipped: null,
+                outForDelivery: null,
+                delivered: null
+            },
+            items: [
+                { id: 101, name: 'Monstera Deliciosa', price: 120, quantity: 2, image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=80&h=80&fit=crop' },
+                { id: 102, name: 'Snake Plant', price: 65, quantity: 1, image: 'https://images.unsplash.com/photo-1593691509543-c55fb32d8de5?w=80&h=80&fit=crop' },
+                { id: 103, name: 'Organic Basil Seeds', price: 40, quantity: 3, image: 'https://images.unsplash.com/photo-1596283379431-43c8b6b4f978?w=80&h=80&fit=crop' }
+            ],
+            total: 120*2 + 65 + 40*3
+        },
+        {
+            id: 'MG2219K',
+            date: '02/05/2025',
+            customer: 'Jane Miller',
+            address: 'Flat 202, Palm Grove, Bangalore 560078',
+            mobile: '+91 99887 66554',
+            method: 'PayPal',
+            status: 'Shipped',
+            tracking: {
+                placed: '02/05/2025',
+                processed: '03/05/2025',
+                shipped: '05/05/2025',
+                outForDelivery: null,
+                delivered: null
+            },
+            items: [
+                { id: 201, name: 'Lavender Plant', price: 90, quantity: 2, image: 'https://images.unsplash.com/photo-1597843786279-43e6b5c289e1?w=80&h=80&fit=crop' },
+                { id: 202, name: 'Cherry Tomato Seeds', price: 55, quantity: 1, image: 'https://images.unsplash.com/photo-1595348020946-82d8a9c6c6db?w=80&h=80&fit=crop' }
+            ],
+            total: 90*2 + 55
+        },
+        {
+            id: 'MG2301B',
+            date: '15/02/2025',
+            customer: 'Ravi Kapoor',
+            address: '8/2, Garden Avenue, Delhi 110021',
+            mobile: '+91 98760 12345',
+            method: 'UPI',
+            status: 'Delivered',
+            tracking: {
+                placed: '15/02/2025',
+                processed: '16/02/2025',
+                shipped: '18/02/2025',
+                outForDelivery: '20/02/2025',
+                delivered: '20/02/2025'
+            },
+            items: [
+                { id: 301, name: 'Peace Lily', price: 150, quantity: 1, image: 'https://images.unsplash.com/photo-1593691509543-c55fb32d8de5?w=80&h=80&fit=crop' },
+                { id: 302, name: 'Mint Plant', price: 35, quantity: 4, image: 'https://images.unsplash.com/photo-1618832337140-2f8350d6cdb3?w=80&h=80&fit=crop' }
+            ],
+            total: 150 + 35*4
         }
+    ];
 
-        function updateCartBadge() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const count = cart.reduce((a, i) => a + i.quantity, 0);
-            const badge = document.getElementById('cartBadge');
-            badge.textContent = count;
-            badge.style.display = count > 0 ? 'inline' : 'none';
-        }
+    if (!localStorage.getItem('orders')) {
+        localStorage.setItem('orders', JSON.stringify(defaultOrders));
+    }
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
-        }
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2800);
+    }
 
-        function renderOrders() {
-            const orders = JSON.parse(localStorage.getItem('orders')) || [];
-            const el = document.getElementById('orderList');
-            el.innerHTML = '';
+    // ----- render orders with tracking timeline -----
+    function renderOrders() {
+        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        globalOrders = orders;
+        const container = document.getElementById('orderList');
+        container.innerHTML = '';
 
-            orders.forEach(order => {
-                const statusClass = order.status === 'Processing' ? 'status-processing' : (order.status === 'Shipped' ? 'status-shipped' : 'status-delivered');
-                
-                const productsHtml = order.items.map(p => `
-                    <div class="prod-row">
-                        <img src="${p.image}" class="prod-img">
-                        <div class="prod-info">
-                            <div class="prod-name">${p.name}</div>
-                            <div class="prod-meta">Qty: ${p.quantity} × Rs.${p.price}</div>
-                        </div>
-                        <div class="prod-price">Rs.${p.price * p.quantity}</div>
+        orders.forEach(order => {
+            let statusClass = 'status-processing';
+            if (order.status === 'Shipped') statusClass = 'status-shipped';
+            else if (order.status === 'Delivered') statusClass = 'status-delivered';
+
+            // Build tracking steps based on status & tracking object
+            const track = order.tracking || { placed: order.date, processed: '', shipped: '', outForDelivery: '', delivered: '' };
+            const steps = [
+                { label: 'Placed', key: 'placed', date: track.placed || order.date },
+                { label: 'Processed', key: 'processed', date: track.processed },
+                { label: 'Shipped', key: 'shipped', date: track.shipped },
+                { label: 'Out for delivery', key: 'outForDelivery', date: track.outForDelivery },
+                { label: 'Delivered', key: 'delivered', date: track.delivered }
+            ];
+
+            let completedUntil = 0;
+            if (order.status === 'Processing') completedUntil = 1;
+            else if (order.status === 'Shipped') completedUntil = 3;
+            else if (order.status === 'Delivered') completedUntil = 5;
+
+            const timelineHtml = steps.map((step, idx) => {
+                let stepClass = '';
+                if (idx < completedUntil) stepClass = 'completed';
+                else if (idx === completedUntil && order.status !== 'Delivered') stepClass = 'active';
+                const dateDisplay = step.date ? step.date : '—';
+                return `<div class="track-step ${stepClass}">
+                    <div class="step-icon"><i class="fas ${idx === 0 ? 'fa-check-circle' : (idx === 4 ? 'fa-home' : 'fa-truck')}"></i></div>
+                    <span class="step-label">${step.label}</span>
+                    <span class="step-date">${dateDisplay}</span>
+                </div>`;
+            }).join('');
+
+            const productsHtml = order.items.map(item => `
+                <div class="product-row">
+                    <img src="${item.image}" class="prod-img" alt="${item.name}" loading="lazy">
+                    <div class="prod-info">
+                        <div class="prod-name">${item.name}</div>
+                        <div class="prod-meta">Qty: ${item.quantity} × ₹${item.price}</div>
                     </div>
-                `).join('');
-
-                el.innerHTML += `
-                    <div class="order-card">
-                        <div class="order-status-banner">
-                            <span style="font-weight:600;">Order #${order.id}</span>
-                            <span class="status-badge ${statusClass}">${order.status}</span>
-                        </div>
-                        <div class="order-body">
-                            <div class="order-meta">
-                                <div class="meta-item"><span>Date</span><strong>${order.date}</strong></div>
-                                <div class="meta-item"><span>Total</span><strong>Rs.${order.total}</strong></div>
-                                <div class="meta-item"><span>Payment</span><strong>${order.method}</strong></div>
-                            </div>
-                            ${productsHtml}
-                            <div class="order-footer">
-                                <div style="font-size:13px; color:#666;">Need help? Contact support</div>
-                                <div style="display:flex; gap:8px;">
-                                    <button class="btn" onclick="reorder(${JSON.stringify(order.items).replace(/"/g, '&quot;')})"><i class="fas fa-redo"></i> Reorder</button>
-                                    <button class="btn btn-primary" onclick="openInvoice('${order.id}')"><i class="fas fa-file-invoice"></i> Invoice</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function reorder(items) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            items.forEach(item => {
-                const exist = cart.find(c => c.id === item.id);
-                if(exist) exist.quantity += item.quantity;
-                else cart.push(item);
-            });
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartBadge();
-            showToast('Items added to cart!');
-        }
-
-        // --- Invoice System ---
-        function openInvoice(orderId) {
-            const order = (JSON.parse(localStorage.getItem('orders')) || []).find(o => o.id === orderId);
-            if(!order) return;
-            
-            const subtotal = order.items.reduce((a, i) => a + (i.price * i.quantity), 0);
-            const tax = Math.round(subtotal * 0.15); // 15% Tax
-            const grandTotal = subtotal + tax;
-
-            const content = document.getElementById('invoiceContent');
-            content.innerHTML = `
-                <div class="inv-header-bg">
-                    <div class="inv-logo">
-                        <i class="fas fa-leaf"></i>
-                        <div class="inv-logo-text">
-                            <h2>Green Garden</h2>
-                            <span>Heirloom Seeds & Plants</span>
-                        </div>
-                    </div>
-                    <div class="inv-qr-box" id="invoiceQR"></div>
+                    <div class="prod-price">₹${item.price * item.quantity}</div>
                 </div>
-                <div class="inv-body">
-                    <div class="inv-title-row">
-                        <h1>INVOICE</h1>
-                        <div class="inv-meta-right">
-                            <strong>#${order.id}</strong>
-                            <span>${order.date}</span>
-                        </div>
+            `).join('');
+
+            const card = document.createElement('div');
+            card.className = 'order-card';
+            card.innerHTML = `
+                <div class="order-header">
+                    <span class="order-id-badge"><i class="fas fa-receipt"></i> Order #${order.id}</span>
+                    <span class="status-badge ${statusClass}">${order.status}</span>
+                </div>
+                <div class="order-body">
+                    <div class="order-meta-grid">
+                        <div class="meta-item"><span>📅 Date</span><strong>${order.date}</strong></div>
+                        <div class="meta-item"><span>💰 Total</span><strong>₹${order.total}</strong></div>
+                        <div class="meta-item"><span>💳 Payment</span><strong>${order.method}</strong></div>
+                        <div class="meta-item"><span>📦 Items</span><strong>${order.items.length}</strong></div>
                     </div>
 
-                    <div class="inv-billing-grid">
-                        <div class="inv-bill-to">
-                            <h4>Bill To</h4>
-                            <p><strong>${order.customer}</strong></p>
-                            <p>${order.address}</p>
-                            <p>Phone: ${order.mobile}</p>
-                        </div>
-                        <div class="inv-bill-to" style="text-align:right;">
-                            <h4>Ship To</h4>
-                            <p><strong>${order.customer}</strong></p>
-                            <p>${order.address}</p>
-                        </div>
+                    <!-- TRACKING TIMELINE -->
+                    <div class="tracking-timeline">
+                        ${timelineHtml}
                     </div>
 
-                    <table class="inv-table">
-                        <thead>
-                            <tr>
-                                <th>Item Description</th>
-                                <th class="text-right">Rate</th>
-                                <th class="text-right">Qty</th>
-                                <th class="text-right">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${order.items.map(i => `
-                                <tr>
-                                    <td>${i.name}</td>
-                                    <td class="text-right">Rs.${i.price}</td>
-                                    <td class="text-right">${i.quantity}</td>
-                                    <td class="text-right">Rs.${i.price * i.quantity}</td>
-                                </tr>
-                            `).join('')}
-                            <tr class="total-row">
-                                <td colspan="4" style="text-align:left; padding-top:15px;">Thank you for your business!</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="inv-summary-box">
-                        <div class="inv-summary-contents">
-                            <div class="sum-row"><span>Subtotal</span><span>Rs.${subtotal}</span></div>
-                            <div class="sum-row"><span>Tax (15%)</span><span>Rs.${tax}</span></div>
-                            <div class="sum-row grand-total"><span>Total</span><span>Rs.${grandTotal}</span></div>
-                        </div>
-                    </div>
-
-                    <div class="scan-results" id="scanResultsBox">
-                        <h3><i class="fas fa-check-circle"></i> Scan Complete</h3>
-                        <div class="scan-steps">
-                            <div class="step-mini"><i class="fas fa-camera"></i><strong>Scanned</strong></div>
-                            <div class="step-mini"><i class="fas fa-database"></i><strong>Data Read</strong></div>
-                            <div class="step-mini"><i class="fas fa-file-excel"></i><strong>Excel Saved</strong></div>
-                        </div>
-                        <table style="width:100%; font-size:12px; background:white; padding:5px;">
-                            <tr><th>Item</th><th>Qty</th><th>Price</th></tr>
-                            ${order.items.map(i => `<tr><td>${i.name}</td><td>${i.quantity}</td><td>Rs.${i.price}</td></tr>`).join('')}
-                        </table>
-                    </div>
-
-                    <div class="inv-footer-info">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                            <div>
-                                <h3>Payment Info</h3>
-                                <p>Method: ${order.method}</p>
-                                <p>Account: Green Garden Pvt Ltd</p>
-                            </div>
-                            <div style="text-align:right;">
-                                <h3>Need Help?</h3>
-                                <p>contact@greengarden.com</p>
-                                <p>+91 98765 43210</p>
-                            </div>
-                        </div>
-                        <div style="display:flex; gap:10px;">
-                            <button class="btn btn-scanner" style="flex:1; justify-content:center; color:white;" onclick="runScanner('${order.id}')">
-                                <i class="fas fa-qrcode"></i> Scan & Save to Excel
-                            </button>
-                            <button class="btn btn-primary" style="flex:1; justify-content:center;" onclick="downloadPDF('${order.id}')">
-                                <i class="fas fa-file-pdf"></i> Download PDF
-                            </button>
+                    ${productsHtml}
+                    <div class="order-footer-actions">
+                        <div style="font-size:0.9rem;color:#4f735a;"><i class="fas fa-truck"></i> Live tracking</div>
+                        <div style="display:flex; gap:12px;">
+                            <button class="btn" onclick="reorderItems('${order.id}')"><i class="fas fa-copy"></i> Reorder</button>
+                            <button class="btn btn-primary" onclick="openInvoice('${order.id}')"><i class="fas fa-file-invoice"></i> View invoice</button>
                         </div>
                     </div>
                 </div>
             `;
-
-            document.getElementById('invoiceModal').style.display = 'flex';
-            
-            // Generate QR
-            const qrContainer = document.getElementById('invoiceQR');
-            qrContainer.innerHTML = '';
-            new QRCode(qrContainer, {
-                text: `Invoice: ${order.id} | Total: Rs.${grandTotal}`,
-                width: 70,
-                height: 70,
-                colorDark: "#1a4d2e",
-                colorLight: "#ffffff",
-            });
-        }
-
-        // --- Scanner Logic ---
-        function runScanner(orderId) {
-            if(!isAdminLoggedIn) {
-                showLoginModal();
-                showToast("Admin login required");
-                return;
-            }
-
-            showToast("Scanning Bill...");
-            const order = (JSON.parse(localStorage.getItem('orders')) || []).find(o => o.id === orderId);
-            
-            // Simulate Scan Processing
-            setTimeout(() => {
-                // 1. Create Data for Excel
-                const excelData = order.items.map(i => ({
-                    "Item Name": i.name,
-                    "Quantity": i.quantity,
-                    "Price (Rs)": i.price,
-                    "Total (Rs)": i.price * i.quantity
-                }));
-
-                // 2. Generate Worksheet
-                const ws = XLSX.utils.json_to_sheet(excelData);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Scan Data");
-
-                // 3. Download
-                XLSX.writeFile(wb, `Scan_${order.id}.xlsx`);
-
-                // 4. Show Success in Modal
-                document.getElementById('scanResultsBox').style.display = 'block';
-                showToast("Excel file downloaded successfully!");
-            }, 1500);
-        }
-
-        // --- Admin Login ---
-        function showLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-
-        function adminLogin() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            if(u === 'admin' && p === 'admin123') {
-                isAdminLoggedIn = true;
-                document.getElementById('loginModal').style.display = 'none';
-                showToast("Admin Logged In");
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
-        }
-
-        // --- PDF Generation ---
-        function downloadPDF(orderId) {
-            const order = (JSON.parse(localStorage.getItem('orders')) || []).find(o => o.id === orderId);
-            const doc = new jsPDF();
-            
-            // Header
-            doc.setFillColor(26, 77, 46);
-            doc.rect(0, 0, 220, 40, 'F');
-            
-            // Logo
-            doc.setTextColor(255,255,255);
-            doc.setFontSize(24);
-            doc.text("Green Garden", 15, 25);
-            doc.setFontSize(10);
-            doc.text("Heirloom Seeds & Plants", 15, 32);
-            
-            // QR Placeholder
-            doc.roundedRect(160, 5, 35, 30, 2, 2, 'F');
-            doc.setTextColor(100);
-            doc.setFontSize(8);
-            doc.text("QR CODE", 177.5, 22, {align:'center'});
-
-            // Invoice Title
-            doc.setTextColor(0);
-            doc.setFontSize(28);
-            doc.text("INVOICE", 15, 60);
-            
-            // Info
-            doc.setFontSize(10);
-            doc.text(`Invoice #${order.id}`, 140, 55);
-            doc.text(`Date: ${order.date}`, 140, 62);
-            
-            // Bill To
-            doc.text(`Bill To: ${order.customer}`, 15, 80);
-            doc.text(order.address, 15, 87);
-            
-            // Items Table Header
-            doc.setFillColor(240,240,240);
-            doc.rect(15, 95, 180, 8, 'F');
-            doc.setFontSize(10);
-            doc.text("Item Description", 17, 100);
-            doc.text("Rate", 120, 100);
-            doc.text("Qty", 145, 100);
-            doc.text("Total", 175, 100);
-            
-            let y = 110;
-            let subtotal = 0;
-            order.items.forEach(i => {
-                doc.text(i.name, 17, y);
-                doc.text(`Rs.${i.price}`, 120, y);
-                doc.text(String(i.quantity), 145, y);
-                doc.text(`Rs.${i.price*i.quantity}`, 175, y);
-                subtotal += i.price * i.quantity;
-                y+=10;
-            });
-
-            // Summary
-            y+=10;
-            doc.text("Subtotal:", 140, y);
-            doc.text(`Rs.${subtotal}`, 175, y, {align:'right'});
-            doc.text("Tax (15%):", 140, y+7);
-            doc.text(`Rs.${Math.round(subtotal*0.15)}`, 175, y+7, {align:'right'});
-            
-            doc.setFontSize(14);
-            doc.text("Total:", 140, y+17);
-            doc.text(`Rs.${subtotal + Math.round(subtotal*0.15)}`, 175, y+17, {align:'right'});
-
-            doc.save(`Invoice_${order.id}.pdf`);
-        }
-
-        // Close Modals
-        document.querySelectorAll('.modal').forEach(m => {
-            m.addEventListener('click', e => {
-                if(e.target === m) m.style.display = 'none';
-            });
+            container.appendChild(card);
         });
+    }
 
-        init();
-    </script>
+    // ----- reorder -----
+    window.reorderItems = function(orderId) {
+        const orders = JSON.parse(localStorage.getItem('orders'));
+        const order = orders.find(o => o.id === orderId);
+        if (!order) return;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        order.items.forEach(incoming => {
+            const exists = cart.find(c => c.id === incoming.id);
+            if (exists) exists.quantity += incoming.quantity;
+            else cart.push({ ...incoming });
+        });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        showToast(`🛒 Items from #${orderId} added to cart`);
+    };
+
+    // ----- open invoice modal -----
+    window.openInvoice = function(orderId) {
+        const orders = JSON.parse(localStorage.getItem('orders'));
+        const order = orders.find(o => o.id === orderId);
+        if (!order) return;
+
+        const subtotal = order.items.reduce((a, i) => a + (i.price * i.quantity), 0);
+        const tax = Math.round(subtotal * 0.12);
+        const grandTotal = subtotal + tax;
+
+        const parts = order.date.split('/');
+        const rawDate = new Date(`${parts[1]}/${parts[0]}/${parts[2]}`);
+        rawDate.setDate(rawDate.getDate() + 5);
+        const deliveryStr = rawDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        const modalContent = document.getElementById('invoiceContent');
+        modalContent.innerHTML = `
+            <div class="inv-head-garden">
+                <div class="inv-brand">
+                    <i class="fas fa-tree"></i>
+                    <div class="inv-brand-text">
+                        <h2>Modern Garden</h2>
+                        <span>EST. 2020 · HEIRLOOM</span>
+                    </div>
+                </div>
+                <div class="inv-qr-block" id="invoiceQrTarget" style="width:80px; height:80px;"></div>
+            </div>
+            <div class="inv-body">
+                <div class="inv-title-section">
+                    <h1>Invoice</h1>
+                    <span class="inv-badge">#${order.id}</span>
+                </div>
+
+                <div class="two-col">
+                    <div class="col-bill">
+                        <h4>BILL TO</h4>
+                        <p>${order.customer}</p>
+                        <p>${order.address}</p>
+                        <p>📞 ${order.mobile}</p>
+                    </div>
+                    <div class="col-bill">
+                        <h4>INVOICE DATE</h4>
+                        <p>${order.date}</p>
+                        <h4 style="margin-top:10px;">PAYMENT</h4>
+                        <p>${order.method}</p>
+                    </div>
+                </div>
+
+                <div class="delivery-chip">
+                    <i class="fas fa-leaf"></i>
+                    <span>Estimated delivery: ${deliveryStr}</span>
+                </div>
+
+                <table class="inv-table-mini">
+                    <thead><tr><th>Item</th><th>Rate</th><th>Qty</th><th>Amount</th></tr></thead>
+                    <tbody>
+                        ${order.items.map(it => `<tr><td>${it.name}</td><td>₹${it.price}</td><td>${it.quantity}</td><td>₹${it.price * it.quantity}</td></tr>`).join('')}
+                    </tbody>
+                </table>
+
+                <div class="invoice-total-card">
+                    <div class="total-row"><span>Subtotal</span><span>₹${subtotal}</span></div>
+                    <div class="total-row"><span>Tax (12%)</span><span>₹${tax}</span></div>
+                    <div class="total-row grand-total"><span>Total</span><span>₹${grandTotal}</span></div>
+                </div>
+
+                <div class="inv-footer-note">
+                    <div><i class="fas fa-seedling"></i> UPI / Card</div>
+                    <div><button class="btn btn-primary" style="padding:8px 24px;" onclick="downloadInvoicePDF('${order.id}')"><i class="fas fa-download"></i> Download PDF</button></div>
+                </div>
+            </div>
+        `;
+
+        // QR code
+        setTimeout(() => {
+            const qrDiv = document.getElementById('invoiceQrTarget');
+            qrDiv.innerHTML = '';
+            if (window.QRCode) {
+                new QRCode(qrDiv, {
+                    text: `upi://pay?pa=moderngarden@okhdfcbank&pn=ModernGarden&am=${grandTotal}&cu=INR`,
+                    width: 70,
+                    height: 70,
+                    colorDark: '#1a3b2e',
+                    colorLight: '#f9fff9'
+                });
+            } else {
+                qrDiv.innerHTML = '<span style="font-size:9px;">QR error</span>';
+            }
+        }, 50);
+
+        document.getElementById('invoiceModal').style.display = 'flex';
+    };
+
+    // ----- DOWNLOAD PDF (FIXED & FULLY WORKING) -----
+    window.downloadInvoicePDF = function(orderId) {
+        console.log('Downloading invoice for order:', orderId);
+        
+        const orders = JSON.parse(localStorage.getItem('orders'));
+        const order = orders.find(o => o.id === orderId);
+        
+        if (!order) {
+            showToast('Order not found');
+            return;
+        }
+
+        if (!window.jspdf) {
+            showToast('PDF library not loaded');
+            return;
+        }
+
+        try {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const subtotal = order.items.reduce((a, i) => a + (i.price * i.quantity), 0);
+            const tax = Math.round(subtotal * 0.12);
+            const total = subtotal + tax;
+
+            // Header with green background
+            doc.setFillColor(26, 59, 46);
+            doc.rect(0, 0, 220, 35, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Modern Garden', 20, 22);
+            doc.setFontSize(8);
+            doc.text('INVOICE · heirloom plants', 20, 30);
+
+            // Invoice details
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(16);
+            doc.text(`Invoice #${order.id}`, 150, 25);
+            doc.setFontSize(10);
+            doc.text(`Date: ${order.date}`, 150, 32);
+
+            // Bill to
+            doc.setFontSize(11);
+            doc.text(`Bill to: ${order.customer}`, 20, 50);
+            doc.setFontSize(9);
+            doc.text(order.address, 20, 57);
+            doc.text(`Phone: ${order.mobile}`, 20, 64);
+
+            // delivery
+            const parts = order.date.split('/');
+            const d = new Date(`${parts[1]}/${parts[0]}/${parts[2]}`);
+            d.setDate(d.getDate() + 5);
+            const deliv = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+            doc.setTextColor(46, 125, 50);
+            doc.text(`Est. delivery: ${deliv}`, 20, 74);
+            doc.setTextColor(0, 0, 0);
+
+            // table header
+            let y = 88;
+            doc.setFillColor(225, 240, 225);
+            doc.rect(20, y-5, 170, 8, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.text('Item', 22, y);
+            doc.text('Price', 100, y);
+            doc.text('Qty', 135, y);
+            doc.text('Total', 165, y);
+            doc.setFont('helvetica', 'normal');
+            y += 8;
+
+            order.items.forEach(it => {
+                doc.text(it.name.substring(0,18), 22, y);
+                doc.text(`₹${it.price}`, 100, y);
+                doc.text(String(it.quantity), 135, y);
+                doc.text(`₹${it.price * it.quantity}`, 165, y);
+                y += 8;
+            });
+
+            y += 8;
+            doc.text(`Subtotal: ₹${subtotal}`, 130, y);
+            y += 6;
+            doc.text(`Tax (12%): ₹${tax}`, 130, y);
+            y += 8;
+            doc.setFont('helvetica', 'bold');
+            doc.text(`TOTAL: ₹${total}`, 130, y);
+
+            // Footer
+            doc.setFontSize(9);
+            doc.setTextColor(100);
+            doc.text('Thank you for supporting Modern Garden!', 70, 270);
+            doc.text('Terms: Live plants replaced if damaged.', 60, 277);
+
+            // Save the PDF
+            doc.save(`Invoice_${order.id}.pdf`);
+            showToast(`✅ PDF downloaded: Invoice_${order.id}.pdf`);
+            
+            // Keep modal open
+        } catch (error) {
+            console.error('PDF generation error:', error);
+            showToast('Error generating PDF. Check console.');
+        }
+    };
+
+    // close modal when clicking outside
+    document.querySelectorAll('.modal').forEach(m => {
+        m.addEventListener('click', (e) => {
+            if (e.target === m) m.style.display = 'none';
+        });
+    });
+
+    // initial render
+    renderOrders();
+</script>
 </body>
 </html>
