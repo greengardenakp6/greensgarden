@@ -8,11 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- JS PDF for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- SheetJS for Excel generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- QRCode for generating QR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
@@ -224,13 +221,16 @@
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
             display: none;
-            align-items: center;
+            /* Changed alignment to allow scrolling */
+            align-items: flex-start; 
             justify-content: center;
             z-index: 1000;
             padding: 20px;
+            /* Added scroll */
+            overflow-y: auto; 
         }
 
         .login-card {
@@ -239,6 +239,9 @@
             border-radius: 16px;
             width: 100%;
             max-width: 400px;
+            margin: auto; /* Center vertically if screen is tall enough */
+            position: relative;
+            top: 50px;
         }
 
         /* Premium Invoice Design */
@@ -251,6 +254,7 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             position: relative;
             font-family: 'Inter', sans-serif;
+            margin: 20px auto; /* Centering and top margin */
         }
 
         .inv-header-bg {
@@ -336,7 +340,6 @@
         .inv-footer-info {
             background: #f9fafb;
             padding: 20px;
-            margin-top: 30px;
             border-top: 1px solid #eee;
             font-size: 12px;
             color: #666;
@@ -443,7 +446,9 @@
                 items: [
                     { id: 1, name: 'Rose Plant', price: 100, quantity: 5, image: 'https://via.placeholder.com/50' },
                     { id: 2, name: 'Tulsi Plant', price: 60, quantity: 3, image: 'https://via.placeholder.com/50' },
-                    { id: 3, name: 'Tomato Seeds', price: 40, quantity: 2, image: 'https://via.placeholder.com/50' }
+                    { id: 3, name: 'Tomato Seeds', price: 40, quantity: 2, image: 'https://via.placeholder.com/50' },
+                    { id: 4, name: 'Fertilizer Pack', price: 200, quantity: 1, image: 'https://via.placeholder.com/50' },
+                    { id: 5, name: 'Gardening Tools Set', price: 500, quantity: 1, image: 'https://via.placeholder.com/50' }
                 ],
                 total: 200
             }
