@@ -4,28 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart | Green Garden</title>
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --primary-green: #174e1e;
-            --primary-light: #2e7d32;
-            --accent-gold: #d4af37;
+            --primary: #0f3d1a;
+            --primary-light: #1b6b2b;
+            --accent: #cfa364;
             --text-main: #1a1a1a;
             --text-muted: #666;
-            --white: #ffffff;
-            --bg-body: #f8fafb; /* Premium clean background */
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --glass-border: rgba(0, 0, 0, 0.06);
-            --shadow-soft: 0 20px 40px rgba(0,0,0,0.04);
-            --shadow-card: 0 10px 30px rgba(0,0,0,0.06);
-            --transition-premium: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --surface: #ffffff;
+            --bg: #f8faf7;
+            --border: #eaeaea;
+            --shadow: 0 10px 30px rgba(0,0,0,0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,269 +26,96 @@
         body {
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            background: var(--bg-body);
-            color: var(--text-main);
+            background: var(--bg);
             position: relative;
-            overflow-x: hidden;
         }
+        
+        /* Background Shapes */
+        .bg-shape { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; }
+        .shape-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: rgba(27, 107, 43, 0.1); }
+        .shape-2 { bottom: -10%; right: -10%; width: 600px; height: 600px; background: rgba(207, 163, 100, 0.1); }
 
-        /* --- ANIMATIONS --- */
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        /* --- NAVBAR --- */
+        /* Navbar */
         .navbar {
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
-            padding: 1.2rem 3rem;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 1px 0 var(--glass-border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            animation: slideDown 0.8s var(--transition-premium);
+            padding: 1rem 3rem;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--border);
         }
+        .nav-btn { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); font-weight: 600; padding: 10px 20px; border-radius: 50px; transition: all 0.3s; }
+        .nav-btn:hover { background: var(--primary); color: white; }
+        .navbar-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary); }
 
-        .back-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 50px;
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            transition: all 0.4s var(--transition-premium);
-        }
+        /* Layout */
+        .container { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; max-width: 1200px; margin: 0 auto; padding: 40px 30px; }
 
-        .back-btn:hover {
-            background: var(--primary-green);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(23, 78, 30, 0.15);
-        }
-
-        .navbar-title {
-            flex: 1;
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--primary-green);
-        }
-
-        /* --- LAYOUT --- */
-        .main-container {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 30px;
-        }
-
-        /* --- PROGRESS BAR --- */
-        .shipping-progress {
-            background: var(--white);
-            padding: 20px 25px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-soft);
-            text-align: center;
-        }
-        .progress-text { font-weight: 600; color: var(--text-main); margin-bottom: 12px; font-size: 0.95rem; }
-        .progress-bar-bg { width: 100%; height: 6px; background: #f0f0f0; border-radius: 10px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary-green), var(--accent-gold)); transition: width 0.5s var(--transition-premium); border-radius: 10px; }
-
-        /* --- CARDS --- */
+        /* Cards */
         .card {
-            background: var(--white);
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-card);
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
             padding: 30px;
-            transition: transform 0.5s var(--transition-premium);
         }
 
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--primary-green);
-        }
-        .section-title i { color: var(--accent-gold); }
+        /* Progress */
+        .shipping-progress { margin-bottom: 25px; background: linear-gradient(90deg, #e8f5e9, #fff); padding: 20px; border-radius: 16px; border: 1px solid #e0e0e0; }
+        .progress-text { font-weight: 600; font-size: 0.95rem; color: var(--primary); margin-bottom: 12px; display: flex; justify-content: space-between; }
+        .progress-bar-bg { width: 100%; height: 8px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.5s ease; border-radius: 10px; }
 
-        /* --- CART ITEMS --- */
-        .cart-items-container { display: flex; flex-direction: column; gap: 20px; }
+        /* Items */
+        .cart-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid #f0f0f0; position: relative; transition: all 0.3s; }
+        .cart-item:last-child { border-bottom: none; }
+        .item-image { width: 100px; height: 100px; object-fit: cover; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .item-details { flex: 1; }
+        .item-name { font-weight: 600; font-size: 1.05rem; margin-bottom: 5px; }
+        .item-price { color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+        .quantity-controls { display: flex; align-items: center; gap: 15px; background: #f5f5f5; padding: 5px 10px; border-radius: 50px; width: fit-content; }
+        .qty-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); transition: all 0.2s; }
+        .qty-btn:hover { background: var(--primary); color: white; }
+        .remove-btn { position: absolute; top: 20px; right: 0; background: none; border: none; color: #ccc; cursor: pointer; transition: color 0.2s; }
+        .remove-btn:hover { color: #e74c3c; }
+
+        /* Summary */
+        .summary-card { height: fit-content; position: sticky; top: 100px; }
+        .promo-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        .promo-input { flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid #eee; background: #fafafa; font-family: inherit; }
+        .btn-apply { padding: 0 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
         
-        .cart-item {
-            display: flex;
-            gap: 20px;
-            background: #fafafa;
-            border-radius: 16px;
-            padding: 20px;
-            transition: all 0.3s var(--transition-premium);
-            border: 1px solid transparent;
-            animation: slideInLeft 0.5s ease backwards;
-            position: relative;
-        }
-        .cart-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.04);
-            border-color: rgba(23, 78, 30, 0.1);
-            background: #fff;
-        }
-        
-        .item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-        
-        .item-details { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .item-name { font-weight: 600; font-size: 1.05rem; margin-bottom: 4px; color: var(--text-main); }
-        .item-price { color: var(--primary-green); font-weight: 700; font-size: 1rem; margin-bottom: 10px; }
-        
-        .quantity-controls { display: flex; align-items: center; gap: 12px; background: white; padding: 4px; border-radius: 30px; border: 1px solid #eee; width: fit-content; }
-        .qty-btn {
-            width: 28px; height: 28px; border-radius: 50%;
-            border: none;
-            background: var(--primary-green);
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s;
-            color: white;
-            font-size: 0.9rem;
-        }
-        .qty-btn:hover { background: var(--primary-light); transform: scale(1.1); }
-        .qty-btn:active { animation: pulse 0.2s; }
-        .qty-val { font-weight: 600; font-size: 0.95rem; min-width: 20px; text-align: center; }
-
-        .remove-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #ccc;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .remove-btn:hover { color: #e74c3c; transform: scale(1.1); }
-
-        /* Empty State */
-        .empty-cart {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-muted);
-        }
-        .empty-icon { font-size: 4rem; color: var(--accent-gold); margin-bottom: 20px; opacity: 0.3; }
-
-        /* --- UPSELL --- */
-        .upsell-section { margin-top: 30px; animation: slideInLeft 0.8s backwards; }
-        .upsell-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .upsell-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid var(--glass-border);
-        }
-        .upsell-card:hover { border-color: var(--accent-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .upsell-card img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
-        .upsell-info h4 { font-size: 0.9rem; margin-bottom: 2px; font-weight: 600; }
-        .upsell-info p { font-size: 0.85rem; color: var(--primary-green); font-weight: 600; }
-
-        /* --- SUMMARY --- */
-        .summary-card {
-            position: sticky;
-            top: 100px;
-            animation: slideInRight 0.8s backwards;
-            height: fit-content;
-        }
-        
-        .promo-group { display: flex; gap: 10px; margin-bottom: 15px; }
-        .promo-input { flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid #eee; background: #fafafa; font-family: inherit; outline: none; font-size: 0.9rem; }
-        .promo-input:focus { border-color: var(--primary-green); background: white; }
-        .btn-apply { padding: 0 20px; background: var(--primary-green); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.3s; font-size: 0.9rem; }
-        .btn-apply:hover { background: var(--primary-light); }
-        .promo-msg { font-size: 0.85rem; margin-bottom: 15px; font-weight: 600; height: 20px; }
-
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); }
-        .summary-row.discount { color: var(--primary-green); }
         .summary-total { border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px; font-size: 1.3rem; font-weight: 700; color: var(--text-main); font-family: 'Playfair Display', serif; }
+        
+        .action-btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: all 0.3s; display: block; text-align: center; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(15, 61, 26, 0.15); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(15, 61, 26, 0.2); }
 
-        .trust-badges { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
-        .trust-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .trust-item i { color: var(--primary-green); font-size: 1.2rem; }
+        .empty-cart { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .empty-cart i { font-size: 3rem; color: var(--accent); margin-bottom: 15px; opacity: 0.5; }
 
-        /* Buttons */
-        .action-buttons { margin-top: 25px; display: flex; flex-direction: column; gap: 12px; }
-        .btn {
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            text-decoration: none;
-            font-size: 0.95rem;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-green), #2e7d32);
-            color: white;
-            box-shadow: 0 8px 20px rgba(23, 78, 30, 0.15);
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(23, 78, 30, 0.25); }
-        .btn-outline { background: transparent; border: 2px solid #ddd; color: var(--text-muted); }
-        .btn-outline:hover { border-color: #e74c3c; color: #e74c3c; background: #fff0f0; }
-
-        /* Responsive */
         @media (max-width: 900px) {
-            .main-container { grid-template-columns: 1fr; padding: 20px; }
-            .summary-card { position: static; margin-top: 30px; }
-            .upsell-grid { grid-template-columns: 1fr; }
-            .navbar { padding: 1rem; }
+            .container { grid-template-columns: 1fr; padding: 20px; }
         }
     </style>
 </head>
 <body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
 
     <nav class="navbar">
-        <a href="products.html" class="back-btn">
-            <i class="fas fa-arrow-left"></i> Shop
-        </a>
+        <a href="products.html" class="nav-btn"><i class="fas fa-arrow-left"></i> Shop</a>
         <div class="navbar-title">Your Cart</div>
         <div style="width: 80px;"></div>
     </nav>
 
-    <div class="main-container">
-        
-        <!-- Left Column: Items -->
+    <div class="container">
         <div class="items-column">
-            
-            <!-- Free Shipping Progress -->
-            <div class="shipping-progress" id="shippingProgress">
-                <div class="progress-text" id="progressText">
-                    <i class="fas fa-truck" style="margin-right: 8px;"></i>
-                    Spend <strong>₹500</strong> to unlock FREE Shipping!
+            <div class="shipping-progress">
+                <div class="progress-text">
+                    <span id="progressText"><i class="fas fa-truck" style="margin-right:8px;"></i> Spend ₹500 for FREE Shipping!</span>
+                    <span id="progressAmt">₹500</span>
                 </div>
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" id="progressFill" style="width: 0%;"></div>
@@ -303,125 +123,66 @@
             </div>
 
             <div class="card">
-                <h3 class="section-title"><i class="fas fa-shopping-bag"></i> Your Selection</h3>
-                <div id="cart-items-container" class="cart-items-container">
-                    <!-- Items injected by JS -->
-                </div>
-            </div>
-
-            <!-- Upsell Section -->
-            <div class="upsell-section" id="upsellSection">
-                <h3 class="section-title" style="font-size: 1.1rem; margin-bottom: 15px;"><i class="fas fa-magic"></i> Complete Your Garden</h3>
-                <div class="upsell-grid">
-                    <div class="upsell-card" onclick="addUpsell('Organic Fertilizer', 199, 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?q=80&w=300')">
-                        <img src="https://images.unsplash.com/photo-1592419044706-39796d40f98c?q=80&w=300" alt="Fertilizer">
-                        <div class="upsell-info">
-                            <h4>Organic Fertilizer</h4>
-                            <p>₹199</p>
-                        </div>
-                        <i class="fas fa-plus-circle" style="margin-left:auto; color:var(--accent-gold);"></i>
-                    </div>
-                    <div class="upsell-card" onclick="addUpsell('Ceramic Pot', 299, 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=300')">
-                        <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=300" alt="Pot">
-                        <div class="upsell-info">
-                            <h4>Premium Pot</h4>
-                            <p>₹299</p>
-                        </div>
-                        <i class="fas fa-plus-circle" style="margin-left:auto; color:var(--accent-gold);"></i>
-                    </div>
-                </div>
+                <div id="cart-items-container"></div>
             </div>
         </div>
 
-        <!-- Right Column: Summary -->
         <div class="summary-card card">
-            <h3 class="section-title"><i class="fas fa-receipt"></i> Order Summary</h3>
-
+            <h3 style="font-family:'Playfair Display'; font-size:1.3rem; margin-bottom:20px; color:var(--primary);">Order Summary</h3>
             <div class="promo-group">
                 <input type="text" id="promoInput" class="promo-input" placeholder="Promo Code">
                 <button class="btn-apply" onclick="applyPromo()">Apply</button>
             </div>
-            <div id="promoMsg" class="promo-msg"></div>
+            <div id="promoMsg" style="height:20px; font-size:0.85rem; margin-bottom:15px; font-weight:600;"></div>
 
-            <div class="summary-row">
-                <span>Subtotal</span>
-                <span id="subtotalDisplay">₹0</span>
-            </div>
-            <div class="summary-row" id="discountRow" style="display:none;">
-                <span>Savings</span>
-                <span id="discountDisplay">-₹0</span>
-            </div>
-            <div class="summary-row">
-                <span>Shipping</span>
-                <span id="shippingDisplay" style="color:var(--text-muted);">Calculated next</span>
-            </div>
-            <div class="summary-row summary-total">
-                <span>Total</span>
-                <span id="totalDisplay">₹0</span>
-            </div>
+            <div class="summary-row"><span>Subtotal</span><span id="subtotalDisplay">₹0</span></div>
+            <div class="summary-row" id="discountRow" style="display:none;"><span>Discount</span><span id="discountDisplay" style="color:var(--primary);">-₹0</span></div>
+            <div class="summary-row"><span>Shipping</span><span style="color:var(--primary); font-weight:600;">FREE</span></div>
+            <div class="summary-row summary-total"><span>Total</span><span id="totalDisplay">₹0</span></div>
 
-            <div class="action-buttons">
-                <button class="btn btn-primary" onclick="handleCheckout()">
-                    Proceed to Checkout <i class="fas fa-arrow-right" style="margin-left:8px;"></i>
-                </button>
-                <button class="btn btn-outline" onclick="clearCart()">
-                    Clear Cart
-                </button>
-            </div>
-
-            <div class="trust-badges">
-                <div class="trust-item"><i class="fas fa-lock"></i><span>Secure<br>Checkout</span></div>
-                <div class="trust-item"><i class="fas fa-shield-alt"></i><span>Buyer<br>Protection</span></div>
-                <div class="trust-item"><i class="fas fa-undo"></i><span>Easy<br>Returns</span></div>
-            </div>
+            <a href="buy.html" class="action-btn btn-primary" id="checkoutBtn">Proceed to Checkout</a>
+            <button onclick="clearCart()" style="width:100%; padding:10px; margin-top:10px; background:none; border:none; color:#999; cursor:pointer; font-weight:600;">Clear Cart</button>
         </div>
     </div>
 
     <script>
-        // --- STATE ---
         let subtotal = 0;
         let discount = 0;
-        const FREE_SHIPPING_THRESHOLD = 500; // Changed to 500
+        const FREE_SHIPPING_THRESHOLD = 500;
 
-        // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', loadCart);
 
         function loadCart() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const container = document.getElementById('cart-items-container');
-            const upsell = document.getElementById('upsellSection');
-            
             container.innerHTML = '';
             subtotal = 0;
 
             if (cart.length === 0) {
                 container.innerHTML = `
                     <div class="empty-cart">
-                        <div class="empty-icon"><i class="fas fa-seedling"></i></div>
-                        <h3 style="font-family: 'Playfair Display'; color: var(--primary-green);">Your Cart is Empty</h3>
-                        <p style="margin-top: 10px;">Looks like you haven't added any plants yet.</p>
-                        <a href="products.html" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">Start Shopping</a>
-                    </div>
-                `;
-                upsell.style.display = 'none';
-                document.querySelector('.summary-card').style.opacity = '0.6';
-                document.querySelector('.btn-primary').disabled = true;
+                        <i class="fas fa-seedling"></i>
+                        <h3 style="font-family:'Playfair Display'; color:var(--primary); margin-top:10px;">Your Cart is Empty</h3>
+                        <p style="margin-top:5px;">Add some plants to get started.</p>
+                        <a href="products.html" style="display:inline-block; margin-top:20px; padding:10px 25px; background:var(--primary); color:white; text-decoration:none; border-radius:20px; font-weight:600;">Shop Now</a>
+                    </div>`;
+                document.getElementById('checkoutBtn').style.opacity = '0.5';
+                document.getElementById('checkoutBtn').style.pointerEvents = 'none';
                 updateTotals();
                 return;
             }
-
-            document.querySelector('.summary-card').style.opacity = '1';
-            document.querySelector('.btn-primary').disabled = false;
-            upsell.style.display = 'block';
+            
+            document.getElementById('checkoutBtn').style.opacity = '1';
+            document.getElementById('checkoutBtn').style.pointerEvents = 'auto';
 
             cart.forEach((item, index) => {
-                const price = parsePrice(item.price);
+                const price = item.priceNumber || parseFloat(item.price.replace(/[^0-9.]/g, '')) || 0;
                 const qty = item.quantity || 1;
                 subtotal += price * qty;
 
-                const itemHTML = `
+                container.innerHTML += `
                     <div class="cart-item" id="item-${index}">
-                        <img src="${item.image || 'https://via.placeholder.com/100'}" class="item-image" alt="${item.name}">
+                        <img src="${item.image || 'https://via.placeholder.com/100'}" class="item-image" onerror="this.src='https://via.placeholder.com/100'">
                         <div class="item-details">
                             <div class="item-name">${item.name}</div>
                             <div class="item-price">₹${price.toLocaleString('en-IN')}</div>
@@ -432,69 +193,39 @@
                             </div>
                         </div>
                         <button class="remove-btn" onclick="removeFromCart(${index})"><i class="fas fa-times"></i></button>
-                    </div>
-                `;
-                container.innerHTML += itemHTML;
+                    </div>`;
             });
-
             updateTotals();
             updateProgressBar();
         }
 
-        function parsePrice(priceStr) {
-            if (!priceStr) return 0;
-            return parseFloat(priceStr.toString().replace(/[^0-9.]/g, ''));
-        }
-
-        // --- CALCULATIONS ---
         function updateTotals() {
-            let total = subtotal - discount;
-            
             document.getElementById('subtotalDisplay').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-            document.getElementById('discountDisplay').textContent = `-₹${discount.toLocaleString('en-IN')}`;
-            document.getElementById('totalDisplay').textContent = `₹${total.toLocaleString('en-IN')}`;
-            
-            if (discount > 0) document.getElementById('discountRow').style.display = 'flex';
-            else document.getElementById('discountRow').style.display = 'none';
+            document.getElementById('totalDisplay').textContent = `₹${(subtotal - discount).toLocaleString('en-IN')}`;
+            if(discount > 0) {
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountDisplay').textContent = `-₹${discount}`;
+            }
         }
 
         function updateProgressBar() {
             const fill = document.getElementById('progressFill');
             const text = document.getElementById('progressText');
+            const amt = document.getElementById('progressAmt');
             
             if (subtotal >= FREE_SHIPPING_THRESHOLD) {
                 fill.style.width = '100%';
-                text.innerHTML = '<i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 8px;"></i> You have unlocked FREE Shipping!';
+                text.innerHTML = '<i class="fas fa-check-circle" style="color:var(--primary); margin-right:8px;"></i> You unlocked FREE Shipping!';
+                amt.style.display = 'none';
             } else {
                 const diff = FREE_SHIPPING_THRESHOLD - subtotal;
-                const percent = (subtotal / FREE_SHIPPING_THRESHOLD) * 100;
-                fill.style.width = `${percent}%`;
-                text.innerHTML = `Add <strong>₹${diff.toLocaleString('en-IN')}</strong> more for FREE Shipping!`;
+                fill.style.width = `${(subtotal / FREE_SHIPPING_THRESHOLD) * 100}%`;
+                text.innerHTML = `Add <strong>₹${diff}</strong> more for FREE Shipping!`;
+                amt.textContent = `₹${diff} left`;
+                amt.style.display = 'inline';
             }
         }
 
-        // --- PROMO CODE ---
-        function applyPromo() {
-            const code = document.getElementById('promoInput').value.toUpperCase();
-            const msg = document.getElementById('promoMsg');
-
-            if (code === 'GREEN10') {
-                discount = Math.round(subtotal * 0.10);
-                msg.innerHTML = '<i class="fas fa-check-circle"></i> Code Applied: 10% OFF!';
-                msg.style.color = 'var(--primary-green)';
-            } else if (code === 'SPRING20') {
-                discount = 200;
-                msg.innerHTML = '<i class="fas fa-check-circle"></i> Code Applied: ₹200 OFF!';
-                msg.style.color = 'var(--primary-green)';
-            } else {
-                discount = 0;
-                msg.innerHTML = '<i class="fas fa-times-circle"></i> Invalid Code';
-                msg.style.color = '#e74c3c';
-            }
-            updateTotals();
-        }
-
-        // --- CART ACTIONS ---
         function updateQuantity(index, change) {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             if (cart[index]) {
@@ -505,18 +236,10 @@
         }
 
         function removeFromCart(index) {
-            const itemEl = document.getElementById(`item-${index}`);
-            if(itemEl) {
-                itemEl.style.opacity = '0';
-                itemEl.style.transform = 'translateX(-20px)';
-            }
-            
-            setTimeout(() => {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                cart.splice(index, 1);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                loadCart();
-            }, 300);
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
         }
 
         function clearCart() {
@@ -524,37 +247,17 @@
             loadCart();
         }
 
-        function handleCheckout() {
-            if (JSON.parse(localStorage.getItem('cart') || '[]').length === 0) {
-                return;
+        function applyPromo() {
+            const code = document.getElementById('promoInput').value.toUpperCase();
+            if(code === 'GREEN10') {
+                discount = Math.round(subtotal * 0.10);
+                document.getElementById('promoMsg').innerHTML = '<span style="color:var(--primary);">Code Applied!</span>';
+            } else {
+                discount = 0;
+                document.getElementById('promoMsg').innerHTML = '<span style="color:#e74c3c;">Invalid Code</span>';
             }
-            window.location.href = 'buy.html';
+            updateTotals();
         }
-
-        function addUpsell(name, price, image) {
-            const item = { name, price: `₹${price}`, image, quantity: 1 };
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.push(item);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            loadCart();
-            
-            // Visual feedback
-            const btn = event.currentTarget;
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check" style="color:var(--primary-green)"></i> Added';
-            btn.style.pointerEvents = 'none';
-            
-            setTimeout(() => {
-                btn.innerHTML = originalContent;
-                btn.style.pointerEvents = 'auto';
-            }, 1000);
-        }
-        function checkout() {
-            window.location.href = 'buy.html';
-        }
-        
-        displayCart();
-
     </script>
 </body>
 </html>
