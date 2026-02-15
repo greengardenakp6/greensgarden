@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart | Green Garden</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Shopping Cart · Green Garden</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -76,6 +76,7 @@
         .quantity-controls { display: flex; align-items: center; gap: 15px; background: #f5f5f5; padding: 5px 10px; border-radius: 50px; width: fit-content; }
         .qty-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); transition: all 0.2s; }
         .qty-btn:hover { background: var(--primary); color: white; }
+        .qty-val { min-width: 24px; text-align: center; font-weight: 600; }
         .remove-btn { position: absolute; top: 20px; right: 0; background: none; border: none; color: #ccc; cursor: pointer; transition: color 0.2s; }
         .remove-btn:hover { color: #e74c3c; }
 
@@ -83,7 +84,8 @@
         .summary-card { height: fit-content; position: sticky; top: 100px; }
         .promo-group { display: flex; gap: 10px; margin-bottom: 20px; }
         .promo-input { flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid #eee; background: #fafafa; font-family: inherit; }
-        .btn-apply { padding: 0 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .btn-apply { padding: 0 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-apply:hover { background: var(--primary-light); }
         
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); }
         .summary-total { border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px; font-size: 1.3rem; font-weight: 700; color: var(--text-main); font-family: 'Playfair Display', serif; }
@@ -91,12 +93,15 @@
         .action-btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: all 0.3s; display: block; text-align: center; text-decoration: none; }
         .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(15, 61, 26, 0.15); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(15, 61, 26, 0.2); }
+        .btn-primary:disabled { opacity: 0.5; pointer-events: none; }
 
         .empty-cart { text-align: center; padding: 60px 20px; color: var(--text-muted); }
         .empty-cart i { font-size: 3rem; color: var(--accent); margin-bottom: 15px; opacity: 0.5; }
 
         @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; padding: 20px; }
+            .navbar { padding: 1rem 1.5rem; }
+            .navbar-title { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -146,17 +151,36 @@
     </div>
 
     <script>
+        // ========== GLOBAL VARIABLES ==========
         let subtotal = 0;
         let discount = 0;
         const FREE_SHIPPING_THRESHOLD = 500;
 
-        document.addEventListener('DOMContentLoaded', loadCart);
+        // ========== CART DATA (use real localStorage) ==========
+        // Initialize with demo data if empty (for testing)
+        (function initDemoCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                // Add some demo items so cart is not empty for preview
+                cart = [
+                    { id: 1, name: "Morning Jewel Rose Seed", price: 158, priceNumber: 158, image: "F1.jpg", quantity: 2 },
+                    { id: 2, name: "Bitter Gourd Seeds", price: 99, priceNumber: 99, image: "F3.jpg", quantity: 1 },
+                    { id: 3, name: "Organic Potting Mix", price: 360, priceNumber: 360, image: "F18.jpg", quantity: 1 }
+                ];
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        })();
 
+        // ========== MAIN FUNCTION ==========
         function loadCart() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const container = document.getElementById('cart-items-container');
             container.innerHTML = '';
             subtotal = 0;
+            discount = 0; // reset discount on reload
+            document.getElementById('discountRow').style.display = 'none';
+            document.getElementById('promoMsg').innerHTML = '';
+            document.getElementById('promoInput').value = '';
 
             if (cart.length === 0) {
                 container.innerHTML = `
@@ -166,23 +190,32 @@
                         <p style="margin-top:5px;">Add some plants to get started.</p>
                         <a href="products.html" style="display:inline-block; margin-top:20px; padding:10px 25px; background:var(--primary); color:white; text-decoration:none; border-radius:20px; font-weight:600;">Shop Now</a>
                     </div>`;
-                document.getElementById('checkoutBtn').style.opacity = '0.5';
+                document.getElementById('checkoutBtn').classList.add('disabled');
                 document.getElementById('checkoutBtn').style.pointerEvents = 'none';
+                document.getElementById('checkoutBtn').style.opacity = '0.5';
                 updateTotals();
+                updateProgressBar();
                 return;
             }
             
-            document.getElementById('checkoutBtn').style.opacity = '1';
+            document.getElementById('checkoutBtn').classList.remove('disabled');
             document.getElementById('checkoutBtn').style.pointerEvents = 'auto';
+            document.getElementById('checkoutBtn').style.opacity = '1';
 
             cart.forEach((item, index) => {
-                const price = item.priceNumber || parseFloat(item.price.replace(/[^0-9.]/g, '')) || 0;
+                // Ensure price is a number
+                const price = typeof item.price === 'number' ? item.price : 
+                             (item.priceNumber || parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0);
                 const qty = item.quantity || 1;
-                subtotal += price * qty;
+                const itemTotal = price * qty;
+                subtotal += itemTotal;
+
+                // Store priceNumber for later use
+                if (!item.priceNumber) item.priceNumber = price;
 
                 container.innerHTML += `
                     <div class="cart-item" id="item-${index}">
-                        <img src="${item.image || 'https://via.placeholder.com/100'}" class="item-image" onerror="this.src='https://via.placeholder.com/100'">
+                        <img src="${item.image || 'https://via.placeholder.com/100/ebf5df/3f683f?text=🌱'}" class="item-image" onerror="this.src='https://via.placeholder.com/100/ebf5df/3f683f?text=🌱'">
                         <div class="item-details">
                             <div class="item-name">${item.name}</div>
                             <div class="item-price">₹${price.toLocaleString('en-IN')}</div>
@@ -199,42 +232,17 @@
             updateProgressBar();
         }
 
-        function updateTotals() {
-            document.getElementById('subtotalDisplay').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-            document.getElementById('totalDisplay').textContent = `₹${(subtotal - discount).toLocaleString('en-IN')}`;
-            if(discount > 0) {
-                document.getElementById('discountRow').style.display = 'flex';
-                document.getElementById('discountDisplay').textContent = `-₹${discount}`;
-            }
-        }
-
-        function updateProgressBar() {
-            const fill = document.getElementById('progressFill');
-            const text = document.getElementById('progressText');
-            const amt = document.getElementById('progressAmt');
-            
-            if (subtotal >= FREE_SHIPPING_THRESHOLD) {
-                fill.style.width = '100%';
-                text.innerHTML = '<i class="fas fa-check-circle" style="color:var(--primary); margin-right:8px;"></i> You unlocked FREE Shipping!';
-                amt.style.display = 'none';
-            } else {
-                const diff = FREE_SHIPPING_THRESHOLD - subtotal;
-                fill.style.width = `${(subtotal / FREE_SHIPPING_THRESHOLD) * 100}%`;
-                text.innerHTML = `Add <strong>₹${diff}</strong> more for FREE Shipping!`;
-                amt.textContent = `₹${diff} left`;
-                amt.style.display = 'inline';
-            }
-        }
-
+        // ========== UPDATE QUANTITY ==========
         function updateQuantity(index, change) {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             if (cart[index]) {
                 cart[index].quantity = Math.max(1, (cart[index].quantity || 1) + change);
                 localStorage.setItem('cart', JSON.stringify(cart));
-                loadCart();
+                loadCart(); // reload everything
             }
         }
 
+        // ========== REMOVE ITEM ==========
         function removeFromCart(index) {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             cart.splice(index, 1);
@@ -242,22 +250,67 @@
             loadCart();
         }
 
+        // ========== CLEAR CART ==========
         function clearCart() {
             localStorage.setItem('cart', JSON.stringify([]));
             loadCart();
         }
 
+        // ========== UPDATE TOTALS DISPLAY ==========
+        function updateTotals() {
+            document.getElementById('subtotalDisplay').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+            const totalAfterDiscount = subtotal - discount;
+            document.getElementById('totalDisplay').textContent = `₹${totalAfterDiscount.toLocaleString('en-IN')}`;
+            if (discount > 0) {
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountDisplay').textContent = `-₹${discount.toLocaleString('en-IN')}`;
+            } else {
+                document.getElementById('discountRow').style.display = 'none';
+            }
+        }
+
+        // ========== PROGRESS BAR (FREE SHIPPING) ==========
+        function updateProgressBar() {
+            const fill = document.getElementById('progressFill');
+            const textSpan = document.getElementById('progressText');
+            const amtSpan = document.getElementById('progressAmt');
+            
+            if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+                fill.style.width = '100%';
+                textSpan.innerHTML = '<i class="fas fa-check-circle" style="color:var(--primary); margin-right:8px;"></i> You unlocked FREE Shipping!';
+                amtSpan.style.display = 'none';
+            } else {
+                const diff = FREE_SHIPPING_THRESHOLD - subtotal;
+                fill.style.width = `${(subtotal / FREE_SHIPPING_THRESHOLD) * 100}%`;
+                textSpan.innerHTML = `Add <strong>₹${diff}</strong> more for FREE Shipping!`;
+                amtSpan.textContent = `₹${diff} left`;
+                amtSpan.style.display = 'inline';
+            }
+        }
+
+        // ========== APPLY PROMO CODE ==========
         function applyPromo() {
-            const code = document.getElementById('promoInput').value.toUpperCase();
-            if(code === 'GREEN10') {
+            const code = document.getElementById('promoInput').value.trim().toUpperCase();
+            const msgDiv = document.getElementById('promoMsg');
+            
+            if (code === 'GREEN10') {
                 discount = Math.round(subtotal * 0.10);
-                document.getElementById('promoMsg').innerHTML = '<span style="color:var(--primary);">Code Applied!</span>';
+                msgDiv.innerHTML = '<span style="color:var(--primary); font-weight:600;">✓ Code applied! 10% off</span>';
+            } else if (code === '') {
+                discount = 0;
+                msgDiv.innerHTML = '<span style="color:#e67e22;">Enter a code</span>';
             } else {
                 discount = 0;
-                document.getElementById('promoMsg').innerHTML = '<span style="color:#e74c3c;">Invalid Code</span>';
+                msgDiv.innerHTML = '<span style="color:#e74c3c;">✗ Invalid code</span>';
             }
             updateTotals();
         }
+
+        // ========== CHECKOUT BTN BEHAVIOR (just link) ==========
+        // buy.html exists – we keep it simple
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadCart);
     </script>
 </body>
 </html>
