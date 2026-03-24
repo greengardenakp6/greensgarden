@@ -42,12 +42,15 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
         .nav-left {
             display: flex;
             align-items: center;
             gap: 24px;
+            flex-wrap: wrap;
         }
 
         .back-btn {
@@ -63,6 +66,7 @@
             align-items: center;
             gap: 10px;
             transition: all 0.3s;
+            text-decoration: none;
         }
 
         .back-btn:hover {
@@ -98,6 +102,27 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+
+        .cart-link {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .cart-link:hover {
+            background: #fb641b;
+            transform: scale(1.02);
         }
 
         .orders-main {
@@ -225,6 +250,11 @@
             color: #f57c00;
         }
 
+        .status-out_for_delivery {
+            background: #fff8e7;
+            color: #ff9800;
+        }
+
         .status-delivered {
             background: #e8f5e9;
             color: #2e7d32;
@@ -241,6 +271,7 @@
             justify-content: space-between;
             position: relative;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
 
         .timeline-steps::before {
@@ -259,6 +290,7 @@
             text-align: center;
             position: relative;
             z-index: 1;
+            min-width: 80px;
         }
 
         .step-icon {
@@ -296,6 +328,12 @@
             font-size: 12px;
             font-weight: 600;
             color: #878787;
+        }
+
+        .step-date {
+            font-size: 10px;
+            color: #bdbdbd;
+            margin-top: 4px;
         }
 
         .step.completed .step-label,
@@ -344,6 +382,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .item-img img {
@@ -353,7 +392,7 @@
         }
 
         .item-img i {
-            font-size: 28px;
+            font-size: 32px;
             color: #2e7d32;
         }
 
@@ -372,6 +411,7 @@
             gap: 20px;
             font-size: 13px;
             color: #878787;
+            flex-wrap: wrap;
         }
 
         .item-price {
@@ -404,8 +444,7 @@
         .order-footer {
             padding: 16px 24px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: flex-end;
             flex-wrap: wrap;
             gap: 16px;
         }
@@ -450,7 +489,7 @@
         .modal-content {
             background: white;
             border-radius: 24px;
-            max-width: 500px;
+            max-width: 550px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
@@ -462,13 +501,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
         }
 
         .close-modal {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
+            color: #666;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #000;
         }
 
         .invoice-content {
@@ -478,6 +527,9 @@
         .modal-footer {
             padding: 20px;
             border-top: 1px solid #f0f2f5;
+            position: sticky;
+            bottom: 0;
+            background: white;
         }
 
         .btn-download {
@@ -493,6 +545,12 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40,116,240,0.4);
         }
 
         .toast {
@@ -506,10 +564,55 @@
             color: white;
             z-index: 2000;
             transition: all 0.3s;
+            font-size: 14px;
+            white-space: nowrap;
         }
 
         .toast.show {
             transform: translateX(-50%) translateY(0);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px;
+            background: white;
+            border-radius: 28px;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #878787;
+            margin-bottom: 20px;
+        }
+
+        .shop-btn {
+            background: linear-gradient(135deg, #2874f0, #1a5bbf);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .shop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(40,116,240,0.3);
         }
 
         @media (max-width: 768px) {
@@ -536,6 +639,14 @@
                 flex-direction: column;
                 text-align: center;
             }
+            .toast {
+                white-space: normal;
+                text-align: center;
+                max-width: 90%;
+            }
+            .navbar-flipkart {
+                padding: 12px 20px;
+            }
         }
     </style>
 </head>
@@ -543,10 +654,10 @@
 
 <nav class="navbar-flipkart">
     <div class="nav-left">
-        <button class="back-btn" onclick="window.location.href='products.html'">
+        <a href="#" class="back-btn" id="backToShopBtn">
             <i class="fas fa-arrow-left"></i>
             <span>Back to Shop</span>
-        </button>
+        </a>
         <div class="brand">
             <div class="brand-icon">
                 <i class="fas fa-leaf"></i>
@@ -554,6 +665,10 @@
             <div class="brand-text">GREEN GARDEN</div>
         </div>
     </div>
+    <a href="#" class="cart-link" id="viewCartBtn">
+        <i class="fas fa-shopping-cart"></i>
+        <span>View Cart</span>
+    </a>
 </nav>
 
 <div class="orders-main">
@@ -584,57 +699,147 @@
 <div id="toast" class="toast"></div>
 
 <script>
+    // Sample orders data - standalone, no external dependencies
     let orders = [];
 
-    function loadOrders() {
-        const savedOrders = localStorage.getItem('green_garden_orders');
-        if (savedOrders) {
-            orders = JSON.parse(savedOrders);
-        }
-        
-        // If no orders, add demo order for preview
-        if (orders.length === 0) {
-            const demoOrder = {
-                orderId: "OD337056723948732200",
-                date: new Date().toISOString(),
+    function generateSampleOrders() {
+        const today = new Date();
+        const getDate = (daysOffset) => {
+            const d = new Date(today);
+            d.setDate(today.getDate() + daysOffset);
+            return d;
+        };
+
+        return [
+            {
+                orderId: "GRN" + Math.floor(Math.random() * 10000000000),
+                date: getDate(-2).toISOString(),
                 status: "processing",
                 items: [
-                    { name: "Kilos Basket", price: 448, quantity: 1, originalPrice: 515, icon: "fa-basket-shopping", image: null }
+                    { name: "Organic Tomato Seeds", price: 89, quantity: 2, originalPrice: 110, icon: "fa-seedling", image: null },
+                    { name: "Premium Potting Mix", price: 299, quantity: 1, originalPrice: 399, icon: "fa-droplet", image: null }
                 ],
-                listingPrice: 515,
-                sellingPrice: 448,
-                totalFees: 31,
-                total: 479,
-                paymentMethod: "Cash On Delivery",
+                listingPrice: 598,
+                sellingPrice: 477,
+                totalFees: 42,
+                total: 519,
+                paymentMethod: "Credit Card",
                 deliveryAddress: {
-                    name: "Akash Kumar",
-                    phone: "9994458119",
-                    address: "127/F HOSPITAL ROAD, MELPADI KALLAKURICHI, Tamil Nadu - 606202"
+                    name: "Rahul Sharma",
+                    phone: "9876543210",
+                    address: "42 Green Valley Apartments, Koramangala, Bengaluru - 560034"
                 },
                 tracking: {
-                    orderConfirmed: { date: new Date().toISOString(), time: "10:30 AM", completed: true },
-                    shipped: { date: new Date(Date.now() + 86400000).toISOString(), time: "02:15 PM", completed: false, expected: true },
-                    outForDelivery: { date: new Date(Date.now() + 172800000).toISOString(), time: "09:00 AM", completed: false, expected: true },
-                    delivered: { date: new Date(Date.now() + 259200000).toISOString(), time: "08:00 PM", completed: false, expected: true }
+                    orderConfirmed: { date: getDate(-2).toISOString(), time: "11:30 AM", completed: true },
+                    shipped: { date: getDate(-1).toISOString(), time: "03:45 PM", completed: true },
+                    outForDelivery: { date: getDate(0).toISOString(), time: "09:00 AM", completed: false, expected: true },
+                    delivered: { date: getDate(2).toISOString(), time: "08:00 PM", completed: false, expected: true }
                 }
-            };
-            orders.push(demoOrder);
-            localStorage.setItem('green_garden_orders', JSON.stringify(orders));
+            },
+            {
+                orderId: "GRN" + Math.floor(Math.random() * 10000000000),
+                date: getDate(-5).toISOString(),
+                status: "shipped",
+                items: [
+                    { name: "Rose Garden Starter Kit", price: 649, quantity: 1, originalPrice: 899, icon: "fa-rose", image: null },
+                    { name: "Neem Oil Spray", price: 179, quantity: 1, originalPrice: 250, icon: "fa-spray-can", image: null }
+                ],
+                listingPrice: 1149,
+                sellingPrice: 828,
+                totalFees: 45,
+                total: 873,
+                paymentMethod: "UPI",
+                deliveryAddress: {
+                    name: "Priya Patel",
+                    phone: "9988776655",
+                    address: "15 Lotus Colony, Andheri East, Mumbai - 400069"
+                },
+                tracking: {
+                    orderConfirmed: { date: getDate(-5).toISOString(), time: "09:15 AM", completed: true },
+                    shipped: { date: getDate(-3).toISOString(), time: "02:30 PM", completed: true },
+                    outForDelivery: { date: getDate(-1).toISOString(), time: "08:45 AM", completed: false, expected: true },
+                    delivered: { date: getDate(1).toISOString(), time: "06:00 PM", completed: false, expected: true }
+                }
+            },
+            {
+                orderId: "GRN" + Math.floor(Math.random() * 10000000000),
+                date: getDate(-12).toISOString(),
+                status: "delivered",
+                items: [
+                    { name: "Bonsai Starter Kit", price: 1299, quantity: 1, originalPrice: 1599, icon: "fa-tree", image: null },
+                    { name: "Ceramic Planter (Small)", price: 349, quantity: 2, originalPrice: 499, icon: "fa-flask", image: null }
+                ],
+                listingPrice: 2597,
+                sellingPrice: 1997,
+                totalFees: 85,
+                total: 2082,
+                paymentMethod: "Cash On Delivery",
+                deliveryAddress: {
+                    name: "Amit Kumar",
+                    phone: "8765432109",
+                    address: "89 Green Park Extension, New Delhi - 110016"
+                },
+                tracking: {
+                    orderConfirmed: { date: getDate(-12).toISOString(), time: "10:00 AM", completed: true },
+                    shipped: { date: getDate(-10).toISOString(), time: "04:20 PM", completed: true },
+                    outForDelivery: { date: getDate(-8).toISOString(), time: "07:30 AM", completed: true },
+                    delivered: { date: getDate(-7).toISOString(), time: "05:15 PM", completed: true }
+                }
+            },
+            {
+                orderId: "GRN" + Math.floor(Math.random() * 10000000000),
+                date: getDate(-20).toISOString(),
+                status: "delivered",
+                items: [
+                    { name: "Organic Vegetable Seeds Pack", price: 399, quantity: 1, originalPrice: 550, icon: "fa-carrot", image: null },
+                    { name: "Garden Tool Set (5 Pcs)", price: 899, quantity: 1, originalPrice: 1299, icon: "fa-screwdriver-wrench", image: null }
+                ],
+                listingPrice: 1849,
+                sellingPrice: 1298,
+                totalFees: 68,
+                total: 1366,
+                paymentMethod: "Credit Card",
+                deliveryAddress: {
+                    name: "Meera Iyer",
+                    phone: "7654321098",
+                    address: "202 Nilgiri Apartments, T Nagar, Chennai - 600017"
+                },
+                tracking: {
+                    orderConfirmed: { date: getDate(-20).toISOString(), time: "01:45 PM", completed: true },
+                    shipped: { date: getDate(-18).toISOString(), time: "11:20 AM", completed: true },
+                    outForDelivery: { date: getDate(-16).toISOString(), time: "09:00 AM", completed: true },
+                    delivered: { date: getDate(-15).toISOString(), time: "07:45 PM", completed: true }
+                }
+            }
+        ];
+    }
+
+    // Initialize orders
+    function initOrders() {
+        const savedOrders = localStorage.getItem('green_garden_orders_v2');
+        if (savedOrders) {
+            orders = JSON.parse(savedOrders);
+        } else {
+            orders = generateSampleOrders();
+            localStorage.setItem('green_garden_orders_v2', JSON.stringify(orders));
         }
-        
-        renderOrders('active');
     }
 
     function formatDate(dateString) {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function formatTime(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     }
 
     function getStatusClass(status) {
         const classes = {
             processing: 'status-processing',
             shipped: 'status-shipped',
-            out_for_delivery: 'status-shipped',
+            out_for_delivery: 'status-out_for_delivery',
             delivered: 'status-delivered'
         };
         return classes[status] || 'status-processing';
@@ -660,14 +865,17 @@
         return icons[status] || 'fa-clock';
     }
 
-    function getIconForProduct(name) {
-        const nameLower = name.toLowerCase();
-        if (nameLower.includes('rose')) return 'fa-rose';
-        if (nameLower.includes('basket')) return 'fa-basket-shopping';
-        if (nameLower.includes('seed')) return 'fa-leaf';
-        if (nameLower.includes('pot')) return 'fa-flask';
-        if (nameLower.includes('plant')) return 'fa-tree';
-        if (nameLower.includes('mix')) return 'fa-droplet';
+    function getIconForProduct(item) {
+        if (item.icon) return item.icon;
+        const name = item.name.toLowerCase();
+        if (name.includes('rose')) return 'fa-rose';
+        if (name.includes('tomato')) return 'fa-apple-whole';
+        if (name.includes('seed')) return 'fa-leaf';
+        if (name.includes('pot')) return 'fa-flask';
+        if (name.includes('plant')) return 'fa-tree';
+        if (name.includes('mix')) return 'fa-droplet';
+        if (name.includes('bonsai')) return 'fa-tree';
+        if (name.includes('tool')) return 'fa-screwdriver-wrench';
         return 'fa-seedling';
     }
 
@@ -683,21 +891,31 @@
         
         if (filteredOrders.length === 0) {
             container.innerHTML = `
-                <div style="text-align: center; padding: 80px; background: white; border-radius: 28px;">
-                    <i class="fas fa-seedling" style="font-size: 64px; color: #cbd5e1; margin-bottom: 20px;"></i>
+                <div class="empty-state">
+                    <i class="fas fa-seedling"></i>
                     <h3>No orders found</h3>
-                    <p style="color: #878787; margin-top: 8px;">${tab === 'active' ? 'You have no active orders.' : 'Your order history is empty.'}</p>
-                    <button class="btn-invoice" style="margin-top: 20px;" onclick="window.location.href='products.html'">Start Shopping</button>
+                    <p>${tab === 'active' ? 'You have no active orders.' : 'Your order history is empty.'}</p>
+                    <a href="#" class="shop-btn" id="emptyShopBtn">
+                        <i class="fas fa-store"></i> Start Shopping
+                    </a>
                 </div>
             `;
+            const emptyBtn = document.getElementById('emptyShopBtn');
+            if (emptyBtn) {
+                emptyBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showToast('Redirecting to shop...');
+                    setTimeout(() => window.location.href = '#', 500);
+                });
+            }
             return;
         }
         
         container.innerHTML = filteredOrders.map(order => {
             const steps = [
-                { key: 'orderConfirmed', label: 'Order Confirmed', icon: 'fa-check-circle' },
+                { key: 'orderConfirmed', label: 'Confirmed', icon: 'fa-check-circle' },
                 { key: 'shipped', label: 'Shipped', icon: 'fa-truck' },
-                { key: 'outForDelivery', label: 'Out For Delivery', icon: 'fa-truck-fast' },
+                { key: 'outForDelivery', label: 'Out for Delivery', icon: 'fa-truck-fast' },
                 { key: 'delivered', label: 'Delivered', icon: 'fa-check-double' }
             ];
             
@@ -708,11 +926,11 @@
                     <div class="order-header">
                         <div class="order-id">
                             <i class="fas fa-receipt"></i>
-                            <span>Order #${order.orderId.slice(-12)}</span>
+                            <span>Order #${order.orderId.slice(-10)}</span>
                         </div>
                         <div class="order-date">
                             <i class="far fa-calendar-alt"></i>
-                            ${new Date(order.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            ${formatDate(order.date)}
                         </div>
                         <div class="status-badge ${getStatusClass(order.status)}">
                             <i class="fas ${getStatusIcon(order.status)}"></i>
@@ -723,15 +941,16 @@
                     <div class="delivery-timeline">
                         <div class="timeline-steps">
                             ${steps.map((step, idx) => {
-                                const isCompleted = order.tracking[step.key]?.completed;
-                                const isActive = !isCompleted && !isDelivered && idx === 1;
+                                const stepData = order.tracking[step.key];
+                                const isCompleted = stepData?.completed;
+                                const isActive = !isCompleted && !isDelivered && idx === 1 && order.status === 'shipped';
                                 return `
                                     <div class="step ${isCompleted ? 'completed' : (isActive ? 'active' : '')}">
                                         <div class="step-icon">
                                             <i class="fas ${step.icon}"></i>
                                         </div>
                                         <div class="step-label">${step.label}</div>
-                                        ${order.tracking[step.key]?.date ? `<div class="step-date">${formatDate(order.tracking[step.key].date)}</div>` : ''}
+                                        ${stepData?.date ? `<div class="step-date">${formatDate(stepData.date)}</div>` : ''}
                                     </div>
                                 `;
                             }).join('')}
@@ -742,7 +961,7 @@
                                 <i class="fas ${order.status === 'delivered' ? 'fa-check-circle' : 'fa-truck'}"></i>
                                 <span>${order.status === 'delivered' ? 'Delivered successfully!' : 'Your order is on the way!'}</span>
                             </div>
-                            ${!isDelivered ? `<div class="countdown-timer">Expected by ${formatDate(order.tracking.delivered.date)}</div>` : ''}
+                            ${!isDelivered && order.tracking.delivered?.date ? `<div class="countdown-timer">Expected by ${formatDate(order.tracking.delivered.date)}</div>` : ''}
                         </div>
                     </div>
                     
@@ -750,13 +969,10 @@
                         ${order.items.map(item => `
                             <div class="order-item">
                                 <div class="item-img">
-                                    ${item.image ? 
-                                        `<img src="${item.image}" alt="${item.name}" onerror="this.parentElement.innerHTML='<i class=\'fas ${item.icon || getIconForProduct(item.name)}\'></i>'">` : 
-                                        `<i class="fas ${item.icon || getIconForProduct(item.name)}"></i>`
-                                    }
+                                    <i class="fas ${getIconForProduct(item)}"></i>
                                 </div>
                                 <div class="item-details">
-                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-name">${escapeHtml(item.name)}</div>
                                     <div class="item-meta">
                                         <span>Qty: ${item.quantity}</span>
                                         <span>₹${item.price} each</span>
@@ -768,15 +984,15 @@
                     </div>
                     
                     <div class="price-details">
-                        <div class="price-row"><span>Listing price</span><span>₹${order.listingPrice}</span></div>
-                        <div class="price-row"><span>Selling price</span><span>₹${order.sellingPrice}</span></div>
-                        <div class="price-row"><span>Total fees</span><span>₹${order.totalFees}</span></div>
-                        <div class="price-row total"><span>Total amount</span><span>₹${order.total}</span></div>
+                        <div class="price-row"><span>Listing price</span><span>₹${order.listingPrice.toLocaleString('en-IN')}</span></div>
+                        <div class="price-row"><span>Selling price</span><span>₹${order.sellingPrice.toLocaleString('en-IN')}</span></div>
+                        <div class="price-row"><span>Total fees</span><span>₹${order.totalFees.toLocaleString('en-IN')}</span></div>
+                        <div class="price-row total"><span>Total amount</span><span>₹${order.total.toLocaleString('en-IN')}</span></div>
                         <div class="price-row"><span>Payment method</span><span>${order.paymentMethod}</span></div>
                     </div>
                     
                     <div class="order-footer">
-                        <button class="btn-invoice" onclick="showInvoiceModal(${JSON.stringify(order).replace(/"/g, '&quot;')})">
+                        <button class="btn-invoice" onclick='showInvoiceModal(${JSON.stringify(order).replace(/'/g, "&#39;")})'>
                             <i class="fas fa-file-invoice"></i> View Invoice
                         </button>
                     </div>
@@ -785,12 +1001,22 @@
         }).join('');
     }
 
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
     function generateInvoiceHTML(order) {
         return `
             <div class="invoice-content">
                 <div style="text-align: center; margin-bottom: 24px;">
-                    <div class="brand-icon" style="margin: 0 auto 12px; width: 50px; height: 50px;">
-                        <i class="fas fa-leaf" style="font-size: 24px;"></i>
+                    <div style="background: linear-gradient(135deg, #2e7d32, #1b5e20); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <i class="fas fa-leaf" style="font-size: 24px; color: white;"></i>
                     </div>
                     <div style="font-size: 20px; font-weight: 800;">GREEN GARDEN</div>
                     <div style="font-size: 12px; color: #878787;">Organic & Natural Products</div>
@@ -799,15 +1025,15 @@
                 
                 <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin: 16px 0;">
                     <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Invoice No:</strong> ${order.orderId}</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Invoice Date:</strong> ${new Date().toLocaleDateString()}</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Order Date:</strong> ${new Date(order.date).toLocaleDateString()}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Invoice Date:</strong> ${formatDate(new Date().toISOString())}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Order Date:</strong> ${formatDate(order.date)}</div>
                     <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Payment Method:</strong> ${order.paymentMethod}</div>
                 </div>
                 
                 <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin: 16px 0;">
                     <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Sold By:</strong> Green Garden Organic Store</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Delivered To:</strong> ${order.deliveryAddress.name}</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Address:</strong> ${order.deliveryAddress.address}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Delivered To:</strong> ${escapeHtml(order.deliveryAddress.name)}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Address:</strong> ${escapeHtml(order.deliveryAddress.address)}</div>
                     <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Phone:</strong> ${order.deliveryAddress.phone}</div>
                 </div>
                 
@@ -815,18 +1041,18 @@
                     <div style="font-weight: 700; margin-bottom: 12px;">Item Details</div>
                     ${order.items.map(item => `
                         <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f2f5;">
-                            <div>${item.name} x ${item.quantity}</div>
+                            <div>${escapeHtml(item.name)} x ${item.quantity}</div>
                             <div>₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
                         </div>
                     `).join('')}
                 </div>
                 
                 <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin-top: 16px;">
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Listing Price:</span><span>₹${order.listingPrice}</span></div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Selling Price:</span><span>₹${order.sellingPrice}</span></div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Total Fees:</span><span>₹${order.totalFees}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Listing Price:</span><span>₹${order.listingPrice.toLocaleString('en-IN')}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Selling Price:</span><span>₹${order.sellingPrice.toLocaleString('en-IN')}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Total Fees:</span><span>₹${order.totalFees.toLocaleString('en-IN')}</span></div>
                     <div style="display: flex; justify-content: space-between; padding: 12px 0 6px; border-top: 1px solid #ddd; margin-top: 8px; font-weight: 800; font-size: 16px;">
-                        <span>Total Amount:</span><span>₹${order.total}</span>
+                        <span>Total Amount:</span><span>₹${order.total.toLocaleString('en-IN')}</span>
                     </div>
                 </div>
                 
@@ -837,19 +1063,32 @@
         `;
     }
 
+    let currentOrderForInvoice = null;
+
     function showInvoiceModal(order) {
+        currentOrderForInvoice = order;
         const modal = document.getElementById('invoiceModal');
         const invoiceContent = document.getElementById('invoiceContent');
         invoiceContent.innerHTML = generateInvoiceHTML(order);
         
-        const downloadBtn = document.createElement('div');
-        downloadBtn.className = 'modal-footer';
-        downloadBtn.innerHTML = `
-            <button class="btn-download" onclick="downloadInvoice(${JSON.stringify(order).replace(/"/g, '&quot;')})">
-                <i class="fas fa-download"></i> Download PDF
-            </button>
-        `;
-        invoiceContent.appendChild(downloadBtn);
+        // Add download button if not already present
+        if (!document.getElementById('downloadBtnContainer')) {
+            const footer = document.createElement('div');
+            footer.id = 'downloadBtnContainer';
+            footer.className = 'modal-footer';
+            footer.innerHTML = `
+                <button class="btn-download" id="downloadInvoiceBtn">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+            `;
+            invoiceContent.appendChild(footer);
+            
+            document.getElementById('downloadInvoiceBtn').addEventListener('click', () => {
+                if (currentOrderForInvoice) {
+                    downloadInvoice(currentOrderForInvoice);
+                }
+            });
+        }
         
         modal.classList.add('active');
     }
@@ -859,6 +1098,7 @@
         element.innerHTML = generateInvoiceHTML(order);
         element.style.padding = '20px';
         element.style.background = 'white';
+        element.style.fontFamily = 'Inter, sans-serif';
         
         html2pdf().set({
             margin: [0.5, 0.5, 0.5, 0.5],
@@ -873,6 +1113,7 @@
 
     function closeInvoiceModal() {
         document.getElementById('invoiceModal').classList.remove('active');
+        currentOrderForInvoice = null;
     }
 
     function showToast(message) {
@@ -881,6 +1122,19 @@
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
+
+    // Navigation handlers
+    document.getElementById('backToShopBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        showToast('Opening shop...');
+        setTimeout(() => window.location.href = '#', 300);
+    });
+
+    document.getElementById('viewCartBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        showToast('Viewing cart...');
+        setTimeout(() => window.location.href = '#', 300);
+    });
 
     // Tab switching
     document.querySelectorAll('.tab-item').forEach(btn => {
@@ -900,7 +1154,8 @@
     };
 
     // Initialize
-    loadOrders();
+    initOrders();
+    renderOrders('active');
 </script>
 </body>
 </html>
