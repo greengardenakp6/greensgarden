@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>My Orders | Green Garden</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <title>My Orders | Green Garden Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -16,8 +16,8 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f1f3f6;
-            color: #212121;
+            background: #f4f6fa;
+            color: #1e293b;
             overflow-x: hidden;
         }
 
@@ -25,17 +25,18 @@
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #e0e0e0;
+            background: #e2e8f0;
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #2874f0;
+            background: #3b82f6;
             border-radius: 10px;
         }
 
-        .navbar-flipkart {
-            background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
-            padding: 14px 40px;
+        /* Premium Navbar */
+        .navbar-premium {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 16px 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -44,20 +45,21 @@
             z-index: 1000;
             flex-wrap: wrap;
             gap: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .nav-left {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 32px;
             flex-wrap: wrap;
         }
 
-        .back-btn {
-            background: rgba(255,255,255,0.12);
-            border: none;
+        .back-btn, .cart-link {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
             padding: 10px 24px;
-            border-radius: 40px;
+            border-radius: 50px;
             font-weight: 600;
             font-size: 14px;
             color: white;
@@ -65,64 +67,52 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             text-decoration: none;
         }
 
-        .back-btn:hover {
-            background: #2874f0;
+        .back-btn:hover, .cart-link:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
             transform: translateX(-4px);
+        }
+
+        .cart-link:hover {
+            background: #f97316;
+            transform: scale(1.02);
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .brand-icon {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
-            border-radius: 12px;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
         }
 
         .brand-icon i {
-            font-size: 20px;
+            font-size: 22px;
             color: white;
         }
 
         .brand-text {
-            font-size: 22px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff, #ffd966);
+            font-size: 24px;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #fff, #fbbf24);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-        }
-
-        .cart-link {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 40px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .cart-link:hover {
-            background: #fb641b;
-            transform: scale(1.02);
+            letter-spacing: -0.5px;
         }
 
         .orders-main {
@@ -131,24 +121,26 @@
             padding: 0 32px;
         }
 
-        .tabs-wrapper {
+        /* Premium Tabs */
+        .tabs-premium {
             background: white;
             border-radius: 20px;
-            padding: 6px;
-            margin-bottom: 28px;
+            padding: 8px;
+            margin-bottom: 32px;
             display: flex;
-            gap: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eef2ff;
         }
 
-        .tab-item {
+        .tab-premium {
             flex: 1;
-            padding: 14px 20px;
+            padding: 14px 24px;
             border: none;
             background: transparent;
             font-weight: 600;
             font-size: 15px;
-            color: #878787;
+            color: #64748b;
             cursor: pointer;
             border-radius: 16px;
             transition: all 0.3s ease;
@@ -158,194 +150,171 @@
             gap: 10px;
         }
 
-        .tab-item.active {
-            background: linear-gradient(135deg, #2874f0, #1a5bbf);
+        .tab-premium.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
-            box-shadow: 0 4px 12px rgba(40,116,240,0.3);
+            box-shadow: 0 8px 20px rgba(59,130,246,0.25);
         }
 
         .orders-grid {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 28px;
         }
 
-        .order-card {
+        /* Premium Order Card */
+        .order-card-premium {
             background: white;
-            border-radius: 20px;
+            border-radius: 28px;
             overflow: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            animation: fadeSlideUp 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f1f5f9;
         }
 
-        @keyframes fadeSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .order-card-premium:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.1);
         }
 
-        .order-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.12);
-        }
-
-        .order-header {
-            padding: 18px 24px;
-            background: #fafbfc;
-            border-bottom: 1px solid #f0f2f5;
+        .order-header-premium {
+            padding: 22px 28px;
+            background: linear-gradient(135deg, #fafcff, #ffffff);
+            border-bottom: 2px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .order-id-premium {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-        .order-id {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .order-id-premium i {
+            font-size: 22px;
+            color: #3b82f6;
         }
 
-        .order-id i {
-            font-size: 18px;
-            color: #2874f0;
+        .order-id-premium span {
+            font-weight: 800;
+            font-size: 16px;
+            font-family: monospace;
+            letter-spacing: 0.5px;
         }
 
-        .order-id span {
-            font-weight: 700;
-            font-size: 15px;
-        }
-
-        .order-date {
+        .order-date-premium {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 13px;
-            color: #878787;
-        }
-
-        .status-badge {
+            color: #64748b;
+            background: #f8fafc;
             padding: 6px 14px;
             border-radius: 40px;
+        }
+
+        .status-badge-premium {
+            padding: 8px 18px;
+            border-radius: 50px;
             font-size: 12px;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            backdrop-filter: blur(4px);
         }
 
-        .status-processing {
-            background: #e3f2fd;
-            color: #1976d2;
+        .status-processing { background: #dbeafe; color: #1e40af; }
+        .status-shipped { background: #fed7aa; color: #9a3412; }
+        .status-out_for_delivery { background: #fef3c7; color: #b45309; }
+        .status-delivered { background: #d1fae5; color: #065f46; }
+
+        /* Premium Timeline */
+        .delivery-timeline-premium {
+            padding: 28px 28px;
+            background: linear-gradient(135deg, #fefce8, #ffffff);
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        .status-shipped {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        .status-out_for_delivery {
-            background: #fff8e7;
-            color: #ff9800;
-        }
-
-        .status-delivered {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .delivery-timeline {
-            padding: 20px 24px;
-            background: linear-gradient(135deg, #fff9f0, #ffffff);
-            border-bottom: 1px solid #f0f2f5;
-        }
-
-        .timeline-steps {
+        .timeline-premium {
             display: flex;
             justify-content: space-between;
             position: relative;
             margin: 20px 0;
-            flex-wrap: wrap;
         }
 
-        .timeline-steps::before {
+        .timeline-premium::before {
             content: '';
             position: absolute;
-            top: 20px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #e0e0e0;
+            top: 24px;
+            left: 40px;
+            right: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #e2e8f0, #cbd5e1, #e2e8f0);
             z-index: 0;
+            border-radius: 3px;
         }
 
-        .step {
+        .timeline-step {
             flex: 1;
             text-align: center;
             position: relative;
             z-index: 1;
-            min-width: 80px;
         }
 
-        .step-icon {
-            width: 40px;
-            height: 40px;
+        .timeline-icon {
+            width: 48px;
+            height: 48px;
             background: white;
-            border: 2px solid #e0e0e0;
+            border: 3px solid #e2e8f0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 10px;
+            margin: 0 auto 12px;
             transition: all 0.3s;
+            font-size: 20px;
         }
 
-        .step.completed .step-icon {
-            background: #2e7d32;
-            border-color: #2e7d32;
+        .timeline-step.completed .timeline-icon {
+            background: #10b981;
+            border-color: #10b981;
             color: white;
+            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
         }
 
-        .step.active .step-icon {
-            background: #2874f0;
-            border-color: #2874f0;
+        .timeline-step.active .timeline-icon {
+            background: #3b82f6;
+            border-color: #3b82f6;
             color: white;
-            animation: pulse 1s infinite;
+            animation: pulseGlow 1.5s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(59,130,246,0.2); }
         }
 
-        .step-label {
+        .timeline-label {
             font-size: 12px;
-            font-weight: 600;
-            color: #878787;
+            font-weight: 700;
+            color: #64748b;
         }
 
-        .step-date {
-            font-size: 10px;
-            color: #bdbdbd;
-            margin-top: 4px;
+        .timeline-step.completed .timeline-label,
+        .timeline-step.active .timeline-label {
+            color: #1e293b;
         }
 
-        .step.completed .step-label,
-        .step.active .step-label {
-            color: #212121;
-        }
-
-        .delivery-countdown {
-            background: #e8f5e9;
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-top: 16px;
+        .delivery-banner {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            padding: 14px 20px;
+            border-radius: 20px;
+            margin-top: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -353,151 +322,146 @@
             gap: 12px;
         }
 
-        .countdown-text {
+        /* Order Items */
+        .order-items-premium {
+            padding: 24px 28px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .order-item-premium {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            color: #2e7d32;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f8fafc;
         }
 
-        .order-items {
-            padding: 20px 24px;
-            border-bottom: 1px solid #f0f2f5;
+        .order-item-premium:last-child {
+            border-bottom: none;
         }
 
-        .order-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 12px 0;
-        }
-
-        .item-img {
-            width: 70px;
-            height: 70px;
-            background: #f8f9fa;
-            border-radius: 14px;
+        .item-img-premium {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f1f5f9, #fef9e3);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
             flex-shrink: 0;
         }
 
-        .item-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .item-img-premium i {
+            font-size: 36px;
+            color: #10b981;
         }
 
-        .item-img i {
-            font-size: 32px;
-            color: #2e7d32;
-        }
-
-        .item-details {
+        .item-details-premium {
             flex: 1;
         }
 
-        .item-name {
-            font-weight: 600;
-            font-size: 15px;
+        .item-name-premium {
+            font-weight: 700;
+            font-size: 16px;
             margin-bottom: 6px;
+            color: #0f172a;
         }
 
-        .item-meta {
+        .item-meta-premium {
             display: flex;
             gap: 20px;
             font-size: 13px;
-            color: #878787;
-            flex-wrap: wrap;
+            color: #64748b;
         }
 
-        .item-price {
-            font-weight: 700;
-            font-size: 16px;
-            color: #2874f0;
+        .item-price-premium {
+            font-weight: 800;
+            font-size: 18px;
+            color: #3b82f6;
         }
 
-        .price-details {
-            padding: 20px 24px;
-            background: #fafbfc;
-            border-bottom: 1px solid #f0f2f5;
+        /* Price Details */
+        .price-details-premium {
+            padding: 20px 28px;
+            background: #fafcff;
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        .price-row {
+        .price-row-premium {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 10px 0;
             font-size: 14px;
         }
 
-        .price-row.total {
-            border-top: 2px dashed #e0e0e0;
-            margin-top: 8px;
-            padding-top: 12px;
+        .price-row-premium.total-premium {
+            border-top: 2px solid #e2e8f0;
+            margin-top: 12px;
+            padding-top: 16px;
             font-weight: 800;
-            font-size: 18px;
+            font-size: 20px;
+            color: #0f172a;
         }
 
-        .order-footer {
-            padding: 16px 24px;
+        .order-footer-premium {
+            padding: 20px 28px;
             display: flex;
             justify-content: flex-end;
-            flex-wrap: wrap;
-            gap: 16px;
         }
 
-        .btn-invoice {
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+        .btn-invoice-premium {
+            background: linear-gradient(135deg, #10b981, #059669);
             border: none;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 13px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
             color: white;
             cursor: pointer;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
         }
 
-        .btn-invoice:hover {
+        .btn-invoice-premium:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+            box-shadow: 0 8px 20px rgba(16,185,129,0.4);
         }
 
-        .modal {
+        /* Premium Modal */
+        .modal-premium {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
         }
 
-        .modal.active {
+        .modal-premium.active {
             display: flex;
         }
 
-        .modal-content {
+        .modal-content-premium {
             background: white;
-            border-radius: 24px;
-            max-width: 550px;
+            border-radius: 32px;
+            max-width: 650px;
             width: 90%;
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
         }
 
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid #f0f2f5;
+        .modal-header-premium {
+            padding: 24px 28px;
+            border-bottom: 2px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -507,157 +471,66 @@
             z-index: 10;
         }
 
-        .close-modal {
-            background: none;
+        .close-modal-premium {
+            background: #f1f5f9;
             border: none;
-            font-size: 28px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 20px;
             cursor: pointer;
-            color: #666;
             transition: 0.2s;
         }
 
-        .close-modal:hover {
-            color: #000;
+        .close-modal-premium:hover {
+            background: #e2e8f0;
         }
 
-        .invoice-content {
-            padding: 24px;
-        }
-
-        .modal-footer {
-            padding: 20px;
-            border-top: 1px solid #f0f2f5;
-            position: sticky;
-            bottom: 0;
-            background: white;
-        }
-
-        .btn-download {
-            width: 100%;
-            background: linear-gradient(135deg, #2874f0, #1a5bbf);
-            border: none;
-            padding: 12px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(40,116,240,0.4);
-        }
-
-        .toast {
+        .toast-premium {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(33,33,33,0.95);
-            padding: 12px 24px;
-            border-radius: 40px;
+            background: #1e293b;
+            padding: 14px 28px;
+            border-radius: 60px;
             color: white;
             z-index: 2000;
             transition: all 0.3s;
-            font-size: 14px;
-            white-space: nowrap;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
-        .toast.show {
+        .toast-premium.show {
             transform: translateX(-50%) translateY(0);
         }
 
-        .empty-state {
+        .empty-state-premium {
             text-align: center;
             padding: 80px;
             background: white;
-            border-radius: 28px;
-        }
-
-        .empty-state i {
-            font-size: 64px;
-            color: #cbd5e1;
-            margin-bottom: 20px;
-        }
-
-        .empty-state h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-
-        .empty-state p {
-            color: #878787;
-            margin-bottom: 20px;
-        }
-
-        .shop-btn {
-            background: linear-gradient(135deg, #2874f0, #1a5bbf);
-            border: none;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .shop-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(40,116,240,0.3);
+            border-radius: 32px;
         }
 
         @media (max-width: 768px) {
-            .orders-main {
-                padding: 0 16px;
-            }
-            .timeline-steps {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .timeline-steps::before {
-                display: none;
-            }
-            .step {
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                text-align: left;
-            }
-            .step-icon {
-                margin: 0;
-            }
-            .order-item {
-                flex-direction: column;
-                text-align: center;
-            }
-            .toast {
-                white-space: normal;
-                text-align: center;
-                max-width: 90%;
-            }
-            .navbar-flipkart {
-                padding: 12px 20px;
-            }
+            .navbar-premium { padding: 12px 20px; }
+            .orders-main { padding: 0 16px; }
+            .timeline-premium { flex-direction: column; gap: 20px; }
+            .timeline-premium::before { display: none; }
+            .timeline-step { display: flex; align-items: center; gap: 16px; text-align: left; }
+            .timeline-icon { margin: 0; }
+            .order-item-premium { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar-flipkart">
+<nav class="navbar-premium">
     <div class="nav-left">
-        <a href="#" class="back-btn" id="backToShopBtn">
+        <button class="back-btn" id="backToShopBtn">
             <i class="fas fa-arrow-left"></i>
             <span>Back to Shop</span>
-        </a>
+        </button>
         <div class="brand">
             <div class="brand-icon">
                 <i class="fas fa-leaf"></i>
@@ -665,20 +538,20 @@
             <div class="brand-text">GREEN GARDEN</div>
         </div>
     </div>
-    <a href="#" class="cart-link" id="viewCartBtn">
-        <i class="fas fa-shopping-cart"></i>
-        <span>View Cart</span>
-    </a>
+    <button class="cart-link" id="viewCartBtn">
+        <i class="fas fa-shopping-bag"></i>
+        <span>My Cart</span>
+    </button>
 </nav>
 
 <div class="orders-main">
-    <div class="tabs-wrapper">
-        <button class="tab-item active" data-tab="active">
-            <i class="fas fa-box"></i>
+    <div class="tabs-premium">
+        <button class="tab-premium active" data-tab="active">
+            <i class="fas fa-clock"></i>
             <span>Active Orders</span>
         </button>
-        <button class="tab-item" data-tab="history">
-            <i class="fas fa-history"></i>
+        <button class="tab-premium" data-tab="history">
+            <i class="fas fa-check-circle"></i>
             <span>Order History</span>
         </button>
     </div>
@@ -686,234 +559,187 @@
     <div id="ordersContainer" class="orders-grid"></div>
 </div>
 
-<div id="invoiceModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3><i class="fas fa-file-invoice"></i> Tax Invoice</h3>
-            <button class="close-modal" onclick="closeInvoiceModal()">&times;</button>
+<div id="invoiceModal" class="modal-premium">
+    <div class="modal-content-premium">
+        <div class="modal-header-premium">
+            <h3 style="font-size: 1.4rem; font-weight: 700;"><i class="fas fa-file-invoice-dollar"></i> Premium Invoice</h3>
+            <button class="close-modal-premium" onclick="closeInvoiceModal()">&times;</button>
         </div>
-        <div id="invoiceContent"></div>
+        <div id="invoiceContent" style="padding: 0;"></div>
     </div>
 </div>
 
-<div id="toast" class="toast"></div>
+<div id="toast" class="toast-premium"></div>
 
 <script>
-    // Sample orders data - standalone, no external dependencies
+    // Premium Order Data with complete details
     let orders = [];
 
-    function generateSampleOrders() {
+    function generatePremiumOrders() {
         const today = new Date();
-        const getDate = (daysOffset) => {
+        const getDate = (days) => {
             const d = new Date(today);
-            d.setDate(today.getDate() + daysOffset);
+            d.setDate(today.getDate() + days);
             return d;
         };
 
         return [
             {
-                orderId: "GRN" + Math.floor(Math.random() * 10000000000),
+                orderId: "GRN-PR-874521",
                 date: getDate(-2).toISOString(),
                 status: "processing",
                 items: [
-                    { name: "Organic Tomato Seeds", price: 89, quantity: 2, originalPrice: 110, icon: "fa-seedling", image: null },
-                    { name: "Premium Potting Mix", price: 299, quantity: 1, originalPrice: 399, icon: "fa-droplet", image: null }
+                    { name: "Premium Organic Tomato Seeds", price: 89, quantity: 3, icon: "fa-seedling" },
+                    { name: "Aroid Potting Mix (5kg)", price: 449, quantity: 1, icon: "fa-droplet" },
+                    { name: "Ceramic Self-Watering Pot", price: 599, quantity: 1, icon: "fa-flask" }
                 ],
-                listingPrice: 598,
-                sellingPrice: 477,
-                totalFees: 42,
-                total: 519,
-                paymentMethod: "Credit Card",
+                listingPrice: 1375,
+                sellingPrice: 1137,
+                totalFees: 85,
+                total: 1222,
+                paymentMethod: "Credit Card •••• 4821",
                 deliveryAddress: {
-                    name: "Rahul Sharma",
-                    phone: "9876543210",
-                    address: "42 Green Valley Apartments, Koramangala, Bengaluru - 560034"
+                    name: "Vikram Mehta",
+                    phone: "+91 98765 43210",
+                    address: "A-42, Greenfield Apartments, Sector 62, Noida, Uttar Pradesh - 201301"
                 },
                 tracking: {
-                    orderConfirmed: { date: getDate(-2).toISOString(), time: "11:30 AM", completed: true },
-                    shipped: { date: getDate(-1).toISOString(), time: "03:45 PM", completed: true },
-                    outForDelivery: { date: getDate(0).toISOString(), time: "09:00 AM", completed: false, expected: true },
-                    delivered: { date: getDate(2).toISOString(), time: "08:00 PM", completed: false, expected: true }
+                    confirmed: { date: getDate(-2), completed: true },
+                    shipped: { date: getDate(-1), completed: true },
+                    outForDelivery: { date: getDate(0), completed: false },
+                    delivered: { date: getDate(2), completed: false }
                 }
             },
             {
-                orderId: "GRN" + Math.floor(Math.random() * 10000000000),
+                orderId: "GRN-PR-936782",
                 date: getDate(-5).toISOString(),
                 status: "shipped",
                 items: [
-                    { name: "Rose Garden Starter Kit", price: 649, quantity: 1, originalPrice: 899, icon: "fa-rose", image: null },
-                    { name: "Neem Oil Spray", price: 179, quantity: 1, originalPrice: 250, icon: "fa-spray-can", image: null }
+                    { name: "Desert Rose Bonsai Plant", price: 1299, quantity: 1, icon: "fa-tree" },
+                    { name: "Premium Ceramic Pot (Large)", price: 799, quantity: 1, icon: "fa-flask" }
                 ],
-                listingPrice: 1149,
-                sellingPrice: 828,
-                totalFees: 45,
-                total: 873,
-                paymentMethod: "UPI",
+                listingPrice: 2298,
+                sellingPrice: 2098,
+                totalFees: 112,
+                total: 2210,
+                paymentMethod: "UPI ••••@okhdfcbank",
                 deliveryAddress: {
-                    name: "Priya Patel",
-                    phone: "9988776655",
-                    address: "15 Lotus Colony, Andheri East, Mumbai - 400069"
+                    name: "Anjali Sharma",
+                    phone: "+91 87654 32109",
+                    address: "15/2, Rose Villa, Cunningham Road, Bengaluru, Karnataka - 560052"
                 },
                 tracking: {
-                    orderConfirmed: { date: getDate(-5).toISOString(), time: "09:15 AM", completed: true },
-                    shipped: { date: getDate(-3).toISOString(), time: "02:30 PM", completed: true },
-                    outForDelivery: { date: getDate(-1).toISOString(), time: "08:45 AM", completed: false, expected: true },
-                    delivered: { date: getDate(1).toISOString(), time: "06:00 PM", completed: false, expected: true }
+                    confirmed: { date: getDate(-5), completed: true },
+                    shipped: { date: getDate(-3), completed: true },
+                    outForDelivery: { date: getDate(-1), completed: false },
+                    delivered: { date: getDate(1), completed: false }
                 }
             },
             {
-                orderId: "GRN" + Math.floor(Math.random() * 10000000000),
-                date: getDate(-12).toISOString(),
+                orderId: "GRN-PR-245893",
+                date: getDate(-15).toISOString(),
                 status: "delivered",
                 items: [
-                    { name: "Bonsai Starter Kit", price: 1299, quantity: 1, originalPrice: 1599, icon: "fa-tree", image: null },
-                    { name: "Ceramic Planter (Small)", price: 349, quantity: 2, originalPrice: 499, icon: "fa-flask", image: null }
+                    { name: "Lucky Bamboo Plant (3 Stalks)", price: 399, quantity: 2, icon: "fa-leaf" },
+                    { name: "Zen Garden Decorative Set", price: 1299, quantity: 1, icon: "fa-mountain" }
                 ],
-                listingPrice: 2597,
-                sellingPrice: 1997,
-                totalFees: 85,
-                total: 2082,
-                paymentMethod: "Cash On Delivery",
+                listingPrice: 2197,
+                sellingPrice: 2097,
+                totalFees: 98,
+                total: 2195,
+                paymentMethod: "Cash on Delivery",
                 deliveryAddress: {
-                    name: "Amit Kumar",
-                    phone: "8765432109",
-                    address: "89 Green Park Extension, New Delhi - 110016"
+                    name: "Rahul Kapoor",
+                    phone: "+91 99887 76655",
+                    address: "Block C, Sunshine Heights, Andheri East, Mumbai, Maharashtra - 400069"
                 },
                 tracking: {
-                    orderConfirmed: { date: getDate(-12).toISOString(), time: "10:00 AM", completed: true },
-                    shipped: { date: getDate(-10).toISOString(), time: "04:20 PM", completed: true },
-                    outForDelivery: { date: getDate(-8).toISOString(), time: "07:30 AM", completed: true },
-                    delivered: { date: getDate(-7).toISOString(), time: "05:15 PM", completed: true }
+                    confirmed: { date: getDate(-15), completed: true },
+                    shipped: { date: getDate(-13), completed: true },
+                    outForDelivery: { date: getDate(-11), completed: true },
+                    delivered: { date: getDate(-10), completed: true }
                 }
             },
             {
-                orderId: "GRN" + Math.floor(Math.random() * 10000000000),
-                date: getDate(-20).toISOString(),
+                orderId: "GRN-PR-567124",
+                date: getDate(-28).toISOString(),
                 status: "delivered",
                 items: [
-                    { name: "Organic Vegetable Seeds Pack", price: 399, quantity: 1, originalPrice: 550, icon: "fa-carrot", image: null },
-                    { name: "Garden Tool Set (5 Pcs)", price: 899, quantity: 1, originalPrice: 1299, icon: "fa-screwdriver-wrench", image: null }
+                    { name: "Premium Garden Tool Set (8 Pcs)", price: 1899, quantity: 1, icon: "fa-screwdriver-wrench" },
+                    { name: "Organic Neem Cake Fertilizer", price: 349, quantity: 2, icon: "fa-droplet" }
                 ],
-                listingPrice: 1849,
-                sellingPrice: 1298,
-                totalFees: 68,
-                total: 1366,
-                paymentMethod: "Credit Card",
+                listingPrice: 2697,
+                sellingPrice: 2597,
+                totalFees: 145,
+                total: 2742,
+                paymentMethod: "Credit Card •••• 9876",
                 deliveryAddress: {
-                    name: "Meera Iyer",
-                    phone: "7654321098",
-                    address: "202 Nilgiri Apartments, T Nagar, Chennai - 600017"
+                    name: "Priya Nair",
+                    phone: "+91 76543 21098",
+                    address: "34, Lake View Residency, Kaloor, Kochi, Kerala - 682017"
                 },
                 tracking: {
-                    orderConfirmed: { date: getDate(-20).toISOString(), time: "01:45 PM", completed: true },
-                    shipped: { date: getDate(-18).toISOString(), time: "11:20 AM", completed: true },
-                    outForDelivery: { date: getDate(-16).toISOString(), time: "09:00 AM", completed: true },
-                    delivered: { date: getDate(-15).toISOString(), time: "07:45 PM", completed: true }
+                    confirmed: { date: getDate(-28), completed: true },
+                    shipped: { date: getDate(-26), completed: true },
+                    outForDelivery: { date: getDate(-24), completed: true },
+                    delivered: { date: getDate(-23), completed: true }
                 }
             }
         ];
     }
 
-    // Initialize orders
     function initOrders() {
-        const savedOrders = localStorage.getItem('green_garden_orders_v2');
-        if (savedOrders) {
-            orders = JSON.parse(savedOrders);
+        const saved = localStorage.getItem('green_garden_premium_orders');
+        if (saved) {
+            orders = JSON.parse(saved);
         } else {
-            orders = generateSampleOrders();
-            localStorage.setItem('green_garden_orders_v2', JSON.stringify(orders));
+            orders = generatePremiumOrders();
+            localStorage.setItem('green_garden_premium_orders', JSON.stringify(orders));
         }
     }
 
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    function formatDate(dateInput) {
+        if (!dateInput) return 'N/A';
+        const date = new Date(dateInput);
+        return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
-    function formatTime(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    }
-
-    function getStatusClass(status) {
-        const classes = {
-            processing: 'status-processing',
-            shipped: 'status-shipped',
-            out_for_delivery: 'status-out_for_delivery',
-            delivered: 'status-delivered'
+    function getStatusInfo(status) {
+        const map = {
+            processing: { class: 'status-processing', text: 'Processing', icon: 'fa-spinner fa-pulse' },
+            shipped: { class: 'status-shipped', text: 'Shipped', icon: 'fa-truck' },
+            out_for_delivery: { class: 'status-out_for_delivery', text: 'Out for Delivery', icon: 'fa-truck-fast' },
+            delivered: { class: 'status-delivered', text: 'Delivered', icon: 'fa-check-circle' }
         };
-        return classes[status] || 'status-processing';
-    }
-
-    function getStatusText(status) {
-        const texts = {
-            processing: 'Processing',
-            shipped: 'Shipped',
-            out_for_delivery: 'Out for Delivery',
-            delivered: 'Delivered'
-        };
-        return texts[status] || status;
-    }
-
-    function getStatusIcon(status) {
-        const icons = {
-            processing: 'fa-spinner fa-pulse',
-            shipped: 'fa-truck',
-            out_for_delivery: 'fa-truck-fast',
-            delivered: 'fa-check-circle'
-        };
-        return icons[status] || 'fa-clock';
-    }
-
-    function getIconForProduct(item) {
-        if (item.icon) return item.icon;
-        const name = item.name.toLowerCase();
-        if (name.includes('rose')) return 'fa-rose';
-        if (name.includes('tomato')) return 'fa-apple-whole';
-        if (name.includes('seed')) return 'fa-leaf';
-        if (name.includes('pot')) return 'fa-flask';
-        if (name.includes('plant')) return 'fa-tree';
-        if (name.includes('mix')) return 'fa-droplet';
-        if (name.includes('bonsai')) return 'fa-tree';
-        if (name.includes('tool')) return 'fa-screwdriver-wrench';
-        return 'fa-seedling';
+        return map[status] || map.processing;
     }
 
     function renderOrders(tab) {
         const container = document.getElementById('ordersContainer');
+        const filtered = tab === 'active' ? orders.filter(o => o.status !== 'delivered') : orders.filter(o => o.status === 'delivered');
         
-        let filteredOrders = orders;
-        if (tab === 'active') {
-            filteredOrders = orders.filter(o => o.status !== 'delivered');
-        } else {
-            filteredOrders = orders.filter(o => o.status === 'delivered');
-        }
-        
-        if (filteredOrders.length === 0) {
+        if (filtered.length === 0) {
             container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-seedling"></i>
-                    <h3>No orders found</h3>
-                    <p>${tab === 'active' ? 'You have no active orders.' : 'Your order history is empty.'}</p>
-                    <a href="#" class="shop-btn" id="emptyShopBtn">
-                        <i class="fas fa-store"></i> Start Shopping
-                    </a>
+                <div class="empty-state-premium">
+                    <i class="fas fa-seedling" style="font-size: 70px; color: #cbd5e1; margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 24px; margin-bottom: 8px;">No orders found</h3>
+                    <p style="color: #64748b;">${tab === 'active' ? 'Your active orders will appear here' : 'Your order history is empty'}</p>
+                    <button class="btn-invoice-premium" style="margin-top: 24px; display: inline-flex;" id="emptyShopBtn">Start Shopping <i class="fas fa-arrow-right"></i></button>
                 </div>
             `;
             const emptyBtn = document.getElementById('emptyShopBtn');
             if (emptyBtn) {
-                emptyBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showToast('Redirecting to shop...');
-                    setTimeout(() => window.location.href = '#', 500);
+                emptyBtn.addEventListener('click', () => {
+                    window.location.href = 'products.html';
                 });
             }
             return;
         }
-        
-        container.innerHTML = filteredOrders.map(order => {
+
+        container.innerHTML = filtered.map(order => {
+            const statusInfo = getStatusInfo(order.status);
             const steps = [
-                { key: 'orderConfirmed', label: 'Confirmed', icon: 'fa-check-circle' },
+                { key: 'confirmed', label: 'Confirmed', icon: 'fa-check-circle' },
                 { key: 'shipped', label: 'Shipped', icon: 'fa-truck' },
                 { key: 'outForDelivery', label: 'Out for Delivery', icon: 'fa-truck-fast' },
                 { key: 'delivered', label: 'Delivered', icon: 'fa-check-double' }
@@ -922,78 +748,76 @@
             const isDelivered = order.status === 'delivered';
             
             return `
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">
+                <div class="order-card-premium">
+                    <div class="order-header-premium">
+                        <div class="order-id-premium">
                             <i class="fas fa-receipt"></i>
-                            <span>Order #${order.orderId.slice(-10)}</span>
+                            <span>${order.orderId}</span>
                         </div>
-                        <div class="order-date">
+                        <div class="order-date-premium">
                             <i class="far fa-calendar-alt"></i>
                             ${formatDate(order.date)}
                         </div>
-                        <div class="status-badge ${getStatusClass(order.status)}">
-                            <i class="fas ${getStatusIcon(order.status)}"></i>
-                            ${getStatusText(order.status)}
+                        <div class="status-badge-premium ${statusInfo.class}">
+                            <i class="fas ${statusInfo.icon}"></i>
+                            ${statusInfo.text}
                         </div>
                     </div>
                     
-                    <div class="delivery-timeline">
-                        <div class="timeline-steps">
+                    <div class="delivery-timeline-premium">
+                        <div class="timeline-premium">
                             ${steps.map((step, idx) => {
                                 const stepData = order.tracking[step.key];
                                 const isCompleted = stepData?.completed;
                                 const isActive = !isCompleted && !isDelivered && idx === 1 && order.status === 'shipped';
                                 return `
-                                    <div class="step ${isCompleted ? 'completed' : (isActive ? 'active' : '')}">
-                                        <div class="step-icon">
+                                    <div class="timeline-step ${isCompleted ? 'completed' : (isActive ? 'active' : '')}">
+                                        <div class="timeline-icon">
                                             <i class="fas ${step.icon}"></i>
                                         </div>
-                                        <div class="step-label">${step.label}</div>
-                                        ${stepData?.date ? `<div class="step-date">${formatDate(stepData.date)}</div>` : ''}
+                                        <div class="timeline-label">${step.label}</div>
+                                        ${stepData?.date ? `<div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">${formatDate(stepData.date)}</div>` : ''}
                                     </div>
                                 `;
                             }).join('')}
                         </div>
-                        
-                        <div class="delivery-countdown">
-                            <div class="countdown-text">
-                                <i class="fas ${order.status === 'delivered' ? 'fa-check-circle' : 'fa-truck'}"></i>
-                                <span>${order.status === 'delivered' ? 'Delivered successfully!' : 'Your order is on the way!'}</span>
+                        <div class="delivery-banner">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas ${isDelivered ? 'fa-check-circle' : 'fa-truck'}" style="color: #10b981; font-size: 18px;"></i>
+                                <span style="font-weight: 600;">${isDelivered ? 'Delivered on ' + formatDate(order.tracking.delivered.date) : 'Estimated delivery by ' + formatDate(order.tracking.delivered.date)}</span>
                             </div>
-                            ${!isDelivered && order.tracking.delivered?.date ? `<div class="countdown-timer">Expected by ${formatDate(order.tracking.delivered.date)}</div>` : ''}
                         </div>
                     </div>
                     
-                    <div class="order-items">
+                    <div class="order-items-premium">
                         ${order.items.map(item => `
-                            <div class="order-item">
-                                <div class="item-img">
-                                    <i class="fas ${getIconForProduct(item)}"></i>
+                            <div class="order-item-premium">
+                                <div class="item-img-premium">
+                                    <i class="fas ${item.icon}"></i>
                                 </div>
-                                <div class="item-details">
-                                    <div class="item-name">${escapeHtml(item.name)}</div>
-                                    <div class="item-meta">
-                                        <span>Qty: ${item.quantity}</span>
-                                        <span>₹${item.price} each</span>
+                                <div class="item-details-premium">
+                                    <div class="item-name-premium">${escapeHtml(item.name)}</div>
+                                    <div class="item-meta-premium">
+                                        <span>Quantity: ${item.quantity}</span>
+                                        <span>₹${item.price.toLocaleString('en-IN')} each</span>
                                     </div>
                                 </div>
-                                <div class="item-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
+                                <div class="item-price-premium">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
                             </div>
                         `).join('')}
                     </div>
                     
-                    <div class="price-details">
-                        <div class="price-row"><span>Listing price</span><span>₹${order.listingPrice.toLocaleString('en-IN')}</span></div>
-                        <div class="price-row"><span>Selling price</span><span>₹${order.sellingPrice.toLocaleString('en-IN')}</span></div>
-                        <div class="price-row"><span>Total fees</span><span>₹${order.totalFees.toLocaleString('en-IN')}</span></div>
-                        <div class="price-row total"><span>Total amount</span><span>₹${order.total.toLocaleString('en-IN')}</span></div>
-                        <div class="price-row"><span>Payment method</span><span>${order.paymentMethod}</span></div>
+                    <div class="price-details-premium">
+                        <div class="price-row-premium"><span>Listing Price</span><span>₹${order.listingPrice.toLocaleString('en-IN')}</span></div>
+                        <div class="price-row-premium"><span>Selling Price</span><span>₹${order.sellingPrice.toLocaleString('en-IN')}</span></div>
+                        <div class="price-row-premium"><span>Taxes & Fees</span><span>₹${order.totalFees.toLocaleString('en-IN')}</span></div>
+                        <div class="price-row-premium total-premium"><span>Total Amount</span><span>₹${order.total.toLocaleString('en-IN')}</span></div>
+                        <div class="price-row-premium"><span>Payment Method</span><span>${order.paymentMethod}</span></div>
                     </div>
                     
-                    <div class="order-footer">
-                        <button class="btn-invoice" onclick='showInvoiceModal(${JSON.stringify(order).replace(/'/g, "&#39;")})'>
-                            <i class="fas fa-file-invoice"></i> View Invoice
+                    <div class="order-footer-premium">
+                        <button class="btn-invoice-premium" onclick='showInvoiceModal(${JSON.stringify(order).replace(/'/g, "&#39;")})'>
+                            <i class="fas fa-file-pdf"></i> View Invoice
                         </button>
                     </div>
                 </div>
@@ -1003,154 +827,174 @@
 
     function escapeHtml(str) {
         if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    function generateInvoiceHTML(order) {
+    // Premium PDF Invoice Design with FULL DETAILS
+    function generatePremiumInvoiceHTML(order) {
         return `
-            <div class="invoice-content">
-                <div style="text-align: center; margin-bottom: 24px;">
-                    <div style="background: linear-gradient(135deg, #2e7d32, #1b5e20); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-                        <i class="fas fa-leaf" style="font-size: 24px; color: white;"></i>
+            <div style="padding: 32px; background: white; font-family: 'Inter', sans-serif;">
+                <div style="text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 3px solid #10b981;">
+                    <div style="background: linear-gradient(135deg, #10b981, #059669); width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                        <i class="fas fa-leaf" style="font-size: 36px; color: white;"></i>
                     </div>
-                    <div style="font-size: 20px; font-weight: 800;">GREEN GARDEN</div>
-                    <div style="font-size: 12px; color: #878787;">Organic & Natural Products</div>
-                    <div style="font-size: 11px; color: #878787;">GST: 33ABCDE1234F1Z5</div>
+                    <h1 style="font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">GREEN GARDEN</h1>
+                    <p style="color: #64748b; font-size: 13px;">Premium Organic & Sustainable Products</p>
+                    <p style="color: #94a3b8; font-size: 11px; margin-top: 4px;">GST: 33AAECG1234F1Z5 | CIN: U01100MH2022PTC123456</p>
                 </div>
                 
-                <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin: 16px 0;">
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Invoice No:</strong> ${order.orderId}</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Invoice Date:</strong> ${formatDate(new Date().toISOString())}</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Order Date:</strong> ${formatDate(order.date)}</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Payment Method:</strong> ${order.paymentMethod}</div>
-                </div>
-                
-                <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin: 16px 0;">
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Sold By:</strong> Green Garden Organic Store</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Delivered To:</strong> ${escapeHtml(order.deliveryAddress.name)}</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Address:</strong> ${escapeHtml(order.deliveryAddress.address)}</div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Phone:</strong> ${order.deliveryAddress.phone}</div>
-                </div>
-                
-                <div style="margin: 16px 0;">
-                    <div style="font-weight: 700; margin-bottom: 12px;">Item Details</div>
-                    ${order.items.map(item => `
-                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f2f5;">
-                            <div>${escapeHtml(item.name)} x ${item.quantity}</div>
-                            <div>₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin-top: 16px;">
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Listing Price:</span><span>₹${order.listingPrice.toLocaleString('en-IN')}</span></div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Selling Price:</span><span>₹${order.sellingPrice.toLocaleString('en-IN')}</span></div>
-                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Total Fees:</span><span>₹${order.totalFees.toLocaleString('en-IN')}</span></div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0 6px; border-top: 1px solid #ddd; margin-top: 8px; font-weight: 800; font-size: 16px;">
-                        <span>Total Amount:</span><span>₹${order.total.toLocaleString('en-IN')}</span>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px;">
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 20px;">
+                        <h3 style="font-size: 14px; font-weight: 700; color: #10b981; margin-bottom: 12px;"><i class="fas fa-store"></i> SELLER DETAILS</h3>
+                        <p style="font-size: 13px; line-height: 1.6;"><strong>Green Garden Pvt Ltd</strong><br>No. 45, Eco Park Road, Whitefield, Bengaluru - 560066<br>Email: support@greengarden.com | Tel: 1800-123-4567</p>
+                    </div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 20px;">
+                        <h3 style="font-size: 14px; font-weight: 700; color: #10b981; margin-bottom: 12px;"><i class="fas fa-truck"></i> SHIPPING ADDRESS</h3>
+                        <p style="font-size: 13px; line-height: 1.6;"><strong>${escapeHtml(order.deliveryAddress.name)}</strong><br>${escapeHtml(order.deliveryAddress.address)}<br>Phone: ${order.deliveryAddress.phone}</p>
                     </div>
                 </div>
                 
-                <div style="text-align: center; font-size: 10px; color: #878787; margin-top: 20px; padding-top: 16px; border-top: 1px solid #f0f2f5;">
-                    <i class="fas fa-check-circle"></i> This is a computer generated invoice • No signature required
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; padding: 16px; background: linear-gradient(135deg, #fefce8, #fef9e3); border-radius: 20px;">
+                    <div><span style="font-size: 12px; color: #64748b;">INVOICE NO.</span><br><strong style="font-size: 14px;">${order.orderId}</strong></div>
+                    <div><span style="font-size: 12px; color: #64748b;">INVOICE DATE</span><br><strong style="font-size: 14px;">${formatDate(new Date())}</strong></div>
+                    <div><span style="font-size: 12px; color: #64748b;">ORDER DATE</span><br><strong style="font-size: 14px;">${formatDate(order.date)}</strong></div>
+                </div>
+                
+                <div style="margin-bottom: 28px;">
+                    <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;">ORDER SUMMARY</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f1f5f9;">
+                                <th style="padding: 12px; text-align: left; font-size: 13px;">Item Description</th>
+                                <th style="padding: 12px; text-align: center; font-size: 13px;">Quantity</th>
+                                <th style="padding: 12px; text-align: right; font-size: 13px;">Unit Price</th>
+                                <th style="padding: 12px; text-align: right; font-size: 13px;">Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${order.items.map(item => `
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 12px; font-size: 13px;"><i class="fas ${item.icon}" style="margin-right: 8px; color: #10b981;"></i>${escapeHtml(item.name)}</td>
+                                    <td style="padding: 12px; text-align: center; font-size: 13px;">${item.quantity}</td>
+                                    <td style="padding: 12px; text-align: right; font-size: 13px;">₹${item.price.toLocaleString('en-IN')}</td>
+                                    <td style="padding: 12px; text-align: right; font-size: 13px; font-weight: 600;">₹${(item.price * item.quantity).toLocaleString('en-IN')}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="background: #f8fafc; padding: 20px; border-radius: 20px; margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span>Listing Price:</span><span>₹${order.listingPrice.toLocaleString('en-IN')}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; color: #10b981;"><span>Discount & Savings:</span><span>-₹${(order.listingPrice - order.sellingPrice).toLocaleString('en-IN')}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span>Taxes & Handling Fees:</span><span>₹${order.totalFees.toLocaleString('en-IN')}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 12px 0; margin-top: 8px; border-top: 2px solid #e2e8f0; font-weight: 800; font-size: 20px;">
+                        <span>GRAND TOTAL</span>
+                        <span style="color: #10b981;">₹${order.total.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 12px; color: #64748b;">
+                        <i class="fas fa-check-circle" style="color: #10b981;"></i> Payment Method: ${order.paymentMethod}
+                    </div>
+                </div>
+                
+                <div style="text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                    <p>This is a computer-generated invoice and requires no signature. For any queries, contact support@greengarden.com</p>
+                    <p style="margin-top: 6px;">© 2025 Green Garden | Grow with Nature</p>
                 </div>
             </div>
         `;
     }
 
-    let currentOrderForInvoice = null;
+    let currentOrder = null;
 
     function showInvoiceModal(order) {
-        currentOrderForInvoice = order;
+        currentOrder = order;
         const modal = document.getElementById('invoiceModal');
         const invoiceContent = document.getElementById('invoiceContent');
-        invoiceContent.innerHTML = generateInvoiceHTML(order);
         
-        // Add download button if not already present
-        if (!document.getElementById('downloadBtnContainer')) {
-            const footer = document.createElement('div');
-            footer.id = 'downloadBtnContainer';
-            footer.className = 'modal-footer';
-            footer.innerHTML = `
-                <button class="btn-download" id="downloadInvoiceBtn">
-                    <i class="fas fa-download"></i> Download PDF
-                </button>
-            `;
-            invoiceContent.appendChild(footer);
-            
-            document.getElementById('downloadInvoiceBtn').addEventListener('click', () => {
-                if (currentOrderForInvoice) {
-                    downloadInvoice(currentOrderForInvoice);
-                }
-            });
+        invoiceContent.innerHTML = generatePremiumInvoiceHTML(order);
+        
+        // Remove any existing footer and add fresh download button
+        const existingFooter = invoiceContent.querySelector('.modal-footer-custom');
+        if (existingFooter) existingFooter.remove();
+        
+        const footerDiv = document.createElement('div');
+        footerDiv.className = 'modal-footer-custom';
+        footerDiv.style.padding = '20px 28px';
+        footerDiv.style.borderTop = '1px solid #f1f5f9';
+        footerDiv.style.background = 'white';
+        footerDiv.style.position = 'sticky';
+        footerDiv.style.bottom = '0';
+        footerDiv.innerHTML = `
+            <button class="btn-invoice-premium" id="downloadPdfBtn" style="width: 100%; justify-content: center;">
+                <i class="fas fa-download"></i> Download PDF Invoice
+            </button>
+        `;
+        invoiceContent.appendChild(footerDiv);
+        
+        const downloadBtn = document.getElementById('downloadPdfBtn');
+        if (downloadBtn) {
+            downloadBtn.onclick = () => {
+                if (currentOrder) downloadPremiumPDF(currentOrder);
+            };
         }
         
         modal.classList.add('active');
     }
 
-    function downloadInvoice(order) {
+    function downloadPremiumPDF(order) {
         const element = document.createElement('div');
-        element.innerHTML = generateInvoiceHTML(order);
-        element.style.padding = '20px';
+        element.innerHTML = generatePremiumInvoiceHTML(order);
         element.style.background = 'white';
         element.style.fontFamily = 'Inter, sans-serif';
         
-        html2pdf().set({
+        const opt = {
             margin: [0.5, 0.5, 0.5, 0.5],
-            filename: `Invoice_${order.orderId}.pdf`,
+            filename: `Invoice_${order.orderId}_GreenGarden.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
+            html2canvas: { scale: 2, letterRendering: true, useCORS: true },
             jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        }).from(element).save();
+        };
         
-        showToast(`Invoice downloaded for Order #${order.orderId.slice(-6)}`);
+        html2pdf().set(opt).from(element).save();
+        showToast(`✓ Invoice downloaded: ${order.orderId}`);
     }
 
     function closeInvoiceModal() {
         document.getElementById('invoiceModal').classList.remove('active');
-        currentOrderForInvoice = null;
+        currentOrder = null;
     }
 
-    function showToast(message) {
+    function showToast(msg) {
         const toast = document.getElementById('toast');
-        toast.textContent = message;
+        toast.textContent = msg;
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // Navigation handlers
+    // Navigation handlers - CONNECT TO PAGES
     document.getElementById('backToShopBtn').addEventListener('click', (e) => {
         e.preventDefault();
-        showToast('Opening shop...');
-        setTimeout(() => window.location.href = '#', 300);
+        window.location.href = 'products.html';
     });
-
+    
     document.getElementById('viewCartBtn').addEventListener('click', (e) => {
         e.preventDefault();
-        showToast('Viewing cart...');
-        setTimeout(() => window.location.href = '#', 300);
+        window.location.href = 'cart.html';
     });
 
     // Tab switching
-    document.querySelectorAll('.tab-item').forEach(btn => {
+    document.querySelectorAll('.tab-premium').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-premium').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             renderOrders(btn.dataset.tab);
         });
     });
 
-    // Close modal on outside click
-    window.onclick = function(event) {
+    window.onclick = function(e) {
         const modal = document.getElementById('invoiceModal');
-        if (event.target === modal) {
-            closeInvoiceModal();
-        }
+        if (e.target === modal) closeInvoiceModal();
     };
 
     // Initialize
