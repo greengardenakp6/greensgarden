@@ -559,147 +559,79 @@
             { id: 50, name: "Miracle grow all purpose manure(400 g,powder)", price: 450, image: "F50.jpg", category: "Plant manure", rating: 4.8 }
         ];
 
-        let currentProduct = null;
-
-        // Helper to create local placeholder images (USED AS FALLBACK)
-        function createPlaceholder(text) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 500;
-            canvas.height = 500;
-            const ctx = canvas.getContext('2d');
-            
-            ctx.fillStyle = '#daefcc';
-            ctx.fillRect(0, 0, 500, 500);
-            
-            ctx.strokeStyle = '#3f683f';
-            ctx.lineWidth = 4;
-            ctx.strokeRect(10, 10, 480, 480);
-
-            ctx.fillStyle = '#2f5e2f';
-            ctx.font = 'bold 36px Inter, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            const words = text.split(' ');
-            let line = '';
-            let lines = [];
-            const maxWidth = 400;
-            
-            words.forEach(word => {
-                const testLine = line + word + ' ';
-                const metrics = ctx.measureText(testLine);
-                if (metrics.width > maxWidth && line !== '') {
-                    lines.push(line.trim());
-                    line = word + ' ';
-                } else {
-                    line = testLine;
-                }
-            });
-            lines.push(line.trim());
-
-            const lineHeight = 45;
-            const startY = 250 - (lines.length - 1) * lineHeight / 2;
-            
-            lines.forEach((l, i) => {
-                ctx.fillText(l, 250, startY + (i * lineHeight));
-            });
-
-            return canvas.toDataURL();
-        }
-
-        function getProductIdFromUrl() {
+       function getProductIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
             const id = parseInt(params.get("id"));
-            return !isNaN(id) && id > 0 ? id : 1;
+            return isNaN(id) ? 1 : id; // Default to 1 if no valid ID found
         }
 
+        // Display product details on page load
         function displayProductDetails() {
             const productId = getProductIdFromUrl();
-            currentProduct = products.find(p => p.id === productId) || products[0];
-
-            const imgElement = document.getElementById("product-image");
+            const product = products.find(p => p.id === productId) || products[0]; // Fallback to first product if not found
             
-            // === IMAGE LOGIC ===
-            // 1. Try to load the actual image from the database (e.g., F1.jpg)
-            imgElement.src = currentProduct.image;
-
-            // 2. If the image fails to load (file not found), show the placeholder
-            imgElement.onerror = function() {
-                this.onerror = null; // prevent infinite loop
-                this.src = createPlaceholder(currentProduct.name);
-            };
-
-            document.getElementById("product-name").textContent = currentProduct.name;
-            document.getElementById("product-category").textContent = currentProduct.category;
-
-            const price = currentProduct.price;
-            const mrp = Math.floor(price * 1.65); 
-            const discount = Math.round(((mrp - price) / mrp) * 100);
-
-            document.getElementById("product-price").textContent = `₹${price.toLocaleString('en-IN')}`;
-            document.getElementById("product-mrp").textContent = `₹${mrp.toLocaleString('en-IN')}`;
-            document.getElementById("product-discount").textContent = `${discount}% off`;
-
-            const rating = currentProduct.rating || 4.0;
-            document.getElementById("ratingDisplay").innerHTML = `${rating.toFixed(1)} <i class="fas fa-star"></i>`;
-
-            document.title = currentProduct.name + " · Green Garden";
+            document.getElementById("product-image").src = product.image;
+            document.getElementById("product-name").textContent = product.name;
+            document.getElementById("product-price").textContent = product.price;
+            
+            // Initialize quantity controls
+            updateQuantity(0);
         }
 
-        function showToast(message) {
-            const toast = document.getElementById('cartToast');
-            toast.innerHTML = `<i class="fas fa-check-circle" style="color:#d0f0b0;"></i> ${message}`;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
+        // Quantity control functions
+        function updateQuantity(delta) {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value) || 1;
+            quantity = Math.max(1, Math.min(99, quantity + delta));
+            quantityInput.value = quantity;
+            
+            // Update button states
+            document.querySelector('.minus').disabled = quantity <= 1;
+            document.querySelector('.plus').disabled = quantity >= 99;
         }
 
+        // Add to cart function
         function addToCart() {
-            if (!currentProduct) return;
+            const productId = getProductIdFromUrl();
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const product = products.find(p => p.id === productId);
             
-            try {
-                let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
-                
-                if (existingIndex > -1) {
-                    cart[existingIndex].quantity += 1;
+            if (product) {
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                const existingItem = cart.find(item => item.id === productId);
+
+                if (existingItem) {
+                    existingItem.quantity += quantity;
                 } else {
                     cart.push({
-                        id: currentProduct.id,
-                        name: currentProduct.name,
-                        price: currentProduct.price,
-                        image: currentProduct.image,
-                        quantity: 1
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        quantity: quantity
                     });
                 }
                 
-                localStorage.setItem('cart', JSON.stringify(cart));
-                showToast('added to basket 🌿');
-            } catch (e) {
-                console.error("Error saving to cart", e);
-                showToast('Error: Storage full or blocked');
+                localStorage.setItem("cart", JSON.stringify(cart));
+                alert(`${quantity} ${product.name}(s) added to cart!`);
             }
         }
 
-        
-        
-          function buyNow() {
-            if (!currentProduct) return;
-            buyNow(); 
+        // Buy now function
+        function buyNow() {
+            addToCart();
             window.location.href = 'buy.html';
         }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize the page when loaded
+        document.addEventListener('DOMContentLoaded', function() {
             displayProductDetails();
-            document.getElementById('addToCartBtn').addEventListener('click', addToCart);
-            document.getElementById('buyNowBtn').addEventListener('click', buyNow);
             
-            const searchForm = document.getElementById('searchForm');
-            searchForm.addEventListener('submit', (e) => {
-                const input = document.getElementById('searchInput');
-                if (!input.value.trim()) {
-                    e.preventDefault();
-                }
+            // Handle direct quantity input
+            document.getElementById('quantity').addEventListener('input', function() {
+                let value = parseInt(this.value) || 1;
+                this.value = Math.max(1, Math.min(99, value));
+                updateQuantity(0);
             });
         });
     </script>
