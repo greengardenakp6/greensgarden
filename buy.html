@@ -71,7 +71,6 @@
             text-decoration: none;
         }
 
-        /* Custom Logo Image Styling */
         .logo-image {
             width: 48px;
             height: 48px;
@@ -85,7 +84,6 @@
             transform: scale(1.05);
         }
 
-        /* Fallback icon if image doesn't load */
         .logo-icon {
             width: 48px;
             height: 48px;
@@ -323,7 +321,6 @@
             text-align: center;
         }
 
-        /* Custom QR Image Styling */
         .custom-qr-image {
             width: 160px;
             height: 160px;
@@ -385,7 +382,7 @@
         }
 
         .cart-items-list {
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
         }
 
@@ -397,15 +394,27 @@
             align-items: center;
         }
 
-        .cart-item-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(255, 152, 0, 0.1));
+        .cart-item-img {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f5f7fa, #ffffff);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .cart-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-img i {
+            font-size: 28px;
+            color: #2e7d32;
         }
 
         .cart-item-details {
@@ -415,6 +424,7 @@
         .cart-item-name {
             font-weight: 600;
             font-size: 14px;
+            margin-bottom: 4px;
         }
 
         .cart-item-price {
@@ -431,6 +441,7 @@
         .cart-item-total {
             font-weight: 700;
             font-size: 14px;
+            color: #1a1f2e;
         }
 
         .price-row {
@@ -540,17 +551,6 @@
             font-size: 14px;
         }
 
-        /* Image Upload Section */
-        .image-upload-note {
-            background: #fff9e6;
-            border-left: 4px solid #ff9800;
-            padding: 12px 16px;
-            margin-bottom: 20px;
-            border-radius: 12px;
-            font-size: 12px;
-            color: #856404;
-        }
-
         @media (max-width: 900px) {
             .navbar-luxury {
                 padding: 0 20px;
@@ -573,6 +573,9 @@
                 width: 40px;
                 height: 40px;
             }
+            .cart-item-row {
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
@@ -585,7 +588,7 @@
             <span>Back to Shop</span>
         </button>
         <div class="brand-luxury" id="brandLogo">
-            <img src="your-logo.png" alt="Green Garden Logo" class="logo-image" id="customLogo" 
+            <img src="logo1.jpg" alt="Green Garden Logo" class="logo-image" id="customLogo" 
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="logo-icon" style="display: none;">
                 <i class="fas fa-leaf"></i>
@@ -598,7 +601,6 @@
     </div>
 
     <div class="navbar-right">
-
         <div class="cart-badge" id="cartBadge">
             <div class="cart-icon">
                 <i class="fas fa-shopping-bag"></i>
@@ -608,13 +610,10 @@
     </div>
 </nav>
 
-<div class="checkout-luxury" id="checkoutContainer">
-    <!-- Dynamic content will be rendered here -->
-</div>
+<div class="checkout-luxury" id="checkoutContainer"></div>
 <div id="toastMsg" class="toast-premium"></div>
 
 <script>
-   
     const CUSTOM_IMAGES = {
         qrCode: 'qr.png',
         logo: 'logo1.jpg'
@@ -634,20 +633,17 @@
         }, 2500);
     }
 
-    // Get cart from localStorage
     function getCart() {
         const cart = localStorage.getItem('cart');
         return cart ? JSON.parse(cart) : [];
     }
 
-    // Update cart count badge
     function updateCartBadge() {
         const cart = getCart();
         const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
         document.getElementById('cartCount').innerText = totalItems;
     }
 
-    // Calculate cart totals
     function calculateCartTotals(cart, appliedCoupon = null, selectedPayment = 'upi') {
         let subtotal = cart.reduce((sum, item) => {
             const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
@@ -666,7 +662,6 @@
         return { subtotal, discount, platformFee, codFee, couponDiscount, total };
     }
 
-    // Update logo image (called when page loads)
     function updateLogoImage() {
         const logoImg = document.getElementById('customLogo');
         const fallbackIcon = logoImg?.nextElementSibling;
@@ -680,7 +675,16 @@
         }
     }
 
-    // Render payment form based on method with custom QR image
+    function getIconForProduct(name) {
+        const nameLower = name.toLowerCase();
+        if (nameLower.includes('rose')) return 'fa-rose';
+        if (nameLower.includes('seed')) return 'fa-leaf';
+        if (nameLower.includes('pot')) return 'fa-flask';
+        if (nameLower.includes('plant')) return 'fa-tree';
+        if (nameLower.includes('mix')) return 'fa-droplet';
+        return 'fa-seedling';
+    }
+
     function renderPaymentForm(method, totalAmount = 0) {
         let html = '';
         if (method === 'upi') {
@@ -693,13 +697,12 @@
                     <div style="margin-bottom: 8px;">
                         <i class="fas fa-qrcode" style="font-size: 32px; color: #2e7d32;"></i>
                     </div>
-                    <!-- Custom QR Code Image -->
                     <div class="qr-container">
                         <img src="${CUSTOM_IMAGES.qrCode}" 
                              alt="UPI QR Code" 
                              class="custom-qr-image"
                              id="customQRImage"
-                             onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'160\\' height=\\'160\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'%232e7d32\\' stroke-width=\\'1\\' stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\'%3E%3Crect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\' ry=\\'2\\'%3E%3C/rect%3E%3Cline x1=\\'9\\' y1=\\'9\\' x2=\\'15\\' y2=\\'15\\'%3E%3C/line%3E%3Cline x1=\\'15\\' y1=\\'9\\' x2=\\'9\\' y2=\\'15\\'%3E%3C/line%3E%3C/svg%3E'; this.parentElement.innerHTML += '<div style=\\'margin-top:8px; font-size:11px; color:#f59e0b;\\'>⚠️ QR code image not found. Please add your QR image.</div>';">
+                             onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'160\\' height=\\'160\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'%232e7d32\\' stroke-width=\\'1\\' stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\'%3E%3Crect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\' ry=\\'2\\'%3E%3C/rect%3E%3Cline x1=\\'9\\' y1=\\'9\\' x2=\\'15\\' y2=\\'15\\'%3E%3C/line%3E%3Cline x1=\\'15\\' y1=\\'9\\' x2=\\'9\\' y2=\\'15\\'%3E%3C/line%3E%3C/svg%3E';">
                     </div>
                     <p style="margin-top:12px; font-size:12px; color:#5a6e8a;">Scan QR code with any UPI app to pay</p>
                     <div class="upi-details">
@@ -719,11 +722,11 @@
                 <div class="input-group">
                     <label>Select Bank</label>
                     <select id="bankSelect" style="width:100%; padding:14px; border-radius:18px; border:1.5px solid #e2e8f0;">
-                       <option>INDIAN Bank</option><option>HDFC Bank</option><option>SBI</option><option>ICICI Bank</option><option>Axis Bank</option>
+                        <option>Indian Bank</option><option>HDFC Bank</option><option>SBI</option><option>ICICI Bank</option><option>Axis Bank</option>
                     </select>
                 </div>
-                <div class="input-group"><label>Account Number</label><input type="text" id="accNum" placeholder="XXXXXXXXXXXX" ></div>
-                <div class="input-group"><label>IFSC Code</label><input type="text" id="ifsc" placeholder="HDFC0001234" ></div>
+                <div class="input-group"><label>Account Number</label><input type="text" id="accNum" placeholder="XXXXXXXXXXXX"></div>
+                <div class="input-group"><label>IFSC Code</label><input type="text" id="ifsc" placeholder="HDFC0001234"></div>
             `;
         } else if (method === 'card') {
             html = `
@@ -755,7 +758,6 @@
         }
     }
 
-    // Main render function
     function renderCheckout() {
         const cart = getCart();
         const container = document.getElementById('checkoutContainer');
@@ -783,33 +785,34 @@
             return;
         }
         
-        // Get saved state
         let selectedPayment = localStorage.getItem('checkout_payment') || 'upi';
         let appliedCoupon = localStorage.getItem('checkout_coupon');
         if (appliedCoupon && !coupons[appliedCoupon]) appliedCoupon = null;
         
         const totals = calculateCartTotals(cart, appliedCoupon, selectedPayment);
         
-        // Build cart items HTML
+        // Build cart items HTML with PRODUCT IMAGES
         let cartItemsHtml = '';
         cart.forEach((item, idx) => {
             const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
             const qty = item.quantity || 1;
             const total = price * qty;
-            let icon = "fa-seedling";
-            if (item.name?.includes("Rose")) icon = "fa-rose";
-            else if (item.name?.includes("Pot")) icon = "fa-flask";
-            else if (item.name?.includes("Seed")) icon = "fa-leaf";
+            const icon = getIconForProduct(item.name);
             
             cartItemsHtml += `
                 <div class="cart-item-row">
-                    <div class="cart-item-icon"><i class="fas ${icon}" style="font-size:22px; color:#2e7d32;"></i></div>
+                    <div class="cart-item-img">
+                        ${item.image ? 
+                            `<img src="${item.image}" alt="${item.name}" onerror="this.parentElement.innerHTML='<i class=\'fas ${icon}\' style=\'font-size:28px; color:#2e7d32;\'></i>'">` : 
+                            `<i class="fas ${icon}" style="font-size:28px; color:#2e7d32;"></i>`
+                        }
+                    </div>
                     <div class="cart-item-details">
                         <div class="cart-item-name">${item.name || 'Plant Product'}</div>
-                        <div class="cart-item-price">₹${price}</div>
-                        <div class="cart-item-qty">Qty: ${qty}</div>
+                        <div class="cart-item-price">₹${price.toLocaleString('en-IN')}</div>
+                        <div class="cart-item-qty">Quantity: ${qty}</div>
                     </div>
-                    <div class="cart-item-total">₹${total}</div>
+                    <div class="cart-item-total">₹${total.toLocaleString('en-IN')}</div>
                 </div>
             `;
         });
@@ -822,7 +825,6 @@
                         <h2>Delivery Details</h2>
                     </div>
                     <div class="card-body-premium">
-                        
                         <div class="input-group">
                             <label>Full name</label>
                             <input type="text" id="fullName" placeholder="Enter your full name">
@@ -878,7 +880,7 @@
                 </div>
                 <div class="price-row">
                     <span>Item total</span>
-                    <span>₹${totals.subtotal}</span>
+                    <span>₹${totals.subtotal.toLocaleString('en-IN')}</span>
                 </div>
                 <div class="price-row">
                     <span>Platform fee</span>
@@ -898,7 +900,7 @@
                 </div>
                 <div class="total-premium">
                     <span>Total payable</span>
-                    <span id="grandTotal" style="background:linear-gradient(135deg,#2e7d32,#ff9800); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800;">₹${totals.total}</span>
+                    <span id="grandTotal" style="background:linear-gradient(135deg,#2e7d32,#ff9800); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800;">₹${totals.total.toLocaleString('en-IN')}</span>
                 </div>
                 <button class="btn-premium" id="placeOrderBtn">
                     <i class="fas fa-leaf"></i> Place Order
@@ -907,10 +909,8 @@
             </div>
         `;
         
-        // Attach event listeners
         renderPaymentForm(selectedPayment, totals.total);
         
-        // Payment tile selection
         document.querySelectorAll('.payment-tile-premium').forEach(tile => {
             tile.addEventListener('click', () => {
                 const method = tile.getAttribute('data-method');
@@ -919,7 +919,6 @@
             });
         });
         
-        // Apply coupon
         document.getElementById('applyCouponBtn')?.addEventListener('click', () => {
             const input = document.getElementById('couponInput');
             const code = input.value.trim().toUpperCase();
@@ -932,7 +931,6 @@
             }
         });
         
-        // Place order
         document.getElementById('placeOrderBtn')?.addEventListener('click', () => {
             const name = document.getElementById('fullName')?.value.trim();
             const address = document.getElementById('address')?.value.trim();
@@ -947,7 +945,6 @@
                 return;
             }
             
-            // Payment field validation
             const paymentMethod = localStorage.getItem('checkout_payment') || 'upi';
             if (paymentMethod === 'upi') {
                 const upiId = document.getElementById('upiId')?.value.trim();
@@ -972,7 +969,12 @@
             const orderData = {
                 orderId,
                 customer: { name, address, phone },
-                items: currentCart,
+                items: currentCart.map(item => ({
+                    ...item,
+                    price: typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0,
+                    quantity: item.quantity || 1,
+                    image: item.image || null
+                })),
                 coupon: currentCoupon || null,
                 payment: currentPayment,
                 subtotal: finalTotals.subtotal,
@@ -981,26 +983,24 @@
                 couponDiscount: finalTotals.couponDiscount,
                 total: finalTotals.total,
                 date: new Date().toISOString(),
-                status: currentPayment === 'cod' ? 'Confirmed (COD)' : 'Paid'
+                status: currentPayment === 'cod' ? 'processing' : 'paid'
             };
             
             let orders = JSON.parse(localStorage.getItem('green_garden_orders')) || [];
-            orders.push(orderData);
+            orders.unshift(orderData);
             localStorage.setItem('green_garden_orders', JSON.stringify(orders));
             
-            // Clear cart after successful order
             localStorage.setItem('cart', JSON.stringify([]));
             localStorage.removeItem('checkout_coupon');
             localStorage.removeItem('checkout_payment');
             
-            showToast(`🎉 Order placed! ID: ${orderId}`, false);
+            showToast(`🎉 Order placed! ID: ${orderId.slice(-8)}`, false);
             setTimeout(() => {
                 window.location.href = 'orders.html';
             }, 1500);
         });
     }
     
-    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         updateLogoImage();
         renderCheckout();
