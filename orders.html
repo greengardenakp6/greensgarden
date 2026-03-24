@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>My Orders</title>
+    <title>My Orders | Green Garden</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -33,7 +33,6 @@
             border-radius: 10px;
         }
 
-        /* Navbar */
         .navbar-flipkart {
             background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
             padding: 14px 40px;
@@ -43,7 +42,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
         .nav-left {
@@ -64,7 +62,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.3s;
         }
 
         .back-btn:hover {
@@ -86,17 +84,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: float 3s ease-in-out infinite;
         }
 
         .brand-icon i {
             font-size: 20px;
             color: white;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
         }
 
         .brand-text {
@@ -108,23 +100,12 @@
             color: transparent;
         }
 
-        .brand-badge {
-            font-size: 10px;
-            background: #ff9800;
-            padding: 2px 8px;
-            border-radius: 20px;
-            color: white;
-            margin-left: 8px;
-        }
-
-        /* Main Container */
         .orders-main {
             max-width: 1280px;
             margin: 32px auto;
             padding: 0 32px;
         }
 
-        /* Tabs */
         .tabs-wrapper {
             background: white;
             border-radius: 20px;
@@ -158,12 +139,6 @@
             box-shadow: 0 4px 12px rgba(40,116,240,0.3);
         }
 
-        .tab-item:hover:not(.active) {
-            background: #f0f2f5;
-            color: #2874f0;
-        }
-
-        /* Order Cards */
         .orders-grid {
             display: flex;
             flex-direction: column;
@@ -174,7 +149,7 @@
             background: white;
             border-radius: 20px;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             animation: fadeSlideUp 0.4s ease;
         }
@@ -195,7 +170,6 @@
             box-shadow: 0 12px 28px rgba(0,0,0,0.12);
         }
 
-        /* Order Header */
         .order-header {
             padding: 18px 24px;
             background: #fafbfc;
@@ -221,7 +195,6 @@
         .order-id span {
             font-weight: 700;
             font-size: 15px;
-            color: #212121;
         }
 
         .order-date {
@@ -232,7 +205,31 @@
             color: #878787;
         }
 
-        /* Delivery Timeline */
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-processing {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-shipped {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-delivered {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
         .delivery-timeline {
             padding: 20px 24px;
             background: linear-gradient(135deg, #fff9f0, #ffffff);
@@ -275,8 +272,6 @@
             justify-content: center;
             margin: 0 auto 10px;
             transition: all 0.3s;
-            position: relative;
-            background: white;
         }
 
         .step.completed .step-icon {
@@ -293,8 +288,8 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(40,116,240,0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(40,116,240,0); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .step-label {
@@ -306,13 +301,6 @@
         .step.completed .step-label,
         .step.active .step-label {
             color: #212121;
-            font-weight: 700;
-        }
-
-        .step-date {
-            font-size: 10px;
-            color: #878787;
-            margin-top: 4px;
         }
 
         .delivery-countdown {
@@ -335,14 +323,6 @@
             color: #2e7d32;
         }
 
-        .countdown-timer {
-            font-size: 20px;
-            font-weight: 800;
-            font-family: monospace;
-            color: #f57c00;
-        }
-
-        /* Order Items */
         .order-items {
             padding: 20px 24px;
             border-bottom: 1px solid #f0f2f5;
@@ -351,18 +331,28 @@
         .order-item {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
             padding: 12px 0;
         }
 
         .item-img {
             width: 70px;
             height: 70px;
-            background: linear-gradient(135deg, #f5f7fa, #ffffff);
+            background: #f8f9fa;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+
+        .item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-img i {
             font-size: 28px;
             color: #2e7d32;
         }
@@ -390,7 +380,6 @@
             color: #2874f0;
         }
 
-        /* Price Details */
         .price-details {
             padding: 20px 24px;
             background: #fafbfc;
@@ -410,10 +399,8 @@
             padding-top: 12px;
             font-weight: 800;
             font-size: 18px;
-            color: #212121;
         }
 
-        /* Order Footer */
         .order-footer {
             padding: 16px 24px;
             display: flex;
@@ -443,27 +430,6 @@
             box-shadow: 0 4px 12px rgba(46,125,50,0.3);
         }
 
-        .btn-track {
-            background: transparent;
-            border: 1.5px solid #2874f0;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 13px;
-            color: #2874f0;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-track:hover {
-            background: #2874f0;
-            color: white;
-        }
-
-        /* Invoice Modal */
         .modal {
             display: none;
             position: fixed;
@@ -475,16 +441,10 @@
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.3s;
         }
 
         .modal.active {
             display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal-content {
@@ -494,18 +454,6 @@
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
-            animation: slideUp 0.3s;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         .modal-header {
@@ -516,97 +464,24 @@
             align-items: center;
         }
 
-        .modal-header h3 {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
         .close-modal {
             background: none;
             border: none;
             font-size: 24px;
             cursor: pointer;
-            color: #878787;
         }
 
         .invoice-content {
             padding: 24px;
         }
 
-        .invoice-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .invoice-logo {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-        }
-
-        .invoice-logo i {
-            font-size: 30px;
-            color: white;
-        }
-
-        .invoice-title {
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-
-        .invoice-subtitle {
-            font-size: 12px;
-            color: #878787;
-        }
-
-        .invoice-details {
-            background: #f8f9fa;
-            padding: 16px;
-            border-radius: 12px;
-            margin: 16px 0;
-        }
-
-        .invoice-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            font-size: 13px;
-        }
-
-        .invoice-items {
-            margin: 16px 0;
-        }
-
-        .invoice-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #f0f2f5;
-            font-size: 13px;
-        }
-
-        .invoice-total {
-            background: #f8f9fa;
-            padding: 16px;
-            border-radius: 12px;
-            margin-top: 16px;
-        }
-
         .modal-footer {
             padding: 20px;
             border-top: 1px solid #f0f2f5;
-            display: flex;
-            gap: 12px;
         }
 
         .btn-download {
-            flex: 1;
+            width: 100%;
             background: linear-gradient(135deg, #2874f0, #1a5bbf);
             border: none;
             padding: 12px;
@@ -629,10 +504,8 @@
             padding: 12px 24px;
             border-radius: 40px;
             color: white;
-            font-size: 14px;
             z-index: 2000;
             transition: all 0.3s;
-            pointer-events: none;
         }
 
         .toast.show {
@@ -659,6 +532,10 @@
             .step-icon {
                 margin: 0;
             }
+            .order-item {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -674,10 +551,7 @@
             <div class="brand-icon">
                 <i class="fas fa-leaf"></i>
             </div>
-            <div class="brand-text">
-                GREEN GARDEN
-                <span class="brand-badge">ORGANIC</span>
-            </div>
+            <div class="brand-text">GREEN GARDEN</div>
         </div>
     </div>
 </nav>
@@ -710,243 +584,94 @@
 <div id="toast" class="toast"></div>
 
 <script>
-    // Orders Data
-    let orders = [
-        {
-            orderId: "OD337056723948732200",
-            date: "2026-03-22T10:30:00",
-            status: "out_for_delivery",
-            items: [
-                { name: "Kilos Basket", price: 448, quantity: 1, originalPrice: 515, icon: "fa-basket-shopping" }
-            ],
-            listingPrice: 515,
-            sellingPrice: 448,
-            totalFees: 31,
-            total: 479,
-            paymentMethod: "Cash On Delivery",
-            deliveryAddress: {
-                name: "Akash",
-                phone: "9994458119",
-                address: "127/F HOSPITAL ROAD, MELPADI KALLAKURICHI, Tamil Nadu"
-            },
-            tracking: {
-                orderConfirmed: { date: "2026-03-22", time: "10:30 AM", completed: true },
-                shipped: { date: "2026-03-23", time: "02:15 PM", completed: true },
-                outForDelivery: { date: "2026-03-24", time: "09:00 AM", completed: true },
-                delivered: { date: "2026-03-24", time: "11:00 PM", completed: false, expected: true }
-            }
-        },
-        {
-            orderId: "OD337056723948732201",
-            date: "2026-03-20T14:20:00",
-            status: "shipped",
-            items: [
-                { name: "Morning Jewel Rose Seed", price: 158, quantity: 2, originalPrice: 180, icon: "fa-rose" },
-                { name: "Organic Potting Mix", price: 360, quantity: 1, originalPrice: 400, icon: "fa-droplet" }
-            ],
-            listingPrice: 580,
-            sellingPrice: 518,
-            totalFees: 35,
-            total: 676,
-            paymentMethod: "UPI",
-            deliveryAddress: {
-                name: "Olivia Chen",
-                phone: "9876543210",
-                address: "42 Greenway Blvd, Austin, TX 78701"
-            },
-            tracking: {
-                orderConfirmed: { date: "2026-03-20", time: "02:20 PM", completed: true },
-                shipped: { date: "2026-03-22", time: "11:30 AM", completed: true },
-                outForDelivery: { date: "2026-03-24", time: "08:00 AM", completed: false, expected: true },
-                delivered: { date: "2026-03-25", time: "06:00 PM", completed: false, expected: true }
-            }
-        },
-        {
-            orderId: "OD337056723948732202",
-            date: "2026-03-18T09:15:00",
-            status: "delivered",
-            items: [
-                { name: "Brazilian Wood Plant", price: 550, quantity: 1, originalPrice: 620, icon: "fa-tree" }
-            ],
-            listingPrice: 620,
-            sellingPrice: 550,
-            totalFees: 28,
-            total: 578,
-            paymentMethod: "Card",
-            deliveryAddress: {
-                name: "Olivia Chen",
-                phone: "9876543210",
-                address: "42 Greenway Blvd, Austin, TX 78701"
-            },
-            tracking: {
-                orderConfirmed: { date: "2026-03-18", time: "09:15 AM", completed: true },
-                shipped: { date: "2026-03-19", time: "01:45 PM", completed: true },
-                outForDelivery: { date: "2026-03-20", time: "10:00 AM", completed: true },
-                delivered: { date: "2026-03-20", time: "03:30 PM", completed: true }
-            }
-        }
-    ];
+    let orders = [];
 
-    // Real-time delivery calculation
-    function calculateRealTimeDelivery(tracking) {
-        const now = new Date();
-        const deliveryDate = new Date(tracking.delivered.date);
-        
-        if (tracking.delivered.completed) {
-            return { status: "delivered", message: "Delivered on " + formatDate(deliveryDate), timeLeft: null };
+    function loadOrders() {
+        const savedOrders = localStorage.getItem('green_garden_orders');
+        if (savedOrders) {
+            orders = JSON.parse(savedOrders);
         }
         
-        if (tracking.outForDelivery.completed) {
-            const deliveryTime = new Date(tracking.delivered.date + " " + tracking.delivered.time);
-            const timeDiff = deliveryTime - now;
-            
-            if (timeDiff > 0) {
-                const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                return { 
-                    status: "out_for_delivery", 
-                    message: "Out for delivery", 
-                    timeLeft: `${hours}h ${minutes}m`,
-                    expected: formatTime(deliveryTime)
-                };
-            } else {
-                return { status: "delivering", message: "Your order is almost there!", timeLeft: null };
-            }
+        // If no orders, add demo order for preview
+        if (orders.length === 0) {
+            const demoOrder = {
+                orderId: "OD337056723948732200",
+                date: new Date().toISOString(),
+                status: "processing",
+                items: [
+                    { name: "Kilos Basket", price: 448, quantity: 1, originalPrice: 515, icon: "fa-basket-shopping", image: null }
+                ],
+                listingPrice: 515,
+                sellingPrice: 448,
+                totalFees: 31,
+                total: 479,
+                paymentMethod: "Cash On Delivery",
+                deliveryAddress: {
+                    name: "Akash Kumar",
+                    phone: "9994458119",
+                    address: "127/F HOSPITAL ROAD, MELPADI KALLAKURICHI, Tamil Nadu - 606202"
+                },
+                tracking: {
+                    orderConfirmed: { date: new Date().toISOString(), time: "10:30 AM", completed: true },
+                    shipped: { date: new Date(Date.now() + 86400000).toISOString(), time: "02:15 PM", completed: false, expected: true },
+                    outForDelivery: { date: new Date(Date.now() + 172800000).toISOString(), time: "09:00 AM", completed: false, expected: true },
+                    delivered: { date: new Date(Date.now() + 259200000).toISOString(), time: "08:00 PM", completed: false, expected: true }
+                }
+            };
+            orders.push(demoOrder);
+            localStorage.setItem('green_garden_orders', JSON.stringify(orders));
         }
         
-        if (tracking.shipped.completed) {
-            const outDate = new Date(tracking.outForDelivery.date);
-            return { status: "shipped", message: "Shipped • Expected by " + formatDate(outDate), timeLeft: null };
-        }
-        
-        return { status: "confirmed", message: "Order confirmed", timeLeft: null };
+        renderOrders('active');
     }
 
-    function formatDate(date) {
-        return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
-    function formatTime(date) {
-        return new Date(date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-    }
-
-    // Get status class
     function getStatusClass(status) {
         const classes = {
-            confirmed: 'status-processing',
+            processing: 'status-processing',
             shipped: 'status-shipped',
             out_for_delivery: 'status-shipped',
-            delivering: 'status-shipped',
             delivered: 'status-delivered'
         };
         return classes[status] || 'status-processing';
     }
 
-    // Generate Invoice HTML
-    function generateInvoice(order) {
-        return `
-            <div class="invoice-content">
-                <div class="invoice-header">
-                    <div class="invoice-logo">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <div class="invoice-title">GREEN GARDEN</div>
-                    <div class="invoice-subtitle">Organic & Natural Products</div>
-                    <div class="invoice-subtitle">GST: 33ABCDE1234F1Z5</div>
-                </div>
-                
-                <div class="invoice-details">
-                    <div class="invoice-row"><strong>Invoice No:</strong> ${order.orderId}</div>
-                    <div class="invoice-row"><strong>Invoice Date:</strong> ${new Date().toLocaleDateString()}</div>
-                    <div class="invoice-row"><strong>Order Date:</strong> ${new Date(order.date).toLocaleDateString()}</div>
-                    <div class="invoice-row"><strong>Payment Method:</strong> ${order.paymentMethod}</div>
-                </div>
-                
-                <div class="invoice-details">
-                    <div class="invoice-row"><strong>Sold By:</strong> Green Garden Organic Store</div>
-                    <div class="invoice-row"><strong>Delivered To:</strong> ${order.deliveryAddress.name}</div>
-                    <div class="invoice-row"><strong>Address:</strong> ${order.deliveryAddress.address}</div>
-                    <div class="invoice-row"><strong>Phone:</strong> ${order.deliveryAddress.phone}</div>
-                </div>
-                
-                <div class="invoice-items">
-                    <div style="font-weight:700; margin-bottom:12px;">Item Details</div>
-                    ${order.items.map(item => `
-                        <div class="invoice-item">
-                            <div>${item.name} x ${item.quantity}</div>
-                            <div>₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div class="invoice-total">
-                    <div class="invoice-row"><span>Listing Price:</span><span>₹${order.listingPrice}</span></div>
-                    <div class="invoice-row"><span>Selling Price:</span><span>₹${order.sellingPrice}</span></div>
-                    <div class="invoice-row"><span>Total Fees:</span><span>₹${order.totalFees}</span></div>
-                    <div class="invoice-row" style="font-weight:800; font-size:16px; margin-top:8px; border-top:1px solid #ddd; padding-top:8px;">
-                        <span>Total Amount:</span><span>₹${order.total}</span>
-                    </div>
-                </div>
-                
-                <div style="text-align: center; font-size: 11px; color: #878787; margin-top: 20px; padding-top: 16px; border-top: 1px solid #f0f2f5;">
-                    <i class="fas fa-check-circle"></i> This is a computer generated invoice • No signature required
-                </div>
-            </div>
-        `;
-    }
-
-    // Download PDF
-    function downloadPDF(order) {
-        const element = document.createElement('div');
-        element.innerHTML = generateInvoice(order);
-        element.style.padding = '20px';
-        element.style.background = 'white';
-        
-        const opt = {
-            margin: [0.5, 0.5, 0.5, 0.5],
-            filename: `Invoice_${order.orderId}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, letterRendering: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    function getStatusText(status) {
+        const texts = {
+            processing: 'Processing',
+            shipped: 'Shipped',
+            out_for_delivery: 'Out for Delivery',
+            delivered: 'Delivered'
         };
-        
-        html2pdf().set(opt).from(element).save();
-        showToast(`Invoice downloaded for Order #${order.orderId.slice(-6)}`);
+        return texts[status] || status;
     }
 
-    // Show Invoice Modal
-    function showInvoiceModal(order) {
-        const modal = document.getElementById('invoiceModal');
-        const invoiceContent = document.getElementById('invoiceContent');
-        invoiceContent.innerHTML = generateInvoice(order);
-        
-        const downloadBtn = document.createElement('div');
-        downloadBtn.className = 'modal-footer';
-        downloadBtn.innerHTML = `
-            <button class="btn-download" onclick="downloadPDF(window.currentOrder)">
-                <i class="fas fa-download"></i> Download PDF
-            </button>
-        `;
-        invoiceContent.appendChild(downloadBtn);
-        
-        window.currentOrder = order;
-        modal.classList.add('active');
+    function getStatusIcon(status) {
+        const icons = {
+            processing: 'fa-spinner fa-pulse',
+            shipped: 'fa-truck',
+            out_for_delivery: 'fa-truck-fast',
+            delivered: 'fa-check-circle'
+        };
+        return icons[status] || 'fa-clock';
     }
 
-    function closeInvoiceModal() {
-        document.getElementById('invoiceModal').classList.remove('active');
+    function getIconForProduct(name) {
+        const nameLower = name.toLowerCase();
+        if (nameLower.includes('rose')) return 'fa-rose';
+        if (nameLower.includes('basket')) return 'fa-basket-shopping';
+        if (nameLower.includes('seed')) return 'fa-leaf';
+        if (nameLower.includes('pot')) return 'fa-flask';
+        if (nameLower.includes('plant')) return 'fa-tree';
+        if (nameLower.includes('mix')) return 'fa-droplet';
+        return 'fa-seedling';
     }
 
-    // Show Toast
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    // Render Orders
-    function renderOrders(tab = 'active') {
+    function renderOrders(tab) {
         const container = document.getElementById('ordersContainer');
         
         let filteredOrders = orders;
@@ -969,13 +694,14 @@
         }
         
         container.innerHTML = filteredOrders.map(order => {
-            const deliveryStatus = calculateRealTimeDelivery(order.tracking);
             const steps = [
                 { key: 'orderConfirmed', label: 'Order Confirmed', icon: 'fa-check-circle' },
                 { key: 'shipped', label: 'Shipped', icon: 'fa-truck' },
                 { key: 'outForDelivery', label: 'Out For Delivery', icon: 'fa-truck-fast' },
                 { key: 'delivered', label: 'Delivered', icon: 'fa-check-double' }
             ];
+            
+            const isDelivered = order.status === 'delivered';
             
             return `
                 <div class="order-card">
@@ -988,14 +714,17 @@
                             <i class="far fa-calendar-alt"></i>
                             ${new Date(order.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </div>
+                        <div class="status-badge ${getStatusClass(order.status)}">
+                            <i class="fas ${getStatusIcon(order.status)}"></i>
+                            ${getStatusText(order.status)}
+                        </div>
                     </div>
                     
                     <div class="delivery-timeline">
                         <div class="timeline-steps">
                             ${steps.map((step, idx) => {
                                 const isCompleted = order.tracking[step.key]?.completed;
-                                const isActive = deliveryStatus.status === step.key || 
-                                    (step.key === 'outForDelivery' && deliveryStatus.status === 'delivering');
+                                const isActive = !isCompleted && !isDelivered && idx === 1;
                                 return `
                                     <div class="step ${isCompleted ? 'completed' : (isActive ? 'active' : '')}">
                                         <div class="step-icon">
@@ -1008,29 +737,23 @@
                             }).join('')}
                         </div>
                         
-                        ${deliveryStatus.timeLeft ? `
-                            <div class="delivery-countdown">
-                                <div class="countdown-text">
-                                    <i class="fas fa-clock"></i>
-                                    <span>${deliveryStatus.message}</span>
-                                </div>
-                                <div class="countdown-timer">${deliveryStatus.timeLeft} left</div>
+                        <div class="delivery-countdown">
+                            <div class="countdown-text">
+                                <i class="fas ${order.status === 'delivered' ? 'fa-check-circle' : 'fa-truck'}"></i>
+                                <span>${order.status === 'delivered' ? 'Delivered successfully!' : 'Your order is on the way!'}</span>
                             </div>
-                        ` : `
-                            <div class="delivery-countdown" style="background: #f5f5f5;">
-                                <div class="countdown-text">
-                                    <i class="fas ${deliveryStatus.status === 'delivered' ? 'fa-check-circle' : 'fa-truck'}"></i>
-                                    <span>${deliveryStatus.message}</span>
-                                </div>
-                            </div>
-                        `}
+                            ${!isDelivered ? `<div class="countdown-timer">Expected by ${formatDate(order.tracking.delivered.date)}</div>` : ''}
+                        </div>
                     </div>
                     
                     <div class="order-items">
                         ${order.items.map(item => `
                             <div class="order-item">
                                 <div class="item-img">
-                                    <i class="fas ${item.icon}"></i>
+                                    ${item.image ? 
+                                        `<img src="${item.image}" alt="${item.name}" onerror="this.parentElement.innerHTML='<i class=\'fas ${item.icon || getIconForProduct(item.name)}\'></i>'">` : 
+                                        `<i class="fas ${item.icon || getIconForProduct(item.name)}"></i>`
+                                    }
                                 </div>
                                 <div class="item-details">
                                     <div class="item-name">${item.name}</div>
@@ -1049,20 +772,114 @@
                         <div class="price-row"><span>Selling price</span><span>₹${order.sellingPrice}</span></div>
                         <div class="price-row"><span>Total fees</span><span>₹${order.totalFees}</span></div>
                         <div class="price-row total"><span>Total amount</span><span>₹${order.total}</span></div>
-                        <div class="price-row" style="margin-top: 8px;"><span>Payment method</span><span>${order.paymentMethod}</span></div>
+                        <div class="price-row"><span>Payment method</span><span>${order.paymentMethod}</span></div>
                     </div>
                     
                     <div class="order-footer">
                         <button class="btn-invoice" onclick="showInvoiceModal(${JSON.stringify(order).replace(/"/g, '&quot;')})">
                             <i class="fas fa-file-invoice"></i> View Invoice
                         </button>
-                        <button class="btn-track" onclick="showToast('Tracking: ${order.status === 'delivered' ? 'Order delivered successfully!' : 'Your order is on the way!')}">
-                            <i class="fas fa-map-marker-alt"></i> Track Order
-                        </button>
                     </div>
                 </div>
             `;
         }).join('');
+    }
+
+    function generateInvoiceHTML(order) {
+        return `
+            <div class="invoice-content">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div class="brand-icon" style="margin: 0 auto 12px; width: 50px; height: 50px;">
+                        <i class="fas fa-leaf" style="font-size: 24px;"></i>
+                    </div>
+                    <div style="font-size: 20px; font-weight: 800;">GREEN GARDEN</div>
+                    <div style="font-size: 12px; color: #878787;">Organic & Natural Products</div>
+                    <div style="font-size: 11px; color: #878787;">GST: 33ABCDE1234F1Z5</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin: 16px 0;">
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Invoice No:</strong> ${order.orderId}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Invoice Date:</strong> ${new Date().toLocaleDateString()}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Order Date:</strong> ${new Date(order.date).toLocaleDateString()}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Payment Method:</strong> ${order.paymentMethod}</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin: 16px 0;">
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Sold By:</strong> Green Garden Organic Store</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Delivered To:</strong> ${order.deliveryAddress.name}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Address:</strong> ${order.deliveryAddress.address}</div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><strong>Phone:</strong> ${order.deliveryAddress.phone}</div>
+                </div>
+                
+                <div style="margin: 16px 0;">
+                    <div style="font-weight: 700; margin-bottom: 12px;">Item Details</div>
+                    ${order.items.map(item => `
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f2f5;">
+                            <div>${item.name} x ${item.quantity}</div>
+                            <div>₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin-top: 16px;">
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Listing Price:</span><span>₹${order.listingPrice}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Selling Price:</span><span>₹${order.sellingPrice}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Total Fees:</span><span>₹${order.totalFees}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 12px 0 6px; border-top: 1px solid #ddd; margin-top: 8px; font-weight: 800; font-size: 16px;">
+                        <span>Total Amount:</span><span>₹${order.total}</span>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; font-size: 10px; color: #878787; margin-top: 20px; padding-top: 16px; border-top: 1px solid #f0f2f5;">
+                    <i class="fas fa-check-circle"></i> This is a computer generated invoice • No signature required
+                </div>
+            </div>
+        `;
+    }
+
+    function showInvoiceModal(order) {
+        const modal = document.getElementById('invoiceModal');
+        const invoiceContent = document.getElementById('invoiceContent');
+        invoiceContent.innerHTML = generateInvoiceHTML(order);
+        
+        const downloadBtn = document.createElement('div');
+        downloadBtn.className = 'modal-footer';
+        downloadBtn.innerHTML = `
+            <button class="btn-download" onclick="downloadInvoice(${JSON.stringify(order).replace(/"/g, '&quot;')})">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+        `;
+        invoiceContent.appendChild(downloadBtn);
+        
+        modal.classList.add('active');
+    }
+
+    function downloadInvoice(order) {
+        const element = document.createElement('div');
+        element.innerHTML = generateInvoiceHTML(order);
+        element.style.padding = '20px';
+        element.style.background = 'white';
+        
+        html2pdf().set({
+            margin: [0.5, 0.5, 0.5, 0.5],
+            filename: `Invoice_${order.orderId}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        }).from(element).save();
+        
+        showToast(`Invoice downloaded for Order #${order.orderId.slice(-6)}`);
+    }
+
+    function closeInvoiceModal() {
+        document.getElementById('invoiceModal').classList.remove('active');
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
     // Tab switching
@@ -1082,8 +899,8 @@
         }
     };
 
-    // Initial render
-    renderOrders('active');
+    // Initialize
+    loadOrders();
 </script>
 </body>
 </html>
