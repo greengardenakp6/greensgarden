@@ -3,314 +3,756 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Shopping Cart · Green Garden</title>
+    <title>GreenCart</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #0f3d1a;
-            --primary-light: #1b6b2b;
-            --accent: #cfa364;
-            --text-main: #1a1a1a;
-            --text-muted: #666;
-            --surface: #ffffff;
-            --bg: #f8faf7;
-            --border: #eaeaea;
-            --shadow: 0 10px 30px rgba(0,0,0,0.03);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            background: var(--bg);
-            position: relative;
+            background: #f1f3f6;
+            color: #212121;
+            overflow-x: hidden;
         }
-        
-        /* Background Shapes */
-        .bg-shape { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; }
-        .shape-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: rgba(27, 107, 43, 0.1); }
-        .shape-2 { bottom: -10%; right: -10%; width: 600px; height: 600px; background: rgba(207, 163, 100, 0.1); }
 
-        /* Navbar */
+        /* modern scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2874f0;
+            border-radius: 10px;
+        }
+
+        /* navbar - flipkart inspired */
         .navbar {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            padding: 1rem 3rem;
-            display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
+            backdrop-filter: blur(0);
+            padding: 12px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
         }
-        .nav-btn { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); font-weight: 600; padding: 10px 20px; border-radius: 50px; transition: all 0.3s; }
-        .nav-btn:hover { background: var(--primary); color: white; }
-        .navbar-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary); }
+        .logo-area {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.7rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff 30%, #ffe0a3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo-green {
+            font-size: 1.8rem;
+            color: #ffd966;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+        }
+        .nav-shop-btn {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .nav-shop-btn:hover {
+            background: #2874f0;
+            transform: scale(1.02);
+            gap: 12px;
+            border-color: transparent;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+        }
+        .nav-shop-btn i {
+            transition: transform 0.2s ease;
+        }
+        .nav-shop-btn:hover i {
+            transform: translateX(-3px);
+        }
 
-        /* Layout */
-        .container { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; max-width: 1200px; margin: 0 auto; padding: 40px 30px; }
+        /* main container - grid with modern spacing */
+        .container {
+            max-width: 1280px;
+            margin: 32px auto;
+            padding: 0 28px;
+            display: grid;
+            grid-template-columns: 1.5fr 0.9fr;
+            gap: 28px;
+        }
 
-        /* Cards */
+        /* cards with glassmorphism & flipkart shadows */
         .card {
-            background: var(--surface);
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            padding: 30px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease, box-shadow 0.25s ease;
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+        }
+        .card:hover {
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
         }
 
-        /* Progress */
-        .shipping-progress { margin-bottom: 25px; background: linear-gradient(90deg, #e8f5e9, #fff); padding: 20px; border-radius: 16px; border: 1px solid #e0e0e0; }
-        .progress-text { font-weight: 600; font-size: 0.95rem; color: var(--primary); margin-bottom: 12px; display: flex; justify-content: space-between; }
-        .progress-bar-bg { width: 100%; height: 8px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.5s ease; border-radius: 10px; }
+        /* shipping progress — elevated badge style */
+        .shipping-card {
+            background: #ffffff;
+            margin-bottom: 20px;
+            border-radius: 24px;
+            padding: 0;
+            overflow: hidden;
+            border-left: 5px solid #ff9f00;
+        }
+        .progress-modern {
+            padding: 18px 24px;
+            background: #fff8ed;
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            color: #3e4d5b;
+        }
+        .progress-track {
+            background: #e9ecef;
+            border-radius: 40px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill-modern {
+            background: linear-gradient(90deg, #2874f0, #ff9f00);
+            width: 0%;
+            height: 100%;
+            border-radius: 40px;
+            transition: width 0.6s cubic-bezier(0.22, 0.97, 0.36, 1);
+        }
+        .truck-animate {
+            transition: all 0.3s;
+        }
 
-        /* Items */
-        .cart-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid #f0f0f0; position: relative; transition: all 0.3s; }
-        .cart-item:last-child { border-bottom: none; }
-        .item-image { width: 100px; height: 100px; object-fit: cover; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .item-details { flex: 1; }
-        .item-name { font-weight: 600; font-size: 1.05rem; margin-bottom: 5px; }
-        .item-price { color: var(--primary); font-weight: 700; margin-bottom: 10px; }
-        .quantity-controls { display: flex; align-items: center; gap: 15px; background: #f5f5f5; padding: 5px 10px; border-radius: 50px; width: fit-content; }
-        .qty-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); transition: all 0.2s; }
-        .qty-btn:hover { background: var(--primary); color: white; }
-        .qty-val { min-width: 24px; text-align: center; font-weight: 600; }
-        .remove-btn { position: absolute; top: 20px; right: 0; background: none; border: none; color: #ccc; cursor: pointer; transition: color 0.2s; }
-        .remove-btn:hover { color: #e74c3c; }
+        /* cart items — flipkart list style */
+        .cart-items-list {
+            padding: 8px 20px;
+        }
+        .cart-item {
+            display: flex;
+            gap: 24px;
+            padding: 24px 0;
+            border-bottom: 1px solid #edf0f2;
+            transition: background 0.2s, transform 0.2s;
+            animation: fadeSlideUp 0.35s ease;
+        }
+        .cart-item:hover {
+            background: #fafbfc;
+            border-radius: 20px;
+            transform: translateX(4px);
+        }
+        .item-img {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 18px;
+            background: #f6f7f9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .item-img:hover {
+            transform: scale(1.02);
+        }
+        .item-detail {
+            flex: 1;
+        }
+        .item-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #1e2a36;
+        }
+        .item-price-modern {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #2874f0;
+            margin: 8px 0;
+        }
+        .qty-module {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #f1f3f6;
+            width: fit-content;
+            padding: 6px 14px;
+            border-radius: 40px;
+            margin-top: 10px;
+        }
+        .qty-btn-flip {
+            background: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #2874f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qty-btn-flip:hover {
+            background: #2874f0;
+            color: white;
+            transform: scale(1.05);
+        }
+        .qty-number {
+            font-weight: 700;
+            min-width: 28px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .remove-link {
+            margin-top: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #878787;
+            font-weight: 500;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 5px 8px;
+            border-radius: 30px;
+        }
+        .remove-link:hover {
+            color: #e44d3a;
+            background: #fff0ef;
+        }
 
-        /* Summary */
-        .summary-card { height: fit-content; position: sticky; top: 100px; }
-        .promo-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        .promo-input { flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid #eee; background: #fafafa; font-family: inherit; }
-        .btn-apply { padding: 0 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .btn-apply:hover { background: var(--primary-light); }
-        
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); }
-        .summary-total { border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px; font-size: 1.3rem; font-weight: 700; color: var(--text-main); font-family: 'Playfair Display', serif; }
-        
-        .action-btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: all 0.3s; display: block; text-align: center; text-decoration: none; }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(15, 61, 26, 0.15); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(15, 61, 26, 0.2); }
-        .btn-primary:disabled { opacity: 0.5; pointer-events: none; }
+        /* summary section — premium */
+        .summary-card {
+            position: sticky;
+            top: 100px;
+            padding: 24px;
+        }
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #172337;
+        }
+        .promo-container {
+            background: #f9fafc;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 24px;
+            border: 1px solid #eef2f5;
+        }
+        .promo-input-group {
+            display: flex;
+            gap: 12px;
+        }
+        .promo-input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 44px;
+            border: 1px solid #ddd;
+            background: white;
+            font-family: 'Inter';
+            transition: 0.2s;
+        }
+        .promo-input:focus {
+            outline: none;
+            border-color: #2874f0;
+            box-shadow: 0 0 0 2px rgba(40,116,240,0.2);
+        }
+        .apply-btn {
+            background: #2874f0;
+            border: none;
+            padding: 0 22px;
+            border-radius: 44px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .apply-btn:hover {
+            background: #1b5acf;
+            transform: scale(0.97);
+        }
+        .price-breakdown {
+            margin-top: 20px;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: #5f6c76;
+        }
+        .grand-total {
+            border-top: 2px dashed #e0e6ed;
+            margin-top: 16px;
+            padding-top: 16px;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #172337;
+            display: flex;
+            justify-content: space-between;
+        }
+        .checkout-btn-modern {
+            background: #fb641b;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(251,100,27,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .checkout-btn-modern:hover {
+            background: #e75b18;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(251,100,27,0.3);
+        }
+        .clear-cart-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 40px;
+            margin-top: 12px;
+            font-weight: 500;
+            color: #777;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .clear-cart-btn:hover {
+            background: #fef2e8;
+            border-color: #fb641b;
+            color: #fb641b;
+        }
+        .empty-modern {
+            text-align: center;
+            padding: 60px 24px;
+        }
+        .empty-icon {
+            font-size: 4rem;
+            color: #c7d2dc;
+            margin-bottom: 18px;
+        }
+        .shop-now-link {
+            display: inline-block;
+            background: #2874f0;
+            padding: 12px 28px;
+            border-radius: 44px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 24px;
+            transition: all 0.2s;
+        }
+        .shop-now-link:hover {
+            background: #1b5acf;
+            transform: scale(1.02);
+        }
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        .empty-cart { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-        .empty-cart i { font-size: 3rem; color: var(--accent); margin-bottom: 15px; opacity: 0.5; }
-
-        @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; padding: 20px; }
-            .navbar { padding: 1rem 1.5rem; }
-            .navbar-title { font-size: 1.2rem; }
+        /* responsive */
+        @media (max-width: 880px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 0 20px;
+            }
+            .navbar {
+                padding: 12px 20px;
+            }
+            .item-img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        .badge-free {
+            background: #e6f7e6;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+        .discount-highlight {
+            color: #388e3c;
+            font-weight: 700;
+        }
+        .shake {
+            animation: shakeAnim 0.3s ease-in-out 0s 2;
+        }
+        @keyframes shakeAnim {
+            0%,100%{ transform: translateX(0); }
+            25%{ transform: translateX(-4px); }
+            75%{ transform: translateX(4px); }
         }
     </style>
 </head>
 <body>
-    <div class="bg-shape shape-1"></div>
-    <div class="bg-shape shape-2"></div>
 
-    <nav class="navbar">
-        <a href="products.html" class="nav-btn"><i class="fas fa-arrow-left"></i> Shop</a>
-        <div class="navbar-title">Your Cart</div>
-        <div style="width: 80px;"></div>
-    </nav>
+<nav class="navbar">
+    <div class="logo-area">
+        <span class="logo-green"><i class="fas fa-leaf"></i></span>
+        <span>GreenCart</span>
+    </div>
+    <a href="products.html" class="nav-shop-btn"><i class="fas fa-store"></i> Continue Shopping</a>
+</nav>
 
-    <div class="container">
-        <div class="items-column">
-            <div class="shipping-progress">
-                <div class="progress-text">
-                    <span id="progressText"><i class="fas fa-truck" style="margin-right:8px;"></i> Spend ₹500 for FREE Shipping!</span>
-                    <span id="progressAmt">₹500</span>
+<div class="container">
+    <div class="left-section">
+        <!-- dynamic shipping banner -->
+        <div class="shipping-card" id="shippingBanner">
+            <div class="progress-modern">
+                <div class="progress-header">
+                    <span id="shippingMsg"><i class="fas fa-truck"></i> Unlock FREE Shipping</span>
+                    <span id="shippingDiff">₹500 more</span>
                 </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progressFill" style="width: 0%;"></div>
+                <div class="progress-track">
+                    <div class="progress-fill-modern" id="shipFill" style="width: 0%;"></div>
                 </div>
-            </div>
-
-            <div class="card">
-                <div id="cart-items-container"></div>
             </div>
         </div>
 
-        <div class="summary-card card">
-            <h3 style="font-family:'Playfair Display'; font-size:1.3rem; margin-bottom:20px; color:var(--primary);">Order Summary</h3>
-            <div class="promo-group">
-                <input type="text" id="promoInput" class="promo-input" placeholder="Promo Code">
-                <button class="btn-apply" onclick="applyPromo()">Apply</button>
-            </div>
-            <div id="promoMsg" style="height:20px; font-size:0.85rem; margin-bottom:15px; font-weight:600;"></div>
-
-            <div class="summary-row"><span>Subtotal</span><span id="subtotalDisplay">₹0</span></div>
-            <div class="summary-row" id="discountRow" style="display:none;"><span>Discount</span><span id="discountDisplay" style="color:var(--primary);">-₹0</span></div>
-            <div class="summary-row"><span>Shipping</span><span style="color:var(--primary); font-weight:600;">FREE</span></div>
-            <div class="summary-row summary-total"><span>Total</span><span id="totalDisplay">₹0</span></div>
-
-            <a href="buy.html" class="action-btn btn-primary" id="checkoutBtn">Proceed to Checkout</a>
-            <button onclick="clearCart()" style="width:100%; padding:10px; margin-top:10px; background:none; border:none; color:#999; cursor:pointer; font-weight:600;">Clear Cart</button>
+        <!-- cart items card -->
+        <div class="card">
+            <div id="cartDynamicContainer" class="cart-items-list"></div>
         </div>
     </div>
 
-    <script>
-        // ========== GLOBAL VARIABLES ==========
-        let subtotal = 0;
-        let discount = 0;
-        const FREE_SHIPPING_THRESHOLD = 500;
+    <!-- order summary with flipkart style -->
+    <div class="summary-card card">
+        <div class="summary-title">
+            <i class="fas fa-receipt"></i> PRICE DETAILS
+        </div>
+        <div class="promo-container">
+            <div class="promo-input-group">
+                <input type="text" id="promoCodeInput" class="promo-input" placeholder="GREEN10 or SAVE10">
+                <button class="apply-btn" id="applyPromoBtn">APPLY</button>
+            </div>
+            <div id="promoFeedback" style="font-size: 12px; margin-top: 10px; font-weight: 500;"></div>
+        </div>
+        <div class="price-breakdown">
+            <div class="price-row">
+                <span>Subtotal</span>
+                <span id="subTotalSpan">₹0</span>
+            </div>
+            <div class="price-row" id="discountRowWrap" style="display: none;">
+                <span>Discount</span>
+                <span id="discountAmountSpan" style="color:#388e3c;">-₹0</span>
+            </div>
+            <div class="price-row">
+                <span>Shipping</span>
+                <span class="badge-free" id="shippingBadge">FREE</span>
+            </div>
+            <div class="grand-total">
+                <span>TOTAL</span>
+                <span id="totalAmountSpan">₹0</span>
+            </div>
+        </div>
+        <button class="checkout-btn-modern" id="checkoutActionBtn">
+            <i class="fas fa-lock"></i> PLACE ORDER
+        </button>
+        <button class="clear-cart-btn" id="clearCartBtn"><i class="far fa-trash-alt"></i> Clear Cart</button>
+    </div>
+</div>
 
-        // ========== CART DATA (use real localStorage) ==========
-        // Initialize with demo data if empty (for testing)
-        (function initDemoCart() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            if (cart.length === 0) {
-                // Add some demo items so cart is not empty for preview
-                cart = [
-                    { id: 1, name: "Morning Jewel Rose Seed", price: 158, priceNumber: 158, image: "F1.jpg", quantity: 2 },
-                    { id: 2, name: "Bitter Gourd Seeds", price: 99, priceNumber: 99, image: "F3.jpg", quantity: 1 },
-                    { id: 3, name: "Organic Potting Mix", price: 360, priceNumber: 360, image: "F18.jpg", quantity: 1 }
-                ];
-                localStorage.setItem('cart', JSON.stringify(cart));
+<script>
+    // ---------- DATA & HELPERS ----------
+    let currentSubtotal = 0;
+    let appliedDiscount = 0;       // absolute discount in rupees
+    let activePromoCode = null;    // store code to reapply on updates
+
+    const FREE_SHIPPING_LIMIT = 500;
+
+    // get cart from localStorage
+    function getCart() {
+        let cart = localStorage.getItem('flipkart_cart_green');
+        if (!cart) {
+            // demo data same as before but fresh
+            const demo = [
+                { id: 1, name: "Morning Jewel Rose Seed", price: 158, priceNumber: 158, image: "F1.jpg", quantity: 2 },
+                { id: 2, name: "Bitter Gourd Seeds", price: 99, priceNumber: 99, image: "F3.jpg", quantity: 1 },
+                { id: 3, name: "Organic Potting Mix", price: 360, priceNumber: 360, image: "F18.jpg", quantity: 1 }
+            ];
+            localStorage.setItem('flipkart_cart_green', JSON.stringify(demo));
+            return demo;
+        }
+        return JSON.parse(cart);
+    }
+
+    function setCart(cartArray) {
+        localStorage.setItem('flipkart_cart_green', JSON.stringify(cartArray));
+    }
+
+    // recalc subtotal from cart
+    function computeSubtotal(cart) {
+        let total = 0;
+        for (let item of cart) {
+            let price = typeof item.price === 'number' ? item.price : (item.priceNumber || parseFloat(item.price) || 0);
+            let qty = item.quantity || 1;
+            total += price * qty;
+        }
+        return total;
+    }
+
+    // apply discount logic based on promo code (GREEN10 = 10% off, SAVE10 same)
+    function calculateDiscount(subtotal, promoCode) {
+        if (!promoCode) return 0;
+        let code = promoCode.trim().toUpperCase();
+        if (code === 'GREEN10' || code === 'SAVE10') {
+            return Math.floor(subtotal * 0.10);
+        }
+        return 0;
+    }
+
+    // update everything: render cart, totals, promo persist, shipping bar
+    function refreshCartUI() {
+        let cart = getCart();
+        currentSubtotal = computeSubtotal(cart);
+        // recompute discount based on active promo code
+        if (activePromoCode) {
+            let newDiscount = calculateDiscount(currentSubtotal, activePromoCode);
+            appliedDiscount = newDiscount;
+            if (appliedDiscount === 0 && activePromoCode !== null) {
+                // invalidate if discount becomes 0 but code existed (means maybe subtotal changed? but % based will recalc)
+                if (activePromoCode.toUpperCase() !== 'GREEN10' && activePromoCode.toUpperCase() !== 'SAVE10') {
+                    activePromoCode = null;
+                } else {
+                    appliedDiscount = calculateDiscount(currentSubtotal, activePromoCode);
+                }
             }
-        })();
+        } else {
+            appliedDiscount = 0;
+        }
 
-        // ========== MAIN FUNCTION ==========
-        function loadCart() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const container = document.getElementById('cart-items-container');
-            container.innerHTML = '';
-            subtotal = 0;
-            discount = 0; // reset discount on reload
-            document.getElementById('discountRow').style.display = 'none';
-            document.getElementById('promoMsg').innerHTML = '';
-            document.getElementById('promoInput').value = '';
+        // render cart items
+        const container = document.getElementById('cartDynamicContainer');
+        if (!cart.length) {
+            container.innerHTML = `
+                <div class="empty-modern">
+                    <div class="empty-icon"><i class="fas fa-shopping-basket"></i></div>
+                    <h3 style="margin-bottom: 8px;">Your cart feels lonely</h3>
+                    <p>Add some fresh greens & seeds</p>
+                    <a href="products.html" class="shop-now-link">Explore Plants <i class="fas fa-arrow-right"></i></a>
+                </div>
+            `;
+            document.getElementById('checkoutActionBtn').disabled = false;
+            document.getElementById('checkoutActionBtn').style.opacity = '1';
+            updateTotalsAndShipping();
+            return;
+        }
 
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-cart">
-                        <i class="fas fa-seedling"></i>
-                        <h3 style="font-family:'Playfair Display'; color:var(--primary); margin-top:10px;">Your Cart is Empty</h3>
-                        <p style="margin-top:5px;">Add some plants to get started.</p>
-                        <a href="products.html" style="display:inline-block; margin-top:20px; padding:10px 25px; background:var(--primary); color:white; text-decoration:none; border-radius:20px; font-weight:600;">Shop Now</a>
-                    </div>`;
-                document.getElementById('checkoutBtn').classList.add('disabled');
-                document.getElementById('checkoutBtn').style.pointerEvents = 'none';
-                document.getElementById('checkoutBtn').style.opacity = '0.5';
-                updateTotals();
-                updateProgressBar();
-                return;
-            }
-            
-            document.getElementById('checkoutBtn').classList.remove('disabled');
-            document.getElementById('checkoutBtn').style.pointerEvents = 'auto';
-            document.getElementById('checkoutBtn').style.opacity = '1';
-
-            cart.forEach((item, index) => {
-                // Ensure price is a number
-                const price = typeof item.price === 'number' ? item.price : 
-                             (item.priceNumber || parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0);
-                const qty = item.quantity || 1;
-                const itemTotal = price * qty;
-                subtotal += itemTotal;
-
-                // Store priceNumber for later use
-                if (!item.priceNumber) item.priceNumber = price;
-
-                container.innerHTML += `
-                    <div class="cart-item" id="item-${index}">
-                        <img src="${item.image || 'https://via.placeholder.com/100/ebf5df/3f683f?text=🌱'}" class="item-image" onerror="this.src='https://via.placeholder.com/100/ebf5df/3f683f?text=🌱'">
-                        <div class="item-details">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-price">₹${price.toLocaleString('en-IN')}</div>
-                            <div class="quantity-controls">
-                                <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
-                                <span class="qty-val">${qty}</span>
-                                <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                            </div>
+        let html = '';
+        cart.forEach((item, idx) => {
+            let price = typeof item.price === 'number' ? item.price : (item.priceNumber || 95);
+            let qty = item.quantity || 1;
+            let itemTotal = price * qty;
+            let imageUrl = item.image || 'https://via.placeholder.com/110/eff3f6/2d6a4f?text=🌿';
+            html += `
+                <div class="cart-item" data-index="${idx}">
+                    <img src="${imageUrl}" class="item-img" onerror="this.src='https://via.placeholder.com/110/eff3f6/2d6a4f?text=🌱'">
+                    <div class="item-detail">
+                        <div class="item-title">${escapeHtml(item.name)}</div>
+                        <div class="item-price-modern">₹${price.toLocaleString('en-IN')}</div>
+                        <div class="qty-module">
+                            <button class="qty-btn-flip" onclick="updateItemQty(${idx}, -1)">−</button>
+                            <span class="qty-number">${qty}</span>
+                            <button class="qty-btn-flip" onclick="updateItemQty(${idx}, 1)">+</button>
                         </div>
-                        <button class="remove-btn" onclick="removeFromCart(${index})"><i class="fas fa-times"></i></button>
-                    </div>`;
-            });
-            updateTotals();
-            updateProgressBar();
+                        <button class="remove-link" onclick="removeCartItem(${idx})"><i class="fas fa-trash-alt"></i> Remove</button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        updateTotalsAndShipping();
+    }
+
+    function updateTotalsAndShipping() {
+        let finalTotal = currentSubtotal - appliedDiscount;
+        if (finalTotal < 0) finalTotal = 0;
+        document.getElementById('subTotalSpan').innerHTML = `₹${currentSubtotal.toLocaleString('en-IN')}`;
+        document.getElementById('totalAmountSpan').innerHTML = `₹${finalTotal.toLocaleString('en-IN')}`;
+        if (appliedDiscount > 0) {
+            document.getElementById('discountRowWrap').style.display = 'flex';
+            document.getElementById('discountAmountSpan').innerHTML = `-₹${appliedDiscount.toLocaleString('en-IN')}`;
+        } else {
+            document.getElementById('discountRowWrap').style.display = 'none';
         }
-
-        // ========== UPDATE QUANTITY ==========
-        function updateQuantity(index, change) {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            if (cart[index]) {
-                cart[index].quantity = Math.max(1, (cart[index].quantity || 1) + change);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                loadCart(); // reload everything
-            }
+        // shipping progress
+        const progressFill = document.getElementById('shipFill');
+        const shippingMsgSpan = document.getElementById('shippingMsg');
+        const diffSpan = document.getElementById('shippingDiff');
+        if (currentSubtotal >= FREE_SHIPPING_LIMIT) {
+            progressFill.style.width = '100%';
+            shippingMsgSpan.innerHTML = '<i class="fas fa-check-circle" style="color:#388e3c;"></i> FREE Shipping unlocked!';
+            diffSpan.innerHTML = '🎉 You\'re eligible';
+        } else {
+            let need = FREE_SHIPPING_LIMIT - currentSubtotal;
+            let percent = (currentSubtotal / FREE_SHIPPING_LIMIT) * 100;
+            progressFill.style.width = `${Math.min(percent, 100)}%`;
+            shippingMsgSpan.innerHTML = `<i class="fas fa-truck"></i> Add ₹${need} more for FREE Shipping`;
+            diffSpan.innerHTML = `₹${need} left`;
         }
-
-        // ========== REMOVE ITEM ==========
-        function removeFromCart(index) {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            loadCart();
+        // optional promo feedback persistence
+        if (activePromoCode) {
+            let fb = document.getElementById('promoFeedback');
+            if (appliedDiscount > 0) fb.innerHTML = `<span style="color:#2e7d32;">✔ Promo "${activePromoCode}" applied! You saved ₹${appliedDiscount}</span>`;
+            else if (activePromoCode) fb.innerHTML = `<span style="color:#d32f2f;">✘ Promo code invalid or expired</span>`;
+        } else {
+            if(document.getElementById('promoFeedback').innerText.includes('applied')) document.getElementById('promoFeedback').innerHTML = '';
         }
+    }
 
-        // ========== CLEAR CART ==========
-        function clearCart() {
-            localStorage.setItem('cart', JSON.stringify([]));
-            loadCart();
+    // qty update
+    window.updateItemQty = function(index, delta) {
+        let cart = getCart();
+        if (!cart[index]) return;
+        let newQty = (cart[index].quantity || 1) + delta;
+        if (newQty < 1) newQty = 1;
+        cart[index].quantity = newQty;
+        setCart(cart);
+        refreshCartUI();
+        // add subtle animation to cart item
+        let items = document.querySelectorAll('.cart-item');
+        if(items[index]) items[index].classList.add('shake');
+        setTimeout(() => { if(items[index]) items[index].classList.remove('shake'); }, 300);
+    };
+
+    window.removeCartItem = function(index) {
+        let cart = getCart();
+        cart.splice(index, 1);
+        setCart(cart);
+        refreshCartUI();
+    };
+
+    function clearCart() {
+        setCart([]);
+        activePromoCode = null;
+        appliedDiscount = 0;
+        refreshCartUI();
+    }
+
+    function applyPromoHandler() {
+        const inputField = document.getElementById('promoCodeInput');
+        let code = inputField.value.trim();
+        if (!code) {
+            document.getElementById('promoFeedback').innerHTML = '<span style="color:#e67e22;">Enter a promo code</span>';
+            return;
         }
-
-        // ========== UPDATE TOTALS DISPLAY ==========
-        function updateTotals() {
-            document.getElementById('subtotalDisplay').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-            const totalAfterDiscount = subtotal - discount;
-            document.getElementById('totalDisplay').textContent = `₹${totalAfterDiscount.toLocaleString('en-IN')}`;
-            if (discount > 0) {
-                document.getElementById('discountRow').style.display = 'flex';
-                document.getElementById('discountDisplay').textContent = `-₹${discount.toLocaleString('en-IN')}`;
-            } else {
-                document.getElementById('discountRow').style.display = 'none';
-            }
+        let upperCode = code.toUpperCase();
+        if (upperCode === 'GREEN10' || upperCode === 'SAVE10') {
+            activePromoCode = upperCode;
+            appliedDiscount = calculateDiscount(currentSubtotal, activePromoCode);
+            refreshCartUI();
+            // flash effect
+            const btn = document.getElementById('applyPromoBtn');
+            btn.style.transform = 'scale(0.96)';
+            setTimeout(() => btn.style.transform = '', 150);
+        } else {
+            activePromoCode = null;
+            appliedDiscount = 0;
+            refreshCartUI();
+            const fb = document.getElementById('promoFeedback');
+            fb.innerHTML = '<span style="color:#d32f2f;">❌ Invalid code. Try GREEN10</span>';
+            setTimeout(() => {
+                if(fb.innerHTML.includes('Invalid')) setTimeout(() => { if(fb.innerHTML.includes('Invalid')) fb.innerHTML = ''; }, 1800);
+            }, 1800);
         }
+        inputField.value = '';
+    }
 
-        // ========== PROGRESS BAR (FREE SHIPPING) ==========
-        function updateProgressBar() {
-            const fill = document.getElementById('progressFill');
-            const textSpan = document.getElementById('progressText');
-            const amtSpan = document.getElementById('progressAmt');
-            
-            if (subtotal >= FREE_SHIPPING_THRESHOLD) {
-                fill.style.width = '100%';
-                textSpan.innerHTML = '<i class="fas fa-check-circle" style="color:var(--primary); margin-right:8px;"></i> You unlocked FREE Shipping!';
-                amtSpan.style.display = 'none';
-            } else {
-                const diff = FREE_SHIPPING_THRESHOLD - subtotal;
-                fill.style.width = `${(subtotal / FREE_SHIPPING_THRESHOLD) * 100}%`;
-                textSpan.innerHTML = `Add <strong>₹${diff}</strong> more for FREE Shipping!`;
-                amtSpan.textContent = `₹${diff} left`;
-                amtSpan.style.display = 'inline';
-            }
+    // checkout
+    function proceedCheckout() {
+        let cart = getCart();
+        if (cart.length === 0) {
+            const summaryCard = document.querySelector('.summary-card');
+            summaryCard.classList.add('shake');
+            setTimeout(() => summaryCard.classList.remove('shake'), 400);
+            alert("Your cart is empty! Add some wonderful plants.");
+            return;
         }
+        // simulate smooth transition, preserve data for buy.html
+        window.location.href = "buy.html";
+    }
 
-        // ========== APPLY PROMO CODE ==========
-        function applyPromo() {
-            const code = document.getElementById('promoInput').value.trim().toUpperCase();
-            const msgDiv = document.getElementById('promoMsg');
-            
-            if (code === 'GREEN10') {
-                discount = Math.round(subtotal * 0.10);
-                msgDiv.innerHTML = '<span style="color:var(--primary); font-weight:600;">✓ Code applied! 10% off</span>';
-            } else if (code === '') {
-                discount = 0;
-                msgDiv.innerHTML = '<span style="color:#e67e22;">Enter a code</span>';
-            } else {
-                discount = 0;
-                msgDiv.innerHTML = '<span style="color:#e74c3c;">✗ Invalid code</span>';
-            }
-            updateTotals();
-        }
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
 
-        // ========== CHECKOUT BTN BEHAVIOR (just link) ==========
-        // buy.html exists – we keep it simple
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', loadCart);
-    </script>
+    // event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        refreshCartUI();
+        document.getElementById('applyPromoBtn').addEventListener('click', applyPromoHandler);
+        document.getElementById('clearCartBtn').addEventListener('click', () => {
+            clearCart();
+        });
+        document.getElementById('checkoutActionBtn').addEventListener('click', proceedCheckout);
+        // reapply discount if any stored promo from previous?
+        if(activePromoCode) refreshCartUI();
+    });
+</script>
 </body>
 </html>
