@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>GreenGardenCart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Product Details · GreenCart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,208 +17,309 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f1f3f6;
-            color: #212121;
+            background: #f5f7fa;
+            color: #1e2a3e;
             overflow-x: hidden;
         }
 
+        /* modern scrollbar */
         ::-webkit-scrollbar {
             width: 5px;
         }
         ::-webkit-scrollbar-track {
-            background: #e0e0e0;
+            background: #e9ecef;
         }
         ::-webkit-scrollbar-thumb {
             background: #2874f0;
             border-radius: 10px;
         }
 
+        /* navbar - premium gradient with view cart */
         .navbar {
-            background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
-            padding: 14px 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #fef9f0 100%);
+            backdrop-filter: blur(0);
+            padding: 14px 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .back-btn {
-            background: rgba(255,255,255,0.12);
-            border: none;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 14px;
-            color: white;
-            cursor: pointer;
+        .nav-left {
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-        }
-
-        .back-btn:hover {
-            background: #2874f0;
-            transform: translateX(-4px);
+            gap: 20px;
         }
 
         .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* ========== CUSTOM LOGO STYLES ========== */
-        /* Replace the logo by changing the image URL below */
-        .custom-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        .custom-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Fallback icon if image fails to load */
-        .custom-logo .logo-fallback {
-            font-size: 24px;
-            color: white;
-            display: none;
-        }
-
-        .custom-logo img.error + .logo-fallback {
-            display: flex;
-        }
-
-        .brand-text {
-            font-size: 22px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff, #ffd966);
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1e6f2f, #ff9f00);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        .container {
+        .brand i {
+            background: none;
+            -webkit-background-clip: unset;
+            color: #ff9f00;
+            margin-right: 6px;
+        }
+
+        .back-btn {
+            background: rgba(40,116,240,0.1);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2874f0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .back-btn:hover {
+            background: #2874f0;
+            color: white;
+            transform: translateX(-4px);
+            gap: 12px;
+        }
+
+        .view-cart-btn {
+            background: linear-gradient(135deg, #fb641b, #ff7e2e);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 8px rgba(251,100,27,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251,100,27,0.3);
+            gap: 12px;
+        }
+
+        .cart-count-badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: #ff4757;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 30px;
+            min-width: 20px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        /* main product container */
+        .product-container {
             max-width: 1280px;
-            margin: 32px auto;
+            margin: 32px auto 60px;
             padding: 0 32px;
             display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 28px;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
         }
 
-        .cart-card {
+        /* left gallery with flipkart style */
+        .gallery-card {
             background: white;
-            border-radius: 24px;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            position: relative;
         }
 
-        .cart-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid #f0f2f5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-header h2 {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .cart-items {
-            padding: 0 24px;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 20px;
-            padding: 20px 0;
-            border-bottom: 1px solid #f0f2f5;
-            transition: all 0.2s;
-        }
-
-        .cart-item:hover {
-            background: #fafbfc;
-            margin: 0 -8px;
-            padding: 20px 8px;
-            border-radius: 16px;
-        }
-
-        .item-img {
-            width: 100px;
-            height: 100px;
-            background: #f8f9fa;
-            border-radius: 16px;
+        .image-magnifier {
+            background: #faf9fc;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
+            min-height: 480px;
+            padding: 32px;
+            transition: transform 0.3s ease;
         }
 
-        .item-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .product-img {
+            max-width: 85%;
+            max-height: 380px;
+            object-fit: contain;
+            transition: transform 0.4s cubic-bezier(0.2, 0.95, 0.4, 1.1);
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.08));
         }
 
-        .item-img i {
-            font-size: 40px;
+        .gallery-card:hover .product-img {
+            transform: scale(1.02);
+        }
+
+        .badge-stock {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #e8f5e9;
             color: #2e7d32;
-        }
-
-        .item-details {
-            flex: 1;
-        }
-
-        .item-name {
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .item-price {
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
             font-weight: 700;
-            font-size: 18px;
-            color: #2874f0;
+            letter-spacing: 0.3px;
+            z-index: 2;
+        }
+
+        /* right info panel */
+        .info-panel {
+            background: white;
+            border-radius: 28px;
+            padding: 32px 32px 40px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+            border: 1px solid #f0f2f5;
+            transition: transform 0.2s;
+        }
+
+        .product-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #172337;
             margin-bottom: 12px;
         }
 
-        .quantity-controls {
+        .rating-section {
             display: flex;
             align-items: center;
             gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .rating-badge {
+            background: #388e3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .price-block {
+            margin: 20px 0 16px;
+        }
+
+        .current-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #212121;
+            letter-spacing: -0.5px;
+        }
+
+        .current-price small {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #878787;
+        }
+
+        .original-price {
+            font-size: 1rem;
+            color: #878787;
+            text-decoration: line-through;
+            margin-left: 12px;
+        }
+
+        .discount-percent {
+            color: #388e3c;
+            font-weight: 700;
+            margin-left: 12px;
+            font-size: 1rem;
+        }
+
+        .tax-info {
+            font-size: 0.75rem;
+            color: #26a541;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .description {
+            color: #565959;
+            line-height: 1.6;
+            margin: 24px 0;
+            font-size: 0.95rem;
+            border-left: 3px solid #ff9f00;
+            padding-left: 16px;
+            background: #fefcf8;
+            border-radius: 12px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #eef2f5;
+            margin: 24px 0;
+        }
+
+        /* quantity selector - modern */
+        .quantity-module {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 24px 0;
+        }
+
+        .qty-label {
+            font-weight: 600;
+            color: #3e4d5b;
+        }
+
+        .qty-control-group {
+            display: flex;
+            align-items: center;
             background: #f1f3f6;
-            padding: 6px 12px;
-            border-radius: 40px;
-            width: fit-content;
+            border-radius: 44px;
+            overflow: hidden;
         }
 
         .qty-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
             background: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            font-size: 1.4rem;
+            font-weight: 700;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
             color: #2874f0;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .qty-btn:hover:not(:disabled) {
@@ -225,420 +328,489 @@
         }
 
         .qty-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
         }
 
-        .qty-value {
-            min-width: 30px;
+        .qty-input {
+            width: 60px;
             text-align: center;
-            font-weight: 600;
-        }
-
-        .remove-btn {
-            background: none;
             border: none;
-            color: #ef4444;
-            cursor: pointer;
-            padding: 8px;
-            transition: all 0.2s;
-        }
-
-        .remove-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .summary-card {
             background: white;
-            border-radius: 24px;
-            padding: 24px;
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-
-        .summary-title {
-            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #f0f2f5;
+            font-size: 1rem;
+            padding: 12px 0;
+            -moz-appearance: textfield;
         }
 
-        .price-row {
+        .qty-input:focus {
+            outline: none;
+        }
+
+        /* action buttons - flipkart primary orange */
+        .action-group {
             display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            font-size: 14px;
-            color: #5f6c76;
+            gap: 16px;
+            margin-top: 28px;
+            flex-wrap: wrap;
         }
 
-        .total-row {
-            border-top: 1px solid #f0f2f5;
-            margin-top: 12px;
-            padding-top: 16px;
-            font-weight: 800;
-            font-size: 20px;
-            color: #212121;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #fb641b, #f5721f);
+        .btn-buy {
+            flex: 1;
+            background: #fb641b;
             border: none;
-            padding: 14px;
-            border-radius: 40px;
-            color: white;
+            padding: 16px 20px;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s;
-        }
-
-        .checkout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(251,100,27,0.3);
-        }
-
-        .clear-cart-btn {
-            width: 100%;
-            background: transparent;
-            border: 1px solid #e2e8f0;
-            padding: 12px;
-            border-radius: 40px;
-            margin-top: 12px;
-            font-weight: 600;
-            color: #ef4444;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .clear-cart-btn:hover {
-            background: #fef2f2;
-            border-color: #ef4444;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 80px 40px;
-        }
-
-        .empty-cart i {
-            font-size: 80px;
-            color: #cbd5e1;
-            margin-bottom: 20px;
-        }
-
-        .empty-cart h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-        }
-
-        .shop-now-btn {
-            background: linear-gradient(135deg, #2874f0, #1a5bbf);
-            border: none;
-            padding: 12px 32px;
-            border-radius: 40px;
+            font-size: 1rem;
             color: white;
-            font-weight: 600;
             cursor: pointer;
-            margin-top: 20px;
-            display: inline-flex;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(251,100,27,0.25);
+        }
+
+        .btn-buy:hover {
+            background: #e75b18;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px rgba(251,100,27,0.3);
+        }
+
+        .btn-cart {
+            flex: 1;
+            background: #ff9f00;
+            border: none;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-cart:hover {
+            background: #f78c1e;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 18px rgba(255,159,0,0.3);
+        }
+
+        /* meta row */
+        .meta-row {
+            display: flex;
+            gap: 28px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .meta-chip {
+            display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 0.8rem;
+            color: #5f6c76;
+            background: #f8f9fc;
+            padding: 6px 14px;
+            border-radius: 40px;
         }
 
-        .toast {
+        .meta-chip i {
+            color: #ff9f00;
+            font-size: 0.9rem;
+        }
+
+        /* Toast notification */
+        .toast-notify {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(33,33,33,0.95);
-            padding: 12px 24px;
-            border-radius: 40px;
+            background: #1e2a3e;
             color: white;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-weight: 500;
             z-index: 2000;
-            transition: all 0.3s;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(8px);
+            background: rgba(30,42,62,0.95);
+            pointer-events: none;
         }
 
-        .toast.show {
+        .toast-notify.show {
             transform: translateX(-50%) translateY(0);
+            opacity: 1;
         }
 
-        @media (max-width: 768px) {
-            .container {
+        @media (max-width: 880px) {
+            .product-container {
                 grid-template-columns: 1fr;
+                gap: 24px;
                 padding: 0 20px;
-            }
-            .cart-item {
-                flex-wrap: wrap;
             }
             .navbar {
                 padding: 12px 20px;
             }
-            .custom-logo {
-                width: 36px;
-                height: 36px;
+            .image-magnifier {
+                min-height: 340px;
             }
-            .brand-text {
-                font-size: 18px;
+            .product-title {
+                font-size: 1.5rem;
             }
+            .action-group {
+                flex-direction: column;
+            }
+            .nav-left {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* ripple effect for buttons */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10);
+            opacity: 0;
+            transition: transform 0.4s, opacity 0.8s;
+        }
+        .ripple:active:after {
+            transform: scale(0);
+            opacity: 0.4;
+            transition: 0s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.05); opacity: 0; }
+        }
+        .add-animation {
+            animation: pulse 0.4s ease-out;
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar">
-    <button class="back-btn" onclick="window.location.href='products.html'">
-        <i class="fas fa-arrow-left"></i> Continue Shopping
+<div class="navbar">
+    <div class="nav-left">
+        <button class="back-btn ripple" onclick="window.location.href='products.html'">
+            <i class="fas fa-arrow-left"></i> Back to Shop
+        </button>
+        <div class="brand">
+            <i class="fas fa-leaf"></i> GreenCart
+        </div>
+    </div>
+    <button class="view-cart-btn ripple" id="viewCartBtn">
+        <i class="fas fa-shopping-cart"></i> View Cart
+        <span id="cartCountBadge" class="cart-count-badge" style="display: none;">0</span>
     </button>
-    <div class="brand">
-        <!-- ========== YOUR CUSTOM LOGO GOES HERE ========== -->
-        <!-- 
-            TO ADD YOUR OWN LOGO:
-            1. Replace the image URL below with your logo image path
-            2. Supported formats: PNG, JPG, JPEG, SVG, WebP
-            3. If the image fails to load, a garden leaf icon will show as fallback
-        -->
-        <div class="custom-logo" id="customLogoContainer">
-            <img id="brandLogo" src="https://placehold.co/200x200/2e7d32/ffffff?text=GG" alt="My Garden Store Logo" onerror="handleLogoError(this)">
-            <i class="fas fa-leaf logo-fallback"></i>
-        </div>
-        <div class="brand-text">GREEN GARDEN</div>
-    </div>
-    <div style="width: 100px;"></div>
-</nav>
+</div>
 
-<div class="container">
-    <div class="cart-card">
-        <div class="cart-header">
-            <h2><i class="fas fa-shopping-cart"></i> My Cart</h2>
-            <span id="itemCount" style="color: #64748b;">0 items</span>
+<div class="product-container" id="productContainer">
+    <div class="gallery-card">
+        <div class="badge-stock"><i class="fas fa-check-circle"></i> In Stock</div>
+        <div class="image-magnifier">
+            <img id="mainProductImage" class="product-img" src="" alt="Product">
         </div>
-        <div id="cartItemsContainer" class="cart-items"></div>
     </div>
 
-    <div class="summary-card">
-        <div class="summary-title">Price Details</div>
-        <div class="price-row">
-            <span>Subtotal</span>
-            <span id="subtotal">₹0</span>
+    <div class="info-panel">
+        <h1 class="product-title" id="productName">Loading...</h1>
+        <div class="rating-section">
+            <span class="rating-badge" id="productRating"><i class="fas fa-star"></i> 4.5</span>
+            <span style="color:#878787; font-size:0.8rem;" id="reviewCount">★ 120+ ratings</span>
         </div>
-        <div class="price-row">
-            <span>Shipping</span>
-            <span>FREE</span>
+
+        <div class="price-block">
+            <span class="current-price" id="currentPrice">₹0</span>
+            <span class="original-price" id="originalPrice"></span>
+            <span class="discount-percent" id="discountPercent"></span>
+            <div class="tax-info">inclusive of all taxes <i class="fas fa-gem"></i></div>
         </div>
-        <div class="price-row">
-            <span>Platform Fee</span>
-            <span>₹10</span>
+
+        <div class="description" id="productDesc">
+            Premium quality seeds and plants cultivated with care. Each product comes with detailed growing instructions and our satisfaction guarantee.
         </div>
-        <div class="price-row total-row">
-            <span>Total</span>
-            <span id="totalAmount">₹0</span>
+
+        <div class="divider"></div>
+
+        <div class="quantity-module">
+            <span class="qty-label"><i class="fas fa-boxes"></i> Quantity:</span>
+            <div class="qty-control-group">
+                <button class="qty-btn" id="minusBtn" aria-label="Decrease">−</button>
+                <input type="number" id="quantityInput" class="qty-input" value="1" min="1" max="99">
+                <button class="qty-btn" id="plusBtn" aria-label="Increase">+</button>
+            </div>
         </div>
-        <button class="checkout-btn" onclick="proceedToCheckout()">
-            <i class="fas fa-lock"></i> PROCEED TO CHECKOUT
-        </button>
-        <button class="clear-cart-btn" onclick="clearCart()">
-            <i class="fas fa-trash-alt"></i> Clear Cart
-        </button>
+
+        <div class="action-group">
+            <button class="btn-buy ripple" id="buyNowBtn"><i class="fas fa-bolt"></i> Buy Now</button>
+            <button class="btn-cart ripple" id="addToCartBtn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+        </div>
+
+        <div class="meta-row">
+            <div class="meta-chip"><i class="fas fa-shield-alt"></i> 100% Organic</div>
+            <div class="meta-chip"><i class="fas fa-truck"></i> Free Delivery over ₹500</div>
+            <div class="meta-chip"><i class="fas fa-seedling"></i> Grow Guarantee</div>
+        </div>
     </div>
 </div>
 
-<div id="toast" class="toast"></div>
+<div id="toastMsg" class="toast-notify">
+    <i class="fas fa-check-circle"></i> <span id="toastText">Item added</span>
+</div>
 
 <script>
-  
-    const YOUR_LOGO_URL = "logo1.jpg";
+    // ---------- PRODUCT DATABASE (50 items) ----------
+    const products = [
+        { id: 1, name: "Morning Jewel Rose Seed", price: 158, image: "F1.jpg", category: "Flower Seeds", rating: 4.2, reviews: 134 },
+        { id: 2, name: "Winter Daisy Red Mixed Seed", price: 150, image: "F2.jpg", category: "Flower Seeds", rating: 4.5, reviews: 98 },
+        { id: 3, name: "Bitter Gourd-karela seed", price: 99, image: "F3.jpg", category: "Vegetable Seeds", rating: 4.7, reviews: 210 },
+        { id: 4, name: "Black Tomato Hybrid", price: 110, image: "F4.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 76 },
+        { id: 5, name: "Broccoli Vegetable Seed", price: 89, image: "F5.jpg", category: "Vegetable Seeds", rating: 4.0, reviews: 112 },
+        { id: 6, name: "Brazilian Wood Plant", price: 550, image: "F6.jpg", category: "Plants", rating: 4.6, reviews: 203 },
+        { id: 7, name: "Apple Plant Hybrid", price: 100, image: "F7.jpg", category: "Fruit Plants", rating: 4.4, reviews: 89 },
+        { id: 8, name: "Cabbage Seed", price: 110, image: "F8.jpg", category: "Vegetable Seeds", rating: 4.2, reviews: 67 },
+        { id: 9, name: "Chinese Cabbage", price: 111, image: "F9.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 54 },
+        { id: 10, name: "Amaranthus Vegetable Seed", price: 130, image: "F10.jpg", category: "Vegetable Seeds", rating: 4.1, reviews: 42 },
+        { id: 11, name: "Farm Cauliflower Violetto", price: 120, image: "F11.jpg", category: "Vegetable Seeds", rating: 4.5, reviews: 88 },
+        { id: 12, name: "Kamal Seed(200g)", price: 149, image: "F12.jpg", category: "Flower Seeds", rating: 4.0, reviews: 130 },
+        { id: 13, name: "6 Birds Hanging Home Decor", price: 160, image: "F13.jpg", category: "Garden Decor", rating: 4.7, reviews: 220 },
+        { id: 14, name: "Blue Ceramic Pot", price: 200, image: "F14.jpg", category: "Planters", rating: 4.8, reviews: 310 },
+        { id: 15, name: "Multicolor Plastic Pot", price: 400, image: "F15.jpg", category: "Planters", rating: 4.4, reviews: 175 },
+        { id: 16, name: "Signal Bicycle Pot Stand", price: 199, image: "F16.jpg", category: "Plant Stands", rating: 4.6, reviews: 92 },
+        { id: 17, name: "Crystal Shaped Plastic Flower Pot", price: 299, image: "F17.jpg", category: "Planters", rating: 4.5, reviews: 118 },
+        { id: 18, name: "Organic Potting Mix", price: 360, image: "F18.jpg", category: "Plant Care", rating: 4.9, reviews: 420 },
+        { id: 19, name: "6 Tier Metal Pot Stand", price: 999, image: "F19.jpg", category: "Plant Stands", rating: 4.7, reviews: 201 },
+        { id: 20, name: "Yellow Kalanchoe Flower Seed", price: 149, image: "F20.jpg", category: "Flower Seeds", rating: 4.3, reviews: 77 },
+        { id: 21, name: "sky fruit Seeds(400g)", price: 349, image: "F21.jpg", category: "Fruit Seeds", rating: 4.2, reviews: 56 },
+        { id: 22, name: "long luki seed(25 per pkt)", price: 110, image: "F22.jpg", category: "Vegetable Seeds", rating: 4.0, reviews: 61 },
+        { id: 23, name: "Castor seed(100g)", price: 169, image: "F23.jpg", category: "Oil Seeds", rating: 4.1, reviews: 34 },
+        { id: 24, name: "Black Avacodo tree seed(1 per pkt)", price: 129, image: "F24.jpg", category: "Fruit Seeds", rating: 4.5, reviews: 48 },
+        { id: 25, name: "gobhee seeds(10 per pkt)", price: 129, image: "F25.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 39 },
+        { id: 26, name: "Halim seeds(300g)", price: 270, image: "F26.jpg", category: "Vegetable Seeds", rating: 4.4, reviews: 27 },
+        { id: 27, name: "carrot seeds(1 per pkt)", price: 199, image: "F27.jpg", category: "Vegetable Seeds", rating: 4.6, reviews: 95 },
+        { id: 28, name: "Green grass seeds(3000 per pkt)", price: 118, image: "F28.jpg", category: "Lawn Seeds", rating: 4.2, reviews: 44 },
+        { id: 29, name: "Hybrid dahlia seeds(50 per pkt)", price: 125, image: "F29.jpg", category: "Flower Seeds", rating: 4.5, reviews: 72 },
+        { id: 30, name: "Ash gourd seeds(40 per pkt)", price: 159, image: "F30.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 66 },
+        { id: 31, name: "black carrot seeds (120 per pkt)", price: 149, image: "F31.jpg", category: "Vegetable Seeds", rating: 4.7, reviews: 112 },
+        { id: 32, name: "Long Slender PepperSeeds (200 per pkt)", price: 145, image: "F32.jpg", category: "Vegetable Seeds", rating: 4.5, reviews: 83 },
+        { id: 33, name: "Lotua Seeds (30 per pkt)", price: 119, image: "F33.jpg", category: "Flower Seeds", rating: 4.1, reviews: 52 },
+        { id: 34, name: "Halam Seeds (200g)", price: 189, image: "F34.jpg", category: "Vegetable Seeds", rating: 4.4, reviews: 31 },
+        { id: 35, name: "Hot chilli organic Seeds (200 per pkt)", price: 119, image: "F35.jpg", category: "Vegetable Seeds", rating: 4.8, reviews: 146 },
+        { id: 36, name: "Raganigandha flower Seeds (4 per pkt)", price: 109, image: "F36.jpg", category: "Flower Seeds", rating: 4.2, reviews: 37 },
+        { id: 37, name: "Sword Lily plant (hybrid,pack of 1)", price: 120, image: "F37.jpg", category: "Flower Seeds", rating: 4.5, reviews: 64 },
+        { id: 38, name: "HARSINGAR seed(20 per pkt)", price: 129, image: "F38.jpg", category: "Flower seeds", rating: 4.6, reviews: 55 },
+        { id: 39, name: "French yellow marigold seed(50 per pkt)", price: 145, image: "F39.jpg", category: "Flower Seeds", rating: 4.7, reviews: 121 },
+        { id: 40, name: "Beej Band Seeds (100 per pkt)", price: 199, image: "F40.jpg", category: "Flower Seeds", rating: 4.3, reviews: 43 },
+        { id: 41, name: "Rose plant(Hybrid,pack of 1)", price: 129, image: "F41.jpg", category: "Flower Seeds", rating: 4.9, reviews: 305 },
+        { id: 42, name: "Black soil manure(10kg,Powder)", price: 219, image: "F42.jpg", category: "plant manure", rating: 4.4, reviews: 88 },
+        { id: 43, name: "Red Banana plant(Hybrid, pack of 1)", price: 149, image: "F43.jpg", category: "Fruit Seeds", rating: 4.5, reviews: 79 },
+        { id: 44, name: "Hibiscus plant(Hybrid,pack of 1)", price: 115, image: "F44.jpg", category: "Flower Seeds", rating: 4.3, reviews: 91 },
+        { id: 45, name: "Natural plant manure(1kg,cake)", price: 135, image: "F45.jpg", category: "Plant manure", rating: 4.6, reviews: 134 },
+        { id: 46, name: "Flower Holder-metal 5 pot planter stand", price: 870, image: "F46.jpg", category: "Pot stand", rating: 4.7, reviews: 62 },
+        { id: 47, name: "Organic DAP plant Growth Boost(1.5 kg)", price: 220, image: "F47.jpg", category: "Plant fertilizer", rating: 4.5, reviews: 107 },
+        { id: 48, name: "Gardenplus 3pcs plant Growth (150 ml, Liquid)", price: 209, image: "F48.jpg", category: "Plant fertilizer", rating: 4.2, reviews: 45 },
+        { id: 49, name: "Magnesium sulfate for plants (500 g)", price: 139, image: "F49.jpg", category: "Plant fertilizer", rating: 4.4, reviews: 58 },
+        { id: 50, name: "Miracle grow all purpose manure(400 g,powder)", price: 450, image: "F50.jpg", category: "Plant manure", rating: 4.8, reviews: 212 }
+    ];
 
-    
-    function handleLogoError(imgElement) {
-        // If logo fails to load, show fallback icon
-        imgElement.style.display = 'none';
-        const fallbackIcon = imgElement.parentElement.querySelector('.logo-fallback');
-        if (fallbackIcon) {
-            fallbackIcon.style.display = 'flex';
+    // Helper: get product from URL id
+    function getProductIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const id = parseInt(params.get("id"));
+        return isNaN(id) ? 1 : id;
+    }
+
+    let currentProduct = null;
+
+    // Get cart count
+    function getCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        return cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    }
+
+    // Update cart badge
+    function updateCartBadge() {
+        const count = getCartCount();
+        const badge = document.getElementById('cartCountBadge');
+        if (count > 0) {
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.style.display = 'block';
+        } else {
+            badge.style.display = 'none';
         }
     }
-    
-    function setCustomLogo() {
-        const logoImg = document.getElementById('brandLogo');
-        if (logoImg && YOUR_LOGO_URL) {
-            logoImg.src = YOUR_LOGO_URL;
-            // Reset display if it was hidden from previous error
-            logoImg.style.display = 'block';
-            const fallbackIcon = logoImg.parentElement.querySelector('.logo-fallback');
-            if (fallbackIcon) {
-                fallbackIcon.style.display = 'none';
-            }
-        }
-    }
-    
-    // Call this function when page loads to apply your logo
-    // You can also call this anytime to dynamically change the logo
-    
+
+    // show toast with smooth transition
     function showToast(message, isError = false) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.style.background = isError ? 'rgba(239,68,68,0.95)' : 'rgba(33,33,33,0.95)';
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    function getCart() {
-        const cart = localStorage.getItem('cart');
-        return cart ? JSON.parse(cart) : [];
-    }
-
-    function saveCart(cart) {
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }
-
-    function getIconForProduct(name) {
-        const nameLower = name.toLowerCase();
-        if (nameLower.includes('rose')) return 'fa-rose';
-        if (nameLower.includes('seed')) return 'fa-leaf';
-        if (nameLower.includes('pot')) return 'fa-flask';
-        if (nameLower.includes('plant')) return 'fa-tree';
-        if (nameLower.includes('mix')) return 'fa-droplet';
-        return 'fa-seedling';
-    }
-
-    function renderCart() {
-        const cart = getCart();
-        const container = document.getElementById('cartItemsContainer');
-        const itemCountSpan = document.getElementById('itemCount');
-        
-        if (cart.length === 0) {
-            container.innerHTML = `
-                <div class="empty-cart">
-                    <i class="fas fa-seedling"></i>
-                    <h3>Your cart is empty</h3>
-                    <p>Add some beautiful plants and seeds to get started!</p>
-                    <button class="shop-now-btn" onclick="window.location.href='products.html'">
-                        <i class="fas fa-store"></i> Shop Now
-                    </button>
-                </div>
-            `;
-            itemCountSpan.textContent = '0 items';
-            document.getElementById('subtotal').textContent = '₹0';
-            document.getElementById('totalAmount').textContent = '₹10';
-            return;
+        const toast = document.getElementById('toastMsg');
+        const toastText = document.getElementById('toastText');
+        toastText.innerText = message;
+        if (isError) {
+            toast.style.background = "rgba(220, 53, 69, 0.95)";
+            toast.querySelector('i').className = "fas fa-exclamation-circle";
+        } else {
+            toast.style.background = "rgba(30,42,62,0.95)";
+            toast.querySelector('i').className = "fas fa-check-circle";
         }
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2200);
+    }
+
+    // add to cart core
+    function addToCartHandler(quantity, redirectToBuy = false) {
+        if (!currentProduct) return;
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
+        if (existingIndex !== -1) {
+            cart[existingIndex].quantity += quantity;
+        } else {
+            cart.push({
+                id: currentProduct.id,
+                name: currentProduct.name,
+                price: currentProduct.price,
+                image: currentProduct.image,
+                quantity: quantity
+            });
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
         
-        let subtotal = 0;
-        let itemsHtml = '';
+        // Update cart badge
+        updateCartBadge();
         
-        cart.forEach((item, index) => {
-            const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
-            const quantity = item.quantity || 1;
-            const total = price * quantity;
-            subtotal += total;
-            const icon = getIconForProduct(item.name);
-            
-            itemsHtml += `
-                <div class="cart-item" data-index="${index}">
-                    <div class="item-img">
-                        ${item.image ? 
-                            `<img src="${item.image}" alt="${item.name}" onerror="this.parentElement.innerHTML='<i class=\'fas ${icon}\'></i>'">` : 
-                            `<i class="fas ${icon}"></i>`
-                        }
-                    </div>
-                    <div class="item-details">
-                        <div class="item-name">${escapeHtml(item.name)}</div>
-                        <div class="item-price">₹${price.toLocaleString('en-IN')}</div>
-                        <div class="quantity-controls">
-                            <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
-                            <span class="qty-value">${quantity}</span>
-                            <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                        </div>
-                    </div>
-                    <button class="remove-btn" onclick="removeFromCart(${index})">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            `;
+        if (redirectToBuy) {
+            showToast(`✨ ${quantity} item(s) added! Redirecting...`, false);
+            setTimeout(() => { window.location.href = 'buy.html'; }, 600);
+        } else {
+            showToast(`✓ ${quantity} × ${currentProduct.name} added to cart`, false);
+            // add ripple effect on button
+            const btn = document.getElementById('addToCartBtn');
+            btn.classList.add('add-animation');
+            setTimeout(() => btn.classList.remove('add-animation'), 300);
+        }
+    }
+
+    // Render product details
+    function renderProductDetails() {
+        const id = getProductIdFromUrl();
+        currentProduct = products.find(p => p.id === id) || products[0];
+        const product = currentProduct;
+
+        document.getElementById('productName').innerText = product.name;
+        document.getElementById('currentPrice').innerHTML = `₹${product.price.toLocaleString('en-IN')}`;
+        document.getElementById('mainProductImage').src = product.image;
+        document.getElementById('productRating').innerHTML = `<i class="fas fa-star"></i> ${product.rating}`;
+        document.getElementById('reviewCount').innerHTML = `${product.reviews || (product.rating * 30).toFixed(0)}+ ratings`;
+        
+        // dynamic discount (fake 8-18% for UI)
+        let mrp = Math.round(product.price * (1 + (Math.random() * 0.18 + 0.08)));
+        let discountVal = Math.round(((mrp - product.price) / mrp) * 100);
+        document.getElementById('originalPrice').innerText = `₹${mrp}`;
+        document.getElementById('discountPercent').innerText = `(${discountVal}% off)`;
+        
+        // custom description per category
+        const descMap = {
+            "Flower Seeds": "🌸 Premium quality flower seeds with high germination rate. Blooms within 6-8 weeks.",
+            "Vegetable Seeds": "🥬 Non-GMO heirloom seeds. Perfect for home garden. Organic & chemical-free.",
+            "Plants": "🌿 Healthy live plant delivered in eco-friendly pot. Ready to thrive.",
+            "Planters": "🏺 Stylish & durable pots. UV resistant & lightweight design.",
+            default: "🌱 Premium quality seeds and plants cultivated with care. Each product comes with detailed growing instructions and our satisfaction guarantee."
+        };
+        let categoryKey = product.category || "default";
+        let dynamicDesc = descMap[categoryKey] || descMap.default;
+        document.getElementById('productDesc').innerHTML = dynamicDesc + ` <strong>${product.name}</strong> is a customer favorite!`;
+        
+        // reset quantity to 1
+        document.getElementById('quantityInput').value = 1;
+        updateButtonsState(1);
+        
+        // Update cart badge on load
+        updateCartBadge();
+    }
+
+    function updateButtonsState(qty) {
+        const minusBtn = document.getElementById('minusBtn');
+        const plusBtn = document.getElementById('plusBtn');
+        minusBtn.disabled = qty <= 1;
+        plusBtn.disabled = qty >= 99;
+    }
+
+    function changeQuantity(delta) {
+        const input = document.getElementById('quantityInput');
+        let val = parseInt(input.value) || 1;
+        let newVal = val + delta;
+        if (newVal >= 1 && newVal <= 99) {
+            input.value = newVal;
+            updateButtonsState(newVal);
+        }
+    }
+
+    // event binding
+    document.addEventListener('DOMContentLoaded', () => {
+        renderProductDetails();
+        
+        const minus = document.getElementById('minusBtn');
+        const plus = document.getElementById('plusBtn');
+        const qtyInput = document.getElementById('quantityInput');
+        const addBtn = document.getElementById('addToCartBtn');
+        const buyBtn = document.getElementById('buyNowBtn');
+        const viewCartBtn = document.getElementById('viewCartBtn');
+        
+        minus.addEventListener('click', () => changeQuantity(-1));
+        plus.addEventListener('click', () => changeQuantity(1));
+        qtyInput.addEventListener('input', function() {
+            let val = parseInt(this.value) || 1;
+            val = Math.min(99, Math.max(1, val));
+            this.value = val;
+            updateButtonsState(val);
         });
         
-        container.innerHTML = itemsHtml;
+        addBtn.addEventListener('click', () => {
+            let qty = parseInt(document.getElementById('quantityInput').value) || 1;
+            addToCartHandler(qty, false);
+        });
         
-        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        itemCountSpan.textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''}`;
+        buyBtn.addEventListener('click', () => {
+            let qty = parseInt(document.getElementById('quantityInput').value) || 1;
+            addToCartHandler(qty, true);
+        });
         
-        const platformFee = 10;
-        const total = subtotal + platformFee;
+        viewCartBtn.addEventListener('click', () => {
+            window.location.href = 'buy.html';
+        });
         
-        document.getElementById('subtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-        document.getElementById('totalAmount').textContent = `₹${total.toLocaleString('en-IN')}`;
-    }
-    
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-    }
-
-    function updateQuantity(index, change) {
-        const cart = getCart();
-        if (cart[index]) {
-            const newQuantity = (cart[index].quantity || 1) + change;
-            if (newQuantity >= 1 && newQuantity <= 99) {
-                cart[index].quantity = newQuantity;
-                saveCart(cart);
-                renderCart();
-                showToast(change > 0 ? 'Quantity increased' : 'Quantity decreased');
-            } else if (newQuantity < 1) {
-                showToast('Minimum quantity is 1', true);
-            } else if (newQuantity > 99) {
-                showToast('Maximum quantity is 99', true);
-            }
-        }
-    }
-
-    function removeFromCart(index) {
-        const cart = getCart();
-        if (cart[index]) {
-            const removedItem = cart[index];
-            cart.splice(index, 1);
-            saveCart(cart);
-            renderCart();
-            showToast(`Removed ${removedItem.name} from cart`);
-        }
-    }
-
-    function clearCart() {
-        if (getCart().length === 0) return;
-        if (confirm('Are you sure you want to clear your entire cart?')) {
-            saveCart([]);
-            renderCart();
-            showToast('Cart cleared successfully');
-        }
-    }
-
-    function proceedToCheckout() {
-        const cart = getCart();
-        if (cart.length === 0) {
-            showToast('Your cart is empty! Please add items first.', true);
-            return;
-        }
-        window.location.href = 'buy.html';
-    }
-
-    // Load cart and apply custom logo on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        // Apply your custom logo
-        setCustomLogo();
-        renderCart();
-        
-        // Debug: Log cart contents
-        console.log('Cart loaded:', getCart());
-        console.log('Custom logo applied. To change logo, edit YOUR_LOGO_URL variable in the script');
+        // back button
+        const back = document.querySelector('.back-btn');
+        if(back) back.addEventListener('click', (e) => {
+            window.location.href = 'products.html';
+        });
     });
 </script>
 </body>
