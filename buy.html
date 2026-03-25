@@ -682,7 +682,20 @@
         if (nameLower.includes('pot')) return 'fa-flask';
         if (nameLower.includes('plant')) return 'fa-tree';
         if (nameLower.includes('mix')) return 'fa-droplet';
+        if (nameLower.includes('money')) return 'fa-leaf';
+        if (nameLower.includes('bamboo')) return 'fa-leaf';
         return 'fa-seedling';
+    }
+
+    function getCategoryForProduct(name) {
+        const nameLower = name.toLowerCase();
+        if (nameLower.includes('rose') || nameLower.includes('bonsai')) return 'Flowering Plants';
+        if (nameLower.includes('seed')) return 'Seeds';
+        if (nameLower.includes('pot')) return 'Planters';
+        if (nameLower.includes('plant')) return 'Indoor Plants';
+        if (nameLower.includes('fertilizer')) return 'Fertilizers';
+        if (nameLower.includes('tool')) return 'Gardening Tools';
+        return 'Garden Products';
     }
 
     function renderPaymentForm(method, totalAmount = 0) {
@@ -791,7 +804,7 @@
         
         const totals = calculateCartTotals(cart, appliedCoupon, selectedPayment);
         
-        // Build cart items HTML with PRODUCT IMAGES
+        // Build cart items HTML with PRODUCT IMAGES and FULL DETAILS
         let cartItemsHtml = '';
         cart.forEach((item, idx) => {
             const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
@@ -966,35 +979,49 @@
             const finalTotals = calculateCartTotals(currentCart, currentCoupon, currentPayment);
             
             const orderId = 'GRD' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000);
+            
+            // Create order data with FULL PRODUCT DETAILS for orders page
             const orderData = {
-                orderId,
-                customer: { name, address, phone },
+                id: orderId,
+                date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+                customer: name,
+                phone: phone,
+                address: address,
                 items: currentCart.map(item => ({
-                    ...item,
-                    price: typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0,
+                    name: item.name || 'Garden Product',
                     quantity: item.quantity || 1,
-                    image: item.image || null
+                    price: typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0,
+                    total: (typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0) * (item.quantity || 1),
+                    image: item.image || null,
+                    icon: getIconForProduct(item.name),
+                    category: item.category || getCategoryForProduct(item.name)
                 })),
-                coupon: currentCoupon || null,
-                payment: currentPayment,
                 subtotal: finalTotals.subtotal,
-                platformFee: finalTotals.platformFee,
-                codFee: currentPayment === 'cod' ? 50 : 0,
-                couponDiscount: finalTotals.couponDiscount,
-                total: finalTotals.total,
-                date: new Date().toISOString(),
-                status: currentPayment === 'cod' ? 'processing' : 'paid'
+                gstAmount: finalTotals.subtotal * 0.18,
+                grandTotal: finalTotals.total,
+                paymentMethod: currentPayment === 'upi' ? 'UPI Payment' : 
+                               currentPayment === 'cod' ? 'Cash on Delivery' : 
+                               currentPayment === 'card' ? 'Credit/Debit Card' : 'Net Banking',
+                status: currentPayment === 'cod' ? 'Processing' : 'Paid',
+                couponApplied: currentCoupon || null
             };
             
+            // Save order to localStorage for orders page
             let orders = JSON.parse(localStorage.getItem('green_garden_orders')) || [];
             orders.unshift(orderData);
             localStorage.setItem('green_garden_orders', JSON.stringify(orders));
             
+            // Set flag for orders page to refresh
+            localStorage.setItem('order_placed_flag', 'true');
+            
+            // Clear cart and checkout data
             localStorage.setItem('cart', JSON.stringify([]));
             localStorage.removeItem('checkout_coupon');
             localStorage.removeItem('checkout_payment');
             
             showToast(`🎉 Order placed! ID: ${orderId.slice(-8)}`, false);
+            
+            // Redirect to orders page
             setTimeout(() => {
                 window.location.href = 'orders.html';
             }, 1500);
@@ -1010,7 +1037,7 @@
         });
         
         document.getElementById('brandLogo')?.addEventListener('click', () => {
-            window.location.href = '404.html';
+            window.location.href = 'index.html';
         });
         
         document.getElementById('cartBadge')?.addEventListener('click', () => {
