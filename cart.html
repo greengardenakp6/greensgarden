@@ -65,22 +65,38 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .brand-icon {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+        /* ========== CUSTOM LOGO STYLES ========== */
+        /* Replace the logo by changing the image URL below */
+        .custom-logo {
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
-        .brand-icon i {
-            font-size: 20px;
+        .custom-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Fallback icon if image fails to load */
+        .custom-logo .logo-fallback {
+            font-size: 24px;
             color: white;
+            display: none;
+        }
+
+        .custom-logo img.error + .logo-fallback {
+            display: flex;
         }
 
         .brand-text {
@@ -359,6 +375,16 @@
             .cart-item {
                 flex-wrap: wrap;
             }
+            .navbar {
+                padding: 12px 20px;
+            }
+            .custom-logo {
+                width: 36px;
+                height: 36px;
+            }
+            .brand-text {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -369,8 +395,16 @@
         <i class="fas fa-arrow-left"></i> Continue Shopping
     </button>
     <div class="brand">
-        <div class="brand-icon">
-            <i class="fas fa-leaf"></i>
+        <!-- ========== YOUR CUSTOM LOGO GOES HERE ========== -->
+        <!-- 
+            TO ADD YOUR OWN LOGO:
+            1. Replace the image URL below with your logo image path
+            2. Supported formats: PNG, JPG, JPEG, SVG, WebP
+            3. If the image fails to load, a garden leaf icon will show as fallback
+        -->
+        <div class="custom-logo" id="customLogoContainer">
+            <img id="brandLogo" src="https://placehold.co/200x200/2e7d32/ffffff?text=GG" alt="My Garden Store Logo" onerror="handleLogoError(this)">
+            <i class="fas fa-leaf logo-fallback"></i>
         </div>
         <div class="brand-text">GREEN GARDEN</div>
     </div>
@@ -416,6 +450,35 @@
 <div id="toast" class="toast"></div>
 
 <script>
+  
+    const YOUR_LOGO_URL = "logo1.jpg";
+
+    
+    function handleLogoError(imgElement) {
+        // If logo fails to load, show fallback icon
+        imgElement.style.display = 'none';
+        const fallbackIcon = imgElement.parentElement.querySelector('.logo-fallback');
+        if (fallbackIcon) {
+            fallbackIcon.style.display = 'flex';
+        }
+    }
+    
+    function setCustomLogo() {
+        const logoImg = document.getElementById('brandLogo');
+        if (logoImg && YOUR_LOGO_URL) {
+            logoImg.src = YOUR_LOGO_URL;
+            // Reset display if it was hidden from previous error
+            logoImg.style.display = 'block';
+            const fallbackIcon = logoImg.parentElement.querySelector('.logo-fallback');
+            if (fallbackIcon) {
+                fallbackIcon.style.display = 'none';
+            }
+        }
+    }
+    
+    // Call this function when page loads to apply your logo
+    // You can also call this anytime to dynamically change the logo
+    
     function showToast(message, isError = false) {
         const toast = document.getElementById('toast');
         toast.textContent = message;
@@ -484,7 +547,7 @@
                         }
                     </div>
                     <div class="item-details">
-                        <div class="item-name">${item.name}</div>
+                        <div class="item-name">${escapeHtml(item.name)}</div>
                         <div class="item-price">₹${price.toLocaleString('en-IN')}</div>
                         <div class="quantity-controls">
                             <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
@@ -510,6 +573,16 @@
         document.getElementById('subtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
         document.getElementById('totalAmount').textContent = `₹${total.toLocaleString('en-IN')}`;
     }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 
     function updateQuantity(index, change) {
         const cart = getCart();
@@ -520,6 +593,10 @@
                 saveCart(cart);
                 renderCart();
                 showToast(change > 0 ? 'Quantity increased' : 'Quantity decreased');
+            } else if (newQuantity < 1) {
+                showToast('Minimum quantity is 1', true);
+            } else if (newQuantity > 99) {
+                showToast('Maximum quantity is 99', true);
             }
         }
     }
@@ -553,12 +630,15 @@
         window.location.href = 'buy.html';
     }
 
-    // Load cart on page load
+    // Load cart and apply custom logo on page load
     document.addEventListener('DOMContentLoaded', () => {
+        // Apply your custom logo
+        setCustomLogo();
         renderCart();
         
         // Debug: Log cart contents
         console.log('Cart loaded:', getCart());
+        console.log('Custom logo applied. To change logo, edit YOUR_LOGO_URL variable in the script');
     });
 </script>
 </body>
