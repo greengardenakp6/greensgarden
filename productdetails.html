@@ -34,7 +34,7 @@
             border-radius: 10px;
         }
 
-        /* navbar - premium gradient */
+        /* navbar - premium gradient with view cart integration */
         .navbar {
             background: linear-gradient(135deg, #ffffff 0%, #fef9f0 100%);
             backdrop-filter: blur(0);
@@ -47,6 +47,14 @@
             z-index: 1000;
             box-shadow: 0 2px 20px rgba(0,0,0,0.05);
             border-bottom: 1px solid rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .brand {
@@ -86,6 +94,40 @@
             color: white;
             transform: translateX(-4px);
             gap: 12px;
+        }
+
+        /* View Cart Button - Premium Style */
+        .view-cart-btn {
+            background: linear-gradient(135deg, #ff9f00, #fb641b);
+            border: none;
+            padding: 10px 28px;
+            border-radius: 44px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(251,100,27,0.2);
+            letter-spacing: 0.3px;
+        }
+
+        .view-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(251,100,27,0.3);
+            background: linear-gradient(135deg, #f78c1e, #e75b18);
+        }
+
+        .cart-badge {
+            background-color: white;
+            color: #fb641b;
+            border-radius: 50px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            margin-left: 6px;
         }
 
         /* main product container */
@@ -415,6 +457,14 @@
             }
             .navbar {
                 padding: 12px 20px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-left {
+                justify-content: space-between;
+            }
+            .view-cart-btn {
+                justify-content: center;
             }
             .image-magnifier {
                 min-height: 340px;
@@ -461,18 +511,99 @@
         .add-animation {
             animation: pulse 0.4s ease-out;
         }
+
+        /* Cart summary page style (light integration) */
+        .cart-summary-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            z-index: 1500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+        .cart-summary-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .cart-modal {
+            background: white;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 32px;
+            padding: 24px;
+            box-shadow: 0 30px 40px rgba(0,0,0,0.2);
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+        .cart-summary-overlay.active .cart-modal {
+            transform: scale(1);
+        }
+        .cart-modal h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-items-list {
+            max-height: 350px;
+            overflow-y: auto;
+            margin: 16px 0;
+        }
+        .cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-total {
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin: 16px 0;
+            text-align: right;
+        }
+        .close-cart {
+            background: #e2e6ea;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .goto-cart-btn {
+            background: #fb641b;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
     </style>
 </head>
 <body>
 
 <div class="navbar">
-    <button class="back-btn ripple" onclick="window.location.href='products.html'">
-        <i class="fas fa-arrow-left"></i> Back to Shop
-    </button>
-    <div class="brand">
-        <i class="fas fa-leaf"></i> GreenCart
+    <div class="nav-left">
+        <button class="back-btn ripple" id="backToShopBtn">
+            <i class="fas fa-arrow-left"></i> Back to Shop
+        </button>
+        <div class="brand">
+            <i class="fas fa-leaf"></i> GreenCart
+        </div>
     </div>
-    <div style="width: 30px;"></div>
+    <!-- NEW VIEW CART BUTTON (Premium) -->
+    <button class="view-cart-btn ripple" id="viewCartNavBtn">
+        <i class="fas fa-shopping-bag"></i> View Cart 
+        <span class="cart-badge" id="cartItemCountBadge">0</span>
+    </button>
 </div>
 
 <div class="product-container" id="productContainer">
@@ -521,6 +652,21 @@
             <div class="meta-chip"><i class="fas fa-shield-alt"></i> 100% Organic</div>
             <div class="meta-chip"><i class="fas fa-truck"></i> Free Delivery over ₹500</div>
             <div class="meta-chip"><i class="fas fa-seedling"></i> Grow Guarantee</div>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Summary Modal (Quick View) -->
+<div id="cartModal" class="cart-summary-overlay">
+    <div class="cart-modal">
+        <h3><span><i class="fas fa-shopping-cart"></i> Your Cart</span><i class="fas fa-times-circle" id="closeModalIcon" style="cursor:pointer; color:#aaa;"></i></h3>
+        <div id="cartModalItems" class="cart-items-list">
+            <div style="text-align:center; padding:20px;">Your cart is empty</div>
+        </div>
+        <div id="cartModalTotal" class="cart-total">Total: ₹0</div>
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+            <button class="close-cart" id="closeCartBtn">Continue Shopping</button>
+            <button class="goto-cart-btn" id="gotoFullCartBtn">Go to Cart <i class="fas fa-arrow-right"></i></button>
         </div>
     </div>
 </div>
@@ -584,7 +730,6 @@
         { id: 50, name: "Miracle grow all purpose manure(400 g,powder)", price: 450, image: "F50.jpg", category: "Plant manure", rating: 4.8, reviews: 212 }
     ];
 
-    // Helper: get product from URL id
     function getProductIdFromUrl() {
         const params = new URLSearchParams(window.location.search);
         const id = parseInt(params.get("id"));
@@ -593,7 +738,6 @@
 
     let currentProduct = null;
 
-    // show toast with smooth transition
     function showToast(message, isError = false) {
         const toast = document.getElementById('toastMsg');
         const toastText = document.getElementById('toastText');
@@ -606,12 +750,16 @@
             toast.querySelector('i').className = "fas fa-check-circle";
         }
         toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 2200);
+        setTimeout(() => toast.classList.remove('show'), 2200);
     }
 
-    // add to cart core
+    function updateCartBadge() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const badge = document.getElementById('cartItemCountBadge');
+        if(badge) badge.innerText = totalItems;
+    }
+
     function addToCartHandler(quantity, redirectToBuy = false) {
         if (!currentProduct) return;
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -628,37 +776,31 @@
             });
         }
         localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartBadge();
         if (redirectToBuy) {
             showToast(`✨ ${quantity} item(s) added! Redirecting...`, false);
             setTimeout(() => { window.location.href = 'buy.html'; }, 600);
         } else {
             showToast(`✓ ${quantity} × ${currentProduct.name} added to cart`, false);
-            // add ripple effect on button
             const btn = document.getElementById('addToCartBtn');
             btn.classList.add('add-animation');
             setTimeout(() => btn.classList.remove('add-animation'), 300);
         }
     }
 
-    // Render product details
     function renderProductDetails() {
         const id = getProductIdFromUrl();
         currentProduct = products.find(p => p.id === id) || products[0];
         const product = currentProduct;
-
         document.getElementById('productName').innerText = product.name;
         document.getElementById('currentPrice').innerHTML = `₹${product.price.toLocaleString('en-IN')}`;
         document.getElementById('mainProductImage').src = product.image;
         document.getElementById('productRating').innerHTML = `<i class="fas fa-star"></i> ${product.rating}`;
         document.getElementById('reviewCount').innerHTML = `${product.reviews || (product.rating * 30).toFixed(0)}+ ratings`;
-        
-        // dynamic discount (fake 8-18% for UI)
         let mrp = Math.round(product.price * (1 + (Math.random() * 0.18 + 0.08)));
         let discountVal = Math.round(((mrp - product.price) / mrp) * 100);
         document.getElementById('originalPrice').innerText = `₹${mrp}`;
         document.getElementById('discountPercent').innerText = `(${discountVal}% off)`;
-        
-        // custom description per category
         const descMap = {
             "Flower Seeds": "🌸 Premium quality flower seeds with high germination rate. Blooms within 6-8 weeks.",
             "Vegetable Seeds": "🥬 Non-GMO heirloom seeds. Perfect for home garden. Organic & chemical-free.",
@@ -669,10 +811,9 @@
         let categoryKey = product.category || "default";
         let dynamicDesc = descMap[categoryKey] || descMap.default;
         document.getElementById('productDesc').innerHTML = dynamicDesc + ` <strong>${product.name}</strong> is a customer favorite!`;
-        
-        // reset quantity to 1
         document.getElementById('quantityInput').value = 1;
         updateButtonsState(1);
+        updateCartBadge();
     }
 
     function updateButtonsState(qty) {
@@ -681,7 +822,6 @@
         minusBtn.disabled = qty <= 1;
         plusBtn.disabled = qty >= 99;
     }
-
     function changeQuantity(delta) {
         const input = document.getElementById('quantityInput');
         let val = parseInt(input.value) || 1;
@@ -692,16 +832,42 @@
         }
     }
 
-    // event binding
+    function openCartModal() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const modal = document.getElementById('cartModal');
+        const container = document.getElementById('cartModalItems');
+        const totalSpan = document.getElementById('cartModalTotal');
+        if(cart.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:20px;">🛒 Your cart is empty</div>';
+            totalSpan.innerText = 'Total: ₹0';
+        } else {
+            let html = '';
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                html += `<div class="cart-item-row">
+                            <span><strong>${item.name}</strong> x ${item.quantity}</span>
+                            <span>₹${itemTotal.toLocaleString('en-IN')}</span>
+                         </div>`;
+            });
+            container.innerHTML = html;
+            totalSpan.innerText = `Total: ₹${total.toLocaleString('en-IN')}`;
+        }
+        modal.classList.add('active');
+    }
+
+    function closeCartModal() {
+        document.getElementById('cartModal').classList.remove('active');
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         renderProductDetails();
-        
         const minus = document.getElementById('minusBtn');
         const plus = document.getElementById('plusBtn');
         const qtyInput = document.getElementById('quantityInput');
         const addBtn = document.getElementById('addToCartBtn');
         const buyBtn = document.getElementById('buyNowBtn');
-        
         minus.addEventListener('click', () => changeQuantity(-1));
         plus.addEventListener('click', () => changeQuantity(1));
         qtyInput.addEventListener('input', function() {
@@ -710,22 +876,25 @@
             this.value = val;
             updateButtonsState(val);
         });
-        
         addBtn.addEventListener('click', () => {
             let qty = parseInt(document.getElementById('quantityInput').value) || 1;
             addToCartHandler(qty, false);
         });
-        
         buyBtn.addEventListener('click', () => {
             let qty = parseInt(document.getElementById('quantityInput').value) || 1;
             addToCartHandler(qty, true);
         });
-        
-        // back button ripple + smooth
-        const back = document.querySelector('.back-btn');
-        if(back) back.addEventListener('click', (e) => {
-            window.location.href = 'products.html';
+        const back = document.getElementById('backToShopBtn');
+        if(back) back.addEventListener('click', () => { window.location.href = 'products.html'; });
+        // View Cart button functionality
+        const viewCartBtn = document.getElementById('viewCartNavBtn');
+        if(viewCartBtn) viewCartBtn.addEventListener('click', openCartModal);
+        document.getElementById('closeModalIcon')?.addEventListener('click', closeCartModal);
+        document.getElementById('closeCartBtn')?.addEventListener('click', closeCartModal);
+        document.getElementById('gotoFullCartBtn')?.addEventListener('click', () => {
+            window.location.href = 'buy.html';
         });
+        updateCartBadge();
     });
 </script>
 </body>
