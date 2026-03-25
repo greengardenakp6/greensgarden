@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>My Orders | Green Garden Premium</title>
+    <title>My Orders | Green Garden</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -33,7 +33,7 @@
             border-radius: 10px;
         }
 
-        /* Premium Navbar */
+        /* Navbar */
         .navbar-premium {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             padding: 16px 48px;
@@ -74,12 +74,6 @@
         .back-btn:hover, .cart-link:hover {
             background: #3b82f6;
             border-color: #3b82f6;
-            transform: translateX(-4px);
-        }
-
-        .cart-link:hover {
-            background: #f97316;
-            transform: scale(1.02);
         }
 
         .brand {
@@ -112,7 +106,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
         }
 
         .orders-main {
@@ -121,7 +114,7 @@
             padding: 0 32px;
         }
 
-        /* Premium Tabs */
+        /* Tabs */
         .tabs-premium {
             background: white;
             border-radius: 20px;
@@ -162,7 +155,7 @@
             gap: 28px;
         }
 
-        /* Premium Order Card */
+        /* Order Card */
         .order-card-premium {
             background: white;
             border-radius: 28px;
@@ -225,7 +218,6 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(4px);
         }
 
         .status-processing { background: #dbeafe; color: #1e40af; }
@@ -233,7 +225,7 @@
         .status-out_for_delivery { background: #fef3c7; color: #b45309; }
         .status-delivered { background: #d1fae5; color: #065f46; }
 
-        /* Premium Timeline */
+        /* Timeline */
         .delivery-timeline-premium {
             padding: 28px 28px;
             background: linear-gradient(135deg, #fefce8, #ffffff);
@@ -276,7 +268,6 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 12px;
-            transition: all 0.3s;
             font-size: 20px;
         }
 
@@ -284,7 +275,6 @@
             background: #10b981;
             border-color: #10b981;
             color: white;
-            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
         }
 
         .timeline-step.active .timeline-icon {
@@ -322,7 +312,7 @@
             gap: 12px;
         }
 
-        /* Order Items */
+        /* Items */
         .order-items-premium {
             padding: 24px 28px;
             border-bottom: 1px solid #f1f5f9;
@@ -430,7 +420,7 @@
             box-shadow: 0 8px 20px rgba(16,185,129,0.4);
         }
 
-        /* Premium Modal */
+        /* Modal */
         .modal-premium {
             display: none;
             position: fixed;
@@ -452,9 +442,9 @@
         .modal-content-premium {
             background: white;
             border-radius: 32px;
-            max-width: 650px;
+            max-width: 800px; /* Wider for invoice */
             width: 90%;
-            max-height: 85vh;
+            max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 25px 50px rgba(0,0,0,0.25);
         }
@@ -480,10 +470,6 @@
             font-size: 20px;
             cursor: pointer;
             transition: 0.2s;
-        }
-
-        .close-modal-premium:hover {
-            background: #e2e8f0;
         }
 
         .toast-premium {
@@ -519,7 +505,6 @@
             .timeline-premium::before { display: none; }
             .timeline-step { display: flex; align-items: center; gap: 16px; text-align: left; }
             .timeline-icon { margin: 0; }
-            .order-item-premium { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -562,7 +547,7 @@
 <div id="invoiceModal" class="modal-premium">
     <div class="modal-content-premium">
         <div class="modal-header-premium">
-            <h3 style="font-size: 1.4rem; font-weight: 700;"><i class="fas fa-file-invoice-dollar"></i> Premium Invoice</h3>
+            <h3 style="font-size: 1.4rem; font-weight: 700;"><i class="fas fa-file-invoice"></i> Order Invoice</h3>
             <button class="close-modal-premium" onclick="closeInvoiceModal()">&times;</button>
         </div>
         <div id="invoiceContent" style="padding: 0;"></div>
@@ -572,8 +557,53 @@
 <div id="toast" class="toast-premium"></div>
 
 <script>
-    // Premium Order Data with complete details
     let orders = [];
+
+    // 1. Configuration for Incoming Orders from "Buy Page"
+    // Checks localStorage for a pending order, adds it, then clears the key.
+    function checkForNewOrder() {
+        const pendingOrder = localStorage.getItem('green_garden_pending_order');
+        if (pendingOrder) {
+            try {
+                const newOrder = JSON.parse(pendingOrder);
+                // Format the incoming order to match our structure
+                const formattedOrder = formatIncomingOrder(newOrder);
+                orders.unshift(formattedOrder); // Add to top
+                localStorage.setItem('green_garden_premium_orders', JSON.stringify(orders));
+                localStorage.removeItem('green_garden_pending_order'); // Clear pending
+                showToast("✓ New order placed successfully!");
+            } catch (e) {
+                console.error("Error parsing pending order", e);
+            }
+        }
+    }
+
+    function formatIncomingOrder(rawOrder) {
+        const now = new Date();
+        return {
+            orderId: "INV" + Date.now().toString().slice(-6),
+            date: now.toISOString(),
+            status: "processing",
+            items: rawOrder.items.map(i => ({
+                name: i.name || "Product",
+                price: i.price || 0,
+                quantity: i.quantity || 1,
+                icon: i.icon || "fa-leaf"
+            })),
+            listingPrice: rawOrder.total || 0,
+            sellingPrice: rawOrder.total || 0,
+            totalFees: 0,
+            total: rawOrder.total || 0,
+            paymentMethod: rawOrder.paymentMethod || "COD",
+            deliveryAddress: rawOrder.address || { name: "Customer", address: "Address Not Provided", phone: "N/A" },
+            tracking: {
+                confirmed: { date: now, completed: true },
+                shipped: { date: new Date(now.getTime() + 86400000), completed: false },
+                outForDelivery: { date: new Date(now.getTime() + 172800000), completed: false },
+                delivered: { date: new Date(now.getTime() + 259200000), completed: false }
+            }
+        };
+    }
 
     function generatePremiumOrders() {
         const today = new Date();
@@ -585,18 +615,17 @@
 
         return [
             {
-                orderId: "GRN-PR-874521",
+                orderId: "INV00001",
                 date: getDate(-2).toISOString(),
                 status: "processing",
                 items: [
                     { name: "Premium Organic Tomato Seeds", price: 89, quantity: 3, icon: "fa-seedling" },
-                    { name: "Aroid Potting Mix (5kg)", price: 449, quantity: 1, icon: "fa-droplet" },
-                    { name: "Ceramic Self-Watering Pot", price: 599, quantity: 1, icon: "fa-flask" }
+                    { name: "Aroid Potting Mix (5kg)", price: 449, quantity: 1, icon: "fa-droplet" }
                 ],
-                listingPrice: 1375,
-                sellingPrice: 1137,
-                totalFees: 85,
-                total: 1222,
+                listingPrice: 716,
+                sellingPrice: 716,
+                totalFees: 50,
+                total: 766,
                 paymentMethod: "Credit Card •••• 4821",
                 deliveryAddress: {
                     name: "Vikram Mehta",
@@ -605,48 +634,22 @@
                 },
                 tracking: {
                     confirmed: { date: getDate(-2), completed: true },
-                    shipped: { date: getDate(-1), completed: true },
+                    shipped: { date: getDate(-1), completed: false },
                     outForDelivery: { date: getDate(0), completed: false },
                     delivered: { date: getDate(2), completed: false }
                 }
             },
             {
-                orderId: "GRN-PR-936782",
-                date: getDate(-5).toISOString(),
-                status: "shipped",
-                items: [
-                    { name: "Desert Rose Bonsai Plant", price: 1299, quantity: 1, icon: "fa-tree" },
-                    { name: "Premium Ceramic Pot (Large)", price: 799, quantity: 1, icon: "fa-flask" }
-                ],
-                listingPrice: 2298,
-                sellingPrice: 2098,
-                totalFees: 112,
-                total: 2210,
-                paymentMethod: "UPI ••••@okhdfcbank",
-                deliveryAddress: {
-                    name: "Anjali Sharma",
-                    phone: "+91 87654 32109",
-                    address: "15/2, Rose Villa, Cunningham Road, Bengaluru, Karnataka - 560052"
-                },
-                tracking: {
-                    confirmed: { date: getDate(-5), completed: true },
-                    shipped: { date: getDate(-3), completed: true },
-                    outForDelivery: { date: getDate(-1), completed: false },
-                    delivered: { date: getDate(1), completed: false }
-                }
-            },
-            {
-                orderId: "GRN-PR-245893",
+                orderId: "INV00002",
                 date: getDate(-15).toISOString(),
                 status: "delivered",
                 items: [
-                    { name: "Lucky Bamboo Plant (3 Stalks)", price: 399, quantity: 2, icon: "fa-leaf" },
-                    { name: "Zen Garden Decorative Set", price: 1299, quantity: 1, icon: "fa-mountain" }
+                    { name: "Lucky Bamboo Plant (3 Stalks)", price: 399, quantity: 2, icon: "fa-leaf" }
                 ],
-                listingPrice: 2197,
-                sellingPrice: 2097,
-                totalFees: 98,
-                total: 2195,
+                listingPrice: 798,
+                sellingPrice: 798,
+                totalFees: 40,
+                total: 838,
                 paymentMethod: "Cash on Delivery",
                 deliveryAddress: {
                     name: "Rahul Kapoor",
@@ -659,36 +662,14 @@
                     outForDelivery: { date: getDate(-11), completed: true },
                     delivered: { date: getDate(-10), completed: true }
                 }
-            },
-            {
-                orderId: "GRN-PR-567124",
-                date: getDate(-28).toISOString(),
-                status: "delivered",
-                items: [
-                    { name: "Premium Garden Tool Set (8 Pcs)", price: 1899, quantity: 1, icon: "fa-screwdriver-wrench" },
-                    { name: "Organic Neem Cake Fertilizer", price: 349, quantity: 2, icon: "fa-droplet" }
-                ],
-                listingPrice: 2697,
-                sellingPrice: 2597,
-                totalFees: 145,
-                total: 2742,
-                paymentMethod: "Credit Card •••• 9876",
-                deliveryAddress: {
-                    name: "Priya Nair",
-                    phone: "+91 76543 21098",
-                    address: "34, Lake View Residency, Kaloor, Kochi, Kerala - 682017"
-                },
-                tracking: {
-                    confirmed: { date: getDate(-28), completed: true },
-                    shipped: { date: getDate(-26), completed: true },
-                    outForDelivery: { date: getDate(-24), completed: true },
-                    delivered: { date: getDate(-23), completed: true }
-                }
             }
         ];
     }
 
     function initOrders() {
+        // Check for incoming order from Buy Page
+        checkForNewOrder();
+
         const saved = localStorage.getItem('green_garden_premium_orders');
         if (saved) {
             orders = JSON.parse(saved);
@@ -701,7 +682,7 @@
     function formatDate(dateInput) {
         if (!dateInput) return 'N/A';
         const date = new Date(dateInput);
-        return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
     function getStatusInfo(status) {
@@ -776,7 +757,6 @@
                                             <i class="fas ${step.icon}"></i>
                                         </div>
                                         <div class="timeline-label">${step.label}</div>
-                                        ${stepData?.date ? `<div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">${formatDate(stepData.date)}</div>` : ''}
                                     </div>
                                 `;
                             }).join('')}
@@ -798,7 +778,7 @@
                                 <div class="item-details-premium">
                                     <div class="item-name-premium">${escapeHtml(item.name)}</div>
                                     <div class="item-meta-premium">
-                                        <span>Quantity: ${item.quantity}</span>
+                                        <span>Qty: ${item.quantity}</span>
                                         <span>₹${item.price.toLocaleString('en-IN')} each</span>
                                     </div>
                                 </div>
@@ -808,9 +788,6 @@
                     </div>
                     
                     <div class="price-details-premium">
-                        <div class="price-row-premium"><span>Listing Price</span><span>₹${order.listingPrice.toLocaleString('en-IN')}</span></div>
-                        <div class="price-row-premium"><span>Selling Price</span><span>₹${order.sellingPrice.toLocaleString('en-IN')}</span></div>
-                        <div class="price-row-premium"><span>Taxes & Fees</span><span>₹${order.totalFees.toLocaleString('en-IN')}</span></div>
                         <div class="price-row-premium total-premium"><span>Total Amount</span><span>₹${order.total.toLocaleString('en-IN')}</span></div>
                         <div class="price-row-premium"><span>Payment Method</span><span>${order.paymentMethod}</span></div>
                     </div>
@@ -830,76 +807,106 @@
         return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    // Premium PDF Invoice Design with FULL DETAILS
+    // 2. NEW INVOICE DESIGN (Matching your uploaded template)
     function generatePremiumInvoiceHTML(order) {
+        const issueDate = new Date();
+        const dueDate = new Date();
+        dueDate.setDate(issueDate.getDate() + 7);
+
         return `
-            <div style="padding: 32px; background: white; font-family: 'Inter', sans-serif;">
-                <div style="text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 3px solid #10b981;">
-                    <div style="background: linear-gradient(135deg, #10b981, #059669); width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
-                        <i class="fas fa-leaf" style="font-size: 36px; color: white;"></i>
-                    </div>
-                    <h1 style="font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">GREEN GARDEN</h1>
-                    <p style="color: #64748b; font-size: 13px;">Premium Organic & Sustainable Products</p>
-                    <p style="color: #94a3b8; font-size: 11px; margin-top: 4px;">GST: 33AAECG1234F1Z5 | CIN: U01100MH2022PTC123456</p>
+            <div style="padding: 40px; font-family: 'Inter', Arial, sans-serif; color: #333;">
+                <!-- Header Section -->
+                <div style="text-align: center; border-bottom: 2px solid #10b981; padding-bottom: 20px; margin-bottom: 30px;">
+                    <h1 style="font-size: 32px; color: #10b981; margin: 0; letter-spacing: 1px;">INVOICE</h1>
+                    <h2 style="font-size: 42px; margin: 5px 0; color: #1e293b; font-weight: 800;">GREEN GARDEN</h2>
+                    <p style="margin: 5px 0; font-size: 14px; color: #555;">
+                        No. 12, Katpadi Road<br>
+                        Gandhi Nagar, Vellore, Tamil Nadu – 632006
+                    </p>
+                    <p style="margin: 5px 0; font-size: 14px; color: #555;">
+                        +919994247217 | greengarden2427@gmail.com<br>
+                        https://greengarden24.netlify.app/
+                    </p>
+                    <p style="margin-top: 10px; font-weight: 600; font-size: 12px; color: #333; background: #f3f4f6; display: inline-block; padding: 4px 12px; border-radius: 4px;">
+                        GSTIN: 33ABCDE1234F1Z5
+                    </p>
                 </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px;">
-                    <div style="background: #f8fafc; padding: 20px; border-radius: 20px;">
-                        <h3 style="font-size: 14px; font-weight: 700; color: #10b981; margin-bottom: 12px;"><i class="fas fa-store"></i> SELLER DETAILS</h3>
-                        <p style="font-size: 13px; line-height: 1.6;"><strong>Green Garden Pvt Ltd</strong><br>No. 45, Eco Park Road, Whitefield, Bengaluru - 560066<br>Email: support@greengarden.com | Tel: 1800-123-4567</p>
+
+                <!-- Bill To & Invoice Details -->
+                <div style="display: flex; justify-content: space-between; margin-bottom: 40px;">
+                    <div style="width: 55%;">
+                        <h3 style="margin: 0 0 10px; color: #10b981; font-size: 18px; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; display: inline-block;">BILL TO</h3>
+                        <p style="margin: 0; font-size: 15px; font-weight: 700;">${escapeHtml(order.deliveryAddress.name)}</p>
+                        <p style="margin: 5px 0; font-size: 13px; color: #555; line-height: 1.5;">
+                            ${escapeHtml(order.deliveryAddress.address)}<br>
+                            Phone: ${order.deliveryAddress.phone}
+                        </p>
                     </div>
-                    <div style="background: #f8fafc; padding: 20px; border-radius: 20px;">
-                        <h3 style="font-size: 14px; font-weight: 700; color: #10b981; margin-bottom: 12px;"><i class="fas fa-truck"></i> SHIPPING ADDRESS</h3>
-                        <p style="font-size: 13px; line-height: 1.6;"><strong>${escapeHtml(order.deliveryAddress.name)}</strong><br>${escapeHtml(order.deliveryAddress.address)}<br>Phone: ${order.deliveryAddress.phone}</p>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; padding: 16px; background: linear-gradient(135deg, #fefce8, #fef9e3); border-radius: 20px;">
-                    <div><span style="font-size: 12px; color: #64748b;">INVOICE NO.</span><br><strong style="font-size: 14px;">${order.orderId}</strong></div>
-                    <div><span style="font-size: 12px; color: #64748b;">INVOICE DATE</span><br><strong style="font-size: 14px;">${formatDate(new Date())}</strong></div>
-                    <div><span style="font-size: 12px; color: #64748b;">ORDER DATE</span><br><strong style="font-size: 14px;">${formatDate(order.date)}</strong></div>
-                </div>
-                
-                <div style="margin-bottom: 28px;">
-                    <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;">ORDER SUMMARY</h3>
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background: #f1f5f9;">
-                                <th style="padding: 12px; text-align: left; font-size: 13px;">Item Description</th>
-                                <th style="padding: 12px; text-align: center; font-size: 13px;">Quantity</th>
-                                <th style="padding: 12px; text-align: right; font-size: 13px;">Unit Price</th>
-                                <th style="padding: 12px; text-align: right; font-size: 13px;">Total Amount</th>
+                    <div style="width: 40%; text-align: right;">
+                        <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 6px 0; color: #777;">INVOICE #</td>
+                                <td style="padding: 6px 0; font-weight: 700; color: #1e293b;">${order.orderId}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            ${order.items.map(item => `
-                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                    <td style="padding: 12px; font-size: 13px;"><i class="fas ${item.icon}" style="margin-right: 8px; color: #10b981;"></i>${escapeHtml(item.name)}</td>
-                                    <td style="padding: 12px; text-align: center; font-size: 13px;">${item.quantity}</td>
-                                    <td style="padding: 12px; text-align: right; font-size: 13px;">₹${item.price.toLocaleString('en-IN')}</td>
-                                    <td style="padding: 12px; text-align: right; font-size: 13px; font-weight: 600;">₹${(item.price * item.quantity).toLocaleString('en-IN')}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div style="background: #f8fafc; padding: 20px; border-radius: 20px; margin-bottom: 24px;">
-                    <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span>Listing Price:</span><span>₹${order.listingPrice.toLocaleString('en-IN')}</span></div>
-                    <div style="display: flex; justify-content: space-between; padding: 8px 0; color: #10b981;"><span>Discount & Savings:</span><span>-₹${(order.listingPrice - order.sellingPrice).toLocaleString('en-IN')}</span></div>
-                    <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span>Taxes & Handling Fees:</span><span>₹${order.totalFees.toLocaleString('en-IN')}</span></div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; margin-top: 8px; border-top: 2px solid #e2e8f0; font-weight: 800; font-size: 20px;">
-                        <span>GRAND TOTAL</span>
-                        <span style="color: #10b981;">₹${order.total.toLocaleString('en-IN')}</span>
-                    </div>
-                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 12px; color: #64748b;">
-                        <i class="fas fa-check-circle" style="color: #10b981;"></i> Payment Method: ${order.paymentMethod}
+                            <tr>
+                                <td style="padding: 6px 0; color: #777;">ISSUE DATE</td>
+                                <td style="padding: 6px 0; font-weight: 600;">${formatDate(issueDate)}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 6px 0; color: #777;">DUE DATE</td>
+                                <td style="padding: 6px 0; font-weight: 600;">${formatDate(dueDate)}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-                
-                <div style="text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-                    <p>This is a computer-generated invoice and requires no signature. For any queries, contact support@greengarden.com</p>
-                    <p style="margin-top: 6px;">© 2025 Green Garden | Grow with Nature</p>
+
+                <!-- Items Table -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 14px;">
+                    <thead>
+                        <tr style="background: #1e293b; color: white;">
+                            <th style="padding: 14px; text-align: left; font-weight: 600;">DESCRIPTION</th>
+                            <th style="padding: 14px; text-align: center; font-weight: 600;">QTY</th>
+                            <th style="padding: 14px; text-align: right; font-weight: 600;">PRICE</th>
+                            <th style="padding: 14px; text-align: right; font-weight: 600;">AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${order.items.map((item, index) => `
+                            <tr style="border-bottom: 1px solid #e5e7eb; background: ${index % 2 === 0 ? '#fff' : '#f9fafb'};">
+                                <td style="padding: 14px;">
+                                    <span style="font-weight: 600;">${escapeHtml(item.name)}</span>
+                                </td>
+                                <td style="padding: 14px; text-align: center;">${item.quantity}</td>
+                                <td style="padding: 14px; text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
+                                <td style="padding: 14px; text-align: right; font-weight: 600;">₹${(item.price * item.quantity).toLocaleString('en-IN')}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <!-- Total Section -->
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 40px;">
+                    <div style="width: 300px;">
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                            <span style="color: #666;">Subtotal</span>
+                            <span>₹${order.sellingPrice.toLocaleString('en-IN')}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                            <span style="color: #666;">Taxes & Fees</span>
+                            <span>₹${order.totalFees.toLocaleString('en-IN')}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 16px 0; font-size: 20px; font-weight: 800; border-top: 3px solid #10b981; margin-top: 5px;">
+                            <span>TOTAL</span>
+                            <span style="color: #10b981;">₹${order.total.toLocaleString('en-IN')}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div style="text-align: center; border-top: 2px solid #e5e7eb; padding-top: 20px; font-size: 12px; color: #888;">
+                    <p style="margin-bottom: 5px;">Payment Method: ${order.paymentMethod}</p>
+                    <p style="margin-bottom: 10px;">Thank you for shopping with Green Garden!</p>
+                    <p style="font-size: 11px; color: #aaa;">This is a computer-generated invoice and does not require a signature.</p>
                 </div>
             </div>
         `;
@@ -914,13 +921,8 @@
         
         invoiceContent.innerHTML = generatePremiumInvoiceHTML(order);
         
-        // Remove any existing footer and add fresh download button
-        const existingFooter = invoiceContent.querySelector('.modal-footer-custom');
-        if (existingFooter) existingFooter.remove();
-        
         const footerDiv = document.createElement('div');
-        footerDiv.className = 'modal-footer-custom';
-        footerDiv.style.padding = '20px 28px';
+        footerDiv.style.padding = '20px 40px';
         footerDiv.style.borderTop = '1px solid #f1f5f9';
         footerDiv.style.background = 'white';
         footerDiv.style.position = 'sticky';
@@ -946,14 +948,13 @@
         const element = document.createElement('div');
         element.innerHTML = generatePremiumInvoiceHTML(order);
         element.style.background = 'white';
-        element.style.fontFamily = 'Inter, sans-serif';
         
         const opt = {
-            margin: [0.5, 0.5, 0.5, 0.5],
+            margin: 0,
             filename: `Invoice_${order.orderId}_GreenGarden.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, letterRendering: true, useCORS: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         
         html2pdf().set(opt).from(element).save();
@@ -972,7 +973,7 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // Navigation handlers - CONNECT TO PAGES
+    // Navigation
     document.getElementById('backToShopBtn').addEventListener('click', (e) => {
         e.preventDefault();
         window.location.href = 'products.html';
@@ -983,7 +984,6 @@
         window.location.href = 'cart.html';
     });
 
-    // Tab switching
     document.querySelectorAll('.tab-premium').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab-premium').forEach(b => b.classList.remove('active'));
