@@ -22,7 +22,6 @@
             overflow-x: hidden;
         }
 
-        /* modern scrollbar */
         ::-webkit-scrollbar {
             width: 5px;
         }
@@ -449,70 +448,7 @@
             opacity: 1;
         }
 
-        @media (max-width: 880px) {
-            .product-container {
-                grid-template-columns: 1fr;
-                gap: 24px;
-                padding: 0 20px;
-            }
-            .navbar {
-                padding: 12px 20px;
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .nav-left {
-                justify-content: space-between;
-            }
-            .view-cart-btn {
-                justify-content: center;
-            }
-            .image-magnifier {
-                min-height: 340px;
-            }
-            .product-title {
-                font-size: 1.5rem;
-            }
-            .action-group {
-                flex-direction: column;
-            }
-        }
-
-        /* ripple effect for buttons */
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
-        .ripple:after {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            background-image: radial-gradient(circle, #fff 10%, transparent 10%);
-            background-repeat: no-repeat;
-            background-position: 50%;
-            transform: scale(10);
-            opacity: 0;
-            transition: transform 0.4s, opacity 0.8s;
-        }
-        .ripple:active:after {
-            transform: scale(0);
-            opacity: 0.4;
-            transition: 0s;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.6; }
-            100% { transform: scale(1.05); opacity: 0; }
-        }
-        .add-animation {
-            animation: pulse 0.4s ease-out;
-        }
-
-        /* Cart summary page style (light integration) */
+        /* Cart Summary Modal */
         .cart-summary-overlay {
             position: fixed;
             top: 0;
@@ -564,11 +500,20 @@
             padding: 12px 0;
             border-bottom: 1px solid #eee;
         }
+        .cart-item-name {
+            font-weight: 500;
+        }
+        .cart-item-price {
+            font-weight: 600;
+            color: #2874f0;
+        }
         .cart-total {
             font-weight: 800;
             font-size: 1.2rem;
             margin: 16px 0;
             text-align: right;
+            border-top: 2px solid #f0f2f5;
+            padding-top: 12px;
         }
         .close-cart {
             background: #e2e6ea;
@@ -576,6 +521,11 @@
             padding: 10px 18px;
             border-radius: 40px;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .close-cart:hover {
+            background: #d4d8dd;
         }
         .goto-cart-btn {
             background: #fb641b;
@@ -585,6 +535,84 @@
             border-radius: 40px;
             font-weight: 600;
             margin-left: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .goto-cart-btn:hover {
+            background: #e75b18;
+            transform: translateY(-1px);
+        }
+        .empty-cart-msg {
+            text-align: center;
+            padding: 30px;
+            color: #878787;
+        }
+        .empty-cart-msg i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 880px) {
+            .product-container {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 0 20px;
+            }
+            .navbar {
+                padding: 12px 20px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-left {
+                justify-content: space-between;
+            }
+            .view-cart-btn {
+                justify-content: center;
+            }
+            .image-magnifier {
+                min-height: 340px;
+            }
+            .product-title {
+                font-size: 1.5rem;
+            }
+            .action-group {
+                flex-direction: column;
+            }
+        }
+
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10);
+            opacity: 0;
+            transition: transform 0.4s, opacity 0.8s;
+        }
+        .ripple:active:after {
+            transform: scale(0);
+            opacity: 0.4;
+            transition: 0s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.05); opacity: 0; }
+        }
+        .add-animation {
+            animation: pulse 0.4s ease-out;
         }
     </style>
 </head>
@@ -599,7 +627,7 @@
             <i class="fas fa-leaf"></i> GreenCart
         </div>
     </div>
-    <!-- NEW VIEW CART BUTTON (Premium) -->
+    <!-- VIEW CART BUTTON with dynamic badge -->
     <button class="view-cart-btn ripple" id="viewCartNavBtn">
         <i class="fas fa-shopping-bag"></i> View Cart 
         <span class="cart-badge" id="cartItemCountBadge">0</span>
@@ -659,9 +687,12 @@
 <!-- Cart Summary Modal (Quick View) -->
 <div id="cartModal" class="cart-summary-overlay">
     <div class="cart-modal">
-        <h3><span><i class="fas fa-shopping-cart"></i> Your Cart</span><i class="fas fa-times-circle" id="closeModalIcon" style="cursor:pointer; color:#aaa;"></i></h3>
+        <h3><span><i class="fas fa-shopping-cart"></i> Your Cart</span><i class="fas fa-times-circle" id="closeModalIcon" style="cursor:pointer; color:#aaa; font-size: 1.3rem;"></i></h3>
         <div id="cartModalItems" class="cart-items-list">
-            <div style="text-align:center; padding:20px;">Your cart is empty</div>
+            <div class="empty-cart-msg">
+                <i class="fas fa-bag-shopping"></i>
+                <p>Your cart is empty</p>
+            </div>
         </div>
         <div id="cartModalTotal" class="cart-total">Total: ₹0</div>
         <div style="display: flex; justify-content: flex-end; gap: 12px;">
@@ -676,7 +707,7 @@
 </div>
 
 <script>
-    // ---------- PRODUCT DATABASE (50 items as per original) ----------
+    // ---------- PRODUCT DATABASE (50 items) ----------
     const products = [
         { id: 1, name: "Morning Jewel Rose Seed", price: 158, image: "F1.jpg", category: "Flower Seeds", rating: 4.2, reviews: 134 },
         { id: 2, name: "Winter Daisy Red Mixed Seed", price: 150, image: "F2.jpg", category: "Flower Seeds", rating: 4.5, reviews: 98 },
@@ -697,37 +728,7 @@
         { id: 17, name: "Crystal Shaped Plastic Flower Pot", price: 299, image: "F17.jpg", category: "Planters", rating: 4.5, reviews: 118 },
         { id: 18, name: "Organic Potting Mix", price: 360, image: "F18.jpg", category: "Plant Care", rating: 4.9, reviews: 420 },
         { id: 19, name: "6 Tier Metal Pot Stand", price: 999, image: "F19.jpg", category: "Plant Stands", rating: 4.7, reviews: 201 },
-        { id: 20, name: "Yellow Kalanchoe Flower Seed", price: 149, image: "F20.jpg", category: "Flower Seeds", rating: 4.3, reviews: 77 },
-        { id: 21, name: "sky fruit Seeds(400g)", price: 349, image: "F21.jpg", category: "Fruit Seeds", rating: 4.2, reviews: 56 },
-        { id: 22, name: "long luki seed(25 per pkt)", price: 110, image: "F22.jpg", category: "Vegetable Seeds", rating: 4.0, reviews: 61 },
-        { id: 23, name: "Castor seed(100g)", price: 169, image: "F23.jpg", category: "Oil Seeds", rating: 4.1, reviews: 34 },
-        { id: 24, name: "Black Avacodo tree seed(1 per pkt)", price: 129, image: "F24.jpg", category: "Fruit Seeds", rating: 4.5, reviews: 48 },
-        { id: 25, name: "gobhee seeds(10 per pkt)", price: 129, image: "F25.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 39 },
-        { id: 26, name: "Halim seeds(300g)", price: 270, image: "F26.jpg", category: "Vegetable Seeds", rating: 4.4, reviews: 27 },
-        { id: 27, name: "carrot seeds(1 per pkt)", price: 199, image: "F27.jpg", category: "Vegetable Seeds", rating: 4.6, reviews: 95 },
-        { id: 28, name: "Green grass seeds(3000 per pkt)", price: 118, image: "F28.jpg", category: "Lawn Seeds", rating: 4.2, reviews: 44 },
-        { id: 29, name: "Hybrid dahlia seeds(50 per pkt)", price: 125, image: "F29.jpg", category: "Flower Seeds", rating: 4.5, reviews: 72 },
-        { id: 30, name: "Ash gourd seeds(40 per pkt)", price: 159, image: "F30.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 66 },
-        { id: 31, name: "black carrot seeds (120 per pkt)", price: 149, image: "F31.jpg", category: "Vegetable Seeds", rating: 4.7, reviews: 112 },
-        { id: 32, name: "Long Slender PepperSeeds (200 per pkt)", price: 145, image: "F32.jpg", category: "Vegetable Seeds", rating: 4.5, reviews: 83 },
-        { id: 33, name: "Lotua Seeds (30 per pkt)", price: 119, image: "F33.jpg", category: "Flower Seeds", rating: 4.1, reviews: 52 },
-        { id: 34, name: "Halam Seeds (200g)", price: 189, image: "F34.jpg", category: "Vegetable Seeds", rating: 4.4, reviews: 31 },
-        { id: 35, name: "Hot chilli organic Seeds (200 per pkt)", price: 119, image: "F35.jpg", category: "Vegetable Seeds", rating: 4.8, reviews: 146 },
-        { id: 36, name: "Raganigandha flower Seeds (4 per pkt)", price: 109, image: "F36.jpg", category: "Flower Seeds", rating: 4.2, reviews: 37 },
-        { id: 37, name: "Sword Lily plant (hybrid,pack of 1)", price: 120, image: "F37.jpg", category: "Flower Seeds", rating: 4.5, reviews: 64 },
-        { id: 38, name: "HARSINGAR seed(20 per pkt)", price: 129, image: "F38.jpg", category: "Flower seeds", rating: 4.6, reviews: 55 },
-        { id: 39, name: "French yellow marigold seed(50 per pkt)", price: 145, image: "F39.jpg", category: "Flower Seeds", rating: 4.7, reviews: 121 },
-        { id: 40, name: "Beej Band Seeds (100 per pkt)", price: 199, image: "F40.jpg", category: "Flower Seeds", rating: 4.3, reviews: 43 },
-        { id: 41, name: "Rose plant(Hybrid,pack of 1)", price: 129, image: "F41.jpg", category: "Flower Seeds", rating: 4.9, reviews: 305 },
-        { id: 42, name: "Black soil manure(10kg,Powder)", price: 219, image: "F42.jpg", category: "plant manure", rating: 4.4, reviews: 88 },
-        { id: 43, name: "Red Banana plant(Hybrid, pack of 1)", price: 149, image: "F43.jpg", category: "Fruit Seeds", rating: 4.5, reviews: 79 },
-        { id: 44, name: "Hibiscus plant(Hybrid,pack of 1)", price: 115, image: "F44.jpg", category: "Flower Seeds", rating: 4.3, reviews: 91 },
-        { id: 45, name: "Natural plant manure(1kg,cake)", price: 135, image: "F45.jpg", category: "Plant manure", rating: 4.6, reviews: 134 },
-        { id: 46, name: "Flower Holder-metal 5 pot planter stand", price: 870, image: "F46.jpg", category: "Pot stand", rating: 4.7, reviews: 62 },
-        { id: 47, name: "Organic DAP plant Growth Boost(1.5 kg)", price: 220, image: "F47.jpg", category: "Plant fertilizer", rating: 4.5, reviews: 107 },
-        { id: 48, name: "Gardenplus 3pcs plant Growth (150 ml, Liquid)", price: 209, image: "F48.jpg", category: "Plant fertilizer", rating: 4.2, reviews: 45 },
-        { id: 49, name: "Magnesium sulfate for plants (500 g)", price: 139, image: "F49.jpg", category: "Plant fertilizer", rating: 4.4, reviews: 58 },
-        { id: 50, name: "Miracle grow all purpose manure(400 g,powder)", price: 450, image: "F50.jpg", category: "Plant manure", rating: 4.8, reviews: 212 }
+        { id: 20, name: "Yellow Kalanchoe Flower Seed", price: 149, image: "F20.jpg", category: "Flower Seeds", rating: 4.3, reviews: 77 }
     ];
 
     function getProductIdFromUrl() {
@@ -755,7 +756,7 @@
 
     function updateCartBadge() {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
         const badge = document.getElementById('cartItemCountBadge');
         if(badge) badge.innerText = totalItems;
     }
@@ -765,7 +766,7 @@
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
         if (existingIndex !== -1) {
-            cart[existingIndex].quantity += quantity;
+            cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + quantity;
         } else {
             cart.push({
                 id: currentProduct.id,
@@ -822,6 +823,7 @@
         minusBtn.disabled = qty <= 1;
         plusBtn.disabled = qty >= 99;
     }
+    
     function changeQuantity(delta) {
         const input = document.getElementById('quantityInput');
         let val = parseInt(input.value) || 1;
@@ -832,29 +834,35 @@
         }
     }
 
+    // Cart Modal Functions
     function openCartModal() {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const modal = document.getElementById('cartModal');
         const container = document.getElementById('cartModalItems');
         const totalSpan = document.getElementById('cartModalTotal');
+        
         if(cart.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:20px;">🛒 Your cart is empty</div>';
+            container.innerHTML = '<div class="empty-cart-msg"><i class="fas fa-bag-shopping"></i><p>Your cart is empty</p><p style="font-size:12px;">Add items from the shop</p></div>';
             totalSpan.innerText = 'Total: ₹0';
         } else {
             let html = '';
             let total = 0;
             cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
+                const itemTotal = item.price * (item.quantity || 1);
                 total += itemTotal;
                 html += `<div class="cart-item-row">
-                            <span><strong>${item.name}</strong> x ${item.quantity}</span>
-                            <span>₹${itemTotal.toLocaleString('en-IN')}</span>
+                            <div class="cart-item-name"><strong>${escapeHtml(item.name)}</strong> <span style="color:#666;">x ${item.quantity || 1}</span></div>
+                            <div class="cart-item-price">₹${itemTotal.toLocaleString('en-IN')}</div>
                          </div>`;
             });
             container.innerHTML = html;
-            totalSpan.innerText = `Total: ₹${total.toLocaleString('en-IN')}`;
+            totalSpan.innerHTML = `Total: ₹${total.toLocaleString('en-IN')}`;
         }
-        modal.classList.add('active');
+        document.getElementById('cartModal').classList.add('active');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
     function closeCartModal() {
@@ -863,11 +871,13 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         renderProductDetails();
+        
         const minus = document.getElementById('minusBtn');
         const plus = document.getElementById('plusBtn');
         const qtyInput = document.getElementById('quantityInput');
         const addBtn = document.getElementById('addToCartBtn');
         const buyBtn = document.getElementById('buyNowBtn');
+        
         minus.addEventListener('click', () => changeQuantity(-1));
         plus.addEventListener('click', () => changeQuantity(1));
         qtyInput.addEventListener('input', function() {
@@ -876,25 +886,45 @@
             this.value = val;
             updateButtonsState(val);
         });
+        
         addBtn.addEventListener('click', () => {
             let qty = parseInt(document.getElementById('quantityInput').value) || 1;
             addToCartHandler(qty, false);
         });
+        
         buyBtn.addEventListener('click', () => {
             let qty = parseInt(document.getElementById('quantityInput').value) || 1;
             addToCartHandler(qty, true);
         });
+        
         const back = document.getElementById('backToShopBtn');
         if(back) back.addEventListener('click', () => { window.location.href = 'products.html'; });
+        
         // View Cart button functionality
         const viewCartBtn = document.getElementById('viewCartNavBtn');
         if(viewCartBtn) viewCartBtn.addEventListener('click', openCartModal);
+        
+        // Modal close handlers
         document.getElementById('closeModalIcon')?.addEventListener('click', closeCartModal);
         document.getElementById('closeCartBtn')?.addEventListener('click', closeCartModal);
         document.getElementById('gotoFullCartBtn')?.addEventListener('click', () => {
-            window.location.href = 'buy.html';
+            window.location.href = 'cart.html';
         });
+        
+        // Close modal when clicking outside
+        const modal = document.getElementById('cartModal');
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeCartModal();
+        });
+        
         updateCartBadge();
+        
+        // Listen for storage changes (if cart updated in another tab)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'cart') {
+                updateCartBadge();
+            }
+        });
     });
 </script>
 </body>
