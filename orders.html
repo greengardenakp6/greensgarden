@@ -6,7 +6,8 @@
     <title>My Orders | Green Garden</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,85 +17,62 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f4f6fa;
-            color: #1e293b;
+            background: #f4f8f2;
+            color: #1a2e1f;
             overflow-x: hidden;
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #e2e8f0;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 10px;
-        }
-
-        /* Navbar */
-        .navbar-premium {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            padding: 16px 48px;
+        /* Premium Green Garden Navbar with Custom Logo */
+        .navbar-green {
+            background: linear-gradient(135deg, #1a3a2a 0%, #0e2a1a 100%);
+            padding: 12px 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
             position: sticky;
             top: 0;
-            z-index: 1000;
-            flex-wrap: wrap;
-            gap: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 100;
         }
 
-        .nav-left {
+        .nav-brand {
             display: flex;
             align-items: center;
-            gap: 32px;
-            flex-wrap: wrap;
-        }
-
-        .back-btn, .cart-link {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
-            color: white;
+            gap: 14px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
         }
 
-        .back-btn:hover, .cart-link:hover {
-            background: #3b82f6;
-            border-color: #3b82f6;
+        /* Custom Logo Style */
+        .custom-logo-img {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            background: white;
+            padding: 4px;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .custom-logo-img:hover {
+            transform: scale(1.05);
         }
 
-        .brand-icon {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 14px;
+        .logo-fallback {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(145deg, #4caf50, #2e7d32);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+            box-shadow: 0 4px 12px rgba(76,175,80,0.4);
         }
 
-        .brand-icon i {
-            font-size: 22px;
+        .logo-fallback i {
+            font-size: 28px;
             color: white;
         }
 
@@ -102,308 +80,255 @@
             font-size: 24px;
             font-weight: 800;
             font-family: 'Playfair Display', serif;
-            background: linear-gradient(135deg, #fff, #fbbf24);
+            background: linear-gradient(135deg, #f5f5dc, #c8e6b5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-badge {
+            background: #ff9800;
+            font-size: 9px;
+            padding: 3px 8px;
+            border-radius: 30px;
+            color: white;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 18px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(76,175,80,0.5);
+            padding: 10px 26px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: #4caf50;
+            border-color: #4caf50;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(76,175,80,0.3);
+        }
+
+        /* Main Container */
+        .orders-container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 28px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2e7d32, #ff9800);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        .orders-main {
-            max-width: 1280px;
-            margin: 32px auto;
-            padding: 0 32px;
-        }
-
-        /* Tabs */
-        .tabs-premium {
-            background: white;
-            border-radius: 20px;
-            padding: 8px;
-            margin-bottom: 32px;
-            display: flex;
-            gap: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid #eef2ff;
-        }
-
-        .tab-premium {
-            flex: 1;
-            padding: 14px 24px;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            font-size: 15px;
-            color: #64748b;
-            cursor: pointer;
-            border-radius: 16px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .tab-premium.active {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            box-shadow: 0 8px 20px rgba(59,130,246,0.25);
-        }
-
+        /* Orders Grid */
         .orders-grid {
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            gap: 32px;
         }
 
-        /* Order Card */
-        .order-card-premium {
+        .order-card {
             background: white;
-            border-radius: 28px;
+            border-radius: 32px;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid #f1f5f9;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            border: 1px solid #e0f0e0;
         }
 
-        .order-card-premium:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+        .order-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px rgba(46,125,50,0.12);
         }
 
-        .order-header-premium {
-            padding: 22px 28px;
-            background: linear-gradient(135deg, #fafcff, #ffffff);
-            border-bottom: 2px solid #f1f5f9;
+        .order-header {
+            background: linear-gradient(135deg, #fafff7, #ffffff);
+            padding: 22px 30px;
+            border-bottom: 2px solid #e8f5e9;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
+            gap: 15px;
         }
 
-        .order-id-premium {
+        .order-id-badge {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .order-id-premium i {
-            font-size: 22px;
-            color: #3b82f6;
+        .order-id-badge i {
+            font-size: 26px;
+            color: #4caf50;
         }
 
-        .order-id-premium span {
-            font-weight: 800;
-            font-size: 16px;
-            font-family: monospace;
-            letter-spacing: 0.5px;
-        }
-
-        .order-date-premium {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: #64748b;
-            background: #f8fafc;
-            padding: 6px 14px;
-            border-radius: 40px;
-        }
-
-        .status-badge-premium {
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-processing { background: #dbeafe; color: #1e40af; }
-        .status-shipped { background: #fed7aa; color: #9a3412; }
-        .status-out_for_delivery { background: #fef3c7; color: #b45309; }
-        .status-delivered { background: #d1fae5; color: #065f46; }
-
-        /* Timeline */
-        .delivery-timeline-premium {
-            padding: 28px 28px;
-            background: linear-gradient(135deg, #fefce8, #ffffff);
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .timeline-premium {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            margin: 20px 0;
-        }
-
-        .timeline-premium::before {
-            content: '';
-            position: absolute;
-            top: 24px;
-            left: 40px;
-            right: 40px;
-            height: 3px;
-            background: linear-gradient(90deg, #e2e8f0, #cbd5e1, #e2e8f0);
-            z-index: 0;
-            border-radius: 3px;
-        }
-
-        .timeline-step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .timeline-icon {
-            width: 48px;
-            height: 48px;
-            background: white;
-            border: 3px solid #e2e8f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 20px;
-        }
-
-        .timeline-step.completed .timeline-icon {
-            background: #10b981;
-            border-color: #10b981;
-            color: white;
-        }
-
-        .timeline-step.active .timeline-icon {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            color: white;
-            animation: pulseGlow 1.5s infinite;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(59,130,246,0.2); }
-        }
-
-        .timeline-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #64748b;
-        }
-
-        .timeline-step.completed .timeline-label,
-        .timeline-step.active .timeline-label {
-            color: #1e293b;
-        }
-
-        .delivery-banner {
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-            padding: 14px 20px;
-            border-radius: 20px;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        /* Items */
-        .order-items-premium {
-            padding: 24px 28px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .order-item-premium {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 16px 0;
-            border-bottom: 1px solid #f8fafc;
-        }
-
-        .order-item-premium:last-child {
-            border-bottom: none;
-        }
-
-        .item-img-premium {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #f1f5f9, #fef9e3);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .item-img-premium i {
-            font-size: 36px;
-            color: #10b981;
-        }
-
-        .item-details-premium {
-            flex: 1;
-        }
-
-        .item-name-premium {
-            font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 6px;
-            color: #0f172a;
-        }
-
-        .item-meta-premium {
-            display: flex;
-            gap: 20px;
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        .item-price-premium {
+        .order-id-badge span {
             font-weight: 800;
             font-size: 18px;
-            color: #3b82f6;
+            font-family: monospace;
+            letter-spacing: 1px;
+            background: #eef5ea;
+            padding: 6px 14px;
+            border-radius: 40px;
+            color: #2e7d32;
         }
 
-        /* Price Details */
-        .price-details-premium {
-            padding: 20px 28px;
-            background: #fafcff;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .price-row-premium {
+        .order-date {
             display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
+            align-items: center;
+            gap: 8px;
+            background: #f8faf6;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a6741;
+        }
+
+        .customer-chip {
+            background: #e8f0e6;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c5e2a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Product Items Display */
+        .items-table-wrapper {
+            padding: 20px 28px;
+            overflow-x: auto;
+        }
+
+        .invoice-items-table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 14px;
         }
 
-        .price-row-premium.total-premium {
-            border-top: 2px solid #e2e8f0;
-            margin-top: 12px;
-            padding-top: 16px;
-            font-weight: 800;
-            font-size: 20px;
-            color: #0f172a;
+        .invoice-items-table th {
+            text-align: left;
+            padding: 14px 8px;
+            background: #f9fff7;
+            color: #2e5c2e;
+            font-weight: 700;
+            border-bottom: 2px solid #cfe6cf;
         }
 
-        .order-footer-premium {
+        .invoice-items-table td {
+            padding: 14px 8px;
+            border-bottom: 1px solid #ecf3e8;
+            color: #2c3e2a;
+            vertical-align: middle;
+        }
+
+        .product-name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .product-img-thumb {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #f0f7ea;
+            border: 1px solid #d4e8c5;
+        }
+
+        .product-icon-fallback {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4caf50;
+            font-size: 24px;
+        }
+
+        .price-summary {
+            padding: 16px 28px;
+            background: #fefef8;
+            border-top: 1px solid #e0f0dd;
+            border-bottom: 1px solid #e0f0dd;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 40px;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .summary-row.total-row {
+            font-weight: 800;
+            font-size: 20px;
+            border-top: 2px dashed #bcdd9e;
+            margin-top: 8px;
+            padding-top: 14px;
+            color: #1e5622;
+        }
+
+        .gst-breakdown {
+            font-size: 12px;
+            color: #6b8c5c;
+        }
+
+        .card-footer-actions {
             padding: 20px 28px;
             display: flex;
             justify-content: flex-end;
+            gap: 16px;
+            background: white;
         }
 
-        .btn-invoice-premium {
-            background: linear-gradient(135deg, #10b981, #059669);
+        .btn-invoice {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
             border: none;
             padding: 12px 28px;
-            border-radius: 50px;
+            border-radius: 48px;
             font-weight: 700;
             font-size: 14px;
             color: white;
@@ -412,594 +337,656 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+            box-shadow: 0 4px 12px rgba(76,175,80,0.3);
         }
 
-        .btn-invoice-premium:hover {
+        .btn-invoice:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(16,185,129,0.4);
+            box-shadow: 0 10px 22px rgba(76,175,80,0.45);
         }
 
-        /* Modal */
-        .modal-premium {
+        /* Premium Modal */
+        .invoice-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
         }
 
-        .modal-premium.active {
+        .invoice-modal.active {
             display: flex;
         }
 
-        .modal-content-premium {
+        .modal-invoice-card {
             background: white;
-            border-radius: 32px;
-            max-width: 800px; /* Wider for invoice */
-            width: 90%;
+            border-radius: 36px;
+            max-width: 850px;
+            width: 92%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.3);
+            animation: modalPop 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
-        .modal-header-premium {
-            padding: 24px 28px;
-            border-bottom: 2px solid #f1f5f9;
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            padding: 22px 28px;
+            background: linear-gradient(135deg, #1a3a2a, #0e2a1a);
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 36px 36px 0 0;
             position: sticky;
             top: 0;
-            background: white;
             z-index: 10;
         }
 
-        .close-modal-premium {
-            background: #f1f5f9;
+        .close-modal {
+            background: rgba(255,255,255,0.2);
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             font-size: 20px;
             cursor: pointer;
+            color: white;
             transition: 0.2s;
         }
 
-        .toast-premium {
+        .close-modal:hover {
+            background: #ff5722;
+        }
+
+        #modalInvoiceContent {
+            padding: 0;
+            background: white;
+        }
+
+        .toast-msg {
             position: fixed;
             bottom: 30px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #1e293b;
-            padding: 14px 28px;
-            border-radius: 60px;
+            transform: translateX(-50%) translateY(80px);
+            background: #2e7d32;
             color: white;
-            z-index: 2000;
-            transition: all 0.3s;
-            font-weight: 500;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            z-index: 1100;
+            transition: 0.25s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        .toast-premium.show {
+        .toast-msg.show {
             transform: translateX(-50%) translateY(0);
         }
 
-        .empty-state-premium {
+        .empty-state {
             text-align: center;
-            padding: 80px;
             background: white;
-            border-radius: 32px;
+            border-radius: 40px;
+            padding: 70px 20px;
         }
 
-        @media (max-width: 768px) {
-            .navbar-premium { padding: 12px 20px; }
-            .orders-main { padding: 0 16px; }
-            .timeline-premium { flex-direction: column; gap: 20px; }
-            .timeline-premium::before { display: none; }
-            .timeline-step { display: flex; align-items: center; gap: 16px; text-align: left; }
-            .timeline-icon { margin: 0; }
+        @media (max-width: 700px) {
+            .navbar-green { padding: 12px 20px; }
+            .order-header { flex-direction: column; align-items: flex-start; }
+            .summary-row { justify-content: space-between; width: 100%; }
+            .invoice-items-table th, .invoice-items-table td { font-size: 12px; padding: 8px 4px; }
+            .product-img-thumb { width: 40px; height: 40px; }
+        }
+
+        /* Invoice PDF Styling */
+        .invoice-preview-paper {
+            background: white;
+            font-family: 'Inter', sans-serif;
+            max-width: 100%;
+            padding: 32px;
+        }
+        
+        .invoice-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 12px;
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar-premium">
-    <div class="nav-left">
-        <button class="back-btn" id="backToShopBtn">
-            <i class="fas fa-arrow-left"></i>
-            <span>Back to Shop</span>
-        </button>
-        <div class="brand">
-            <div class="brand-icon">
-                <i class="fas fa-leaf"></i>
-            </div>
-            <div class="brand-text">GREEN GARDEN</div>
+<nav class="navbar-green">
+    <div class="nav-brand" id="brandLogo">
+        <!-- Custom Logo Image - Replace 'logo1.jpg' with your actual logo file path -->
+        <img src="logo1.jpg" alt="Green Garden Logo" class="custom-logo-img" id="siteLogo" 
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="logo-fallback" style="display: none;">
+            <i class="fas fa-leaf"></i>
+        </div>
+        <div class="brand-text">
+            GREEN GARDEN
+            <span class="brand-badge">ORGANIC</span>
         </div>
     </div>
-    <button class="cart-link" id="viewCartBtn">
-        <i class="fas fa-shopping-bag"></i>
-        <span>My Cart</span>
-    </button>
+    <div class="nav-actions">
+        <button class="nav-btn" id="backToShopBtn"><i class="fas fa-store"></i> Shop More</button>
+        <button class="nav-btn" id="viewCartNavBtn"><i class="fas fa-shopping-cart"></i> Cart</button>
+    </div>
 </nav>
 
-<div class="orders-main">
-    <div class="tabs-premium">
-        <button class="tab-premium active" data-tab="active">
-            <i class="fas fa-clock"></i>
-            <span>Active Orders</span>
-        </button>
-        <button class="tab-premium" data-tab="history">
-            <i class="fas fa-check-circle"></i>
-            <span>Order History</span>
-        </button>
+<div class="orders-container">
+    <div class="page-header">
+        <h1><i class="fas fa-seedling"></i> My Garden Orders</h1>
+        <button class="btn-invoice" id="refreshOrdersBtn" style="background: #ff9800; box-shadow: none;"><i class="fas fa-sync-alt"></i> Refresh</button>
     </div>
-
-    <div id="ordersContainer" class="orders-grid"></div>
+    <div id="ordersListContainer" class="orders-grid"></div>
 </div>
 
-<div id="invoiceModal" class="modal-premium">
-    <div class="modal-content-premium">
-        <div class="modal-header-premium">
-            <h3 style="font-size: 1.4rem; font-weight: 700;"><i class="fas fa-file-invoice"></i> Order Invoice</h3>
-            <button class="close-modal-premium" onclick="closeInvoiceModal()">&times;</button>
+<!-- Modal for invoice preview -->
+<div id="invoiceModal" class="invoice-modal">
+    <div class="modal-invoice-card">
+        <div class="modal-header">
+            <h3><i class="fas fa-file-invoice-dollar"></i> Green Garden Tax Invoice</h3>
+            <button class="close-modal" id="closeModalBtn">&times;</button>
         </div>
-        <div id="invoiceContent" style="padding: 0;"></div>
+        <div id="modalInvoiceContent"></div>
+        <div style="padding: 20px 28px 28px; background: white; border-top: 1px solid #e0e8dc; text-align: center;">
+            <button class="btn-invoice" id="downloadModalPdfBtn" style="width: 100%; justify-content: center;">
+                <i class="fas fa-download"></i> Download PDF Invoice
+            </button>
+        </div>
     </div>
 </div>
 
-<div id="toast" class="toast-premium"></div>
+<div id="toastMsg" class="toast-msg"></div>
 
 <script>
-    let orders = [];
-
-    // 1. Configuration for Incoming Orders from "Buy Page"
-    // Checks localStorage for a pending order, adds it, then clears the key.
-    function checkForNewOrder() {
-        const pendingOrder = localStorage.getItem('green_garden_pending_order');
-        if (pendingOrder) {
-            try {
-                const newOrder = JSON.parse(pendingOrder);
-                // Format the incoming order to match our structure
-                const formattedOrder = formatIncomingOrder(newOrder);
-                orders.unshift(formattedOrder); // Add to top
-                localStorage.setItem('green_garden_premium_orders', JSON.stringify(orders));
-                localStorage.removeItem('green_garden_pending_order'); // Clear pending
-                showToast("✓ New order placed successfully!");
-            } catch (e) {
-                console.error("Error parsing pending order", e);
-            }
-        }
-    }
-
-    function formatIncomingOrder(rawOrder) {
-        const now = new Date();
-        return {
-            orderId: "INV" + Date.now().toString().slice(-6),
-            date: now.toISOString(),
-            status: "processing",
-            items: rawOrder.items.map(i => ({
-                name: i.name || "Product",
-                price: i.price || 0,
-                quantity: i.quantity || 1,
-                icon: i.icon || "fa-leaf"
-            })),
-            listingPrice: rawOrder.total || 0,
-            sellingPrice: rawOrder.total || 0,
-            totalFees: 0,
-            total: rawOrder.total || 0,
-            paymentMethod: rawOrder.paymentMethod || "COD",
-            deliveryAddress: rawOrder.address || { name: "Customer", address: "Address Not Provided", phone: "N/A" },
-            tracking: {
-                confirmed: { date: now, completed: true },
-                shipped: { date: new Date(now.getTime() + 86400000), completed: false },
-                outForDelivery: { date: new Date(now.getTime() + 172800000), completed: false },
-                delivered: { date: new Date(now.getTime() + 259200000), completed: false }
-            }
-        };
-    }
-
-    function generatePremiumOrders() {
-        const today = new Date();
-        const getDate = (days) => {
-            const d = new Date(today);
-            d.setDate(today.getDate() + days);
-            return d;
-        };
-
-        return [
-            {
-                orderId: "INV00001",
-                date: getDate(-2).toISOString(),
-                status: "processing",
-                items: [
-                    { name: "Premium Organic Tomato Seeds", price: 89, quantity: 3, icon: "fa-seedling" },
-                    { name: "Aroid Potting Mix (5kg)", price: 449, quantity: 1, icon: "fa-droplet" }
-                ],
-                listingPrice: 716,
-                sellingPrice: 716,
-                totalFees: 50,
-                total: 766,
-                paymentMethod: "Credit Card •••• 4821",
-                deliveryAddress: {
-                    name: "Vikram Mehta",
-                    phone: "+91 98765 43210",
-                    address: "A-42, Greenfield Apartments, Sector 62, Noida, Uttar Pradesh - 201301"
+    // ==============================================
+    // GREEN GARDEN ORDERS SYSTEM
+    // Auto-syncs with cart/checkout, shows product images
+    // Custom logo appears on orders page, invoice & PDF
+    // ==============================================
+    
+    // Custom Logo Configuration (same as your uploaded logo)
+    const CUSTOM_LOGO_URL = 'logo1.jpg';  // Replace with your actual logo path
+    
+    // Global orders array
+    let ordersList = [];
+    
+    // Sample orders with FULL product details including images
+    const SAMPLE_ORDERS = [
+        {
+            id: "INV00001",
+            date: "Mar 25, 2026",
+            customer: "Akash Verma",
+            phone: "+91-9840012345",
+            address: "42, Green Colony, Anna Nagar, Chennai, Tamil Nadu - 600040",
+            items: [
+                { 
+                    name: "Organic Rose Plant (Red)", 
+                    qty: 2, 
+                    price: 299, 
+                    total: 598, 
+                    image: null,
+                    icon: "fa-rose"
                 },
-                tracking: {
-                    confirmed: { date: getDate(-2), completed: true },
-                    shipped: { date: getDate(-1), completed: false },
-                    outForDelivery: { date: getDate(0), completed: false },
-                    delivered: { date: getDate(2), completed: false }
-                }
-            },
-            {
-                orderId: "INV00002",
-                date: getDate(-15).toISOString(),
-                status: "delivered",
-                items: [
-                    { name: "Lucky Bamboo Plant (3 Stalks)", price: 399, quantity: 2, icon: "fa-leaf" }
-                ],
-                listingPrice: 798,
-                sellingPrice: 798,
-                totalFees: 40,
-                total: 838,
-                paymentMethod: "Cash on Delivery",
-                deliveryAddress: {
-                    name: "Rahul Kapoor",
-                    phone: "+91 99887 76655",
-                    address: "Block C, Sunshine Heights, Andheri East, Mumbai, Maharashtra - 400069"
+                { 
+                    name: "Premium Vegetable Seed Kit", 
+                    qty: 1, 
+                    price: 449, 
+                    total: 449, 
+                    image: null,
+                    icon: "fa-seedling"
                 },
-                tracking: {
-                    confirmed: { date: getDate(-15), completed: true },
-                    shipped: { date: getDate(-13), completed: true },
-                    outForDelivery: { date: getDate(-11), completed: true },
-                    delivered: { date: getDate(-10), completed: true }
+                { 
+                    name: "Eco-Friendly Potting Mix (3kg)", 
+                    qty: 1, 
+                    price: 199, 
+                    total: 199, 
+                    image: null,
+                    icon: "fa-droplet"
                 }
-            }
-        ];
-    }
-
-    function initOrders() {
-        // Check for incoming order from Buy Page
-        checkForNewOrder();
-
-        const saved = localStorage.getItem('green_garden_premium_orders');
-        if (saved) {
-            orders = JSON.parse(saved);
-        } else {
-            orders = generatePremiumOrders();
-            localStorage.setItem('green_garden_premium_orders', JSON.stringify(orders));
+            ],
+            subtotal: 1246,
+            gstAmount: 224.28,
+            grandTotal: 1470.28,
+            paymentMethod: "UPI (greengarden@okhdfcbank)",
+            status: "Delivered"
+        },
+        {
+            id: "INV00002",
+            date: "Mar 22, 2026",
+            customer: "Meera Krishnamoorthy",
+            phone: "+91-9876543210",
+            address: "15, Lake View Road, T. Nagar, Chennai, Tamil Nadu - 600017",
+            items: [
+                { 
+                    name: "Money Plant (Golden Pothos)", 
+                    qty: 3, 
+                    price: 199, 
+                    total: 597, 
+                    image: null,
+                    icon: "fa-leaf"
+                },
+                { 
+                    name: "Ceramic Self-Watering Pot", 
+                    qty: 2, 
+                    price: 549, 
+                    total: 1098, 
+                    image: null,
+                    icon: "fa-flask"
+                }
+            ],
+            subtotal: 1695,
+            gstAmount: 305.10,
+            grandTotal: 2000.10,
+            paymentMethod: "Credit Card (****4821)",
+            status: "Shipped"
         }
-    }
-
-    function formatDate(dateInput) {
-        if (!dateInput) return 'N/A';
-        const date = new Date(dateInput);
-        return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-    }
-
-    function getStatusInfo(status) {
-        const map = {
-            processing: { class: 'status-processing', text: 'Processing', icon: 'fa-spinner fa-pulse' },
-            shipped: { class: 'status-shipped', text: 'Shipped', icon: 'fa-truck' },
-            out_for_delivery: { class: 'status-out_for_delivery', text: 'Out for Delivery', icon: 'fa-truck-fast' },
-            delivered: { class: 'status-delivered', text: 'Delivered', icon: 'fa-check-circle' }
-        };
-        return map[status] || map.processing;
-    }
-
-    function renderOrders(tab) {
-        const container = document.getElementById('ordersContainer');
-        const filtered = tab === 'active' ? orders.filter(o => o.status !== 'delivered') : orders.filter(o => o.status === 'delivered');
+    ];
+    
+    // Function to get cart from localStorage and create order from it
+    function createOrderFromCart() {
+        const cart = localStorage.getItem('cart');
+        if (!cart) return null;
         
-        if (filtered.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state-premium">
-                    <i class="fas fa-seedling" style="font-size: 70px; color: #cbd5e1; margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 24px; margin-bottom: 8px;">No orders found</h3>
-                    <p style="color: #64748b;">${tab === 'active' ? 'Your active orders will appear here' : 'Your order history is empty'}</p>
-                    <button class="btn-invoice-premium" style="margin-top: 24px; display: inline-flex;" id="emptyShopBtn">Start Shopping <i class="fas fa-arrow-right"></i></button>
-                </div>
-            `;
-            const emptyBtn = document.getElementById('emptyShopBtn');
-            if (emptyBtn) {
-                emptyBtn.addEventListener('click', () => {
-                    window.location.href = 'products.html';
-                });
+        let cartItems = JSON.parse(cart);
+        if (!cartItems || cartItems.length === 0) return null;
+        
+        // Calculate totals
+        let subtotal = 0;
+        const items = cartItems.map(item => {
+            const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+            const qty = item.quantity || 1;
+            const total = price * qty;
+            subtotal += total;
+            return {
+                name: item.name || "Garden Product",
+                qty: qty,
+                price: price,
+                total: total,
+                image: item.image || null,
+                icon: item.icon || getIconForProduct(item.name)
+            };
+        });
+        
+        const gstAmount = subtotal * 0.18;
+        const grandTotal = subtotal + gstAmount;
+        
+        // Get customer info from localStorage if available
+        const customerName = localStorage.getItem('checkout_name') || "Valued Customer";
+        const customerPhone = localStorage.getItem('checkout_phone') || "+91-XXXXXXXXXX";
+        const customerAddress = localStorage.getItem('checkout_address') || "Chennai, Tamil Nadu";
+        
+        const newOrder = {
+            id: `INV${String(ordersList.length + 1).padStart(5, '0')}`,
+            date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+            customer: customerName,
+            phone: customerPhone,
+            address: customerAddress,
+            items: items,
+            subtotal: subtotal,
+            gstAmount: gstAmount,
+            grandTotal: grandTotal,
+            paymentMethod: localStorage.getItem('checkout_payment') || "Online Payment",
+            status: "Processing"
+        };
+        
+        return newOrder;
+    }
+    
+    // Helper to get icon based on product name
+    function getIconForProduct(name) {
+        const nameLower = (name || '').toLowerCase();
+        if (nameLower.includes('rose')) return 'fa-rose';
+        if (nameLower.includes('seed')) return 'fa-seedling';
+        if (nameLower.includes('pot')) return 'fa-flask';
+        if (nameLower.includes('plant')) return 'fa-tree';
+        if (nameLower.includes('money')) return 'fa-leaf';
+        return 'fa-seedling';
+    }
+    
+    // Load orders from localStorage
+    function loadOrders() {
+        const stored = localStorage.getItem('green_garden_orders_complete');
+        if (stored && JSON.parse(stored).length > 0) {
+            ordersList = JSON.parse(stored);
+        } else {
+            ordersList = [...SAMPLE_ORDERS];
+            saveOrdersToLocal();
+        }
+    }
+    
+    function saveOrdersToLocal() {
+        localStorage.setItem('green_garden_orders_complete', JSON.stringify(ordersList));
+    }
+    
+    // Sync order from cart when coming from checkout
+    function syncOrderFromCart() {
+        const pendingOrder = localStorage.getItem('pending_order_from_cart');
+        if (pendingOrder === 'true') {
+            localStorage.removeItem('pending_order_from_cart');
+            const newOrder = createOrderFromCart();
+            if (newOrder) {
+                ordersList.unshift(newOrder);
+                saveOrdersToLocal();
+                // Clear cart after order
+                localStorage.setItem('cart', JSON.stringify([]));
+                showToast(`✅ Order ${newOrder.id} placed successfully!`);
+                renderOrdersList();
             }
+        }
+    }
+    
+    // Function to add order from checkout (called externally)
+    window.addNewOrderFromCheckout = function(orderData) {
+        const newOrder = {
+            id: orderData.id || `INV${String(ordersList.length + 1).padStart(5, '0')}`,
+            date: orderData.date || new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+            customer: orderData.customer,
+            phone: orderData.phone,
+            address: orderData.address,
+            items: orderData.items.map(it => ({ 
+                ...it, 
+                total: it.price * it.qty, 
+                icon: it.icon || getIconForProduct(it.name),
+                image: it.image || null
+            })),
+            subtotal: orderData.subtotal,
+            gstAmount: orderData.gstAmount || (orderData.subtotal * 0.18),
+            grandTotal: orderData.grandTotal || (orderData.subtotal + (orderData.subtotal * 0.18)),
+            paymentMethod: orderData.paymentMethod || "Online Payment",
+            status: "Processing"
+        };
+        ordersList.unshift(newOrder);
+        saveOrdersToLocal();
+        renderOrdersList();
+        showToast(`✅ Order ${newOrder.id} placed successfully!`);
+    };
+    
+    // Escape HTML
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+    
+    // Render orders with FULL PRODUCT DETAILS including images
+    function renderOrdersList() {
+        const container = document.getElementById('ordersListContainer');
+        if (!ordersList.length) {
+            container.innerHTML = `<div class="empty-state">
+                <i class="fas fa-seedling" style="font-size: 70px; color: #b8d9aa;"></i>
+                <h3 style="margin: 20px 0 8px;">No orders yet</h3>
+                <p style="color: #5a7a4a;">Complete a purchase to see your orders here</p>
+                <button class="btn-invoice" id="shopNowEmptyBtn" style="margin-top: 24px;"><i class="fas fa-store"></i> Start Shopping</button>
+            </div>`;
+            const shopBtn = document.getElementById('shopNowEmptyBtn');
+            if (shopBtn) shopBtn.onclick = () => window.location.href = 'products.html';
             return;
         }
-
-        container.innerHTML = filtered.map(order => {
-            const statusInfo = getStatusInfo(order.status);
-            const steps = [
-                { key: 'confirmed', label: 'Confirmed', icon: 'fa-check-circle' },
-                { key: 'shipped', label: 'Shipped', icon: 'fa-truck' },
-                { key: 'outForDelivery', label: 'Out for Delivery', icon: 'fa-truck-fast' },
-                { key: 'delivered', label: 'Delivered', icon: 'fa-check-double' }
-            ];
-            
-            const isDelivered = order.status === 'delivered';
+        
+        container.innerHTML = ordersList.map(order => {
+            const itemsHtml = order.items.map(item => {
+                // Display product image if available, otherwise show icon
+                const productImageHtml = item.image ? 
+                    `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'product-icon-fallback\'><i class=\'fas ${item.icon || 'fa-seedling'}\'></i></div>';">` :
+                    `<div class="product-icon-fallback"><i class="fas ${item.icon || 'fa-seedling'}"></i></div>`;
+                
+                return `
+                    <tr style="border-bottom: 1px solid #ecf3e8;">
+                        <td style="padding: 12px 8px;">
+                            <div class="product-name">
+                                ${productImageHtml}
+                                <span>${escapeHtml(item.name)}</span>
+                            </div>
+                        </td>
+                        <td style="text-align: center; padding: 12px 8px;">${item.qty}</td>
+                        <td style="text-align: right; padding: 12px 8px;">₹${item.price.toLocaleString('en-IN')}</td>
+                        <td style="text-align: right; padding: 12px 8px; font-weight: 600;">₹${item.total.toLocaleString('en-IN')}</td>
+                    </tr>
+                `;
+            }).join('');
             
             return `
-                <div class="order-card-premium">
-                    <div class="order-header-premium">
-                        <div class="order-id-premium">
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-id-badge">
                             <i class="fas fa-receipt"></i>
-                            <span>${order.orderId}</span>
+                            <span>${order.id}</span>
                         </div>
-                        <div class="order-date-premium">
-                            <i class="far fa-calendar-alt"></i>
-                            ${formatDate(order.date)}
-                        </div>
-                        <div class="status-badge-premium ${statusInfo.class}">
-                            <i class="fas ${statusInfo.icon}"></i>
-                            ${statusInfo.text}
-                        </div>
+                        <div class="order-date"><i class="far fa-calendar-alt"></i> ${order.date}</div>
+                        <div class="customer-chip"><i class="fas fa-user"></i> ${escapeHtml(order.customer)}</div>
                     </div>
-                    
-                    <div class="delivery-timeline-premium">
-                        <div class="timeline-premium">
-                            ${steps.map((step, idx) => {
-                                const stepData = order.tracking[step.key];
-                                const isCompleted = stepData?.completed;
-                                const isActive = !isCompleted && !isDelivered && idx === 1 && order.status === 'shipped';
-                                return `
-                                    <div class="timeline-step ${isCompleted ? 'completed' : (isActive ? 'active' : '')}">
-                                        <div class="timeline-icon">
-                                            <i class="fas ${step.icon}"></i>
-                                        </div>
-                                        <div class="timeline-label">${step.label}</div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                        <div class="delivery-banner">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fas ${isDelivered ? 'fa-check-circle' : 'fa-truck'}" style="color: #10b981; font-size: 18px;"></i>
-                                <span style="font-weight: 600;">${isDelivered ? 'Delivered on ' + formatDate(order.tracking.delivered.date) : 'Estimated delivery by ' + formatDate(order.tracking.delivered.date)}</span>
-                            </div>
-                        </div>
+                    <div class="items-table-wrapper">
+                        <table class="invoice-items-table">
+                            <thead>
+                                <tr><th>Item Description</th><th style="text-align:center">Qty</th><th style="text-align:right">Unit Price</th><th style="text-align:right">Amount</th></tr>
+                            </thead>
+                            <tbody>${itemsHtml}</tbody>
+                        </table>
                     </div>
-                    
-                    <div class="order-items-premium">
-                        ${order.items.map(item => `
-                            <div class="order-item-premium">
-                                <div class="item-img-premium">
-                                    <i class="fas ${item.icon}"></i>
-                                </div>
-                                <div class="item-details-premium">
-                                    <div class="item-name-premium">${escapeHtml(item.name)}</div>
-                                    <div class="item-meta-premium">
-                                        <span>Qty: ${item.quantity}</span>
-                                        <span>₹${item.price.toLocaleString('en-IN')} each</span>
-                                    </div>
-                                </div>
-                                <div class="item-price-premium">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
-                            </div>
-                        `).join('')}
+                    <div class="price-summary">
+                        <div class="summary-row"><span>Subtotal:</span><span>₹${order.subtotal.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-row gst-breakdown"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-row total-row"><span>Grand Total:</span><span>₹${order.grandTotal.toLocaleString('en-IN')}</span></div>
                     </div>
-                    
-                    <div class="price-details-premium">
-                        <div class="price-row-premium total-premium"><span>Total Amount</span><span>₹${order.total.toLocaleString('en-IN')}</span></div>
-                        <div class="price-row-premium"><span>Payment Method</span><span>${order.paymentMethod}</span></div>
-                    </div>
-                    
-                    <div class="order-footer-premium">
-                        <button class="btn-invoice-premium" onclick='showInvoiceModal(${JSON.stringify(order).replace(/'/g, "&#39;")})'>
-                            <i class="fas fa-file-pdf"></i> View Invoice
+                    <div class="card-footer-actions">
+                        <button class="btn-invoice" onclick="viewInvoiceModal('${order.id}')">
+                            <i class="fas fa-eye"></i> View Invoice
+                        </button>
+                        <button class="btn-invoice" onclick="downloadInvoiceDirect('${order.id}')" style="background: #ff9800;">
+                            <i class="fas fa-download"></i> PDF
                         </button>
                     </div>
                 </div>
             `;
         }).join('');
     }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-    }
-
-    // 2. NEW INVOICE DESIGN (Matching your uploaded template)
-    function generatePremiumInvoiceHTML(order) {
-        const issueDate = new Date();
-        const dueDate = new Date();
-        dueDate.setDate(issueDate.getDate() + 7);
-
+    
+    // Generate premium invoice HTML with CUSTOM LOGO
+    function generateInvoiceHTML(order) {
+        const itemsRows = order.items.map(item => {
+            const productImgHtml = item.image ? 
+                `<img src="${item.image}" style="width: 40px; height: 40px; border-radius: 10px; object-fit: cover; margin-right: 12px;" onerror="this.style.display='none';">` : 
+                `<i class="fas ${item.icon || 'fa-seedling'}" style="margin-right: 12px; color: #4caf50; font-size: 24px;"></i>`;
+            
+            return `
+                <tr style="border-bottom: 1px solid #e2f0e0;">
+                    <td style="padding: 12px 8px;">
+                        <div style="display: flex; align-items: center;">
+                            ${productImgHtml}
+                            <span>${escapeHtml(item.name)}</span>
+                        </div>
+                    </td>
+                    <td style="text-align: center; padding: 12px 8px;">${item.qty}</td>
+                    <td style="text-align: right; padding: 12px 8px;">₹${item.price.toLocaleString('en-IN')}</td>
+                    <td style="text-align: right; padding: 12px 8px; font-weight: 600;">₹${item.total.toLocaleString('en-IN')}</td>
+                </tr>
+            `;
+        }).join('');
+        
         return `
-            <div style="padding: 40px; font-family: 'Inter', Arial, sans-serif; color: #333;">
-                <!-- Header Section -->
-                <div style="text-align: center; border-bottom: 2px solid #10b981; padding-bottom: 20px; margin-bottom: 30px;">
-                    <h1 style="font-size: 32px; color: #10b981; margin: 0; letter-spacing: 1px;">INVOICE</h1>
-                    <h2 style="font-size: 42px; margin: 5px 0; color: #1e293b; font-weight: 800;">GREEN GARDEN</h2>
-                    <p style="margin: 5px 0; font-size: 14px; color: #555;">
-                        No. 12, Katpadi Road<br>
-                        Gandhi Nagar, Vellore, Tamil Nadu – 632006
-                    </p>
-                    <p style="margin: 5px 0; font-size: 14px; color: #555;">
-                        +919994247217 | greengarden2427@gmail.com<br>
-                        https://greengarden24.netlify.app/
-                    </p>
-                    <p style="margin-top: 10px; font-weight: 600; font-size: 12px; color: #333; background: #f3f4f6; display: inline-block; padding: 4px 12px; border-radius: 4px;">
-                        GSTIN: 33ABCDE1234F1Z5
-                    </p>
-                </div>
-
-                <!-- Bill To & Invoice Details -->
-                <div style="display: flex; justify-content: space-between; margin-bottom: 40px;">
-                    <div style="width: 55%;">
-                        <h3 style="margin: 0 0 10px; color: #10b981; font-size: 18px; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; display: inline-block;">BILL TO</h3>
-                        <p style="margin: 0; font-size: 15px; font-weight: 700;">${escapeHtml(order.deliveryAddress.name)}</p>
-                        <p style="margin: 5px 0; font-size: 13px; color: #555; line-height: 1.5;">
-                            ${escapeHtml(order.deliveryAddress.address)}<br>
-                            Phone: ${order.deliveryAddress.phone}
-                        </p>
+            <div class="invoice-preview-paper" id="invoicePaper" style="background: white; font-family: 'Inter', sans-serif;">
+                <!-- Header with Custom Logo -->
+                <div style="text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 3px solid #4caf50;">
+                    <img src="${CUSTOM_LOGO_URL}" alt="Green Garden Logo" class="invoice-logo" 
+                         style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 12px;"
+                         onerror="this.style.display='none'; this.parentElement.querySelector('.logo-fallback-invoice').style.display='flex';">
+                    <div class="logo-fallback-invoice" style="display: none; width: 70px; height: 70px; background: linear-gradient(145deg, #4caf50, #2e7d32); border-radius: 20px; margin: 0 auto 12px; align-items: center; justify-content: center;">
+                        <i class="fas fa-leaf" style="font-size: 34px; color: white;"></i>
                     </div>
-                    <div style="width: 40%; text-align: right;">
-                        <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
-                            <tr>
-                                <td style="padding: 6px 0; color: #777;">INVOICE #</td>
-                                <td style="padding: 6px 0; font-weight: 700; color: #1e293b;">${order.orderId}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 6px 0; color: #777;">ISSUE DATE</td>
-                                <td style="padding: 6px 0; font-weight: 600;">${formatDate(issueDate)}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 6px 0; color: #777;">DUE DATE</td>
-                                <td style="padding: 6px 0; font-weight: 600;">${formatDate(dueDate)}</td>
-                            </tr>
-                        </table>
+                    <h1 style="font-size: 32px; font-weight: 800; color: #1e3a2f;">GREEN GARDEN</h1>
+                    <p style="color: #5a7a4a; font-size: 13px;">Premium Organic & Sustainable Garden Store</p>
+                    <p style="font-size: 11px; color: #7f9a6e;">No.12, Katpadi Road, Gandhi Nagar, Vellore, Tamil Nadu - 632006 | GSTIN: 33ABCDE1234F1Z5</p>
+                </div>
+                
+                <!-- Bill To + Invoice Details -->
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; margin-bottom: 32px;">
+                    <div style="background: #f9fff7; padding: 20px; border-radius: 20px; flex:1;">
+                        <h3 style="font-size: 14px; color: #4caf50; margin-bottom: 12px;"><i class="fas fa-user"></i> BILL TO</h3>
+                        <p style="font-weight: 700;">${escapeHtml(order.customer)}</p>
+                        <p style="font-size: 13px;">${escapeHtml(order.phone)}</p>
+                        <p style="font-size: 13px;">${escapeHtml(order.address)}</p>
+                    </div>
+                    <div style="background: #f9fff7; padding: 20px; border-radius: 20px; min-width: 200px;">
+                        <h3 style="font-size: 14px; color: #4caf50; margin-bottom: 12px;"><i class="fas fa-file-invoice"></i> INVOICE DETAILS</h3>
+                        <p><strong>INVOICE #</strong> ${order.id}</p>
+                        <p><strong>ISSUE DATE</strong> ${order.date}</p>
+                        <p><strong>DUE DATE</strong> ${order.date}</p>
                     </div>
                 </div>
-
+                
                 <!-- Items Table -->
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 14px;">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 28px;">
                     <thead>
-                        <tr style="background: #1e293b; color: white;">
-                            <th style="padding: 14px; text-align: left; font-weight: 600;">DESCRIPTION</th>
-                            <th style="padding: 14px; text-align: center; font-weight: 600;">QTY</th>
-                            <th style="padding: 14px; text-align: right; font-weight: 600;">PRICE</th>
-                            <th style="padding: 14px; text-align: right; font-weight: 600;">AMOUNT</th>
+                        <tr style="background: #eef5ea;">
+                            <th style="padding: 14px; text-align: left;">Item Description</th>
+                            <th style="padding: 14px; text-align: center;">QTY</th>
+                            <th style="padding: 14px; text-align: right;">PRICE</th>
+                            <th style="padding: 14px; text-align: right;">AMOUNT</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        ${order.items.map((item, index) => `
-                            <tr style="border-bottom: 1px solid #e5e7eb; background: ${index % 2 === 0 ? '#fff' : '#f9fafb'};">
-                                <td style="padding: 14px;">
-                                    <span style="font-weight: 600;">${escapeHtml(item.name)}</span>
-                                </td>
-                                <td style="padding: 14px; text-align: center;">${item.quantity}</td>
-                                <td style="padding: 14px; text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
-                                <td style="padding: 14px; text-align: right; font-weight: 600;">₹${(item.price * item.quantity).toLocaleString('en-IN')}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
+                    <tbody>${itemsRows}</tbody>
                 </table>
-
-                <!-- Total Section -->
-                <div style="display: flex; justify-content: flex-end; margin-bottom: 40px;">
-                    <div style="width: 300px;">
-                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
-                            <span style="color: #666;">Subtotal</span>
-                            <span>₹${order.sellingPrice.toLocaleString('en-IN')}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
-                            <span style="color: #666;">Taxes & Fees</span>
-                            <span>₹${order.totalFees.toLocaleString('en-IN')}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; padding: 16px 0; font-size: 20px; font-weight: 800; border-top: 3px solid #10b981; margin-top: 5px;">
-                            <span>TOTAL</span>
-                            <span style="color: #10b981;">₹${order.total.toLocaleString('en-IN')}</span>
+                
+                <!-- Totals with GST -->
+                <div style="background: #fefef8; padding: 22px; border-radius: 24px;">
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div style="text-align: right;">
+                            <p style="margin: 6px 0;"><strong>Subtotal:</strong> ₹${order.subtotal.toLocaleString('en-IN')}</p>
+                            <p style="margin: 6px 0; color: #2e7d32;"><strong>GST (18%):</strong> ₹${order.gstAmount.toLocaleString('en-IN')}</p>
+                            <div style="border-top: 2px solid #cfe2c2; margin: 12px 0 6px; padding-top: 10px;">
+                                <span style="font-size: 22px; font-weight: 800;">GRAND TOTAL: ₹${order.grandTotal.toLocaleString('en-IN')}</span>
+                            </div>
+                            <p style="font-size: 12px; color: #6b8c5c; margin-top: 10px;"><i class="fas fa-credit-card"></i> Payment: ${order.paymentMethod}</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Footer -->
-                <div style="text-align: center; border-top: 2px solid #e5e7eb; padding-top: 20px; font-size: 12px; color: #888;">
-                    <p style="margin-bottom: 5px;">Payment Method: ${order.paymentMethod}</p>
-                    <p style="margin-bottom: 10px;">Thank you for shopping with Green Garden!</p>
-                    <p style="font-size: 11px; color: #aaa;">This is a computer-generated invoice and does not require a signature.</p>
+                
+                <div style="text-align: center; font-size: 10px; color: #8ba87a; border-top: 1px solid #e2f0e0; margin-top: 28px; padding-top: 18px;">
+                    <p>Thank you for choosing Green Garden — Grow with Nature 🌿</p>
+                    <p>This is a computer-generated invoice | For queries: greengarden2427@gmail.com</p>
                 </div>
             </div>
         `;
     }
-
-    let currentOrder = null;
-
-    function showInvoiceModal(order) {
-        currentOrder = order;
-        const modal = document.getElementById('invoiceModal');
-        const invoiceContent = document.getElementById('invoiceContent');
+    
+    function getOrderById(orderId) {
+        return ordersList.find(o => o.id === orderId);
+    }
+    
+    let currentModalOrder = null;
+    
+    window.viewInvoiceModal = function(orderId) {
+        const order = getOrderById(orderId);
+        if (!order) { showToast("Order not found", true); return; }
+        currentModalOrder = order;
+        const modalContent = document.getElementById('modalInvoiceContent');
+        modalContent.innerHTML = generateInvoiceHTML(order);
+        document.getElementById('invoiceModal').classList.add('active');
+    };
+    
+    window.downloadInvoiceDirect = async function(orderId) {
+        const order = getOrderById(orderId);
+        if (!order) { showToast("Invoice error", true); return; }
+        const tempDiv = document.createElement('div');
+        tempDiv.style.position = 'absolute';
+        tempDiv.style.left = '-9999px';
+        tempDiv.style.top = '0';
+        tempDiv.style.width = '800px';
+        tempDiv.style.background = 'white';
+        tempDiv.innerHTML = generateInvoiceHTML(order);
+        document.body.appendChild(tempDiv);
         
-        invoiceContent.innerHTML = generatePremiumInvoiceHTML(order);
-        
-        const footerDiv = document.createElement('div');
-        footerDiv.style.padding = '20px 40px';
-        footerDiv.style.borderTop = '1px solid #f1f5f9';
-        footerDiv.style.background = 'white';
-        footerDiv.style.position = 'sticky';
-        footerDiv.style.bottom = '0';
-        footerDiv.innerHTML = `
-            <button class="btn-invoice-premium" id="downloadPdfBtn" style="width: 100%; justify-content: center;">
-                <i class="fas fa-download"></i> Download PDF Invoice
-            </button>
-        `;
-        invoiceContent.appendChild(footerDiv);
-        
-        const downloadBtn = document.getElementById('downloadPdfBtn');
-        if (downloadBtn) {
-            downloadBtn.onclick = () => {
-                if (currentOrder) downloadPremiumPDF(currentOrder);
-            };
+        try {
+            const element = tempDiv.querySelector('.invoice-preview-paper') || tempDiv;
+            const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#ffffff', logging: false });
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgWidth = 190;
+            const pageHeight = 277;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 10;
+            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            pdf.save(`Invoice_${order.id}_GreenGarden.pdf`);
+            showToast(`✓ PDF Downloaded: ${order.id}`);
+        } catch (err) {
+            console.error(err);
+            showToast("PDF generation error", true);
+        } finally {
+            document.body.removeChild(tempDiv);
         }
-        
-        modal.classList.add('active');
-    }
-
-    function downloadPremiumPDF(order) {
-        const element = document.createElement('div');
-        element.innerHTML = generatePremiumInvoiceHTML(order);
-        element.style.background = 'white';
-        
-        const opt = {
-            margin: 0,
-            filename: `Invoice_${order.orderId}_GreenGarden.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        
-        html2pdf().set(opt).from(element).save();
-        showToast(`✓ Invoice downloaded: ${order.orderId}`);
-    }
-
-    function closeInvoiceModal() {
-        document.getElementById('invoiceModal').classList.remove('active');
-        currentOrder = null;
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    // Navigation
-    document.getElementById('backToShopBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = 'products.html';
+    };
+    
+    document.getElementById('downloadModalPdfBtn')?.addEventListener('click', async () => {
+        if (currentModalOrder) {
+            await downloadInvoiceDirect(currentModalOrder.id);
+        } else {
+            showToast("No invoice loaded", true);
+        }
     });
     
-    document.getElementById('viewCartBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = 'cart.html';
-    });
-
-    document.querySelectorAll('.tab-premium').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.tab-premium').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderOrders(btn.dataset.tab);
-        });
-    });
-
-    window.onclick = function(e) {
-        const modal = document.getElementById('invoiceModal');
-        if (e.target === modal) closeInvoiceModal();
-    };
-
+    function closeModal() {
+        document.getElementById('invoiceModal').classList.remove('active');
+        currentModalOrder = null;
+    }
+    
+    function showToast(msg, isErr = false) {
+        const toast = document.getElementById('toastMsg');
+        toast.style.backgroundColor = isErr ? '#d32f2f' : '#2e7d32';
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+    
+    // Navigation handlers
+    document.getElementById('backToShopBtn')?.addEventListener('click', () => { window.location.href = 'products.html'; });
+    document.getElementById('viewCartNavBtn')?.addEventListener('click', () => { window.location.href = 'cart.html'; });
+    document.getElementById('closeModalBtn')?.addEventListener('click', closeModal);
+    document.getElementById('refreshOrdersBtn')?.addEventListener('click', () => { renderOrdersList(); showToast("Orders refreshed"); });
+    window.onclick = (e) => { if (e.target === document.getElementById('invoiceModal')) closeModal(); };
+    
+    // Handle custom logo fallback
+    function initLogo() {
+        const logoImg = document.getElementById('siteLogo');
+        if (logoImg) {
+            logoImg.src = CUSTOM_LOGO_URL;
+            logoImg.onerror = function() {
+                this.style.display = 'none';
+                const fallback = this.nextElementSibling;
+                if (fallback) fallback.style.display = 'flex';
+            };
+        }
+    }
+    
     // Initialize
-    initOrders();
-    renderOrders('active');
+    initLogo();
+    loadOrders();
+    syncOrderFromCart();
+    renderOrdersList();
+    
+    console.log("Green Garden Orders Ready - Product details displayed, custom logo active");
 </script>
 </body>
 </html>
