@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>My Orders | Green Garden</title>
+    <title>My Orders | Green Garden - Complete Order Details</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -339,6 +339,10 @@
             color: #1e5622;
         }
 
+        .discount-row {
+            color: #ff9800;
+        }
+
         .card-footer-actions {
             padding: 20px 28px;
             display: flex;
@@ -541,18 +545,17 @@
 
 <script>
     // ==============================================
-    // GREEN GARDEN ORDERS SYSTEM
-    // Shows FULL PRODUCT DETAILS from actual purchases
-    // Connected to products.html (buy page)
+    // GREEN GARDEN ORDERS SYSTEM - FIXED VERSION
+    // Shows correct quantity, discount, and accurate totals
     // ==============================================
     
     const CUSTOM_LOGO_URL = 'logo1.jpg';
     let ordersList = [];
     
-    // Sample products with full details for demo
+    // Sample orders with CORRECT calculations
     const SAMPLE_ORDERS = [
         {
-            id: "INV10001",
+            id: "GRN20260325001",
             date: "Mar 25, 2026",
             customer: "Akash Verma",
             phone: "+91-9840012345",
@@ -578,14 +581,15 @@
                 }
             ],
             subtotal: 2497,
+            discount: 0,
             gstAmount: 449.46,
             grandTotal: 2946.46,
             paymentMethod: "UPI Payment",
             status: "Delivered"
         },
         {
-            id: "INV10002",
-            date: "Mar 22, 2026",
+            id: "GRN20260324002",
+            date: "Mar 24, 2026",
             customer: "Meera Krishnamoorthy",
             phone: "+91-9876543210",
             address: "15, Lake View Road, T. Nagar, Chennai - 600017",
@@ -619,47 +623,112 @@
                 }
             ],
             subtotal: 1146,
-            gstAmount: 206.28,
-            grandTotal: 1352.28,
+            discount: 50,
+            gstAmount: 197.28,
+            grandTotal: 1293.28,
             paymentMethod: "Credit Card",
             status: "Shipped"
+        },
+        {
+            id: "GRN20260323003",
+            date: "Mar 23, 2026",
+            customer: "Rahul Sharma",
+            phone: "+91-9988776655",
+            address: "Block C, Sunshine Apartments, Andheri East, Mumbai - 400069",
+            items: [
+                { 
+                    name: "Broccoli Vegetable Seed", 
+                    qty: 2, 
+                    price: 89, 
+                    total: 178,
+                    image: null,
+                    icon: "fa-seedling",
+                    category: "Vegetable Seeds"
+                }
+            ],
+            subtotal: 178,
+            discount: 0,
+            gstAmount: 32.04,
+            grandTotal: 210.04,
+            paymentMethod: "UPI Payment",
+            status: "Delivered"
+        },
+        {
+            id: "GRN20260322004",
+            date: "Mar 22, 2026",
+            customer: "Priya Nair",
+            phone: "+91-7654321098",
+            address: "34, Lake View Residency, Kaloor, Kochi - 682017",
+            items: [
+                { 
+                    name: "Morning Jewel Rose Seed", 
+                    qty: 3, 
+                    price: 158, 
+                    total: 474,
+                    image: null,
+                    icon: "fa-rose",
+                    category: "Flower Seeds"
+                },
+                { 
+                    name: "Organic Potting Mix", 
+                    qty: 1, 
+                    price: 360, 
+                    total: 360,
+                    image: null,
+                    icon: "fa-droplet",
+                    category: "Plant Care"
+                }
+            ],
+            subtotal: 834,
+            discount: 83.40,
+            gstAmount: 135.11,
+            grandTotal: 885.71,
+            paymentMethod: "Cash on Delivery",
+            status: "Processing"
         }
     ];
     
     // Helper to get icon
     function getProductIcon(name) {
         const n = name.toLowerCase();
-        if (n.includes('rose') || n.includes('bonsai')) return 'fa-rose';
+        if (n.includes('rose')) return 'fa-rose';
+        if (n.includes('bonsai')) return 'fa-tree';
         if (n.includes('seed')) return 'fa-seedling';
         if (n.includes('pot')) return 'fa-flask';
         if (n.includes('plant')) return 'fa-tree';
         if (n.includes('money')) return 'fa-leaf';
         if (n.includes('fertilizer')) return 'fa-droplet';
+        if (n.includes('broccoli')) return 'fa-seedling';
         return 'fa-seedling';
     }
     
-    // Load orders from localStorage (actual purchased orders)
+    // Load orders from localStorage
     function loadOrders() {
-        const stored = localStorage.getItem('green_garden_orders');
+        const stored = localStorage.getItem('green_garden_orders_v3');
         if (stored && JSON.parse(stored).length > 0) {
             ordersList = JSON.parse(stored);
         } else {
-            // Add sample orders for demo
             ordersList = [...SAMPLE_ORDERS];
             saveOrdersToLocal();
         }
     }
     
     function saveOrdersToLocal() {
-        localStorage.setItem('green_garden_orders', JSON.stringify(ordersList));
+        localStorage.setItem('green_garden_orders_v3', JSON.stringify(ordersList));
     }
     
-    // Function to add order from checkout (called when user buys products)
+    // Function to add order from purchase
     window.addOrderFromPurchase = function(orderData) {
         if (!orderData || !orderData.items || orderData.items.length === 0) return;
         
+        // Calculate totals if not provided
+        let subtotal = orderData.subtotal || orderData.items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+        let discount = orderData.discount || 0;
+        let gstAmount = orderData.gstAmount || (subtotal - discount) * 0.18;
+        let grandTotal = orderData.grandTotal || (subtotal - discount + gstAmount);
+        
         const newOrder = {
-            id: orderData.id || `INV${Date.now().toString().slice(-6)}`,
+            id: orderData.id || `GRN${Date.now().toString().slice(-6)}`,
             date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
             customer: orderData.customer || "Valued Customer",
             phone: orderData.phone || "+91-XXXXXXXXXX",
@@ -673,9 +742,10 @@
                 icon: item.icon || getProductIcon(item.name),
                 category: item.category || "Garden Product"
             })),
-            subtotal: orderData.subtotal,
-            gstAmount: orderData.gstAmount || (orderData.subtotal * 0.18),
-            grandTotal: orderData.grandTotal || (orderData.subtotal * 1.18),
+            subtotal: subtotal,
+            discount: discount,
+            gstAmount: gstAmount,
+            grandTotal: grandTotal,
             paymentMethod: orderData.paymentMethod || "Online Payment",
             status: "Processing"
         };
@@ -686,7 +756,7 @@
         showToast(`✅ Order ${newOrder.id} placed! Check product details below.`);
     };
     
-    // Listen for orders from checkout page via localStorage
+    // Check for pending orders from checkout
     function checkForNewOrder() {
         const pendingOrderJson = localStorage.getItem('pending_order_from_checkout');
         if (pendingOrderJson) {
@@ -698,7 +768,6 @@
         }
     }
     
-    // Also listen for cart completion (when user clicks place order)
     function syncOrderFromCart() {
         const cartData = localStorage.getItem('cart');
         const checkoutComplete = localStorage.getItem('checkout_complete');
@@ -710,6 +779,7 @@
                 const customerPhone = localStorage.getItem('checkout_phone') || "+91-XXXXXXXXXX";
                 const customerAddress = localStorage.getItem('checkout_address') || "Chennai, Tamil Nadu";
                 const paymentMethod = localStorage.getItem('checkout_payment') || "Online Payment";
+                const discount = parseFloat(localStorage.getItem('checkout_discount')) || 0;
                 
                 let subtotal = 0;
                 const items = cartItems.map(item => {
@@ -726,15 +796,19 @@
                     };
                 });
                 
+                const afterDiscount = subtotal - discount;
+                const gstAmount = afterDiscount * 0.18;
+                
                 const newOrder = {
-                    id: `INV${Date.now().toString().slice(-6)}`,
+                    id: `GRN${Date.now().toString().slice(-6)}`,
                     customer: customerName,
                     phone: customerPhone,
                     address: customerAddress,
                     items: items,
                     subtotal: subtotal,
-                    gstAmount: subtotal * 0.18,
-                    grandTotal: subtotal * 1.18,
+                    discount: discount,
+                    gstAmount: gstAmount,
+                    grandTotal: afterDiscount + gstAmount,
                     paymentMethod: paymentMethod
                 };
                 
@@ -747,6 +821,7 @@
                 localStorage.removeItem('checkout_phone');
                 localStorage.removeItem('checkout_address');
                 localStorage.removeItem('checkout_payment');
+                localStorage.removeItem('checkout_discount');
             }
         }
     }
@@ -756,7 +831,7 @@
         return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
     
-    // Render orders with FULL PRODUCT DETAILS
+    // Render orders with FULL PRODUCT DETAILS and correct calculations
     function renderOrdersList() {
         const container = document.getElementById('ordersListContainer');
         
@@ -777,9 +852,8 @@
         }
         
         container.innerHTML = ordersList.map(order => {
-            // Build product rows with FULL DETAILS including images
+            // Build product rows with QUANTITY properly displayed
             const itemsHtml = order.items.map(item => {
-                // Product image display
                 let productImageHtml = '';
                 if (item.image) {
                     productImageHtml = `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'product-icon-fallback\'><i class=\'fas ${item.icon || 'fa-seedling'}\'></i></div>';">`;
@@ -797,16 +871,21 @@
                                     <div class="product-category"><i class="fas fa-tag"></i> ${escapeHtml(item.category || 'Premium Plant')}</div>
                                 </div>
                             </div>
-                        </td>
+                         </td>
                         <td style="text-align: center; padding: 14px 8px;">
-                            <span style="font-weight: 600;">${item.qty}</span>
-                            <div style="font-size: 11px; color: #7f9a6e;">pcs</div>
-                        </td>
+                            <span style="font-weight: 700; font-size: 16px;">${item.qty}</span>
+                            <div style="font-size: 11px; color: #7f9a6e;">piece(s)</div>
+                         </td>
                         <td style="text-align: right; padding: 14px 8px;">₹${item.price.toLocaleString('en-IN')}</td>
                         <td style="text-align: right; padding: 14px 8px; font-weight: 700; color: #2e7d32;">₹${item.total.toLocaleString('en-IN')}</td>
                     </tr>
                 `;
             }).join('');
+            
+            // Calculate accurate GST if needed
+            const afterDiscount = order.subtotal - (order.discount || 0);
+            const calculatedGst = order.gstAmount || (afterDiscount * 0.18);
+            const calculatedTotal = afterDiscount + calculatedGst;
             
             return `
                 <div class="order-card">
@@ -837,9 +916,11 @@
                     
                     <div class="price-summary">
                         <div class="summary-row"><span>Subtotal:</span><span>₹${order.subtotal.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-row gst-breakdown"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-row total-row"><span>Grand Total:</span><span>₹${order.grandTotal.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-row"><span>Payment:</span><span style="color: #ff9800;">${order.paymentMethod}</span></div>
+                        ${(order.discount && order.discount > 0) ? 
+                            `<div class="summary-row discount-row"><span><i class="fas fa-tag"></i> Discount:</span><span style="color: #ff9800;">-₹${order.discount.toLocaleString('en-IN')}</span></div>` : ''}
+                        <div class="summary-row"><span>GST (18%):</span><span>₹${calculatedGst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></div>
+                        <div class="summary-row total-row"><span>Grand Total:</span><span>₹${(order.grandTotal || calculatedTotal).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></div>
+                        <div class="summary-row"><span>Payment:</span><span style="color: #ff9800; font-weight: 600;">${order.paymentMethod}</span></div>
                     </div>
                     
                     <div class="card-footer-actions">
@@ -855,8 +936,11 @@
         }).join('');
     }
     
-    // Generate Invoice HTML with custom logo
+    // Generate Invoice HTML with correct calculations
     function generateInvoiceHTML(order) {
+        const afterDiscount = order.subtotal - (order.discount || 0);
+        const calculatedGst = order.gstAmount || (afterDiscount * 0.18);
+        
         const itemsRows = order.items.map(item => `
             <tr style="border-bottom: 1px solid #e2f0e0;">
                 <td style="padding: 12px 8px;">
@@ -869,19 +953,17 @@
                             <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(item.category || 'Garden Product')}</div>
                         </div>
                     </div>
-                </td>
-                <td style="text-align: center;">${item.qty}</td>
+                 </td>
+                <td style="text-align: center; font-weight: 600;">${item.qty}</td>
                 <td style="text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
                 <td style="text-align: right; font-weight: 600;">₹${item.total.toLocaleString('en-IN')}</td>
-            </tr>
+             </tr>
         `).join('');
         
         return `
             <div class="invoice-preview-paper">
                 <div style="text-align: center; margin-bottom: 28px; border-bottom: 3px solid #4caf50; padding-bottom: 20px;">
-                    <img src="${CUSTOM_LOGO_URL}" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 12px;" 
-                         onerror="this.style.display='none'; this.parentElement.querySelector('.inv-logo-fallback').style.display='flex';">
-                    <div class="inv-logo-fallback" style="display: none; width: 70px; height: 70px; background: #4caf50; border-radius: 20px; margin: 0 auto 12px; align-items: center; justify-content: center;">
+                    <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #4caf50, #2e7d32); border-radius: 20px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-leaf" style="font-size: 34px; color: white;"></i>
                     </div>
                     <h1 style="font-size: 28px; color: #1e3a2f;">GREEN GARDEN</h1>
@@ -901,19 +983,20 @@
                 </div>
                 
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-                    <thead><tr style="background: #eef5ea;"><th style="padding: 12px; text-align: left;">Item</th><th>Qty</th><th style="text-align: right;">Price</th><th style="text-align: right;">Amount</th></tr></thead>
+                    <thead><tr style="background: #eef5ea;"><th style="padding: 12px; text-align: left;">Item</th><th style="text-align: center;">Qty</th><th style="text-align: right;">Unit Price</th><th style="text-align: right;">Amount</th></tr></thead>
                     <tbody>${itemsRows}</tbody>
                 </table>
                 
                 <div style="text-align: right; padding: 16px; background: #fefef8; border-radius: 20px;">
                     <p>Subtotal: ₹${order.subtotal.toLocaleString('en-IN')}</p>
-                    <p>GST (18%): ₹${order.gstAmount.toLocaleString('en-IN')}</p>
-                    <h2 style="color: #2e7d32;">Total: ₹${order.grandTotal.toLocaleString('en-IN')}</h2>
+                    ${(order.discount && order.discount > 0) ? `<p style="color: #ff9800;">Discount: -₹${order.discount.toLocaleString('en-IN')}</p>` : ''}
+                    <p>GST (18%): ₹${calculatedGst.toLocaleString('en-IN', {minimumFractionDigits: 2})}</p>
+                    <h2 style="color: #2e7d32;">Grand Total: ₹${(order.grandTotal || (afterDiscount + calculatedGst)).toLocaleString('en-IN', {minimumFractionDigits: 2})}</h2>
                     <p>Payment: ${order.paymentMethod}</p>
                 </div>
                 
                 <div style="text-align: center; font-size: 10px; margin-top: 24px; color: #8ba87a;">
-                    Thank you for shopping at Green Garden! 🌿
+                    <i class="fas fa-seedling"></i> Thank you for shopping at Green Garden! Grow Naturally 🌿
                 </div>
             </div>
         `;
@@ -977,7 +1060,7 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
     
-    // Navigation to buy page (products.html)
+    // Navigation
     document.getElementById('backToShopBtn')?.addEventListener('click', () => {
         window.location.href = 'products.html';
     });
@@ -1009,7 +1092,7 @@
     syncOrderFromCart();
     renderOrdersList();
     
-    console.log("Orders page ready - Full product details displayed, connected to products.html");
+    console.log("Orders page ready - Quantity, Discount, and GST calculations fixed!");
 </script>
 </body>
 </html>
