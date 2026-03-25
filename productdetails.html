@@ -709,27 +709,65 @@
 <script>
     // ---------- PRODUCT DATABASE (50 items) ----------
     const products = [
-        { id: 1, name: "Morning Jewel Rose Seed", price: 158, image: "F1.jpg", category: "Flower Seeds", rating: 4.2, reviews: 134 },
-        { id: 2, name: "Winter Daisy Red Mixed Seed", price: 150, image: "F2.jpg", category: "Flower Seeds", rating: 4.5, reviews: 98 },
-        { id: 3, name: "Bitter Gourd-karela seed", price: 99, image: "F3.jpg", category: "Vegetable Seeds", rating: 4.7, reviews: 210 },
-        { id: 4, name: "Black Tomato Hybrid", price: 110, image: "F4.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 76 },
-        { id: 5, name: "Broccoli Vegetable Seed", price: 89, image: "F5.jpg", category: "Vegetable Seeds", rating: 4.0, reviews: 112 },
-        { id: 6, name: "Brazilian Wood Plant", price: 550, image: "F6.jpg", category: "Plants", rating: 4.6, reviews: 203 },
-        { id: 7, name: "Apple Plant Hybrid", price: 100, image: "F7.jpg", category: "Fruit Plants", rating: 4.4, reviews: 89 },
-        { id: 8, name: "Cabbage Seed", price: 110, image: "F8.jpg", category: "Vegetable Seeds", rating: 4.2, reviews: 67 },
-        { id: 9, name: "Chinese Cabbage", price: 111, image: "F9.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 54 },
-        { id: 10, name: "Amaranthus Vegetable Seed", price: 130, image: "F10.jpg", category: "Vegetable Seeds", rating: 4.1, reviews: 42 },
-        { id: 11, name: "Farm Cauliflower Violetto", price: 120, image: "F11.jpg", category: "Vegetable Seeds", rating: 4.5, reviews: 88 },
-        { id: 12, name: "Kamal Seed(200g)", price: 149, image: "F12.jpg", category: "Flower Seeds", rating: 4.0, reviews: 130 },
-        { id: 13, name: "6 Birds Hanging Home Decor", price: 160, image: "F13.jpg", category: "Garden Decor", rating: 4.7, reviews: 220 },
-        { id: 14, name: "Blue Ceramic Pot", price: 200, image: "F14.jpg", category: "Planters", rating: 4.8, reviews: 310 },
-        { id: 15, name: "Multicolor Plastic Pot", price: 400, image: "F15.jpg", category: "Planters", rating: 4.4, reviews: 175 },
-        { id: 16, name: "Signal Bicycle Pot Stand", price: 199, image: "F16.jpg", category: "Plant Stands", rating: 4.6, reviews: 92 },
-        { id: 17, name: "Crystal Shaped Plastic Flower Pot", price: 299, image: "F17.jpg", category: "Planters", rating: 4.5, reviews: 118 },
-        { id: 18, name: "Organic Potting Mix", price: 360, image: "F18.jpg", category: "Plant Care", rating: 4.9, reviews: 420 },
-        { id: 19, name: "6 Tier Metal Pot Stand", price: 999, image: "F19.jpg", category: "Plant Stands", rating: 4.7, reviews: 201 },
-        { id: 20, name: "Yellow Kalanchoe Flower Seed", price: 149, image: "F20.jpg", category: "Flower Seeds", rating: 4.3, reviews: 77 }
-    ];
+        
+    { id: 1, name: "Morning Jewel Rose Seed", price: 158, image: "F1.jpg", category: "Flower Seeds", rating: 4.2, reviews: 134, stock: 50 },
+    { id: 2, name: "Winter Daisy Red Mixed Seed", price: 150, image: "F2.jpg", category: "Flower Seeds", rating: 4.5, reviews: 98, stock: 45 },
+    { id: 3, name: "Bitter Gourd-karela seed", price: 99, image: "F3.jpg", category: "Vegetable Seeds", rating: 4.7, reviews: 210, stock: 120 },
+    { id: 4, name: "Black Tomato Hybrid", price: 110, image: "F4.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 76, stock: 85 },
+    { id: 5, name: "Broccoli Vegetable Seed", price: 89, image: "F5.jpg", category: "Vegetable Seeds", rating: 4.0, reviews: 112, stock: 95 },
+    { id: 6, name: "Brazilian Wood Plant", price: 550, image: "F6.jpg", category: "Plants", rating: 4.6, reviews: 203, stock: 30 },
+    { id: 7, name: "Apple Plant Hybrid", price: 100, image: "F7.jpg", category: "Fruit Plants", rating: 4.4, reviews: 89, stock: 40 },
+    { id: 8, name: "Cabbage Seed", price: 110, image: "F8.jpg", category: "Vegetable Seeds", rating: 4.2, reviews: 67, stock: 110 },
+    { id: 9, name: "Chinese Cabbage", price: 111, image: "F9.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 54, stock: 75 },
+    { id: 10, name: "Amaranthus Vegetable Seed", price: 130, image: "F10.jpg", category: "Vegetable Seeds", rating: 4.1, reviews: 42, stock: 65 },
+    { id: 11, name: "Farm Cauliflower Violetto", price: 120, image: "F11.jpg", category: "Vegetable Seeds", rating: 4.5, reviews: 88, stock: 70 },
+    { id: 12, name: "Kamal Seed(200g)", price: 149, image: "F12.jpg", category: "Flower Seeds", rating: 4.0, reviews: 130, stock: 55 },
+    { id: 13, name: "6 Birds Hanging Home Decor", price: 160, image: "F13.jpg", category: "Garden Decor", rating: 4.7, reviews: 220, stock: 25 },
+    { id: 14, name: "Blue Ceramic Pot", price: 200, image: "F14.jpg", category: "Planters", rating: 4.8, reviews: 310, stock: 60 },
+    { id: 15, name: "Multicolor Plastic Pot", price: 400, image: "F15.jpg", category: "Planters", rating: 4.4, reviews: 175, stock: 45 },
+    { id: 16, name: "Signal Bicycle Pot Stand", price: 199, image: "F16.jpg", category: "Plant Stands", rating: 4.6, reviews: 92, stock: 35 },
+    { id: 17, name: "Crystal Shaped Plastic Flower Pot", price: 299, image: "F17.jpg", category: "Planters", rating: 4.5, reviews: 118, stock: 40 },
+    { id: 18, name: "Organic Potting Mix", price: 360, image: "F18.jpg", category: "Plant Care", rating: 4.9, reviews: 420, stock: 100 },
+    { id: 19, name: "6 Tier Metal Pot Stand", price: 999, image: "F19.jpg", category: "Plant Stands", rating: 4.7, reviews: 201, stock: 20 },
+    { id: 20, name: "Yellow Kalanchoe Flower Seed", price: 149, image: "F20.jpg", category: "Flower Seeds", rating: 4.3, reviews: 77, stock: 85 },
+    { id: 21, name: "sky fruit Seeds(400g)", price: 349, image: "F21.jpg", category: "Fruit Seeds", rating: 4.2, reviews: 56, stock: 40 },
+    { id: 22, name: "long luki seed(25 per pkt)", price: 110, image: "F22.jpg", category: "Vegetable Seeds", rating: 4.0, reviews: 61, stock: 90 },
+    { id: 23, name: "Castor seed(100g)", price: 169, image: "F23.jpg", category: "Oil Seeds", rating: 4.1, reviews: 34, stock: 55 },
+    { id: 24, name: "Black Avacodo tree seed(1 per pkt)", price: 129, image: "F24.jpg", category: "Fruit Seeds", rating: 4.5, reviews: 48, stock: 60 },
+    { id: 25, name: "gobhee seeds(10 per pkt)", price: 129, image: "F25.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 39, stock: 70 },
+    { id: 26, name: "Halim seeds(300g)", price: 270, image: "F26.jpg", category: "Vegetable Seeds", rating: 4.4, reviews: 27, stock: 45 },
+    { id: 27, name: "carrot seeds(1 per pkt)", price: 199, image: "F27.jpg", category: "Vegetable Seeds", rating: 4.6, reviews: 95, stock: 80 },
+    { id: 28, name: "Green grass seeds(3000 per pkt)", price: 118, image: "F28.jpg", category: "Lawn Seeds", rating: 4.2, reviews: 44, stock: 65 },
+    { id: 29, name: "Hybrid dahlia seeds(50 per pkt)", price: 125, image: "F29.jpg", category: "Flower Seeds", rating: 4.5, reviews: 72, stock: 75 },
+    { id: 30, name: "Ash gourd seeds(40 per pkt)", price: 159, image: "F30.jpg", category: "Vegetable Seeds", rating: 4.3, reviews: 66, stock: 85 },
+    { id: 31, name: "black carrot seeds (120 per pkt)", price: 149, image: "F31.jpg", category: "Vegetable Seeds", rating: 4.7, reviews: 112, stock: 70 },
+    { id: 32, name: "Long Slender PepperSeeds (200 per pkt)", price: 145, image: "F32.jpg", category: "Vegetable Seeds", rating: 4.5, reviews: 83, stock: 90 },
+    { id: 33, name: "Lotua Seeds (30 per pkt)", price: 119, image: "F33.jpg", category: "Flower Seeds", rating: 4.1, reviews: 52, stock: 95 },
+    { id: 34, name: "Halam Seeds (200g)", price: 189, image: "F34.jpg", category: "Vegetable Seeds", rating: 4.4, reviews: 31, stock: 50 },
+    { id: 35, name: "Hot chilli organic Seeds (200 per pkt)", price: 119, image: "F35.jpg", category: "Vegetable Seeds", rating: 4.8, reviews: 146, stock: 110 },
+    { id: 36, name: "Raganigandha flower Seeds (4 per pkt)", price: 109, image: "F36.jpg", category: "Flower Seeds", rating: 4.2, reviews: 37, stock: 80 },
+    { id: 37, name: "Sword Lily plant (hybrid,pack of 1)", price: 120, image: "F37.jpg", category: "Flower Plants", rating: 4.5, reviews: 64, stock: 45 },
+    { id: 38, name: "HARSINGAR seed(20 per pkt)", price: 129, image: "F38.jpg", category: "Flower Seeds", rating: 4.6, reviews: 55, stock: 60 },
+    { id: 39, name: "French yellow marigold seed(50 per pkt)", price: 145, image: "F39.jpg", category: "Flower Seeds", rating: 4.7, reviews: 121, stock: 85 },
+    { id: 40, name: "Beej Band Seeds (100 per pkt)", price: 199, image: "F40.jpg", category: "Flower Seeds", rating: 4.3, reviews: 43, stock: 55 },
+    { id: 41, name: "Rose plant(Hybrid,pack of 1)", price: 129, image: "F41.jpg", category: "Flower Plants", rating: 4.9, reviews: 305, stock: 70 },
+    { id: 42, name: "Black soil manure(10kg,Powder)", price: 219, image: "F42.jpg", category: "Plant Manure", rating: 4.4, reviews: 88, stock: 40 },
+    { id: 43, name: "Red Banana plant(Hybrid, pack of 1)", price: 149, image: "F43.jpg", category: "Fruit Plants", rating: 4.5, reviews: 79, stock: 35 },
+    { id: 44, name: "Hibiscus plant(Hybrid,pack of 1)", price: 115, image: "F44.jpg", category: "Flower Plants", rating: 4.3, reviews: 91, stock: 50 },
+    { id: 45, name: "Natural plant manure(1kg,cake)", price: 135, image: "F45.jpg", category: "Plant Manure", rating: 4.6, reviews: 134, stock: 85 },
+    { id: 46, name: "Flower Holder-metal 5 pot planter stand", price: 870, image: "F46.jpg", category: "Pot Stand", rating: 4.7, reviews: 62, stock: 25 },
+    { id: 47, name: "Organic DAP plant Growth Boost(1.5 kg)", price: 220, image: "F47.jpg", category: "Plant Fertilizer", rating: 4.5, reviews: 107, stock: 60 },
+    { id: 48, name: "Gardenplus 3pcs plant Growth (150 ml, Liquid)", price: 209, image: "F48.jpg", category: "Plant Fertilizer", rating: 4.2, reviews: 45, stock: 70 },
+    { id: 49, name: "Magnesium sulfate for plants (500 g)", price: 139, image: "F49.jpg", category: "Plant Fertilizer", rating: 4.4, reviews: 58, stock: 90 },
+    { id: 50, name: "Miracle grow all purpose manure(400 g,powder)", price: 450, image: "F50.jpg", category: "Plant Manure", rating: 4.8, reviews: 212, stock: 55 }
+];
+
+    
+    // Now you can use it in your page
+    console.log(products.length); // 50 products
+    console.log(products[0].name); // Morning Jewel Rose Seed
+</script>
+```
 
     function getProductIdFromUrl() {
         const params = new URLSearchParams(window.location.search);
