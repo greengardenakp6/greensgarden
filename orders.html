@@ -574,57 +574,29 @@
         return 'fa-seedling';
     }
     
-    // Sample orders with full product details
-    const SAMPLE_ORDERS = [
-        {
-            id: "ORD10001",
-            date: "Mar 25, 2026",
-            customer: "Akash Verma",
-            phone: "+91-9876543210",
-            address: "Green Avenue, Chennai - 600001",
-            items: [
-                { 
-                    name: "Apple Plant Hybrid", 
-                    qty: 1, 
-                    price: 100, 
-                    total: 100,
-                    image: null,
-                    icon: "fa-apple-alt",
-                    category: "Fruit Plants"
-                },
-                { 
-                    name: "Bitter Gourd Seeds", 
-                    qty: 1, 
-                    price: 99, 
-                    total: 99,
-                    image: null,
-                    icon: "fa-seedling",
-                    category: "Vegetable Seeds"
-                },
-                { 
-                    name: "Morning Jewel Rose Seed", 
-                    qty: 2, 
-                    price: 158, 
-                    total: 316,
-                    image: null,
-                    icon: "fa-rose",
-                    category: "Flowering Plants"
-                }
-            ],
-            subtotal: 515,
-            gstAmount: 92.7,
-            grandTotal: 607.7,
-            paymentMethod: "UPI Payment",
-            status: "Delivered"
-        }
-    ];
-    
     function loadOrders() {
         const stored = localStorage.getItem('green_garden_orders');
         if (stored && JSON.parse(stored).length > 0) {
             ordersList = JSON.parse(stored);
         } else {
-            ordersList = JSON.parse(JSON.stringify(SAMPLE_ORDERS));
+            // Sample order for demo
+            ordersList = [{
+                id: "ORD10001",
+                date: "Mar 25, 2026",
+                customer: "Akash Verma",
+                phone: "+91-9876543210",
+                address: "Green Avenue, Chennai - 600001",
+                items: [
+                    { name: "Apple Plant Hybrid", qty: 1, price: 100, total: 100, icon: "fa-apple-alt", category: "Fruit Plants" },
+                    { name: "Bitter Gourd Seeds", qty: 1, price: 99, total: 99, icon: "fa-seedling", category: "Vegetable Seeds" },
+                    { name: "Morning Jewel Rose Seed", qty: 2, price: 158, total: 316, icon: "fa-rose", category: "Flowering Plants" }
+                ],
+                subtotal: 515,
+                gstAmount: 92.7,
+                grandTotal: 607.7,
+                paymentMethod: "UPI Payment",
+                status: "Delivered"
+            }];
             saveOrdersToLocal();
         }
     }
@@ -653,33 +625,33 @@
                 </div>
             `;
             const emptyBtn = document.getElementById('emptyShopBtn');
-            if (emptyBtn) emptyBtn.onclick = () => {
-                window.location.href = 'products.html';
-            };
+            if (emptyBtn) emptyBtn.onclick = () => window.location.href = 'products.html';
             return;
         }
         
         container.innerHTML = ordersList.map(order => {
-            const itemsHtml = order.items.map(item => {
+            const itemsHtml = (order.items || []).map(item => {
+                // Get quantity from either qty or quantity property
                 const quantity = item.qty || item.quantity || 1;
+                const itemTotal = item.total || (item.price * quantity);
+                const icon = item.icon || getProductIcon(item.name);
+                const category = item.category || 'Garden Product';
                 
                 let productImageHtml = '';
                 if (item.image) {
-                    productImageHtml = `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'product-icon-fallback\'><i class=\'fas ${item.icon || 'fa-seedling'}\'></i></div>';">`;
+                    productImageHtml = `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'product-icon-fallback\'><i class=\'fas ${icon}\'></i></div>';">`;
                 } else {
-                    productImageHtml = `<div class="product-icon-fallback"><i class="fas ${item.icon || 'fa-seedling'}"></i></div>`;
+                    productImageHtml = `<div class="product-icon-fallback"><i class="fas ${icon}"></i></div>`;
                 }
                 
-                const itemTotal = item.total || (item.price * quantity);
-                
                 return `
-                    <tr style="border-bottom: 1px solid #ecf3e8;">
+                    <tr>
                         <td style="padding: 14px 8px;">
                             <div class="product-name-cell">
                                 ${productImageHtml}
                                 <div class="product-detail-text">
                                     <div class="product-name-text">${escapeHtml(item.name)}</div>
-                                    <div class="product-category"><i class="fas fa-tag"></i> ${escapeHtml(item.category || 'Garden Product')}</div>
+                                    <div class="product-category"><i class="fas fa-tag"></i> ${escapeHtml(category)}</div>
                                 </div>
                             </div>
                         </td>
@@ -744,19 +716,21 @@
     }
     
     function generateInvoiceHTML(order) {
-        const itemsRows = order.items.map(item => {
+        const itemsRows = (order.items || []).map(item => {
             const quantity = item.qty || item.quantity || 1;
             const itemTotal = item.total || (item.price * quantity);
+            const icon = item.icon || getProductIcon(item.name);
+            const category = item.category || 'Garden Product';
             return `
                 <tr style="border-bottom: 1px solid #e2f0e0;">
                     <td style="padding: 12px 8px;">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <div style="width: 48px; height: 48px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas ${item.icon || 'fa-seedling'}" style="color: #4caf50; font-size: 24px;"></i>
+                                <i class="fas ${icon}" style="color: #4caf50; font-size: 24px;"></i>
                             </div>
                             <div>
                                 <strong>${escapeHtml(item.name)}</strong>
-                                <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(item.category || 'Garden Product')}</div>
+                                <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(category)}</div>
                             </div>
                         </div>
                     </td>
@@ -862,7 +836,6 @@
         finally { document.body.removeChild(div); }
     };
     
-    // Global function to navigate to shop page
     window.goToShop = function() {
         window.location.href = 'products.html';
     };
@@ -888,28 +861,13 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
     
-    // Navigation buttons - DIRECT CONNECTION to buy page
-    document.getElementById('backToShopBtn')?.addEventListener('click', function() {
-        window.location.href = 'products.html';
-    });
-    
-    document.getElementById('viewCartNavBtn')?.addEventListener('click', function() {
-        window.location.href = 'cart.html';
-    });
-    
-    document.getElementById('headerBuyBtn')?.addEventListener('click', function() {
-        window.location.href = 'products.html';
-    });
-    
-    document.getElementById('brandLogo')?.addEventListener('click', function() {
-        window.location.href = 'index.html';
-    });
-    
+    // Navigation buttons
+    document.getElementById('backToShopBtn')?.addEventListener('click', () => window.location.href = 'products.html');
+    document.getElementById('viewCartNavBtn')?.addEventListener('click', () => window.location.href = 'cart.html');
+    document.getElementById('headerBuyBtn')?.addEventListener('click', () => window.location.href = 'products.html');
+    document.getElementById('brandLogo')?.addEventListener('click', () => window.location.href = 'index.html');
     document.getElementById('closeModalBtn')?.addEventListener('click', closeModal);
-    
-    window.onclick = (e) => { 
-        if (e.target === document.getElementById('invoiceModal')) closeModal();
-    };
+    window.onclick = (e) => { if (e.target === document.getElementById('invoiceModal')) closeModal(); };
     
     function initLogo() {
         const logo = document.getElementById('siteLogo');
@@ -923,26 +881,14 @@
         }
     }
     
-    // Check for new orders from checkout page
+    // Check for new orders
     function checkForNewOrder() {
-        const newOrderFlag = localStorage.getItem('order_placed_flag');
-        if (newOrderFlag === 'true') {
+        const flag = localStorage.getItem('order_placed_flag');
+        if (flag === 'true') {
             localStorage.removeItem('order_placed_flag');
             loadOrders();
             renderOrdersList();
             showToast("✅ New order added!");
-        }
-        
-        const pendingOrder = localStorage.getItem('pending_order_data');
-        if (pendingOrder) {
-            try {
-                const orderData = JSON.parse(pendingOrder);
-                ordersList.unshift(orderData);
-                saveOrdersToLocal();
-                localStorage.removeItem('pending_order_data');
-                renderOrdersList();
-                showToast(`✅ Order ${orderData.id} placed successfully!`);
-            } catch(e) {}
         }
     }
     
@@ -951,7 +897,7 @@
     checkForNewOrder();
     renderOrdersList();
     
-    console.log("Orders page ready - Connected to products.html (buy page)");
+    console.log("Orders page ready - Connected to checkout page");
 </script>
 </body>
 </html>
