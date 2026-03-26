@@ -1021,6 +1021,7 @@
             
             showToast(`🎉 Order placed! ID: ${orderId.slice(-8)}`, false);
             
+            // Redirect to orders page
             setTimeout(() => {
                 window.location.href = 'orders.html';
             }, 1500);
@@ -1036,7 +1037,7 @@
         });
         
         document.getElementById('brandLogo')?.addEventListener('click', () => {
-            window.location.href = 'index.html';
+            window.location.href = 'home.html';
         });
         
         document.getElementById('cartBadge')?.addEventListener('click', () => {
