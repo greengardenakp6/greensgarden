@@ -22,7 +22,6 @@
             overflow-x: hidden;
         }
 
-        /* Premium Navbar */
         .navbar-green {
             background: linear-gradient(135deg, #1a3a2a 0%, #0e2a1a 100%);
             padding: 12px 48px;
@@ -119,7 +118,6 @@
             transform: translateY(-2px);
         }
 
-        /* Main Container */
         .orders-container {
             max-width: 1280px;
             margin: 40px auto;
@@ -163,7 +161,6 @@
             box-shadow: 0 8px 20px rgba(255,152,0,0.4);
         }
 
-        /* Orders Grid */
         .orders-grid {
             display: flex;
             flex-direction: column;
@@ -240,7 +237,6 @@
             gap: 8px;
         }
 
-        /* Product Items Display - FULL DETAILS */
         .items-table-wrapper {
             padding: 20px 28px;
             overflow-x: auto;
@@ -312,6 +308,17 @@
             margin-top: 4px;
         }
 
+        .discount-badge {
+            background: #fff3e0;
+            color: #e67e22;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
         .price-summary {
             padding: 16px 28px;
             background: #fefef8;
@@ -371,7 +378,6 @@
             background: linear-gradient(135deg, #ff9800, #f57c00);
         }
 
-        /* Modal */
         .invoice-modal {
             display: none;
             position: fixed;
@@ -486,11 +492,15 @@
             padding: 32px;
         }
         
-        .invoice-logo {
-            width: 70px;
-            height: 70px;
-            border-radius: 20px;
-            object-fit: cover;
+        .quantity-badge {
+            background: #eef5ea;
+            padding: 8px 14px;
+            border-radius: 32px;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
         }
     </style>
 </head>
@@ -540,46 +550,72 @@
 <div id="toastMsg" class="toast-msg"></div>
 
 <script>
-    // ==============================================
-    // GREEN GARDEN ORDERS SYSTEM
-    // Shows FULL PRODUCT DETAILS from actual purchases
-    // Connected to products.html (buy page)
-    // ==============================================
-    
     const CUSTOM_LOGO_URL = 'logo1.jpg';
     let ordersList = [];
     
-    // Sample products with full details for demo
+    function getProductIcon(name) {
+        const n = name.toLowerCase();
+        if (n.includes('rose')) return 'fa-rose';
+        if (n.includes('seed')) return 'fa-seedling';
+        if (n.includes('pot')) return 'fa-flask';
+        if (n.includes('plant')) return 'fa-tree';
+        if (n.includes('money')) return 'fa-leaf';
+        if (n.includes('fertilizer')) return 'fa-droplet';
+        if (n.includes('apple')) return 'fa-apple-alt';
+        if (n.includes('bitter')) return 'fa-leaf';
+        if (n.includes('morning')) return 'fa-leaf';
+        return 'fa-seedling';
+    }
+    
+    // Sample orders with CORRECT quantity format
     const SAMPLE_ORDERS = [
         {
-            id: "INV10001",
+            id: "ORD10001",
             date: "Mar 25, 2026",
-            customer: "Akash Verma",
-            phone: "+91-9840012345",
-            address: "42, Green Colony, Anna Nagar, Chennai - 600040",
+            customer: "Ak Don",
+            phone: "+91-9876543210",
+            address: "Green Avenue, Chennai - 600001",
             items: [
                 { 
-                    name: "Desert Rose Bonsai Plant", 
+                    name: "Apple Plant Hybrid", 
                     qty: 1, 
-                    price: 1299, 
-                    total: 1299,
+                    price: 100, 
+                    discountPercent: 0,
+                    discountAmount: 0,
+                    total: 100,
+                    originalTotal: 100,
                     image: null,
-                    icon: "fa-tree",
-                    category: "Bonsai Plants"
+                    icon: "fa-apple-alt",
+                    category: "Indoor Plants"
                 },
                 { 
-                    name: "Premium Ceramic Pot (Large)", 
-                    qty: 2, 
-                    price: 599, 
-                    total: 1198,
+                    name: "Bitter Gourd-karela seed", 
+                    qty: 1, 
+                    price: 99, 
+                    discountPercent: 0,
+                    discountAmount: 0,
+                    total: 99,
+                    originalTotal: 99,
                     image: null,
-                    icon: "fa-flask",
-                    category: "Planters"
+                    icon: "fa-seedling",
+                    category: "Seeds"
+                },
+                { 
+                    name: "Morning Jewel Rose Seed", 
+                    qty: 2, 
+                    price: 158, 
+                    discountPercent: 0,
+                    discountAmount: 0,
+                    total: 316,
+                    originalTotal: 316,
+                    image: null,
+                    icon: "fa-rose",
+                    category: "Flowering Plants"
                 }
             ],
-            subtotal: 2497,
-            gstAmount: 449.46,
-            grandTotal: 2946.46,
+            subtotal: 515,
+            gstAmount: 92.7,
+            grandTotal: 607.7,
             paymentMethod: "UPI Payment",
             status: "Delivered"
         },
@@ -594,7 +630,10 @@
                     name: "Money Plant (Golden Pothos)", 
                     qty: 2, 
                     price: 199, 
+                    discountPercent: 0,
+                    discountAmount: 0,
                     total: 398,
+                    originalTotal: 398,
                     image: null,
                     icon: "fa-leaf",
                     category: "Indoor Plants"
@@ -603,49 +642,38 @@
                     name: "Organic Neem Fertilizer (1kg)", 
                     qty: 1, 
                     price: 299, 
-                    total: 299,
+                    discountPercent: 15,
+                    discountAmount: 44.85,
+                    total: 254.15,
+                    originalTotal: 299,
                     image: null,
                     icon: "fa-droplet",
                     category: "Fertilizers"
-                },
-                { 
-                    name: "Self-Watering Pot (Medium)", 
-                    qty: 1, 
-                    price: 449, 
-                    total: 449,
-                    image: null,
-                    icon: "fa-flask",
-                    category: "Planters"
                 }
             ],
-            subtotal: 1146,
-            gstAmount: 206.28,
-            grandTotal: 1352.28,
+            subtotal: 652.15,
+            gstAmount: 117.387,
+            grandTotal: 769.537,
             paymentMethod: "Credit Card",
             status: "Shipped"
         }
     ];
     
-    // Helper to get icon
-    function getProductIcon(name) {
-        const n = name.toLowerCase();
-        if (n.includes('rose') || n.includes('bonsai')) return 'fa-rose';
-        if (n.includes('seed')) return 'fa-seedling';
-        if (n.includes('pot')) return 'fa-flask';
-        if (n.includes('plant')) return 'fa-tree';
-        if (n.includes('money')) return 'fa-leaf';
-        if (n.includes('fertilizer')) return 'fa-droplet';
-        return 'fa-seedling';
-    }
-    
-    // Load orders from localStorage (actual purchased orders)
     function loadOrders() {
         const stored = localStorage.getItem('green_garden_orders');
         if (stored && JSON.parse(stored).length > 0) {
             ordersList = JSON.parse(stored);
+            // Fix any orders with missing qty property
+            ordersList = ordersList.map(order => ({
+                ...order,
+                items: order.items.map(item => ({
+                    ...item,
+                    qty: item.qty || item.quantity || 1
+                }))
+            }));
+            saveOrdersToLocal();
         } else {
-            // Add sample orders for demo
-            ordersList = [...SAMPLE_ORDERS];
+            ordersList = JSON.parse(JSON.stringify(SAMPLE_ORDERS));
             saveOrdersToLocal();
         }
     }
@@ -654,28 +682,50 @@
         localStorage.setItem('green_garden_orders', JSON.stringify(ordersList));
     }
     
-    // Function to add order from checkout (called when user buys products)
+    // Fix: Properly handle order creation with correct quantity mapping
     window.addOrderFromPurchase = function(orderData) {
         if (!orderData || !orderData.items || orderData.items.length === 0) return;
         
+        const processedItems = orderData.items.map(item => {
+            // CRITICAL FIX: Get quantity from both possible property names
+            let qty = item.qty || item.quantity || 1;
+            let price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+            let originalTotal = price * qty;
+            let discountPercent = item.discountPercent || 0;
+            let discountAmount = (originalTotal * discountPercent) / 100;
+            let totalAfterDiscount = originalTotal - discountAmount;
+            
+            console.log(`Processing item: ${item.name}, qty: ${qty}, price: ${price}, total: ${totalAfterDiscount}`);
+            
+            return {
+                name: item.name,
+                qty: qty,  // Ensure qty is properly set
+                quantity: qty,  // Keep for backward compatibility
+                price: price,
+                discountPercent: discountPercent,
+                discountAmount: discountAmount,
+                total: parseFloat(totalAfterDiscount.toFixed(2)),
+                originalTotal: originalTotal,
+                image: item.image || null,
+                icon: item.icon || getProductIcon(item.name),
+                category: item.category || "Garden Product"
+            };
+        });
+        
+        let subtotal = processedItems.reduce((sum, it) => sum + it.total, 0);
+        let gstAmount = subtotal * 0.18;
+        let grandTotal = subtotal + gstAmount;
+        
         const newOrder = {
-            id: orderData.id || `INV${Date.now().toString().slice(-6)}`,
+            id: orderData.id || `ORD${Date.now().toString().slice(-8)}`,
             date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
             customer: orderData.customer || "Valued Customer",
             phone: orderData.phone || "+91-XXXXXXXXXX",
             address: orderData.address || "Chennai, Tamil Nadu",
-            items: orderData.items.map(item => ({
-                name: item.name,
-                qty: item.quantity || 1,
-                price: item.price,
-                total: (item.price * (item.quantity || 1)),
-                image: item.image || null,
-                icon: item.icon || getProductIcon(item.name),
-                category: item.category || "Garden Product"
-            })),
-            subtotal: orderData.subtotal,
-            gstAmount: orderData.gstAmount || (orderData.subtotal * 0.18),
-            grandTotal: orderData.grandTotal || (orderData.subtotal * 1.18),
+            items: processedItems,
+            subtotal: parseFloat(subtotal.toFixed(2)),
+            gstAmount: parseFloat(gstAmount.toFixed(2)),
+            grandTotal: parseFloat(grandTotal.toFixed(2)),
             paymentMethod: orderData.paymentMethod || "Online Payment",
             status: "Processing"
         };
@@ -683,10 +733,9 @@
         ordersList.unshift(newOrder);
         saveOrdersToLocal();
         renderOrdersList();
-        showToast(`✅ Order ${newOrder.id} placed! Check product details below.`);
+        showToast(`✅ Order ${newOrder.id} placed!`);
     };
     
-    // Listen for orders from checkout page via localStorage
     function checkForNewOrder() {
         const pendingOrderJson = localStorage.getItem('pending_order_from_checkout');
         if (pendingOrderJson) {
@@ -694,11 +743,10 @@
                 const orderData = JSON.parse(pendingOrderJson);
                 addOrderFromPurchase(orderData);
                 localStorage.removeItem('pending_order_from_checkout');
-            } catch(e) {}
+            } catch(e) { console.error("Error processing pending order:", e); }
         }
     }
     
-    // Also listen for cart completion (when user clicks place order)
     function syncOrderFromCart() {
         const cartData = localStorage.getItem('cart');
         const checkoutComplete = localStorage.getItem('checkout_complete');
@@ -711,15 +759,15 @@
                 const customerAddress = localStorage.getItem('checkout_address') || "Chennai, Tamil Nadu";
                 const paymentMethod = localStorage.getItem('checkout_payment') || "Online Payment";
                 
-                let subtotal = 0;
                 const items = cartItems.map(item => {
                     const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
                     const qty = item.quantity || 1;
-                    subtotal += price * qty;
                     return {
                         name: item.name,
+                        qty: qty,
                         quantity: qty,
                         price: price,
+                        discountPercent: item.discountPercent || 0,
                         image: item.image || null,
                         icon: item.icon || getProductIcon(item.name),
                         category: item.category || "Plant Product"
@@ -727,20 +775,15 @@
                 });
                 
                 const newOrder = {
-                    id: `INV${Date.now().toString().slice(-6)}`,
+                    id: `ORD${Date.now().toString().slice(-8)}`,
                     customer: customerName,
                     phone: customerPhone,
                     address: customerAddress,
                     items: items,
-                    subtotal: subtotal,
-                    gstAmount: subtotal * 0.18,
-                    grandTotal: subtotal * 1.18,
                     paymentMethod: paymentMethod
                 };
                 
                 addOrderFromPurchase(newOrder);
-                
-                // Clear cart and checkout flags
                 localStorage.setItem('cart', JSON.stringify([]));
                 localStorage.removeItem('checkout_complete');
                 localStorage.removeItem('checkout_name');
@@ -756,7 +799,6 @@
         return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
     
-    // Render orders with FULL PRODUCT DETAILS
     function renderOrdersList() {
         const container = document.getElementById('ordersListContainer');
         
@@ -777,15 +819,23 @@
         }
         
         container.innerHTML = ordersList.map(order => {
-            // Build product rows with FULL DETAILS including images
             const itemsHtml = order.items.map(item => {
-                // Product image display
+                // Ensure quantity is a valid number
+                const quantity = item.qty || item.quantity || 1;
+                
                 let productImageHtml = '';
                 if (item.image) {
                     productImageHtml = `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'product-icon-fallback\'><i class=\'fas ${item.icon || 'fa-seedling'}\'></i></div>';">`;
                 } else {
                     productImageHtml = `<div class="product-icon-fallback"><i class="fas ${item.icon || 'fa-seedling'}"></i></div>`;
                 }
+                
+                const discountHtml = (item.discountPercent && item.discountPercent > 0) ? 
+                    `<div class="discount-badge"><i class="fas fa-tag"></i> ${item.discountPercent}% off (₹${(item.discountAmount || 0).toFixed(2)} saved)</div>` : '';
+                
+                const priceDisplay = (item.discountPercent && item.discountPercent > 0) ? 
+                    `<span style="text-decoration: line-through; color:#a0a0a0; font-size:12px;">₹${(item.originalTotal || item.price * quantity).toFixed(2)}</span><br><span style="color:#2e7d32; font-weight:700;">₹${item.total.toFixed(2)}</span>` :
+                    `<span style="font-weight:700;">₹${(item.total || item.price * quantity).toFixed(2)}</span>`;
                 
                 return `
                     <tr>
@@ -795,15 +845,21 @@
                                 <div class="product-detail-text">
                                     <div class="product-name-text">${escapeHtml(item.name)}</div>
                                     <div class="product-category"><i class="fas fa-tag"></i> ${escapeHtml(item.category || 'Premium Plant')}</div>
+                                    ${discountHtml}
                                 </div>
                             </div>
                         </td>
                         <td style="text-align: center; padding: 14px 8px;">
-                            <span style="font-weight: 600;">${item.qty}</span>
-                            <div style="font-size: 11px; color: #7f9a6e;">pcs</div>
+                            <div class="quantity-badge">${quantity}</div>
+                            <div style="font-size: 11px; color: #7f9a6e;">unit(s)</div>
                         </td>
-                        <td style="text-align: right; padding: 14px 8px;">₹${item.price.toLocaleString('en-IN')}</td>
-                        <td style="text-align: right; padding: 14px 8px; font-weight: 700; color: #2e7d32;">₹${item.total.toLocaleString('en-IN')}</td>
+                        <td style="text-align: right; padding: 14px 8px;">
+                            ₹${item.price.toLocaleString('en-IN')}
+                            ${item.discountPercent > 0 ? `<div style="font-size:11px; color:#e67e22;">-${item.discountPercent}%</div>` : ''}
+                        </td>
+                        <td style="text-align: right; padding: 14px 8px; font-weight: 700; color: #2e7d32;">
+                            ${priceDisplay}
+                        </td>
                     </tr>
                 `;
             }).join('');
@@ -823,10 +879,10 @@
                         <table class="invoice-items-table">
                             <thead>
                                 <tr>
-                                    <th style="width: 50%">Product Details</th>
+                                    <th style="width: 45%">Product Details</th>
                                     <th style="text-align: center; width: 15%">Quantity</th>
-                                    <th style="text-align: right; width: 15%">Unit Price</th>
-                                    <th style="text-align: right; width: 20%">Total Amount</th>
+                                    <th style="text-align: right; width: 20%">Unit Price</th>
+                                    <th style="text-align: right; width: 20%">Final Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -836,8 +892,8 @@
                     </div>
                     
                     <div class="price-summary">
-                        <div class="summary-row"><span>Subtotal:</span><span>₹${order.subtotal.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-row gst-breakdown"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-row"><span>Subtotal (after discounts):</span><span>₹${order.subtotal.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-row"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
                         <div class="summary-row total-row"><span>Grand Total:</span><span>₹${order.grandTotal.toLocaleString('en-IN')}</span></div>
                         <div class="summary-row"><span>Payment:</span><span style="color: #ff9800;">${order.paymentMethod}</span></div>
                     </div>
@@ -855,26 +911,31 @@
         }).join('');
     }
     
-    // Generate Invoice HTML with custom logo
     function generateInvoiceHTML(order) {
-        const itemsRows = order.items.map(item => `
-            <tr style="border-bottom: 1px solid #e2f0e0;">
-                <td style="padding: 12px 8px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 48px; height: 48px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas ${item.icon || 'fa-seedling'}" style="color: #4caf50; font-size: 24px;"></i>
+        const itemsRows = order.items.map(item => {
+            const quantity = item.qty || item.quantity || 1;
+            const discountLine = (item.discountPercent && item.discountPercent > 0) ? 
+                `<div style="font-size: 11px; color:#e67e22;">💸 Discount: ${item.discountPercent}% (Saved ₹${(item.discountAmount || 0).toFixed(2)})</div>` : '';
+            return `
+                <tr style="border-bottom: 1px solid #e2f0e0;">
+                    <td style="padding: 12px 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 48px; height: 48px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas ${item.icon || 'fa-seedling'}" style="color: #4caf50; font-size: 24px;"></i>
+                            </div>
+                            <div>
+                                <strong>${escapeHtml(item.name)}</strong>
+                                <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(item.category || 'Garden Product')}</div>
+                                ${discountLine}
+                            </div>
                         </div>
-                        <div>
-                            <strong>${escapeHtml(item.name)}</strong>
-                            <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(item.category || 'Garden Product')}</div>
-                        </div>
-                    </div>
-                </td>
-                <td style="text-align: center;">${item.qty}</td>
-                <td style="text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
-                <td style="text-align: right; font-weight: 600;">₹${item.total.toLocaleString('en-IN')}</td>
-            </tr>
-        `).join('');
+                    </td>
+                    <td style="text-align: center; font-weight: 700;">${quantity}</td>
+                    <td style="text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
+                    <td style="text-align: right; font-weight: 600;">₹${(item.total || item.price * quantity).toLocaleString('en-IN')}</td>
+                </tr>
+            `;
+        }).join('');
         
         return `
             <div class="invoice-preview-paper">
@@ -886,7 +947,6 @@
                     </div>
                     <h1 style="font-size: 28px; color: #1e3a2f;">GREEN GARDEN</h1>
                     <p style="color: #5a7a4a;">Premium Organic Garden Store</p>
-                    <p style="font-size: 11px;">No.12, Katpadi Road, Vellore - 632006 | GST: 33ABCDE1234F1Z5</p>
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; margin-bottom: 28px; gap: 20px;">
@@ -901,19 +961,19 @@
                 </div>
                 
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-                    <thead><tr style="background: #eef5ea;"><th style="padding: 12px; text-align: left;">Item</th><th>Qty</th><th style="text-align: right;">Price</th><th style="text-align: right;">Amount</th></tr></thead>
+                    <thead><tr style="background: #eef5ea;"><th style="padding: 12px; text-align: left;">Item</th><th>Qty</th><th style="text-align: right;">Unit Price</th><th style="text-align: right;">Amount</th></tr></thead>
                     <tbody>${itemsRows}</tbody>
                 </table>
                 
                 <div style="text-align: right; padding: 16px; background: #fefef8; border-radius: 20px;">
                     <p>Subtotal: ₹${order.subtotal.toLocaleString('en-IN')}</p>
                     <p>GST (18%): ₹${order.gstAmount.toLocaleString('en-IN')}</p>
-                    <h2 style="color: #2e7d32;">Total: ₹${order.grandTotal.toLocaleString('en-IN')}</h2>
+                    <h2 style="color: #2e7d32;">Grand Total: ₹${order.grandTotal.toLocaleString('en-IN')}</h2>
                     <p>Payment: ${order.paymentMethod}</p>
                 </div>
                 
                 <div style="text-align: center; font-size: 10px; margin-top: 24px; color: #8ba87a;">
-                    Thank you for shopping at Green Garden! 🌿
+                    🌱 Thank you for shopping at Green Garden!
                 </div>
             </div>
         `;
@@ -977,16 +1037,9 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
     
-    // Navigation to buy page (products.html)
-    document.getElementById('backToShopBtn')?.addEventListener('click', () => {
-        window.location.href = 'products.html';
-    });
-    document.getElementById('viewCartNavBtn')?.addEventListener('click', () => {
-        window.location.href = 'cart.html';
-    });
-    document.getElementById('headerBuyBtn')?.addEventListener('click', () => {
-        window.location.href = 'products.html';
-    });
+    document.getElementById('backToShopBtn')?.addEventListener('click', () => window.location.href = 'products.html');
+    document.getElementById('viewCartNavBtn')?.addEventListener('click', () => window.location.href = 'cart.html');
+    document.getElementById('headerBuyBtn')?.addEventListener('click', () => window.location.href = 'products.html');
     document.getElementById('closeModalBtn')?.addEventListener('click', closeModal);
     window.onclick = (e) => { if (e.target === document.getElementById('invoiceModal')) closeModal(); };
     
@@ -1002,14 +1055,11 @@
         }
     }
     
-    // Initialize
     initLogo();
     loadOrders();
     checkForNewOrder();
     syncOrderFromCart();
     renderOrdersList();
-    
-    console.log("Orders page ready - Full product details displayed, connected to products.html");
 </script>
 </body>
 </html>
