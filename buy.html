@@ -678,23 +678,24 @@
     function getIconForProduct(name) {
         const nameLower = name.toLowerCase();
         if (nameLower.includes('rose')) return 'fa-rose';
-        if (nameLower.includes('seed')) return 'fa-leaf';
+        if (nameLower.includes('seed')) return 'fa-seedling';
         if (nameLower.includes('pot')) return 'fa-flask';
         if (nameLower.includes('plant')) return 'fa-tree';
         if (nameLower.includes('mix')) return 'fa-droplet';
         if (nameLower.includes('money')) return 'fa-leaf';
-        if (nameLower.includes('bamboo')) return 'fa-leaf';
+        if (nameLower.includes('apple')) return 'fa-apple-alt';
         return 'fa-seedling';
     }
 
     function getCategoryForProduct(name) {
         const nameLower = name.toLowerCase();
-        if (nameLower.includes('rose') || nameLower.includes('bonsai')) return 'Flowering Plants';
+        if (nameLower.includes('rose') || nameLower.includes('flower')) return 'Flowering Plants';
         if (nameLower.includes('seed')) return 'Seeds';
         if (nameLower.includes('pot')) return 'Planters';
         if (nameLower.includes('plant')) return 'Indoor Plants';
         if (nameLower.includes('fertilizer')) return 'Fertilizers';
-        if (nameLower.includes('tool')) return 'Gardening Tools';
+        if (nameLower.includes('apple')) return 'Fruit Plants';
+        if (nameLower.includes('bitter')) return 'Vegetable Seeds';
         return 'Garden Products';
     }
 
@@ -804,7 +805,6 @@
         
         const totals = calculateCartTotals(cart, appliedCoupon, selectedPayment);
         
-        // Build cart items HTML with PRODUCT IMAGES and FULL DETAILS
         let cartItemsHtml = '';
         cart.forEach((item, idx) => {
             const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
@@ -978,9 +978,9 @@
             const currentPayment = localStorage.getItem('checkout_payment') || 'upi';
             const finalTotals = calculateCartTotals(currentCart, currentCoupon, currentPayment);
             
-            const orderId = 'GRD' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000);
+            const orderId = 'ORD' + Date.now().toString().slice(-8);
             
-            // Create order data with FULL PRODUCT DETAILS for orders page
+            // Create order data with CORRECT format for orders page
             const orderData = {
                 id: orderId,
                 date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
@@ -989,7 +989,7 @@
                 address: address,
                 items: currentCart.map(item => ({
                     name: item.name || 'Garden Product',
-                    quantity: item.quantity || 1,
+                    qty: item.quantity || 1,
                     price: typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0,
                     total: (typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0) * (item.quantity || 1),
                     image: item.image || null,
@@ -997,13 +997,12 @@
                     category: item.category || getCategoryForProduct(item.name)
                 })),
                 subtotal: finalTotals.subtotal,
-                gstAmount: finalTotals.subtotal * 0.18,
+                gstAmount: parseFloat((finalTotals.subtotal * 0.18).toFixed(2)),
                 grandTotal: finalTotals.total,
                 paymentMethod: currentPayment === 'upi' ? 'UPI Payment' : 
                                currentPayment === 'cod' ? 'Cash on Delivery' : 
                                currentPayment === 'card' ? 'Credit/Debit Card' : 'Net Banking',
-                status: currentPayment === 'cod' ? 'Processing' : 'Paid',
-                couponApplied: currentCoupon || null
+                status: 'Processing'
             };
             
             // Save order to localStorage for orders page
@@ -1019,7 +1018,7 @@
             localStorage.removeItem('checkout_coupon');
             localStorage.removeItem('checkout_payment');
             
-            showToast(`🎉 Order placed! ID: ${orderId.slice(-8)}`, false);
+            showToast(`🎉 Order placed! ID: ${orderId}`, false);
             
             // Redirect to orders page
             setTimeout(() => {
@@ -1037,7 +1036,7 @@
         });
         
         document.getElementById('brandLogo')?.addEventListener('click', () => {
-            window.location.href = 'home.html';
+            window.location.href = 'index.html';
         });
         
         document.getElementById('cartBadge')?.addEventListener('click', () => {
