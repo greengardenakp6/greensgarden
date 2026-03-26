@@ -33,10 +33,8 @@
             border-radius: 10px;
         }
 
-        /* navbar - premium gradient with view cart integration */
         .navbar {
             background: linear-gradient(135deg, #ffffff 0%, #fef9f0 100%);
-            backdrop-filter: blur(0);
             padding: 14px 48px;
             display: flex;
             align-items: center;
@@ -95,7 +93,6 @@
             gap: 12px;
         }
 
-        /* View Cart Button - Premium Style */
         .view-cart-btn {
             background: linear-gradient(135deg, #ff9f00, #fb641b);
             border: none;
@@ -110,7 +107,6 @@
             gap: 10px;
             transition: all 0.25s ease;
             box-shadow: 0 4px 12px rgba(251,100,27,0.2);
-            letter-spacing: 0.3px;
         }
 
         .view-cart-btn:hover {
@@ -129,7 +125,6 @@
             margin-left: 6px;
         }
 
-        /* main product container */
         .product-container {
             max-width: 1280px;
             margin: 32px auto 60px;
@@ -139,13 +134,11 @@
             gap: 48px;
         }
 
-        /* left gallery with flipkart style */
         .gallery-card {
             background: white;
             border-radius: 28px;
             overflow: hidden;
             box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-            transition: all 0.3s ease;
             border: 1px solid #f0f0f0;
             position: relative;
         }
@@ -157,7 +150,6 @@
             justify-content: center;
             min-height: 480px;
             padding: 32px;
-            transition: transform 0.3s ease;
         }
 
         .product-img {
@@ -182,18 +174,15 @@
             border-radius: 40px;
             font-size: 0.7rem;
             font-weight: 700;
-            letter-spacing: 0.3px;
             z-index: 2;
         }
 
-        /* right info panel */
         .info-panel {
             background: white;
             border-radius: 28px;
             padding: 32px 32px 40px;
             box-shadow: 0 12px 30px rgba(0,0,0,0.04);
             border: 1px solid #f0f2f5;
-            transition: transform 0.2s;
         }
 
         .product-title {
@@ -232,13 +221,6 @@
             font-size: 2rem;
             font-weight: 800;
             color: #212121;
-            letter-spacing: -0.5px;
-        }
-
-        .current-price small {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #878787;
         }
 
         .original-price {
@@ -279,7 +261,6 @@
             margin: 24px 0;
         }
 
-        /* quantity selector - modern */
         .quantity-module {
             display: flex;
             align-items: center;
@@ -311,9 +292,6 @@
             cursor: pointer;
             color: #2874f0;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .qty-btn:hover:not(:disabled) {
@@ -334,14 +312,12 @@
             font-weight: 700;
             font-size: 1rem;
             padding: 12px 0;
-            -moz-appearance: textfield;
         }
 
         .qty-input:focus {
             outline: none;
         }
 
-        /* action buttons - flipkart primary orange */
         .action-group {
             display: flex;
             gap: 16px;
@@ -359,7 +335,6 @@
             font-size: 1rem;
             color: white;
             cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -370,7 +345,6 @@
         .btn-buy:hover {
             background: #e75b18;
             transform: translateY(-2px);
-            box-shadow: 0 12px 22px rgba(251,100,27,0.3);
         }
 
         .btn-cart {
@@ -383,7 +357,6 @@
             font-size: 1rem;
             color: white;
             cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -393,10 +366,8 @@
         .btn-cart:hover {
             background: #f78c1e;
             transform: translateY(-2px);
-            box-shadow: 0 10px 18px rgba(255,159,0,0.3);
         }
 
-        /* meta row */
         .meta-row {
             display: flex;
             gap: 28px;
@@ -415,12 +386,6 @@
             border-radius: 40px;
         }
 
-        .meta-chip i {
-            color: #ff9f00;
-            font-size: 0.9rem;
-        }
-
-        /* Toast notification */
         .toast-notify {
             position: fixed;
             bottom: 30px;
@@ -433,12 +398,10 @@
             font-weight: 500;
             z-index: 2000;
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(8px);
             background: rgba(30,42,62,0.95);
             pointer-events: none;
         }
@@ -448,7 +411,6 @@
             opacity: 1;
         }
 
-        /* Cart Summary Modal */
         .cart-summary-overlay {
             position: fixed;
             top: 0;
@@ -465,10 +427,12 @@
             opacity: 0;
             transition: all 0.2s ease;
         }
+        
         .cart-summary-overlay.active {
             visibility: visible;
             opacity: 1;
         }
+        
         .cart-modal {
             background: white;
             max-width: 500px;
@@ -479,9 +443,11 @@
             transform: scale(0.95);
             transition: transform 0.2s;
         }
+        
         .cart-summary-overlay.active .cart-modal {
             transform: scale(1);
         }
+        
         .cart-modal h3 {
             font-size: 1.5rem;
             margin-bottom: 16px;
@@ -489,24 +455,20 @@
             justify-content: space-between;
             align-items: center;
         }
+        
         .cart-items-list {
             max-height: 350px;
             overflow-y: auto;
             margin: 16px 0;
         }
+        
         .cart-item-row {
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
             border-bottom: 1px solid #eee;
         }
-        .cart-item-name {
-            font-weight: 500;
-        }
-        .cart-item-price {
-            font-weight: 600;
-            color: #2874f0;
-        }
+        
         .cart-total {
             font-weight: 800;
             font-size: 1.2rem;
@@ -515,6 +477,7 @@
             border-top: 2px solid #f0f2f5;
             padding-top: 12px;
         }
+        
         .close-cart {
             background: #e2e6ea;
             border: none;
@@ -522,11 +485,8 @@
             border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        .close-cart:hover {
-            background: #d4d8dd;
-        }
+        
         .goto-cart-btn {
             background: #fb641b;
             color: white;
@@ -536,21 +496,6 @@
             font-weight: 600;
             margin-left: 12px;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        .goto-cart-btn:hover {
-            background: #e75b18;
-            transform: translateY(-1px);
-        }
-        .empty-cart-msg {
-            text-align: center;
-            padding: 30px;
-            color: #878787;
-        }
-        .empty-cart-msg i {
-            font-size: 48px;
-            margin-bottom: 12px;
-            opacity: 0.5;
         }
 
         @media (max-width: 880px) {
@@ -567,52 +512,6 @@
             .nav-left {
                 justify-content: space-between;
             }
-            .view-cart-btn {
-                justify-content: center;
-            }
-            .image-magnifier {
-                min-height: 340px;
-            }
-            .product-title {
-                font-size: 1.5rem;
-            }
-            .action-group {
-                flex-direction: column;
-            }
-        }
-
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
-        .ripple:after {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            background-image: radial-gradient(circle, #fff 10%, transparent 10%);
-            background-repeat: no-repeat;
-            background-position: 50%;
-            transform: scale(10);
-            opacity: 0;
-            transition: transform 0.4s, opacity 0.8s;
-        }
-        .ripple:active:after {
-            transform: scale(0);
-            opacity: 0.4;
-            transition: 0s;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.6; }
-            100% { transform: scale(1.05); opacity: 0; }
-        }
-        .add-animation {
-            animation: pulse 0.4s ease-out;
         }
     </style>
 </head>
@@ -627,7 +526,6 @@
             <i class="fas fa-leaf"></i> GreenCart
         </div>
     </div>
-    <!-- VIEW CART BUTTON with dynamic badge -->
     <button class="view-cart-btn ripple" id="viewCartNavBtn">
         <i class="fas fa-shopping-bag"></i> View Cart 
         <span class="cart-badge" id="cartItemCountBadge">0</span>
@@ -656,18 +554,16 @@
             <div class="tax-info">inclusive of all taxes <i class="fas fa-gem"></i></div>
         </div>
 
-        <div class="description" id="productDesc">
-            Premium quality seeds and plants cultivated with care. Each product comes with detailed growing instructions and our satisfaction guarantee.
-        </div>
+        <div class="description" id="productDesc"></div>
 
         <div class="divider"></div>
 
         <div class="quantity-module">
             <span class="qty-label"><i class="fas fa-boxes"></i> Quantity:</span>
             <div class="qty-control-group">
-                <button class="qty-btn" id="minusBtn" aria-label="Decrease">−</button>
+                <button class="qty-btn" id="minusBtn">−</button>
                 <input type="number" id="quantityInput" class="qty-input" value="1" min="1" max="99">
-                <button class="qty-btn" id="plusBtn" aria-label="Increase">+</button>
+                <button class="qty-btn" id="plusBtn">+</button>
             </div>
         </div>
 
@@ -684,13 +580,12 @@
     </div>
 </div>
 
-<!-- Cart Summary Modal (Quick View) -->
 <div id="cartModal" class="cart-summary-overlay">
     <div class="cart-modal">
         <h3><span><i class="fas fa-shopping-cart"></i> Your Cart</span><i class="fas fa-times-circle" id="closeModalIcon" style="cursor:pointer; color:#aaa; font-size: 1.3rem;"></i></h3>
         <div id="cartModalItems" class="cart-items-list">
-            <div class="empty-cart-msg">
-                <i class="fas fa-bag-shopping"></i>
+            <div class="empty-cart-msg" style="text-align:center; padding:30px;">
+                <i class="fas fa-bag-shopping" style="font-size:48px; opacity:0.5;"></i>
                 <p>Your cart is empty</p>
             </div>
         </div>
@@ -707,9 +602,10 @@
 </div>
 
 <script>
-    // ---------- PRODUCT DATABASE (50 items) ----------
-    const products = [
-        
+// ============================================
+// COMPLETE PRODUCT DATABASE - 50 PRODUCTS
+// ============================================
+const products = [
     { id: 1, name: "Morning Jewel Rose Seed", price: 158, image: "F1.jpg", category: "Flower Seeds", rating: 4.2, reviews: 134, stock: 50 },
     { id: 2, name: "Winter Daisy Red Mixed Seed", price: 150, image: "F2.jpg", category: "Flower Seeds", rating: 4.5, reviews: 98, stock: 45 },
     { id: 3, name: "Bitter Gourd-karela seed", price: 99, image: "F3.jpg", category: "Vegetable Seeds", rating: 4.7, reviews: 210, stock: 120 },
@@ -762,208 +658,202 @@
     { id: 50, name: "Miracle grow all purpose manure(400 g,powder)", price: 450, image: "F50.jpg", category: "Plant Manure", rating: 4.8, reviews: 212, stock: 55 }
 ];
 
+// Helper function to get product by ID
+function getProductById(id) {
+    return products.find(p => p.id === id);
+}
+
+function getProductIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get("id"));
+    return isNaN(id) ? 1 : id;
+}
+
+let currentProduct = null;
+
+function showToast(message, isError = false) {
+    const toast = document.getElementById('toastMsg');
+    const toastText = document.getElementById('toastText');
+    toastText.innerText = message;
+    if (isError) {
+        toast.style.background = "rgba(220, 53, 69, 0.95)";
+        toast.querySelector('i').className = "fas fa-exclamation-circle";
+    } else {
+        toast.style.background = "rgba(30,42,62,0.95)";
+        toast.querySelector('i').className = "fas fa-check-circle";
+    }
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+function updateCartBadge() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    const badge = document.getElementById('cartItemCountBadge');
+    if(badge) badge.innerText = totalItems;
+}
+
+function addToCartHandler(quantity, redirectToBuy = false) {
+    if (!currentProduct) return;
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
+    if (existingIndex !== -1) {
+        cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + quantity;
+    } else {
+        cart.push({
+            id: currentProduct.id,
+            name: currentProduct.name,
+            price: currentProduct.price,
+            image: currentProduct.image,
+            quantity: quantity
+        });
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartBadge();
+    if (redirectToBuy) {
+        showToast(`✨ ${quantity} item(s) added! Redirecting...`, false);
+        setTimeout(() => { window.location.href = 'buy.html'; }, 600);
+    } else {
+        showToast(`✓ ${quantity} × ${currentProduct.name} added to cart`, false);
+    }
+}
+
+function renderProductDetails() {
+    const id = getProductIdFromUrl();
+    currentProduct = getProductById(id) || products[0];
+    const product = currentProduct;
     
-    // Now you can use it in your page
-    console.log(products.length); // 50 products
-    console.log(products[0].name); // Morning Jewel Rose Seed
-</script>
-```
-
-    function getProductIdFromUrl() {
-        const params = new URLSearchParams(window.location.search);
-        const id = parseInt(params.get("id"));
-        return isNaN(id) ? 1 : id;
-    }
-
-    let currentProduct = null;
-
-    function showToast(message, isError = false) {
-        const toast = document.getElementById('toastMsg');
-        const toastText = document.getElementById('toastText');
-        toastText.innerText = message;
-        if (isError) {
-            toast.style.background = "rgba(220, 53, 69, 0.95)";
-            toast.querySelector('i').className = "fas fa-exclamation-circle";
-        } else {
-            toast.style.background = "rgba(30,42,62,0.95)";
-            toast.querySelector('i').className = "fas fa-check-circle";
-        }
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2200);
-    }
-
-    function updateCartBadge() {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        const badge = document.getElementById('cartItemCountBadge');
-        if(badge) badge.innerText = totalItems;
-    }
-
-    function addToCartHandler(quantity, redirectToBuy = false) {
-        if (!currentProduct) return;
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
-        if (existingIndex !== -1) {
-            cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + quantity;
-        } else {
-            cart.push({
-                id: currentProduct.id,
-                name: currentProduct.name,
-                price: currentProduct.price,
-                image: currentProduct.image,
-                quantity: quantity
-            });
-        }
-        localStorage.setItem("cart", JSON.stringify(cart));
-        updateCartBadge();
-        if (redirectToBuy) {
-            showToast(`✨ ${quantity} item(s) added! Redirecting...`, false);
-            setTimeout(() => { window.location.href = 'buy.html'; }, 600);
-        } else {
-            showToast(`✓ ${quantity} × ${currentProduct.name} added to cart`, false);
-            const btn = document.getElementById('addToCartBtn');
-            btn.classList.add('add-animation');
-            setTimeout(() => btn.classList.remove('add-animation'), 300);
-        }
-    }
-
-    function renderProductDetails() {
-        const id = getProductIdFromUrl();
-        currentProduct = products.find(p => p.id === id) || products[0];
-        const product = currentProduct;
-        document.getElementById('productName').innerText = product.name;
-        document.getElementById('currentPrice').innerHTML = `₹${product.price.toLocaleString('en-IN')}`;
-        document.getElementById('mainProductImage').src = product.image;
-        document.getElementById('productRating').innerHTML = `<i class="fas fa-star"></i> ${product.rating}`;
-        document.getElementById('reviewCount').innerHTML = `${product.reviews || (product.rating * 30).toFixed(0)}+ ratings`;
-        let mrp = Math.round(product.price * (1 + (Math.random() * 0.18 + 0.08)));
-        let discountVal = Math.round(((mrp - product.price) / mrp) * 100);
-        document.getElementById('originalPrice').innerText = `₹${mrp}`;
-        document.getElementById('discountPercent').innerText = `(${discountVal}% off)`;
-        const descMap = {
-            "Flower Seeds": "🌸 Premium quality flower seeds with high germination rate. Blooms within 6-8 weeks.",
-            "Vegetable Seeds": "🥬 Non-GMO heirloom seeds. Perfect for home garden. Organic & chemical-free.",
-            "Plants": "🌿 Healthy live plant delivered in eco-friendly pot. Ready to thrive.",
-            "Planters": "🏺 Stylish & durable pots. UV resistant & lightweight design.",
-            default: "🌱 Premium quality seeds and plants cultivated with care. Each product comes with detailed growing instructions and our satisfaction guarantee."
-        };
-        let categoryKey = product.category || "default";
-        let dynamicDesc = descMap[categoryKey] || descMap.default;
-        document.getElementById('productDesc').innerHTML = dynamicDesc + ` <strong>${product.name}</strong> is a customer favorite!`;
-        document.getElementById('quantityInput').value = 1;
-        updateButtonsState(1);
-        updateCartBadge();
-    }
-
-    function updateButtonsState(qty) {
-        const minusBtn = document.getElementById('minusBtn');
-        const plusBtn = document.getElementById('plusBtn');
-        minusBtn.disabled = qty <= 1;
-        plusBtn.disabled = qty >= 99;
-    }
+    document.getElementById('productName').innerText = product.name;
+    document.getElementById('currentPrice').innerHTML = `₹${product.price.toLocaleString('en-IN')}`;
+    document.getElementById('mainProductImage').src = product.image;
+    document.getElementById('productRating').innerHTML = `<i class="fas fa-star"></i> ${product.rating}`;
+    document.getElementById('reviewCount').innerHTML = `${product.reviews}+ ratings`;
     
-    function changeQuantity(delta) {
-        const input = document.getElementById('quantityInput');
-        let val = parseInt(input.value) || 1;
-        let newVal = val + delta;
-        if (newVal >= 1 && newVal <= 99) {
-            input.value = newVal;
-            updateButtonsState(newVal);
-        }
-    }
+    // Calculate MRP and discount
+    let mrp = Math.round(product.price * (1 + (Math.random() * 0.18 + 0.08)));
+    let discountVal = Math.round(((mrp - product.price) / mrp) * 100);
+    document.getElementById('originalPrice').innerText = `₹${mrp}`;
+    document.getElementById('discountPercent').innerText = `(${discountVal}% off)`;
+    
+    // Category-based description
+    const descriptions = {
+        "Flower Seeds": "🌸 Premium quality flower seeds with high germination rate. Beautiful blooms within 6-8 weeks. Perfect for home gardens and balconies.",
+        "Vegetable Seeds": "🥬 Non-GMO heirloom vegetable seeds. Chemical-free, high yield, perfect for organic home gardening.",
+        "Plants": "🌿 Healthy live plant delivered in eco-friendly pot. Ready to thrive with proper care instructions included.",
+        "Planters": "🏺 Stylish & durable pots. UV resistant, lightweight design, perfect for indoor and outdoor plants.",
+        "Plant Stands": "🪴 Elegant and sturdy plant stands. Space-saving design, perfect for showcasing your favorite plants.",
+        "Flower Plants": "🌸 Beautiful flowering plants. Easy to maintain, blooms throughout the season.",
+        "Fruit Plants": "🍎 Premium fruit plants. Grafted for early fruiting, perfect for home orchards.",
+        "Plant Manure": "🌱 Organic nutrient-rich manure. Enhances soil fertility and promotes healthy plant growth.",
+        "Plant Fertilizer": "💪 Premium plant nutrition. Boosts growth, flowering, and fruiting naturally.",
+        "Garden Decor": "🎨 Beautiful garden decorations. Enhance the beauty of your green space.",
+        "Lawn Seeds": "🌿 Premium grass seeds for lush green lawn. Fast germination, drought resistant.",
+        "Oil Seeds": "🌻 High-quality oil seeds for cultivation. Perfect for organic farming.",
+        "Fruit Seeds": "🍊 Premium fruit seeds with high germination rate. Grow your own fruit trees.",
+        "Pot Stand": "🪑 Elegant pot stands to elevate your plant display."
+    };
+    
+    let description = descriptions[product.category] || "🌱 Premium quality seeds and plants cultivated with care. Each product comes with detailed growing instructions and our satisfaction guarantee.";
+    document.getElementById('productDesc').innerHTML = `${description} <strong>${product.name}</strong> is a customer favorite!`;
+    document.getElementById('quantityInput').value = 1;
+    updateButtonsState(1);
+    updateCartBadge();
+}
 
-    // Cart Modal Functions
-    function openCartModal() {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const container = document.getElementById('cartModalItems');
-        const totalSpan = document.getElementById('cartModalTotal');
-        
-        if(cart.length === 0) {
-            container.innerHTML = '<div class="empty-cart-msg"><i class="fas fa-bag-shopping"></i><p>Your cart is empty</p><p style="font-size:12px;">Add items from the shop</p></div>';
-            totalSpan.innerText = 'Total: ₹0';
-        } else {
-            let html = '';
-            let total = 0;
-            cart.forEach(item => {
-                const itemTotal = item.price * (item.quantity || 1);
-                total += itemTotal;
-                html += `<div class="cart-item-row">
-                            <div class="cart-item-name"><strong>${escapeHtml(item.name)}</strong> <span style="color:#666;">x ${item.quantity || 1}</span></div>
-                            <div class="cart-item-price">₹${itemTotal.toLocaleString('en-IN')}</div>
-                         </div>`;
-            });
-            container.innerHTML = html;
-            totalSpan.innerHTML = `Total: ₹${total.toLocaleString('en-IN')}`;
-        }
-        document.getElementById('cartModal').classList.add('active');
-    }
+function updateButtonsState(qty) {
+    const minusBtn = document.getElementById('minusBtn');
+    const plusBtn = document.getElementById('plusBtn');
+    minusBtn.disabled = qty <= 1;
+    plusBtn.disabled = qty >= 99;
+}
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+function changeQuantity(delta) {
+    const input = document.getElementById('quantityInput');
+    let val = parseInt(input.value) || 1;
+    let newVal = val + delta;
+    if (newVal >= 1 && newVal <= 99) {
+        input.value = newVal;
+        updateButtonsState(newVal);
     }
+}
 
-    function closeCartModal() {
-        document.getElementById('cartModal').classList.remove('active');
+function openCartModal() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const container = document.getElementById('cartModalItems');
+    const totalSpan = document.getElementById('cartModalTotal');
+    
+    if(cart.length === 0) {
+        container.innerHTML = '<div class="empty-cart-msg" style="text-align:center; padding:30px;"><i class="fas fa-bag-shopping" style="font-size:48px; opacity:0.5;"></i><p>Your cart is empty</p></div>';
+        totalSpan.innerText = 'Total: ₹0';
+    } else {
+        let html = '';
+        let total = 0;
+        cart.forEach(item => {
+            const itemTotal = item.price * (item.quantity || 1);
+            total += itemTotal;
+            html += `<div class="cart-item-row">
+                        <div class="cart-item-name"><strong>${escapeHtml(item.name)}</strong> <span style="color:#666;">x ${item.quantity || 1}</span></div>
+                        <div class="cart-item-price">₹${itemTotal.toLocaleString('en-IN')}</div>
+                     </div>`;
+        });
+        container.innerHTML = html;
+        totalSpan.innerHTML = `Total: ₹${total.toLocaleString('en-IN')}`;
     }
+    document.getElementById('cartModal').classList.add('active');
+}
 
-    document.addEventListener('DOMContentLoaded', () => {
-        renderProductDetails();
-        
-        const minus = document.getElementById('minusBtn');
-        const plus = document.getElementById('plusBtn');
-        const qtyInput = document.getElementById('quantityInput');
-        const addBtn = document.getElementById('addToCartBtn');
-        const buyBtn = document.getElementById('buyNowBtn');
-        
-        minus.addEventListener('click', () => changeQuantity(-1));
-        plus.addEventListener('click', () => changeQuantity(1));
-        qtyInput.addEventListener('input', function() {
-            let val = parseInt(this.value) || 1;
-            val = Math.min(99, Math.max(1, val));
-            this.value = val;
-            updateButtonsState(val);
-        });
-        
-        addBtn.addEventListener('click', () => {
-            let qty = parseInt(document.getElementById('quantityInput').value) || 1;
-            addToCartHandler(qty, false);
-        });
-        
-        buyBtn.addEventListener('click', () => {
-            let qty = parseInt(document.getElementById('quantityInput').value) || 1;
-            addToCartHandler(qty, true);
-        });
-        
-        const back = document.getElementById('backToShopBtn');
-        if(back) back.addEventListener('click', () => { window.location.href = 'products.html'; });
-        
-        // View Cart button functionality
-        const viewCartBtn = document.getElementById('viewCartNavBtn');
-        if(viewCartBtn) viewCartBtn.addEventListener('click', openCartModal);
-        
-        // Modal close handlers
-        document.getElementById('closeModalIcon')?.addEventListener('click', closeCartModal);
-        document.getElementById('closeCartBtn')?.addEventListener('click', closeCartModal);
-        document.getElementById('gotoFullCartBtn')?.addEventListener('click', () => {
-            window.location.href = 'cart.html';
-        });
-        
-        // Close modal when clicking outside
-        const modal = document.getElementById('cartModal');
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeCartModal();
-        });
-        
-        updateCartBadge();
-        
-        // Listen for storage changes (if cart updated in another tab)
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'cart') {
-                updateCartBadge();
-            }
-        });
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+}
+
+function closeCartModal() {
+    document.getElementById('cartModal').classList.remove('active');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderProductDetails();
+    
+    document.getElementById('minusBtn').addEventListener('click', () => changeQuantity(-1));
+    document.getElementById('plusBtn').addEventListener('click', () => changeQuantity(1));
+    document.getElementById('quantityInput').addEventListener('input', function() {
+        let val = parseInt(this.value) || 1;
+        val = Math.min(99, Math.max(1, val));
+        this.value = val;
+        updateButtonsState(val);
     });
+    
+    document.getElementById('addToCartBtn').addEventListener('click', () => {
+        let qty = parseInt(document.getElementById('quantityInput').value) || 1;
+        addToCartHandler(qty, false);
+    });
+    
+    document.getElementById('buyNowBtn').addEventListener('click', () => {
+        let qty = parseInt(document.getElementById('quantityInput').value) || 1;
+        addToCartHandler(qty, true);
+    });
+    
+    document.getElementById('backToShopBtn').addEventListener('click', () => { 
+        window.location.href = 'products.html'; 
+    });
+    
+    document.getElementById('viewCartNavBtn').addEventListener('click', openCartModal);
+    document.getElementById('closeModalIcon').addEventListener('click', closeCartModal);
+    document.getElementById('closeCartBtn').addEventListener('click', closeCartModal);
+    document.getElementById('gotoFullCartBtn').addEventListener('click', () => {
+        window.location.href = 'cart.html';
+    });
+    
+    const modal = document.getElementById('cartModal');
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeCartModal();
+    });
+    
+    updateCartBadge();
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'cart') updateCartBadge();
+    });
+});
 </script>
 </body>
 </html>
