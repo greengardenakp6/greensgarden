@@ -134,6 +134,27 @@
             gap: 20px;
         }
 
+        .security-chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(46, 125, 50, 0.1);
+            padding: 8px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(46, 125, 50, 0.2);
+        }
+
+        .security-chip i {
+            font-size: 16px;
+            color: #2e7d32;
+        }
+
+        .security-chip span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1b5e20;
+        }
+
         .cart-badge {
             position: relative;
             cursor: pointer;
@@ -657,25 +678,23 @@
     function getIconForProduct(name) {
         const nameLower = name.toLowerCase();
         if (nameLower.includes('rose')) return 'fa-rose';
-        if (nameLower.includes('seed')) return 'fa-seedling';
+        if (nameLower.includes('seed')) return 'fa-leaf';
         if (nameLower.includes('pot')) return 'fa-flask';
         if (nameLower.includes('plant')) return 'fa-tree';
         if (nameLower.includes('mix')) return 'fa-droplet';
         if (nameLower.includes('money')) return 'fa-leaf';
-        if (nameLower.includes('apple')) return 'fa-apple-alt';
-        if (nameLower.includes('bitter')) return 'fa-seedling';
+        if (nameLower.includes('bamboo')) return 'fa-leaf';
         return 'fa-seedling';
     }
 
     function getCategoryForProduct(name) {
         const nameLower = name.toLowerCase();
-        if (nameLower.includes('rose') || nameLower.includes('flower')) return 'Flowering Plants';
+        if (nameLower.includes('rose') || nameLower.includes('bonsai')) return 'Flowering Plants';
         if (nameLower.includes('seed')) return 'Seeds';
         if (nameLower.includes('pot')) return 'Planters';
         if (nameLower.includes('plant')) return 'Indoor Plants';
         if (nameLower.includes('fertilizer')) return 'Fertilizers';
-        if (nameLower.includes('apple')) return 'Fruit Plants';
-        if (nameLower.includes('bitter')) return 'Vegetable Seeds';
+        if (nameLower.includes('tool')) return 'Gardening Tools';
         return 'Garden Products';
     }
 
@@ -958,56 +977,48 @@
             const currentPayment = localStorage.getItem('checkout_payment') || 'upi';
             const finalTotals = calculateCartTotals(currentCart, currentCoupon, currentPayment);
             
-            const orderId = 'ORD' + Date.now().toString().slice(-8);
+            const orderId = 'GRD' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000);
             
-            // IMPORTANT: Create order data with BOTH qty AND quantity for compatibility
+            // Create order data with FULL PRODUCT DETAILS for orders page
             const orderData = {
                 id: orderId,
                 date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
                 customer: name,
                 phone: phone,
                 address: address,
-                items: currentCart.map(item => {
-                    const qtyValue = item.quantity || 1;
-                    const priceValue = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
-                    return {
-                        name: item.name || 'Garden Product',
-                        qty: qtyValue,           // For orders page compatibility
-                        quantity: qtyValue,       // Backup property
-                        price: priceValue,
-                        total: priceValue * qtyValue,
-                        image: item.image || null,
-                        icon: getIconForProduct(item.name),
-                        category: item.category || getCategoryForProduct(item.name)
-                    };
-                }),
+                items: currentCart.map(item => ({
+                    name: item.name || 'Garden Product',
+                    quantity: item.quantity || 1,
+                    price: typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0,
+                    total: (typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0) * (item.quantity || 1),
+                    image: item.image || null,
+                    icon: getIconForProduct(item.name),
+                    category: item.category || getCategoryForProduct(item.name)
+                })),
                 subtotal: finalTotals.subtotal,
-                gstAmount: parseFloat((finalTotals.subtotal * 0.18).toFixed(2)),
+                gstAmount: finalTotals.subtotal * 0.18,
                 grandTotal: finalTotals.total,
                 paymentMethod: currentPayment === 'upi' ? 'UPI Payment' : 
                                currentPayment === 'cod' ? 'Cash on Delivery' : 
                                currentPayment === 'card' ? 'Credit/Debit Card' : 'Net Banking',
-                status: 'Processing'
+                status: currentPayment === 'cod' ? 'Processing' : 'Paid',
+                couponApplied: currentCoupon || null
             };
             
-            // Log for debugging
-            console.log('Saving order:', orderData);
-            
-            // Save order to localStorage
+            // Save order to localStorage for orders page
             let orders = JSON.parse(localStorage.getItem('green_garden_orders')) || [];
             orders.unshift(orderData);
             localStorage.setItem('green_garden_orders', JSON.stringify(orders));
             
-            // Set flag for orders page
+            // Set flag for orders page to refresh
             localStorage.setItem('order_placed_flag', 'true');
-            localStorage.setItem('order_placed_data', JSON.stringify(orderData));
             
             // Clear cart and checkout data
             localStorage.setItem('cart', JSON.stringify([]));
             localStorage.removeItem('checkout_coupon');
             localStorage.removeItem('checkout_payment');
             
-            showToast(`🎉 Order placed! ID: ${orderId}`, false);
+            showToast(`🎉 Order placed! ID: ${orderId.slice(-8)}`, false);
             
             // Redirect to orders page
             setTimeout(() => {
