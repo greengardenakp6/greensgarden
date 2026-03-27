@@ -570,21 +570,20 @@
         if (n.includes('plant')) return 'fa-tree';
         if (n.includes('money')) return 'fa-leaf';
         if (n.includes('fertilizer')) return 'fa-droplet';
-        if (n.includes('apple')) return 'fa-apple-alt';
         return 'fa-seedling';
     }
     
-    // Sample orders with full product details
+    // Sample demo orders for first-time visitors
     const SAMPLE_ORDERS = [
         {
-            id: "ORD10001",
+            id: "GRD240325001",
             date: "Mar 25, 2026",
             customer: "Akash Verma",
             phone: "+91-9876543210",
             address: "Green Avenue, Chennai - 600001",
             items: [
                 { 
-                    name: "Apple Plant Hybrid", 
+                    name: "Apple Plant (Hybrid)", 
                     qty: 1, 
                     price: 100, 
                     total: 100,
@@ -602,7 +601,7 @@
                     category: "Vegetable Seeds"
                 },
                 { 
-                    name: "Morning Jewel Rose Seed", 
+                    name: "Morning Jewel Rose", 
                     qty: 2, 
                     price: 158, 
                     total: 316,
@@ -616,6 +615,38 @@
             grandTotal: 607.7,
             paymentMethod: "UPI Payment",
             status: "Delivered"
+        },
+        {
+            id: "GRD240322089",
+            date: "Mar 22, 2026",
+            customer: "Meera Srinivas",
+            phone: "+91-9988776655",
+            address: "Sector 12, Noida - 201301",
+            items: [
+                { 
+                    name: "Bamboo Plant (Lucky)", 
+                    qty: 1, 
+                    price: 450, 
+                    total: 450,
+                    image: null,
+                    icon: "fa-leaf",
+                    category: "Indoor Plants"
+                },
+                { 
+                    name: "Organic Fertilizer 1kg", 
+                    qty: 2, 
+                    price: 299, 
+                    total: 598,
+                    image: null,
+                    icon: "fa-droplet",
+                    category: "Fertilizers"
+                }
+            ],
+            subtotal: 1048,
+            gstAmount: 188.64,
+            grandTotal: 1236.64,
+            paymentMethod: "Credit Card",
+            status: "Processing"
         }
     ];
     
@@ -624,6 +655,7 @@
         if (stored && JSON.parse(stored).length > 0) {
             ordersList = JSON.parse(stored);
         } else {
+            // Use sample orders only if no orders exist
             ordersList = JSON.parse(JSON.stringify(SAMPLE_ORDERS));
             saveOrdersToLocal();
         }
@@ -665,15 +697,15 @@
                 
                 let productImageHtml = '';
                 if (item.image) {
-                    productImageHtml = `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'product-icon-fallback\'><i class=\'fas ${item.icon || 'fa-seedling'}\'></i></div>';">`;
+                    productImageHtml = `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'product-icon-fallback\\'><i class=\\'fas ${item.icon || 'fa-seedling'}\\'></i></div>';">`;
                 } else {
-                    productImageHtml = `<div class="product-icon-fallback"><i class="fas ${item.icon || 'fa-seedling'}"></i></div>`;
+                    productImageHtml = `<div class="product-icon-fallback"><i class="fas ${item.icon || getProductIcon(item.name)}"></i></div>`;
                 }
                 
                 const itemTotal = item.total || (item.price * quantity);
                 
                 return `
-                    <tr style="border-bottom: 1px solid #ecf3e8;">
+                    <tr>
                         <td style="padding: 14px 8px;">
                             <div class="product-name-cell">
                                 ${productImageHtml}
@@ -685,7 +717,7 @@
                         </td>
                         <td style="text-align: center; padding: 14px 8px;">
                             <div class="quantity-badge">${quantity}</div>
-                            <div style="font-size: 11px; color: #7f9a6e;">unit(s)</div>
+                            <div style="font-size: 11px; color: #7f9a6e;">units</div>
                         </td>
                         <td style="text-align: right; padding: 14px 8px;">₹${item.price.toLocaleString('en-IN')}</td>
                         <td style="text-align: right; padding: 14px 8px; font-weight: 700; color: #2e7d32;">₹${itemTotal.toLocaleString('en-IN')}</td>
@@ -752,7 +784,7 @@
                     <td style="padding: 12px 8px;">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <div style="width: 48px; height: 48px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas ${item.icon || 'fa-seedling'}" style="color: #4caf50; font-size: 24px;"></i>
+                                <i class="fas ${item.icon || getProductIcon(item.name)}" style="color: #4caf50; font-size: 24px;"></i>
                             </div>
                             <div>
                                 <strong>${escapeHtml(item.name)}</strong>
@@ -768,12 +800,14 @@
         }).join('');
         
         return `
-            <div class="invoice-preview-paper">
+            <div class="invoice-preview-paper" id="invoiceContentForPdf">
                 <div style="text-align: center; margin-bottom: 28px; border-bottom: 3px solid #4caf50; padding-bottom: 20px;">
-                    <img src="${CUSTOM_LOGO_URL}" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 12px;" 
-                         onerror="this.style.display='none'; this.parentElement.querySelector('.inv-logo-fallback').style.display='flex';">
-                    <div class="inv-logo-fallback" style="display: none; width: 70px; height: 70px; background: #4caf50; border-radius: 20px; margin: 0 auto 12px; align-items: center; justify-content: center;">
-                        <i class="fas fa-leaf" style="font-size: 34px; color: white;"></i>
+                    <div style="display: flex; justify-content: center;">
+                        <img src="${CUSTOM_LOGO_URL}" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 12px;" 
+                             onerror="this.style.display='none'; this.parentElement.querySelector('.inv-logo-fallback').style.display='flex';">
+                        <div class="inv-logo-fallback" style="display: none; width: 70px; height: 70px; background: #4caf50; border-radius: 20px; margin: 0 auto 12px; align-items: center; justify-content: center;">
+                            <i class="fas fa-leaf" style="font-size: 34px; color: white;"></i>
+                        </div>
                     </div>
                     <h1 style="font-size: 28px; color: #1e3a2f;">GREEN GARDEN</h1>
                     <p style="color: #5a7a4a;">Premium Organic Garden Store</p>
@@ -812,7 +846,7 @@
                 
                 <div style="text-align: center; font-size: 10px; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2f0e0; color: #8ba87a;">
                     <p>🌱 Thank you for shopping at Green Garden! Grow with Nature 🌿</p>
-                    <p>For queries: greengarden2427@gmail.com | +91-9944217247</p>
+                    <p>For queries: greengarden@organic.com | +91-9944217247</p>
                 </div>
             </div>
         `;
@@ -835,18 +869,22 @@
         document.getElementById('invoiceModal').classList.add('active');
     };
     
-    window.downloadInvoiceDirect = async function(orderId) {
-        const order = getOrderById(orderId);
+    async function downloadInvoiceDirect(order) {
         if (!order) return;
-        const div = document.createElement('div');
-        div.style.position = 'absolute';
-        div.style.left = '-9999px';
-        div.style.width = '800px';
-        div.innerHTML = generateInvoiceHTML(order);
-        document.body.appendChild(div);
+        // Create a temporary div for high-quality PDF rendering
+        const tempDiv = document.createElement('div');
+        tempDiv.style.position = 'absolute';
+        tempDiv.style.left = '-9999px';
+        tempDiv.style.top = '0';
+        tempDiv.style.width = '800px';
+        tempDiv.style.backgroundColor = '#ffffff';
+        tempDiv.innerHTML = generateInvoiceHTML(order);
+        document.body.appendChild(tempDiv);
         
         try {
-            const canvas = await html2canvas(div, { scale: 2, backgroundColor: '#fff' });
+            // Wait for any images to settle
+            await new Promise(r => setTimeout(r, 100));
+            const canvas = await html2canvas(tempDiv, { scale: 2.5, backgroundColor: '#ffffff', logging: false });
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
@@ -854,22 +892,22 @@
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
             pdf.save(`Invoice_${order.id}_GreenGarden.pdf`);
-            showToast(`✅ Invoice ${order.id} downloaded`);
+            showToast(`✅ Invoice ${order.id} downloaded successfully!`);
         } catch(e) { 
-            showToast("Error generating PDF", true);
             console.error(e);
+            showToast("Error generating PDF. Please try again.", true);
+        } finally { 
+            document.body.removeChild(tempDiv); 
         }
-        finally { document.body.removeChild(div); }
-    };
+    }
     
-    // Global function to navigate to shop page
     window.goToShop = function() {
         window.location.href = 'products.html';
     };
     
     document.getElementById('downloadModalPdfBtn')?.addEventListener('click', async () => {
         if (currentOrder) {
-            await downloadInvoiceDirect(currentOrder.id);
+            await downloadInvoiceDirect(currentOrder);
         } else {
             showToast("No invoice loaded", true);
         }
@@ -885,10 +923,10 @@
         toast.style.backgroundColor = isErr ? '#d32f2f' : '#2e7d32';
         toast.innerText = msg;
         toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
+        setTimeout(() => toast.classList.remove('show'), 2800);
     }
     
-    // Navigation buttons - DIRECT CONNECTION to buy page
+    // Navigation handlers - DIRECT link to products.html (the main shop page)
     document.getElementById('backToShopBtn')?.addEventListener('click', function() {
         window.location.href = 'products.html';
     });
@@ -923,14 +961,14 @@
         }
     }
     
-    // Check for new orders from checkout page
+    // Listen for orders placed from checkout page (order_placed_flag)
     function checkForNewOrder() {
         const newOrderFlag = localStorage.getItem('order_placed_flag');
         if (newOrderFlag === 'true') {
             localStorage.removeItem('order_placed_flag');
             loadOrders();
             renderOrdersList();
-            showToast("✅ New order added!");
+            showToast("🌿 New order added to your list!");
         }
         
         const pendingOrder = localStorage.getItem('pending_order_data');
@@ -942,7 +980,7 @@
                 localStorage.removeItem('pending_order_data');
                 renderOrdersList();
                 showToast(`✅ Order ${orderData.id} placed successfully!`);
-            } catch(e) {}
+            } catch(e) { console.warn(e);}
         }
     }
     
@@ -951,7 +989,7 @@
     checkForNewOrder();
     renderOrdersList();
     
-    console.log("Orders page ready - Connected to products.html (buy page)");
+    console.log("✅ Orders page ready — fully connected to products.html (shop page)");
 </script>
 </body>
 </html>
