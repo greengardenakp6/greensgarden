@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Green Garden Checkout</title>
+    <title>Green Garden | Secure Checkout</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -259,7 +259,7 @@
             margin-bottom: 8px;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%;
             padding: 14px 18px;
             border: 1.5px solid #e2e8f0;
@@ -269,7 +269,7 @@
             transition: all 0.3s;
         }
 
-        .input-group input:focus {
+        .input-group input:focus, .input-group select:focus {
             border-color: #2e7d32;
             outline: none;
             box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.12);
@@ -601,6 +601,10 @@
     </div>
 
     <div class="navbar-right">
+        <div class="security-chip">
+            <i class="fas fa-lock"></i>
+            <span>100% Secure Payment</span>
+        </div>
         <div class="cart-badge" id="cartBadge">
             <div class="cart-icon">
                 <i class="fas fa-shopping-bag"></i>
@@ -634,14 +638,25 @@
     }
 
     function getCart() {
-        const cart = localStorage.getItem('cart');
-        return cart ? JSON.parse(cart) : [];
+        const cart = localStorage.getItem('green_garden_cart');
+        if (cart) return JSON.parse(cart);
+        
+        // Fallback to old cart key for compatibility
+        const oldCart = localStorage.getItem('cart');
+        if (oldCart) return JSON.parse(oldCart);
+        return [];
+    }
+
+    function saveCart(cart) {
+        localStorage.setItem('green_garden_cart', JSON.stringify(cart));
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
 
     function updateCartBadge() {
         const cart = getCart();
         const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        document.getElementById('cartCount').innerText = totalItems;
+        const badge = document.getElementById('cartCount');
+        if (badge) badge.innerText = totalItems;
     }
 
     function calculateCartTotals(cart, appliedCoupon = null, selectedPayment = 'upi') {
@@ -654,7 +669,7 @@
         let discount = 0;
         let platformFee = 10;
         let codFee = (selectedPayment === 'cod') ? 50 : 0;
-        let couponDiscount = appliedCoupon ? (coupons[appliedCoupon] || 0) : 0;
+        let couponDiscount = appliedCoupon && coupons[appliedCoupon] ? coupons[appliedCoupon] : 0;
         
         let total = subtotal - discount + platformFee + codFee - couponDiscount;
         if (total < 0) total = 0;
@@ -678,23 +693,23 @@
     function getIconForProduct(name) {
         const nameLower = name.toLowerCase();
         if (nameLower.includes('rose')) return 'fa-rose';
-        if (nameLower.includes('seed')) return 'fa-leaf';
+        if (nameLower.includes('seed')) return 'fa-seedling';
         if (nameLower.includes('pot')) return 'fa-flask';
         if (nameLower.includes('plant')) return 'fa-tree';
-        if (nameLower.includes('mix')) return 'fa-droplet';
         if (nameLower.includes('money')) return 'fa-leaf';
         if (nameLower.includes('bamboo')) return 'fa-leaf';
+        if (nameLower.includes('aloe')) return 'fa-droplet';
+        if (nameLower.includes('jasmine')) return 'fa-leaf';
         return 'fa-seedling';
     }
 
     function getCategoryForProduct(name) {
         const nameLower = name.toLowerCase();
-        if (nameLower.includes('rose') || nameLower.includes('bonsai')) return 'Flowering Plants';
+        if (nameLower.includes('rose') || nameLower.includes('jasmine')) return 'Flowering Plants';
         if (nameLower.includes('seed')) return 'Seeds';
         if (nameLower.includes('pot')) return 'Planters';
-        if (nameLower.includes('plant')) return 'Indoor Plants';
+        if (nameLower.includes('money') || nameLower.includes('bamboo') || nameLower.includes('aloe')) return 'Indoor Plants';
         if (nameLower.includes('fertilizer')) return 'Fertilizers';
-        if (nameLower.includes('tool')) return 'Gardening Tools';
         return 'Garden Products';
     }
 
@@ -703,7 +718,7 @@
         if (method === 'upi') {
             html = `
                 <div class="input-group">
-                    <label>UPI ID (Google Pay / PhonePe)</label>
+                    <label>UPI ID (Google Pay / PhonePe / Paytm)</label>
                     <input type="text" id="upiId" placeholder="username@okhdfcbank">
                 </div>
                 <div class="qr-modern">
@@ -725,7 +740,7 @@
                             <i class="fas fa-check-circle"></i> Instant payment
                         </div>
                         <div style="font-size: 11px; color: #ff9800; margin-top: 6px;">
-                            <i class="fas fa-info-circle"></i> Amount: ₹${totalAmount}
+                            <i class="fas fa-info-circle"></i> Amount: ₹${totalAmount.toFixed(2)}
                         </div>
                     </div>
                 </div>
@@ -735,7 +750,7 @@
                 <div class="input-group">
                     <label>Select Bank</label>
                     <select id="bankSelect" style="width:100%; padding:14px; border-radius:18px; border:1.5px solid #e2e8f0;">
-                        <option>Indian Bank</option><option>HDFC Bank</option><option>SBI</option><option>ICICI Bank</option><option>Axis Bank</option>
+                        <option>HDFC Bank</option><option>SBI</option><option>ICICI Bank</option><option>Axis Bank</option><option>Kotak Bank</option>
                     </select>
                 </div>
                 <div class="input-group"><label>Account Number</label><input type="text" id="accNum" placeholder="XXXXXXXXXXXX"></div>
@@ -757,7 +772,7 @@
                         <p style="font-size:13px; color:#64748b;">Extra ₹50 convenience fee applied</p>
                         <div style="margin-top: 16px; padding: 12px; background: #f1f5f9; border-radius: 12px;">
                             <i class="fas fa-leaf" style="color: #2e7d32;"></i>
-                            <span style="margin-left: 8px;">Cash accepted on delivery</span>
+                            <span style="margin-left: 8px;">Cash / Card accepted on delivery</span>
                         </div>
                     </div>`;
         }
@@ -805,7 +820,7 @@
         const totals = calculateCartTotals(cart, appliedCoupon, selectedPayment);
         
         let cartItemsHtml = '';
-        cart.forEach((item, idx) => {
+        cart.forEach((item) => {
             const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
             const qty = item.quantity || 1;
             const total = price * qty;
@@ -820,7 +835,7 @@
                         }
                     </div>
                     <div class="cart-item-details">
-                        <div class="cart-item-name">${item.name || 'Plant Product'}</div>
+                        <div class="cart-item-name">${escapeHtml(item.name || 'Plant Product')}</div>
                         <div class="cart-item-price">₹${price.toLocaleString('en-IN')}</div>
                         <div class="cart-item-qty">Quantity: ${qty}</div>
                     </div>
@@ -912,7 +927,7 @@
                 </div>
                 <div class="total-premium">
                     <span>Total payable</span>
-                    <span id="grandTotal" style="background:linear-gradient(135deg,#2e7d32,#ff9800); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800;">₹${totals.total.toLocaleString('en-IN')}</span>
+                    <span id="grandTotal" style="color:#2e7d32; font-weight:800;">₹${totals.total.toFixed(2)}</span>
                 </div>
                 <button class="btn-premium" id="placeOrderBtn">
                     <i class="fas fa-leaf"></i> Place Order
@@ -943,88 +958,104 @@
             }
         });
         
-        document.getElementById('placeOrderBtn')?.addEventListener('click', () => {
-            const name = document.getElementById('fullName')?.value.trim();
-            const address = document.getElementById('address')?.value.trim();
-            const phone = document.getElementById('phone')?.value.trim();
-            
-            if (!name || !address || !phone) {
-                showToast('Please fill all delivery details', true);
-                return;
-            }
-            if (!/^\d{10}$/.test(phone)) {
-                showToast('Enter valid 10-digit phone number', true);
-                return;
-            }
-            
-            const paymentMethod = localStorage.getItem('checkout_payment') || 'upi';
-            if (paymentMethod === 'upi') {
-                const upiId = document.getElementById('upiId')?.value.trim();
-                if (!upiId || !upiId.includes('@')) {
-                    showToast('Valid UPI ID required', true);
-                    return;
-                }
-            } else if (paymentMethod === 'card') {
-                const cardNum = document.getElementById('cardNum')?.value.replace(/\s/g, '');
-                if (!cardNum || cardNum.length < 15) {
-                    showToast('Valid card number required', true);
-                    return;
-                }
-            }
-            
-            const currentCart = getCart();
-            const currentCoupon = localStorage.getItem('checkout_coupon');
-            const currentPayment = localStorage.getItem('checkout_payment') || 'upi';
-            const finalTotals = calculateCartTotals(currentCart, currentCoupon, currentPayment);
-            
-            const orderId = 'GRD' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000);
-            
-            // Create order data with FULL PRODUCT DETAILS for orders page
-            const orderData = {
-                id: orderId,
-                date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-                customer: name,
-                phone: phone,
-                address: address,
-                items: currentCart.map(item => ({
-                    name: item.name || 'Garden Product',
-                    quantity: item.quantity || 1,
-                    price: typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0,
-                    total: (typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0) * (item.quantity || 1),
-                    image: item.image || null,
-                    icon: getIconForProduct(item.name),
-                    category: item.category || getCategoryForProduct(item.name)
-                })),
-                subtotal: finalTotals.subtotal,
-                gstAmount: finalTotals.subtotal * 0.18,
-                grandTotal: finalTotals.total,
-                paymentMethod: currentPayment === 'upi' ? 'UPI Payment' : 
-                               currentPayment === 'cod' ? 'Cash on Delivery' : 
-                               currentPayment === 'card' ? 'Credit/Debit Card' : 'Net Banking',
-                status: currentPayment === 'cod' ? 'Processing' : 'Paid',
-                couponApplied: currentCoupon || null
-            };
-            
-            // Save order to localStorage for orders page
-            let orders = JSON.parse(localStorage.getItem('green_garden_orders')) || [];
-            orders.unshift(orderData);
-            localStorage.setItem('green_garden_orders', JSON.stringify(orders));
-            
-            // Set flag for orders page to refresh
-            localStorage.setItem('order_placed_flag', 'true');
-            
-            // Clear cart and checkout data
-            localStorage.setItem('cart', JSON.stringify([]));
-            localStorage.removeItem('checkout_coupon');
-            localStorage.removeItem('checkout_payment');
-            
-            showToast(`🎉 Order placed! ID: ${orderId.slice(-8)}`, false);
-            
-            // Redirect to orders page
-            setTimeout(() => {
-                window.location.href = 'orders.html';
-            }, 1500);
+        document.getElementById('placeOrderBtn')?.addEventListener('click', placeOrder);
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
         });
+    }
+    
+    function placeOrder() {
+        const name = document.getElementById('fullName')?.value.trim();
+        const address = document.getElementById('address')?.value.trim();
+        const phone = document.getElementById('phone')?.value.trim();
+        
+        if (!name || !address || !phone) {
+            showToast('Please fill all delivery details', true);
+            return;
+        }
+        if (!/^\d{10}$/.test(phone)) {
+            showToast('Enter valid 10-digit phone number', true);
+            return;
+        }
+        
+        const paymentMethod = localStorage.getItem('checkout_payment') || 'upi';
+        if (paymentMethod === 'upi') {
+            const upiId = document.getElementById('upiId')?.value.trim();
+            if (!upiId || !upiId.includes('@')) {
+                showToast('Valid UPI ID required', true);
+                return;
+            }
+        } else if (paymentMethod === 'card') {
+            const cardNum = document.getElementById('cardNum')?.value.replace(/\s/g, '');
+            if (!cardNum || cardNum.length < 15) {
+                showToast('Valid card number required', true);
+                return;
+            }
+        }
+        
+        const currentCart = getCart();
+        const currentCoupon = localStorage.getItem('checkout_coupon');
+        const currentPayment = localStorage.getItem('checkout_payment') || 'upi';
+        const finalTotals = calculateCartTotals(currentCart, currentCoupon, currentPayment);
+        
+        const orderId = 'GRD' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000);
+        
+        // Create order data with FULL PRODUCT DETAILS for orders page
+        const orderData = {
+            id: orderId,
+            date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+            customer: name,
+            phone: phone,
+            address: address,
+            items: currentCart.map(item => ({
+                name: item.name || 'Garden Product',
+                quantity: item.quantity || 1,
+                price: typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0,
+                total: (typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0) * (item.quantity || 1),
+                image: item.image || null,
+                icon: getIconForProduct(item.name),
+                category: item.category || getCategoryForProduct(item.name)
+            })),
+            subtotal: finalTotals.subtotal,
+            gstAmount: finalTotals.subtotal * 0.18,
+            grandTotal: finalTotals.total,
+            paymentMethod: currentPayment === 'upi' ? 'UPI Payment' : 
+                           currentPayment === 'cod' ? 'Cash on Delivery' : 
+                           currentPayment === 'card' ? 'Credit/Debit Card' : 'Net Banking',
+            status: currentPayment === 'cod' ? 'Processing' : 'Paid',
+            couponApplied: currentCoupon || null
+        };
+        
+        // Save order to localStorage for orders page
+        let orders = JSON.parse(localStorage.getItem('green_garden_orders')) || [];
+        orders.unshift(orderData);
+        localStorage.setItem('green_garden_orders', JSON.stringify(orders));
+        
+        // Also save to backup key for compatibility
+        localStorage.setItem('orders', JSON.stringify(orders));
+        
+        // Set flag for orders page to refresh and show new order
+        localStorage.setItem('order_placed_flag', 'true');
+        localStorage.setItem('last_order_id', orderId);
+        
+        // Clear cart and checkout data
+        saveCart([]);
+        localStorage.removeItem('checkout_coupon');
+        localStorage.removeItem('checkout_payment');
+        
+        showToast(`🎉 Order placed successfully! Order ID: ${orderId}`, false);
+        
+        // Redirect to orders page
+        setTimeout(() => {
+            window.location.href = 'orders.html';
+        }, 1500);
     }
     
     document.addEventListener('DOMContentLoaded', () => {
