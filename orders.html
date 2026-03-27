@@ -17,11 +17,12 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f4f8f2;
+            background: linear-gradient(135deg, #f8faf6 0%, #eef5e9 100%);
             color: #1a2e1f;
-            overflow-x: hidden;
+            min-height: 100vh;
         }
 
+        /* Premium Navbar */
         .navbar-green {
             background: linear-gradient(135deg, #1a3a2a 0%, #0e2a1a 100%);
             padding: 12px 48px;
@@ -110,15 +111,16 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            text-decoration: none;
         }
 
         .nav-btn:hover {
             background: #4caf50;
             border-color: #4caf50;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76,175,80,0.3);
         }
 
+        /* Main Container */
         .orders-container {
             max-width: 1280px;
             margin: 40px auto;
@@ -135,12 +137,15 @@
         }
 
         .page-header h1 {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 32px;
+            font-weight: 800;
             background: linear-gradient(135deg, #2e7d32, #ff9800);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .buy-now-btn-header {
@@ -149,12 +154,14 @@
             padding: 12px 28px;
             border-radius: 50px;
             font-weight: 700;
+            font-size: 14px;
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
             transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255,152,0,0.3);
         }
 
         .buy-now-btn-header:hover {
@@ -162,6 +169,7 @@
             box-shadow: 0 8px 20px rgba(255,152,0,0.4);
         }
 
+        /* Orders Grid */
         .orders-grid {
             display: flex;
             flex-direction: column;
@@ -170,47 +178,47 @@
 
         .order-card {
             background: white;
-            border-radius: 32px;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
-            border: 1px solid #e0f0e0;
+            border: 1px solid #e0e8dc;
         }
 
         .order-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 35px rgba(46,125,50,0.12);
+            box-shadow: 0 20px 35px rgba(46,125,50,0.15);
         }
 
         .order-header {
-            background: linear-gradient(135deg, #fafff7, #ffffff);
-            padding: 22px 30px;
+            background: linear-gradient(135deg, #fafef7, #ffffff);
+            padding: 20px 28px;
             border-bottom: 2px solid #e8f5e9;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .order-id-badge {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            background: #eef5ea;
+            padding: 8px 18px;
+            border-radius: 40px;
         }
 
         .order-id-badge i {
-            font-size: 26px;
+            font-size: 18px;
             color: #4caf50;
         }
 
         .order-id-badge span {
-            font-weight: 800;
-            font-size: 18px;
+            font-weight: 700;
+            font-size: 14px;
             font-family: monospace;
-            background: #eef5ea;
-            padding: 6px 14px;
-            border-radius: 40px;
             color: #2e7d32;
         }
 
@@ -219,16 +227,15 @@
             align-items: center;
             gap: 8px;
             background: #f8faf6;
-            padding: 6px 16px;
+            padding: 8px 16px;
             border-radius: 40px;
             font-size: 13px;
-            font-weight: 500;
             color: #4a6741;
         }
 
         .customer-chip {
-            background: #e8f0e6;
-            padding: 6px 16px;
+            background: #eef5ea;
+            padding: 8px 16px;
             border-radius: 40px;
             font-size: 13px;
             font-weight: 600;
@@ -239,93 +246,98 @@
         }
 
         .status-badge {
-            padding: 6px 16px;
-            border-radius: 40px;
+            padding: 6px 14px;
+            border-radius: 30px;
             font-size: 12px;
-            font-weight: 700;
-            background: #e8f5e9;
-            color: #2e7d32;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .status-badge.delivered {
-            background: #c8e6c9;
-            color: #1b5e20;
+        .status-delivered {
+            background: #d1fae5;
+            color: #065f46;
         }
 
-        .status-badge.processing {
-            background: #fff3e0;
-            color: #f57c00;
+        .status-processing {
+            background: #fed7aa;
+            color: #9a3412;
         }
 
+        .status-shipped {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Items Table */
         .items-table-wrapper {
-            padding: 20px 28px;
+            padding: 24px 28px;
             overflow-x: auto;
         }
 
-        .invoice-items-table {
+        .orders-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
         }
 
-        .invoice-items-table th {
+        .orders-table th {
             text-align: left;
-            padding: 14px 8px;
+            padding: 12px 8px;
             background: #f9fff7;
             color: #2e5c2e;
             font-weight: 700;
+            font-size: 13px;
             border-bottom: 2px solid #cfe6cf;
         }
 
-        .invoice-items-table td {
-            padding: 14px 8px;
+        .orders-table td {
+            padding: 16px 8px;
             border-bottom: 1px solid #ecf3e8;
-            color: #2c3e2a;
             vertical-align: middle;
         }
 
-        .product-name-cell {
-            font-weight: 600;
+        .product-cell {
             display: flex;
             align-items: center;
             gap: 14px;
         }
 
-        .product-img-thumb {
+        .product-img {
             width: 56px;
             height: 56px;
             border-radius: 14px;
-            object-fit: cover;
-            background: #f0f7ea;
-            border: 1px solid #d4e8c5;
-        }
-
-        .product-icon-fallback {
-            width: 56px;
-            height: 56px;
             background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #4caf50;
+        }
+
+        .product-img i {
             font-size: 26px;
+            color: #4caf50;
         }
 
-        .product-detail-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-name-text {
+        .product-info h4 {
             font-weight: 700;
             font-size: 15px;
+            margin-bottom: 4px;
         }
 
-        .product-category {
+        .product-cat {
             font-size: 11px;
             color: #7f9a6e;
-            margin-top: 4px;
+        }
+
+        .quantity-badge {
+            background: #eef5ea;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-block;
+            text-align: center;
+            min-width: 50px;
         }
 
         .price-summary {
@@ -338,24 +350,24 @@
             align-items: flex-end;
         }
 
-        .summary-row {
+        .summary-item {
             display: flex;
             justify-content: flex-end;
             gap: 40px;
-            padding: 8px 0;
+            padding: 6px 0;
             font-size: 14px;
         }
 
-        .summary-row.total-row {
+        .summary-total {
             font-weight: 800;
             font-size: 20px;
             border-top: 2px dashed #bcdd9e;
             margin-top: 8px;
-            padding-top: 14px;
+            padding-top: 12px;
             color: #1e5622;
         }
 
-        .card-footer-actions {
+        .card-footer {
             padding: 20px 28px;
             display: flex;
             justify-content: flex-end;
@@ -363,30 +375,31 @@
             background: white;
         }
 
-        .btn-invoice {
+        .btn-action {
             background: linear-gradient(135deg, #4caf50, #2e7d32);
             border: none;
-            padding: 12px 28px;
-            border-radius: 48px;
-            font-weight: 700;
-            font-size: 14px;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 13px;
             color: white;
             cursor: pointer;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .btn-invoice:hover {
+        .btn-action:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 22px rgba(76,175,80,0.45);
+            box-shadow: 0 6px 16px rgba(76,175,80,0.4);
         }
 
-        .btn-buy-more {
+        .btn-buy {
             background: linear-gradient(135deg, #ff9800, #f57c00);
         }
 
+        /* Modal */
         .invoice-modal {
             display: none;
             position: fixed;
@@ -394,8 +407,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.65);
-            backdrop-filter: blur(6px);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -405,24 +418,24 @@
             display: flex;
         }
 
-        .modal-invoice-card {
+        .modal-card {
             background: white;
-            border-radius: 36px;
-            max-width: 850px;
+            border-radius: 32px;
+            max-width: 800px;
             width: 92%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 30px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
         }
 
         .modal-header {
-            padding: 22px 28px;
+            padding: 20px 28px;
             background: linear-gradient(135deg, #1a3a2a, #0e2a1a);
             color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 36px 36px 0 0;
+            border-radius: 32px 32px 0 0;
             position: sticky;
             top: 0;
         }
@@ -430,50 +443,39 @@
         .close-modal {
             background: rgba(255,255,255,0.2);
             border: none;
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             font-size: 20px;
             cursor: pointer;
             color: white;
+            transition: 0.2s;
         }
 
         .close-modal:hover {
             background: #ff5722;
         }
 
-        .toast-msg {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(80px);
-            background: #2e7d32;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 60px;
-            font-weight: 600;
-            z-index: 1100;
-            transition: 0.25s ease;
-        }
-
-        .toast-msg.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
         .empty-state {
             text-align: center;
             background: white;
-            border-radius: 40px;
-            padding: 70px 20px;
+            border-radius: 32px;
+            padding: 60px 40px;
         }
 
         .empty-state i {
-            font-size: 70px;
-            color: #b8d9aa;
+            font-size: 80px;
+            color: #c8e6c9;
             margin-bottom: 20px;
         }
 
-        .shop-now-btn-large {
+        .empty-state h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #2e7d32;
+        }
+
+        .shop-btn-large {
             background: linear-gradient(135deg, #ff9800, #f57c00);
             border: none;
             padding: 14px 36px;
@@ -488,28 +490,36 @@
             gap: 10px;
         }
 
-        @media (max-width: 700px) {
-            .navbar-green { padding: 12px 20px; }
-            .order-header { flex-direction: column; align-items: flex-start; }
-            .summary-row { justify-content: space-between; width: 100%; }
-            .product-name-cell { flex-direction: column; align-items: flex-start; }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #2e7d32;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            z-index: 1100;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .invoice-preview-paper {
-            background: white;
-            font-family: 'Inter', sans-serif;
-            padding: 32px;
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
         }
-        
-        .quantity-badge {
-            background: #eef5ea;
-            padding: 8px 14px;
-            border-radius: 32px;
-            font-weight: 700;
-            font-size: 16px;
-            display: inline-block;
-            text-align: center;
-            min-width: 60px;
+
+        .invoice-preview {
+            padding: 32px;
+            background: white;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-green { padding: 12px 20px; }
+            .orders-container { padding: 0 16px; }
+            .order-header { flex-direction: column; align-items: flex-start; }
+            .product-cell { flex-direction: column; text-align: center; }
+            .summary-item { gap: 20px; }
         }
     </style>
 </head>
@@ -529,39 +539,41 @@
     </div>
     <div class="nav-actions">
         <button class="nav-btn" id="backToShopBtn"><i class="fas fa-store"></i> Buy More Plants</button>
-        <button class="nav-btn" id="viewCartNavBtn"><i class="fas fa-shopping-cart"></i> Cart</button>
+        <button class="nav-btn" id="viewCartBtn"><i class="fas fa-shopping-cart"></i> Cart</button>
     </div>
 </nav>
 
 <div class="orders-container">
     <div class="page-header">
         <h1><i class="fas fa-seedling"></i> My Orders</h1>
-        <button class="buy-now-btn-header" id="headerBuyBtn"><i class="fas fa-shopping-bag"></i> Continue Shopping</button>
+        <button class="buy-now-btn-header" id="continueShoppingBtn"><i class="fas fa-shopping-bag"></i> Continue Shopping</button>
     </div>
-    <div id="ordersListContainer" class="orders-grid"></div>
+    <div id="ordersContainer" class="orders-grid"></div>
 </div>
 
 <div id="invoiceModal" class="invoice-modal">
-    <div class="modal-invoice-card">
+    <div class="modal-card">
         <div class="modal-header">
-            <h3><i class="fas fa-file-invoice-dollar"></i> Green Garden Tax Invoice</h3>
+            <h3><i class="fas fa-file-invoice-dollar"></i> Tax Invoice</h3>
             <button class="close-modal" id="closeModalBtn">&times;</button>
         </div>
-        <div id="modalInvoiceContent"></div>
-        <div style="padding: 20px 28px 28px; background: white; border-top: 1px solid #e0e8dc; text-align: center;">
-            <button class="btn-invoice" id="downloadModalPdfBtn" style="width: 100%; justify-content: center;">
+        <div id="invoiceContent"></div>
+        <div style="padding: 20px 28px; background: white; border-top: 1px solid #e0e8dc;">
+            <button class="btn-action" id="downloadPdfBtn" style="width: 100%; justify-content: center;">
                 <i class="fas fa-download"></i> Download PDF Invoice
             </button>
         </div>
     </div>
 </div>
 
-<div id="toastMsg" class="toast-msg"></div>
+<div id="toast" class="toast"></div>
 
 <script>
-    const CUSTOM_LOGO_URL = 'logo1.jpg';
-    let ordersList = [];
-    
+    const CUSTOM_LOGO = 'logo1.jpg';
+    let orders = [];
+    let currentOrder = null;
+
+    // Function to get icon based on product name
     function getProductIcon(name) {
         const n = name.toLowerCase();
         if (n.includes('rose')) return 'fa-rose';
@@ -569,131 +581,120 @@
         if (n.includes('pot')) return 'fa-flask';
         if (n.includes('plant')) return 'fa-tree';
         if (n.includes('money')) return 'fa-leaf';
-        if (n.includes('fertilizer')) return 'fa-droplet';
         if (n.includes('apple')) return 'fa-apple-alt';
+        if (n.includes('bitter')) return 'fa-seedling';
         return 'fa-seedling';
     }
-    
-    // Sample orders with full product details
-    const SAMPLE_ORDERS = [
-        {
-            id: "ORD10001",
-            date: "Mar 25, 2026",
-            customer: "Akash Verma",
-            phone: "+91-9876543210",
-            address: "Green Avenue, Chennai - 600001",
-            items: [
-                { 
-                    name: "Apple Plant Hybrid", 
-                    qty: 1, 
-                    price: 100, 
-                    total: 100,
-                    image: null,
-                    icon: "fa-apple-alt",
-                    category: "Fruit Plants"
-                },
-                { 
-                    name: "Bitter Gourd Seeds", 
-                    qty: 1, 
-                    price: 99, 
-                    total: 99,
-                    image: null,
-                    icon: "fa-seedling",
-                    category: "Vegetable Seeds"
-                },
-                { 
-                    name: "Morning Jewel Rose Seed", 
-                    qty: 2, 
-                    price: 158, 
-                    total: 316,
-                    image: null,
-                    icon: "fa-rose",
-                    category: "Flowering Plants"
-                }
-            ],
-            subtotal: 515,
-            gstAmount: 92.7,
-            grandTotal: 607.7,
-            paymentMethod: "UPI Payment",
-            status: "Delivered"
-        }
-    ];
-    
+
+    // Load orders from localStorage
     function loadOrders() {
         const stored = localStorage.getItem('green_garden_orders');
-        if (stored && JSON.parse(stored).length > 0) {
-            ordersList = JSON.parse(stored);
+        if (stored) {
+            try {
+                orders = JSON.parse(stored);
+                console.log('Orders loaded:', orders.length);
+            } catch(e) {
+                console.error('Error parsing orders:', e);
+                orders = [];
+            }
         } else {
-            ordersList = JSON.parse(JSON.stringify(SAMPLE_ORDERS));
-            saveOrdersToLocal();
+            // Demo orders for testing
+            orders = [
+                {
+                    id: "ORD10001",
+                    date: "Mar 25, 2026",
+                    customer: "Akash Verma",
+                    phone: "+91-9876543210",
+                    address: "Green Avenue, Chennai - 600001",
+                    items: [
+                        { name: "Apple Plant Hybrid", qty: 1, price: 100, total: 100, icon: "fa-apple-alt", category: "Fruit Plants" },
+                        { name: "Bitter Gourd Seeds", qty: 1, price: 99, total: 99, icon: "fa-seedling", category: "Vegetable Seeds" },
+                        { name: "Morning Jewel Rose Seed", qty: 2, price: 158, total: 316, icon: "fa-rose", category: "Flowering Plants" }
+                    ],
+                    subtotal: 515,
+                    gstAmount: 92.7,
+                    grandTotal: 607.7,
+                    paymentMethod: "UPI Payment",
+                    status: "Delivered"
+                },
+                {
+                    id: "ORD10002",
+                    date: "Mar 23, 2026",
+                    customer: "Priya Sharma",
+                    phone: "+91-8765432109",
+                    address: "Lake View Road, Bangalore - 560001",
+                    items: [
+                        { name: "Money Plant", qty: 2, price: 199, total: 398, icon: "fa-leaf", category: "Indoor Plants" },
+                        { name: "Ceramic Pot", qty: 2, price: 449, total: 898, icon: "fa-flask", category: "Planters" }
+                    ],
+                    subtotal: 1296,
+                    gstAmount: 233.28,
+                    grandTotal: 1529.28,
+                    paymentMethod: "Credit Card",
+                    status: "Shipped"
+                }
+            ];
+            saveOrders();
         }
     }
-    
-    function saveOrdersToLocal() {
-        localStorage.setItem('green_garden_orders', JSON.stringify(ordersList));
+
+    function saveOrders() {
+        localStorage.setItem('green_garden_orders', JSON.stringify(orders));
     }
-    
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-    }
-    
-    function renderOrdersList() {
-        const container = document.getElementById('ordersListContainer');
+
+    // Render all orders
+    function renderOrders() {
+        const container = document.getElementById('ordersContainer');
         
-        if (!ordersList.length) {
+        if (!orders || orders.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-seedling"></i>
-                    <h3 style="margin: 20px 0 8px;">No orders yet</h3>
-                    <p style="color: #5a7a4a;">Browse our collection and place your first order!</p>
-                    <button class="shop-now-btn-large" id="emptyShopBtn">
-                        <i class="fas fa-shopping-bag"></i> Shop Now
+                    <h3>No Orders Yet</h3>
+                    <p style="color: #7f9a6e; margin-bottom: 20px;">Start shopping and your orders will appear here!</p>
+                    <button class="shop-btn-large" id="emptyShopBtn">
+                        <i class="fas fa-shopping-bag"></i> Start Shopping
                     </button>
                 </div>
             `;
             const emptyBtn = document.getElementById('emptyShopBtn');
-            if (emptyBtn) emptyBtn.onclick = () => {
-                window.location.href = 'products.html';
-            };
+            if (emptyBtn) emptyBtn.onclick = () => window.location.href = 'products.html';
             return;
         }
-        
-        container.innerHTML = ordersList.map(order => {
+
+        container.innerHTML = orders.map(order => {
             const itemsHtml = order.items.map(item => {
-                const quantity = item.qty || item.quantity || 1;
-                
-                let productImageHtml = '';
-                if (item.image) {
-                    productImageHtml = `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'product-icon-fallback\'><i class=\'fas ${item.icon || 'fa-seedling'}\'></i></div>';">`;
-                } else {
-                    productImageHtml = `<div class="product-icon-fallback"><i class="fas ${item.icon || 'fa-seedling'}"></i></div>`;
-                }
-                
-                const itemTotal = item.total || (item.price * quantity);
+                const qty = item.qty || item.quantity || 1;
+                const total = item.total || (item.price * qty);
+                const icon = item.icon || getProductIcon(item.name);
+                const category = item.category || 'Garden Product';
                 
                 return `
-                    <tr style="border-bottom: 1px solid #ecf3e8;">
+                    <tr>
                         <td style="padding: 14px 8px;">
-                            <div class="product-name-cell">
-                                ${productImageHtml}
-                                <div class="product-detail-text">
-                                    <div class="product-name-text">${escapeHtml(item.name)}</div>
-                                    <div class="product-category"><i class="fas fa-tag"></i> ${escapeHtml(item.category || 'Garden Product')}</div>
+                            <div class="product-cell">
+                                <div class="product-img">
+                                    <i class="fas ${icon}"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4>${escapeHtml(item.name)}</h4>
+                                    <div class="product-cat">${escapeHtml(category)}</div>
                                 </div>
                             </div>
                         </td>
                         <td style="text-align: center; padding: 14px 8px;">
-                            <div class="quantity-badge">${quantity}</div>
-                            <div style="font-size: 11px; color: #7f9a6e;">unit(s)</div>
+                            <span class="quantity-badge">${qty}</span>
                         </td>
                         <td style="text-align: right; padding: 14px 8px;">₹${item.price.toLocaleString('en-IN')}</td>
-                        <td style="text-align: right; padding: 14px 8px; font-weight: 700; color: #2e7d32;">₹${itemTotal.toLocaleString('en-IN')}</td>
+                        <td style="text-align: right; padding: 14px 8px; font-weight: 700; color: #2e7d32;">₹${total.toLocaleString('en-IN')}</td>
                     </tr>
                 `;
             }).join('');
             
-            const statusClass = order.status === 'Delivered' ? 'delivered' : 'processing';
+            let statusClass = '';
+            if (order.status === 'Delivered') statusClass = 'status-delivered';
+            else if (order.status === 'Shipped') statusClass = 'status-shipped';
+            else statusClass = 'status-processing';
             
             return `
                 <div class="order-card">
@@ -702,39 +703,41 @@
                             <i class="fas fa-receipt"></i>
                             <span>${order.id}</span>
                         </div>
-                        <div class="order-date"><i class="far fa-calendar-alt"></i> ${order.date}</div>
-                        <div class="customer-chip"><i class="fas fa-user"></i> ${escapeHtml(order.customer)}</div>
-                        <div class="status-badge ${statusClass}"><i class="fas ${order.status === 'Delivered' ? 'fa-check-circle' : 'fa-clock'}"></i> ${order.status}</div>
+                        <div class="order-date">
+                            <i class="far fa-calendar-alt"></i>
+                            ${order.date}
+                        </div>
+                        <div class="customer-chip">
+                            <i class="fas fa-user"></i>
+                            ${escapeHtml(order.customer)}
+                        </div>
+                        <div class="status-badge ${statusClass}">
+                            <i class="fas ${order.status === 'Delivered' ? 'fa-check-circle' : 'fa-clock'}"></i>
+                            ${order.status}
+                        </div>
                     </div>
                     
                     <div class="items-table-wrapper">
-                        <table class="invoice-items-table">
+                        <table class="orders-table">
                             <thead>
-                                <tr>
-                                    <th style="width: 45%">Product Details</th>
-                                    <th style="text-align: center; width: 15%">Quantity</th>
-                                    <th style="text-align: right; width: 20%">Unit Price</th>
-                                    <th style="text-align: right; width: 20%">Amount</th>
-                                </tr>
+                                <tr><th>Product</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr>
                             </thead>
-                            <tbody>
-                                ${itemsHtml}
-                            </tbody>
+                            <tbody>${itemsHtml}</tbody>
                         </table>
                     </div>
                     
                     <div class="price-summary">
-                        <div class="summary-row"><span>Subtotal:</span><span>₹${order.subtotal.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-row"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-row total-row"><span>Grand Total:</span><span>₹${order.grandTotal.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-row"><span>Payment:</span><span style="color: #ff9800;">${order.paymentMethod}</span></div>
+                        <div class="summary-item"><span>Subtotal:</span><span>₹${order.subtotal.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-item"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-item summary-total"><span>Grand Total:</span><span>₹${order.grandTotal.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-item"><span>Payment:</span><span style="color: #ff9800;">${order.paymentMethod}</span></div>
                     </div>
                     
-                    <div class="card-footer-actions">
-                        <button class="btn-invoice" onclick="viewInvoiceModal('${order.id}')">
-                            <i class="fas fa-file-invoice"></i> View Invoice
+                    <div class="card-footer">
+                        <button class="btn-action" onclick="viewInvoice('${order.id}')">
+                            <i class="fas fa-eye"></i> View Invoice
                         </button>
-                        <button class="btn-invoice btn-buy-more" onclick="goToShop()">
+                        <button class="btn-action btn-buy" onclick="buyMore()">
                             <i class="fas fa-shopping-bag"></i> Buy More
                         </button>
                     </div>
@@ -742,51 +745,60 @@
             `;
         }).join('');
     }
-    
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    // Generate invoice HTML
     function generateInvoiceHTML(order) {
         const itemsRows = order.items.map(item => {
-            const quantity = item.qty || item.quantity || 1;
-            const itemTotal = item.total || (item.price * quantity);
+            const qty = item.qty || item.quantity || 1;
+            const total = item.total || (item.price * qty);
+            const icon = item.icon || getProductIcon(item.name);
+            const category = item.category || 'Garden Product';
+            
             return `
-                <tr style="border-bottom: 1px solid #e2f0e0;">
+                <tr style="border-bottom: 1px solid #e8f0e5;">
                     <td style="padding: 12px 8px;">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <div style="width: 48px; height: 48px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas ${item.icon || 'fa-seedling'}" style="color: #4caf50; font-size: 24px;"></i>
+                                <i class="fas ${icon}" style="color: #4caf50; font-size: 24px;"></i>
                             </div>
                             <div>
                                 <strong>${escapeHtml(item.name)}</strong>
-                                <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(item.category || 'Garden Product')}</div>
+                                <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(category)}</div>
                             </div>
                         </div>
                     </td>
-                    <td style="text-align: center; font-weight: 700;">${quantity}</td>
-                    <td style="text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
-                    <td style="text-align: right; font-weight: 600;">₹${itemTotal.toLocaleString('en-IN')}</td>
+                    <td style="text-align: center; padding: 12px 8px;">${qty}</td>
+                    <td style="text-align: right; padding: 12px 8px;">₹${item.price.toLocaleString('en-IN')}</td>
+                    <td style="text-align: right; padding: 12px 8px; font-weight: 600;">₹${total.toLocaleString('en-IN')}</td>
                 </tr>
             `;
         }).join('');
         
         return `
-            <div class="invoice-preview-paper">
-                <div style="text-align: center; margin-bottom: 28px; border-bottom: 3px solid #4caf50; padding-bottom: 20px;">
-                    <img src="${CUSTOM_LOGO_URL}" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 12px;" 
+            <div class="invoice-preview">
+                <div style="text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 3px solid #4caf50;">
+                    <img src="${CUSTOM_LOGO}" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 10px;" 
                          onerror="this.style.display='none'; this.parentElement.querySelector('.inv-logo-fallback').style.display='flex';">
-                    <div class="inv-logo-fallback" style="display: none; width: 70px; height: 70px; background: #4caf50; border-radius: 20px; margin: 0 auto 12px; align-items: center; justify-content: center;">
+                    <div class="inv-logo-fallback" style="display: none; width: 70px; height: 70px; background: #4caf50; border-radius: 20px; margin: 0 auto 10px; align-items: center; justify-content: center;">
                         <i class="fas fa-leaf" style="font-size: 34px; color: white;"></i>
                     </div>
                     <h1 style="font-size: 28px; color: #1e3a2f;">GREEN GARDEN</h1>
                     <p style="color: #5a7a4a;">Premium Organic Garden Store</p>
-                    <p style="font-size: 11px;">No.12, Katpadi Road, Vellore - 632006 | GST: 33ABCDE1234F1Z5</p>
+                    <p style="font-size: 11px; color: #8ba87a;">No.12, Katpadi Road, Vellore - 632006 | GST: 33ABCDE1234F1Z5</p>
                 </div>
                 
-                <div style="display: flex; justify-content: space-between; margin-bottom: 28px; gap: 20px;">
-                    <div style="background: #f9fff7; padding: 18px; border-radius: 16px; flex: 1;">
-                        <h3 style="color: #4caf50;">BILL TO</h3>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 24px; gap: 20px; flex-wrap: wrap;">
+                    <div style="background: #f9fff7; padding: 16px; border-radius: 16px; flex: 1;">
+                        <h3 style="color: #4caf50; margin-bottom: 10px;">BILL TO</h3>
                         <p><strong>${escapeHtml(order.customer)}</strong><br>${escapeHtml(order.phone)}<br>${escapeHtml(order.address)}</p>
                     </div>
-                    <div style="background: #f9fff7; padding: 18px; border-radius: 16px;">
-                        <h3 style="color: #4caf50;">INVOICE</h3>
+                    <div style="background: #f9fff7; padding: 16px; border-radius: 16px;">
+                        <h3 style="color: #4caf50; margin-bottom: 10px;">INVOICE</h3>
                         <p><strong>#${order.id}</strong><br>Date: ${order.date}</p>
                     </div>
                 </div>
@@ -794,10 +806,10 @@
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
                     <thead>
                         <tr style="background: #eef5ea;">
-                            <th style="padding: 12px; text-align: left;">Item Description</th>
-                            <th style="text-align: center;">Qty</th>
-                            <th style="text-align: right;">Unit Price</th>
-                            <th style="text-align: right;">Amount</th>
+                            <th style="padding: 12px; text-align: left;">Item</th>
+                            <th style="padding: 12px; text-align: center;">Qty</th>
+                            <th style="padding: 12px; text-align: right;">Price</th>
+                            <th style="padding: 12px; text-align: right;">Amount</th>
                         </tr>
                     </thead>
                     <tbody>${itemsRows}</tbody>
@@ -806,47 +818,48 @@
                 <div style="text-align: right; padding: 16px; background: #fefef8; border-radius: 20px;">
                     <p>Subtotal: ₹${order.subtotal.toLocaleString('en-IN')}</p>
                     <p>GST (18%): ₹${order.gstAmount.toLocaleString('en-IN')}</p>
-                    <h2 style="color: #2e7d32;">Grand Total: ₹${order.grandTotal.toLocaleString('en-IN')}</h2>
+                    <h2 style="color: #2e7d32; margin-top: 8px;">Grand Total: ₹${order.grandTotal.toLocaleString('en-IN')}</h2>
                     <p>Payment: ${order.paymentMethod}</p>
                 </div>
                 
                 <div style="text-align: center; font-size: 10px; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2f0e0; color: #8ba87a;">
-                    <p>🌱 Thank you for shopping at Green Garden! Grow with Nature 🌿</p>
+                    <p>🌱 Thank you for choosing Green Garden | Grow with Nature 🌿</p>
                     <p>For queries: greengarden2427@gmail.com | +91-9944217247</p>
                 </div>
             </div>
         `;
     }
-    
+
     function getOrderById(id) {
-        return ordersList.find(o => o.id === id);
+        return orders.find(o => o.id === id);
     }
-    
-    let currentOrder = null;
-    
-    window.viewInvoiceModal = function(orderId) {
+
+    window.viewInvoice = function(orderId) {
         const order = getOrderById(orderId);
         if (!order) {
             showToast("Order not found", true);
             return;
         }
         currentOrder = order;
-        document.getElementById('modalInvoiceContent').innerHTML = generateInvoiceHTML(order);
+        document.getElementById('invoiceContent').innerHTML = generateInvoiceHTML(order);
         document.getElementById('invoiceModal').classList.add('active');
     };
-    
-    window.downloadInvoiceDirect = async function(orderId) {
+
+    window.downloadInvoice = async function(orderId) {
         const order = getOrderById(orderId);
         if (!order) return;
+        
         const div = document.createElement('div');
         div.style.position = 'absolute';
         div.style.left = '-9999px';
+        div.style.top = '0';
         div.style.width = '800px';
+        div.style.background = 'white';
         div.innerHTML = generateInvoiceHTML(order);
         document.body.appendChild(div);
         
         try {
-            const canvas = await html2canvas(div, { scale: 2, backgroundColor: '#fff' });
+            const canvas = await html2canvas(div, { scale: 2, backgroundColor: '#ffffff' });
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
@@ -854,67 +867,67 @@
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
             pdf.save(`Invoice_${order.id}_GreenGarden.pdf`);
-            showToast(`✅ Invoice ${order.id} downloaded`);
-        } catch(e) { 
+            showToast(`✅ Invoice downloaded: ${order.id}`);
+        } catch(e) {
             showToast("Error generating PDF", true);
-            console.error(e);
+        } finally {
+            document.body.removeChild(div);
         }
-        finally { document.body.removeChild(div); }
     };
-    
-    // Global function to navigate to shop page
-    window.goToShop = function() {
+
+    window.buyMore = function() {
         window.location.href = 'products.html';
     };
-    
-    document.getElementById('downloadModalPdfBtn')?.addEventListener('click', async () => {
-        if (currentOrder) {
-            await downloadInvoiceDirect(currentOrder.id);
-        } else {
-            showToast("No invoice loaded", true);
-        }
-    });
-    
-    function closeModal() {
-        document.getElementById('invoiceModal').classList.remove('active');
-        currentOrder = null;
-    }
-    
-    function showToast(msg, isErr = false) {
-        const toast = document.getElementById('toastMsg');
-        toast.style.backgroundColor = isErr ? '#d32f2f' : '#2e7d32';
-        toast.innerText = msg;
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.style.background = isError ? '#d32f2f' : '#2e7d32';
+        toast.textContent = msg;
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
-    
-    // Navigation buttons - DIRECT CONNECTION to buy page
-    document.getElementById('backToShopBtn')?.addEventListener('click', function() {
+
+    // Event Listeners
+    document.getElementById('backToShopBtn')?.addEventListener('click', () => {
         window.location.href = 'products.html';
     });
     
-    document.getElementById('viewCartNavBtn')?.addEventListener('click', function() {
+    document.getElementById('viewCartBtn')?.addEventListener('click', () => {
         window.location.href = 'cart.html';
     });
     
-    document.getElementById('headerBuyBtn')?.addEventListener('click', function() {
+    document.getElementById('continueShoppingBtn')?.addEventListener('click', () => {
         window.location.href = 'products.html';
     });
     
-    document.getElementById('brandLogo')?.addEventListener('click', function() {
+    document.getElementById('brandLogo')?.addEventListener('click', () => {
         window.location.href = 'index.html';
     });
     
-    document.getElementById('closeModalBtn')?.addEventListener('click', closeModal);
+    document.getElementById('closeModalBtn')?.addEventListener('click', () => {
+        document.getElementById('invoiceModal').classList.remove('active');
+        currentOrder = null;
+    });
     
-    window.onclick = (e) => { 
-        if (e.target === document.getElementById('invoiceModal')) closeModal();
+    document.getElementById('downloadPdfBtn')?.addEventListener('click', async () => {
+        if (currentOrder) {
+            await downloadInvoice(currentOrder.id);
+        } else {
+            showToast("No invoice to download", true);
+        }
+    });
+    
+    window.onclick = (e) => {
+        if (e.target === document.getElementById('invoiceModal')) {
+            document.getElementById('invoiceModal').classList.remove('active');
+        }
     };
     
+    // Initialize logo
     function initLogo() {
         const logo = document.getElementById('siteLogo');
         if (logo) {
-            logo.src = CUSTOM_LOGO_URL;
+            logo.src = CUSTOM_LOGO;
             logo.onerror = function() {
                 this.style.display = 'none';
                 const fb = this.nextElementSibling;
@@ -923,35 +936,39 @@
         }
     }
     
-    // Check for new orders from checkout page
-    function checkForNewOrder() {
-        const newOrderFlag = localStorage.getItem('order_placed_flag');
-        if (newOrderFlag === 'true') {
+    // Check for new orders from checkout
+    function checkForNewOrders() {
+        const flag = localStorage.getItem('order_placed_flag');
+        if (flag === 'true') {
             localStorage.removeItem('order_placed_flag');
             loadOrders();
-            renderOrdersList();
-            showToast("✅ New order added!");
+            renderOrders();
+            showToast("✅ New order added successfully!");
         }
         
-        const pendingOrder = localStorage.getItem('pending_order_data');
-        if (pendingOrder) {
+        // Also check for pending order data
+        const pendingData = localStorage.getItem('order_placed_data');
+        if (pendingData) {
             try {
-                const orderData = JSON.parse(pendingOrder);
-                ordersList.unshift(orderData);
-                saveOrdersToLocal();
-                localStorage.removeItem('pending_order_data');
-                renderOrdersList();
-                showToast(`✅ Order ${orderData.id} placed successfully!`);
+                const newOrder = JSON.parse(pendingData);
+                const existingOrders = JSON.parse(localStorage.getItem('green_garden_orders')) || [];
+                existingOrders.unshift(newOrder);
+                localStorage.setItem('green_garden_orders', JSON.stringify(existingOrders));
+                localStorage.removeItem('order_placed_data');
+                loadOrders();
+                renderOrders();
+                showToast(`✅ Order ${newOrder.id} placed!`);
             } catch(e) {}
         }
     }
     
+    // Initialize
     initLogo();
     loadOrders();
-    checkForNewOrder();
-    renderOrdersList();
+    checkForNewOrders();
+    renderOrders();
     
-    console.log("Orders page ready - Connected to products.html (buy page)");
+    console.log("Orders page ready - Total orders:", orders.length);
 </script>
 </body>
 </html>
