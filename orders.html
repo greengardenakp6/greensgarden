@@ -255,20 +255,10 @@
             gap: 6px;
         }
 
-        .status-delivered {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-processing {
-            background: #fed7aa;
-            color: #9a3412;
-        }
-
-        .status-shipped {
-            background: #dbeafe;
-            color: #1e40af;
-        }
+        .status-delivered { background: #d1fae5; color: #065f46; }
+        .status-processing { background: #fed7aa; color: #9a3412; }
+        .status-shipped { background: #dbeafe; color: #1e40af; }
+        .status-paid { background: #d1fae5; color: #065f46; }
 
         /* Items Table */
         .items-table-wrapper {
@@ -311,6 +301,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .product-img i {
@@ -324,10 +321,7 @@
             margin-bottom: 4px;
         }
 
-        .product-cat {
-            font-size: 11px;
-            color: #7f9a6e;
-        }
+        .product-cat { font-size: 11px; color: #7f9a6e; }
 
         .quantity-badge {
             background: #eef5ea;
@@ -395,9 +389,7 @@
             box-shadow: 0 6px 16px rgba(76,175,80,0.4);
         }
 
-        .btn-buy {
-            background: linear-gradient(135deg, #ff9800, #f57c00);
-        }
+        .btn-buy { background: linear-gradient(135deg, #ff9800, #f57c00); }
 
         /* Modal */
         .invoice-modal {
@@ -414,9 +406,7 @@
             align-items: center;
         }
 
-        .invoice-modal.active {
-            display: flex;
-        }
+        .invoice-modal.active { display: flex; }
 
         .modal-card {
             background: white;
@@ -452,9 +442,7 @@
             transition: 0.2s;
         }
 
-        .close-modal:hover {
-            background: #ff5722;
-        }
+        .close-modal:hover { background: #ff5722; }
 
         .empty-state {
             text-align: center;
@@ -505,9 +493,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
 
         .invoice-preview {
             padding: 32px;
@@ -573,7 +559,6 @@
     let orders = [];
     let currentOrder = null;
 
-    // Function to get icon based on product name
     function getProductIcon(name) {
         const n = name.toLowerCase();
         if (n.includes('rose')) return 'fa-rose';
@@ -582,59 +567,17 @@
         if (n.includes('plant')) return 'fa-tree';
         if (n.includes('money')) return 'fa-leaf';
         if (n.includes('apple')) return 'fa-apple-alt';
-        if (n.includes('bitter')) return 'fa-seedling';
         return 'fa-seedling';
     }
 
-    // Load orders from localStorage
     function loadOrders() {
         const stored = localStorage.getItem('green_garden_orders');
         if (stored) {
             try {
                 orders = JSON.parse(stored);
-                console.log('Orders loaded:', orders.length);
             } catch(e) {
-                console.error('Error parsing orders:', e);
                 orders = [];
             }
-        } else {
-            // Demo orders for testing
-            orders = [
-                {
-                    id: "ORD10001",
-                    date: "Mar 25, 2026",
-                    customer: "Akash Verma",
-                    phone: "+91-9876543210",
-                    address: "Green Avenue, Chennai - 600001",
-                    items: [
-                        { name: "Apple Plant Hybrid", qty: 1, price: 100, total: 100, icon: "fa-apple-alt", category: "Fruit Plants" },
-                        { name: "Bitter Gourd Seeds", qty: 1, price: 99, total: 99, icon: "fa-seedling", category: "Vegetable Seeds" },
-                        { name: "Morning Jewel Rose Seed", qty: 2, price: 158, total: 316, icon: "fa-rose", category: "Flowering Plants" }
-                    ],
-                    subtotal: 515,
-                    gstAmount: 92.7,
-                    grandTotal: 607.7,
-                    paymentMethod: "UPI Payment",
-                    status: "Delivered"
-                },
-                {
-                    id: "ORD10002",
-                    date: "Mar 23, 2026",
-                    customer: "Priya Sharma",
-                    phone: "+91-8765432109",
-                    address: "Lake View Road, Bangalore - 560001",
-                    items: [
-                        { name: "Money Plant", qty: 2, price: 199, total: 398, icon: "fa-leaf", category: "Indoor Plants" },
-                        { name: "Ceramic Pot", qty: 2, price: 449, total: 898, icon: "fa-flask", category: "Planters" }
-                    ],
-                    subtotal: 1296,
-                    gstAmount: 233.28,
-                    grandTotal: 1529.28,
-                    paymentMethod: "Credit Card",
-                    status: "Shipped"
-                }
-            ];
-            saveOrders();
         }
     }
 
@@ -642,7 +585,6 @@
         localStorage.setItem('green_garden_orders', JSON.stringify(orders));
     }
 
-    // Render all orders
     function renderOrders() {
         const container = document.getElementById('ordersContainer');
         
@@ -663,19 +605,50 @@
         }
 
         container.innerHTML = orders.map(order => {
+            // --- DATA NORMALIZATION (Crucial Fix) ---
+            // Handle ID format
+            const id = order.orderId || order.id || 'N/A';
+            
+            // Handle Customer format (Checkout saves object, Orders expects string)
+            const customerName = order.customer?.name || order.customer || 'Guest';
+            const customerPhone = order.customer?.phone || order.phone || 'N/A';
+            const customerAddress = order.customer?.address || order.address || 'N/A';
+            
+            // Handle Payment format
+            const paymentMethod = order.payment || order.paymentMethod || 'N/A';
+            
+            // Handle Totals format
+            const grandTotal = order.total || order.grandTotal || 0;
+            const subtotal = order.subtotal || 0;
+            const platformFee = order.platformFee || 0;
+            const codFee = order.codFee || 0;
+            const couponDiscount = order.couponDiscount || 0;
+            
+            // Handle Date format (Checkout saves ISO string)
+            let dateStr = order.date;
+            if (order.date && order.date.includes('T')) {
+                 const d = new Date(order.date);
+                 dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+
+            // Items rendering
             const itemsHtml = order.items.map(item => {
                 const qty = item.qty || item.quantity || 1;
                 const total = item.total || (item.price * qty);
                 const icon = item.icon || getProductIcon(item.name);
                 const category = item.category || 'Garden Product';
                 
+                // Use image if available (from checkout), otherwise icon
+                const imgHtml = item.image ? 
+                    `<img src="${item.image}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                     <i class="fas ${icon}" style="display:none;"></i>` 
+                     : `<i class="fas ${icon}"></i>`;
+
                 return `
                     <tr>
                         <td style="padding: 14px 8px;">
                             <div class="product-cell">
-                                <div class="product-img">
-                                    <i class="fas ${icon}"></i>
-                                </div>
+                                <div class="product-img">${imgHtml}</div>
                                 <div class="product-info">
                                     <h4>${escapeHtml(item.name)}</h4>
                                     <div class="product-cat">${escapeHtml(category)}</div>
@@ -691,29 +664,37 @@
                 `;
             }).join('');
             
-            let statusClass = '';
-            if (order.status === 'Delivered') statusClass = 'status-delivered';
-            else if (order.status === 'Shipped') statusClass = 'status-shipped';
-            else statusClass = 'status-processing';
+            // Status logic
+            let statusClass = 'status-processing';
+            let statusIcon = 'fa-clock';
+            const status = order.status || 'Processing';
+            
+            if (status === 'Delivered' || status === 'paid') {
+                statusClass = 'status-delivered'; 
+                statusIcon = 'fa-check-circle';
+            } else if (status === 'Shipped') {
+                statusClass = 'status-shipped';
+                statusIcon = 'fa-truck';
+            }
             
             return `
                 <div class="order-card">
                     <div class="order-header">
                         <div class="order-id-badge">
                             <i class="fas fa-receipt"></i>
-                            <span>${order.id}</span>
+                            <span>${id}</span>
                         </div>
                         <div class="order-date">
                             <i class="far fa-calendar-alt"></i>
-                            ${order.date}
+                            ${dateStr}
                         </div>
                         <div class="customer-chip">
                             <i class="fas fa-user"></i>
-                            ${escapeHtml(order.customer)}
+                            ${escapeHtml(customerName)}
                         </div>
                         <div class="status-badge ${statusClass}">
-                            <i class="fas ${order.status === 'Delivered' ? 'fa-check-circle' : 'fa-clock'}"></i>
-                            ${order.status}
+                            <i class="fas ${statusIcon}"></i>
+                            ${status}
                         </div>
                     </div>
                     
@@ -727,14 +708,16 @@
                     </div>
                     
                     <div class="price-summary">
-                        <div class="summary-item"><span>Subtotal:</span><span>₹${order.subtotal.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-item"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-item summary-total"><span>Grand Total:</span><span>₹${order.grandTotal.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-item"><span>Payment:</span><span style="color: #ff9800;">${order.paymentMethod}</span></div>
+                        <div class="summary-item"><span>Subtotal:</span><span>₹${subtotal.toLocaleString('en-IN')}</span></div>
+                        ${platformFee > 0 ? `<div class="summary-item"><span>Platform Fee:</span><span>₹${platformFee}</span></div>` : ''}
+                        ${codFee > 0 ? `<div class="summary-item"><span>COD Fee:</span><span>₹${codFee}</span></div>` : ''}
+                        ${couponDiscount > 0 ? `<div class="summary-item" style="color:#10b981;"><span>Discount:</span><span>-₹${couponDiscount}</span></div>` : ''}
+                        <div class="summary-item summary-total"><span>Grand Total:</span><span>₹${grandTotal.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-item"><span>Payment:</span><span style="color: #ff9800;">${paymentMethod.toUpperCase()}</span></div>
                     </div>
                     
                     <div class="card-footer">
-                        <button class="btn-action" onclick="viewInvoice('${order.id}')">
+                        <button class="btn-action" onclick="viewInvoice('${id}')">
                             <i class="fas fa-eye"></i> View Invoice
                         </button>
                         <button class="btn-action btn-buy" onclick="buyMore()">
@@ -748,16 +731,36 @@
 
     function escapeHtml(str) {
         if (!str) return '';
-        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+        return String(str).replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    // Generate invoice HTML
+    function getOrderById(id) {
+        return orders.find(o => (o.orderId || o.id) === id);
+    }
+
     function generateInvoiceHTML(order) {
+        // Normalize data for invoice
+        const id = order.orderId || order.id;
+        const customerName = order.customer?.name || order.customer || 'Guest';
+        const customerPhone = order.customer?.phone || order.phone || 'N/A';
+        const customerAddress = order.customer?.address || order.address || 'N/A';
+        const paymentMethod = order.payment || order.paymentMethod || 'N/A';
+        const grandTotal = order.total || order.grandTotal || 0;
+        const subtotal = order.subtotal || 0;
+        const platformFee = order.platformFee || 0;
+        const codFee = order.codFee || 0;
+        const couponDiscount = order.couponDiscount || 0;
+        
+        let dateStr = order.date;
+        if (order.date && order.date.includes('T')) {
+             const d = new Date(order.date);
+             dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
         const itemsRows = order.items.map(item => {
             const qty = item.qty || item.quantity || 1;
             const total = item.total || (item.price * qty);
             const icon = item.icon || getProductIcon(item.name);
-            const category = item.category || 'Garden Product';
             
             return `
                 <tr style="border-bottom: 1px solid #e8f0e5;">
@@ -768,7 +771,6 @@
                             </div>
                             <div>
                                 <strong>${escapeHtml(item.name)}</strong>
-                                <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(category)}</div>
                             </div>
                         </div>
                     </td>
@@ -783,23 +785,19 @@
             <div class="invoice-preview">
                 <div style="text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 3px solid #4caf50;">
                     <img src="${CUSTOM_LOGO}" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 10px;" 
-                         onerror="this.style.display='none'; this.parentElement.querySelector('.inv-logo-fallback').style.display='flex';">
-                    <div class="inv-logo-fallback" style="display: none; width: 70px; height: 70px; background: #4caf50; border-radius: 20px; margin: 0 auto 10px; align-items: center; justify-content: center;">
-                        <i class="fas fa-leaf" style="font-size: 34px; color: white;"></i>
-                    </div>
+                         onerror="this.style.display='none';">
                     <h1 style="font-size: 28px; color: #1e3a2f;">GREEN GARDEN</h1>
                     <p style="color: #5a7a4a;">Premium Organic Garden Store</p>
-                    <p style="font-size: 11px; color: #8ba87a;">No.12, Katpadi Road, Vellore - 632006 | GST: 33ABCDE1234F1Z5</p>
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; margin-bottom: 24px; gap: 20px; flex-wrap: wrap;">
                     <div style="background: #f9fff7; padding: 16px; border-radius: 16px; flex: 1;">
                         <h3 style="color: #4caf50; margin-bottom: 10px;">BILL TO</h3>
-                        <p><strong>${escapeHtml(order.customer)}</strong><br>${escapeHtml(order.phone)}<br>${escapeHtml(order.address)}</p>
+                        <p><strong>${escapeHtml(customerName)}</strong><br>${escapeHtml(customerPhone)}<br>${escapeHtml(customerAddress)}</p>
                     </div>
                     <div style="background: #f9fff7; padding: 16px; border-radius: 16px;">
                         <h3 style="color: #4caf50; margin-bottom: 10px;">INVOICE</h3>
-                        <p><strong>#${order.id}</strong><br>Date: ${order.date}</p>
+                        <p><strong>#${id}</strong><br>Date: ${dateStr}</p>
                     </div>
                 </div>
                 
@@ -816,22 +814,19 @@
                 </table>
                 
                 <div style="text-align: right; padding: 16px; background: #fefef8; border-radius: 20px;">
-                    <p>Subtotal: ₹${order.subtotal.toLocaleString('en-IN')}</p>
-                    <p>GST (18%): ₹${order.gstAmount.toLocaleString('en-IN')}</p>
-                    <h2 style="color: #2e7d32; margin-top: 8px;">Grand Total: ₹${order.grandTotal.toLocaleString('en-IN')}</h2>
-                    <p>Payment: ${order.paymentMethod}</p>
+                    <p>Subtotal: ₹${subtotal.toLocaleString('en-IN')}</p>
+                    ${platformFee > 0 ? `<p>Platform Fee: ₹${platformFee}</p>` : ''}
+                    ${codFee > 0 ? `<p>COD Fee: ₹${codFee}</p>` : ''}
+                    ${couponDiscount > 0 ? `<p style="color:#10b981;">Discount: -₹${couponDiscount}</p>` : ''}
+                    <h2 style="color: #2e7d32; margin-top: 8px;">Grand Total: ₹${grandTotal.toLocaleString('en-IN')}</h2>
+                    <p>Payment: ${paymentMethod.toUpperCase()}</p>
                 </div>
                 
                 <div style="text-align: center; font-size: 10px; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2f0e0; color: #8ba87a;">
                     <p>🌱 Thank you for choosing Green Garden | Grow with Nature 🌿</p>
-                    <p>For queries: greengarden2427@gmail.com | +91-9944217247</p>
                 </div>
             </div>
         `;
-    }
-
-    function getOrderById(id) {
-        return orders.find(o => o.id === id);
     }
 
     window.viewInvoice = function(orderId) {
@@ -866,8 +861,8 @@
             const imgWidth = 190;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-            pdf.save(`Invoice_${order.id}_GreenGarden.pdf`);
-            showToast(`✅ Invoice downloaded: ${order.id}`);
+            pdf.save(`Invoice_${order.orderId || order.id}_GreenGarden.pdf`);
+            showToast(`✅ Invoice downloaded`);
         } catch(e) {
             showToast("Error generating PDF", true);
         } finally {
@@ -875,9 +870,7 @@
         }
     };
 
-    window.buyMore = function() {
-        window.location.href = 'products.html';
-    };
+    window.buyMore = function() { window.location.href = 'products.html'; };
 
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toast');
@@ -888,21 +881,10 @@
     }
 
     // Event Listeners
-    document.getElementById('backToShopBtn')?.addEventListener('click', () => {
-        window.location.href = 'products.html';
-    });
-    
-    document.getElementById('viewCartBtn')?.addEventListener('click', () => {
-        window.location.href = 'cart.html';
-    });
-    
-    document.getElementById('continueShoppingBtn')?.addEventListener('click', () => {
-        window.location.href = 'products.html';
-    });
-    
-    document.getElementById('brandLogo')?.addEventListener('click', () => {
-        window.location.href = 'index.html';
-    });
+    document.getElementById('backToShopBtn')?.addEventListener('click', () => window.location.href = 'products.html');
+    document.getElementById('viewCartBtn')?.addEventListener('click', () => window.location.href = 'cart.html');
+    document.getElementById('continueShoppingBtn')?.addEventListener('click', () => window.location.href = 'products.html');
+    document.getElementById('brandLogo')?.addEventListener('click', () => window.location.href = 'index.html');
     
     document.getElementById('closeModalBtn')?.addEventListener('click', () => {
         document.getElementById('invoiceModal').classList.remove('active');
@@ -910,11 +892,7 @@
     });
     
     document.getElementById('downloadPdfBtn')?.addEventListener('click', async () => {
-        if (currentOrder) {
-            await downloadInvoice(currentOrder.id);
-        } else {
-            showToast("No invoice to download", true);
-        }
+        if (currentOrder) await downloadInvoice(currentOrder.orderId || currentOrder.id);
     });
     
     window.onclick = (e) => {
@@ -923,52 +901,9 @@
         }
     };
     
-    // Initialize logo
-    function initLogo() {
-        const logo = document.getElementById('siteLogo');
-        if (logo) {
-            logo.src = CUSTOM_LOGO;
-            logo.onerror = function() {
-                this.style.display = 'none';
-                const fb = this.nextElementSibling;
-                if (fb) fb.style.display = 'flex';
-            };
-        }
-    }
-    
-    // Check for new orders from checkout
-    function checkForNewOrders() {
-        const flag = localStorage.getItem('order_placed_flag');
-        if (flag === 'true') {
-            localStorage.removeItem('order_placed_flag');
-            loadOrders();
-            renderOrders();
-            showToast("✅ New order added successfully!");
-        }
-        
-        // Also check for pending order data
-        const pendingData = localStorage.getItem('order_placed_data');
-        if (pendingData) {
-            try {
-                const newOrder = JSON.parse(pendingData);
-                const existingOrders = JSON.parse(localStorage.getItem('green_garden_orders')) || [];
-                existingOrders.unshift(newOrder);
-                localStorage.setItem('green_garden_orders', JSON.stringify(existingOrders));
-                localStorage.removeItem('order_placed_data');
-                loadOrders();
-                renderOrders();
-                showToast(`✅ Order ${newOrder.id} placed!`);
-            } catch(e) {}
-        }
-    }
-    
     // Initialize
-    initLogo();
     loadOrders();
-    checkForNewOrders();
     renderOrders();
-    
-    console.log("Orders page ready - Total orders:", orders.length);
 </script>
 </body>
 </html>
