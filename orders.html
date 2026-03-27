@@ -22,7 +22,6 @@
             overflow-x: hidden;
         }
 
-        /* Premium Navbar */
         .navbar-green {
             background: linear-gradient(135deg, #1a3a2a 0%, #0e2a1a 100%);
             padding: 12px 48px;
@@ -111,6 +110,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none;
         }
 
         .nav-btn:hover {
@@ -119,7 +119,6 @@
             transform: translateY(-2px);
         }
 
-        /* Main Container */
         .orders-container {
             max-width: 1280px;
             margin: 40px auto;
@@ -163,7 +162,6 @@
             box-shadow: 0 8px 20px rgba(255,152,0,0.4);
         }
 
-        /* Orders Grid */
         .orders-grid {
             display: flex;
             flex-direction: column;
@@ -240,7 +238,25 @@
             gap: 8px;
         }
 
-        /* Product Items Display - FULL DETAILS */
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-badge.delivered {
+            background: #c8e6c9;
+            color: #1b5e20;
+        }
+
+        .status-badge.processing {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
         .items-table-wrapper {
             padding: 20px 28px;
             overflow-x: auto;
@@ -371,7 +387,6 @@
             background: linear-gradient(135deg, #ff9800, #f57c00);
         }
 
-        /* Modal */
         .invoice-modal {
             display: none;
             position: fixed;
@@ -486,11 +501,15 @@
             padding: 32px;
         }
         
-        .invoice-logo {
-            width: 70px;
-            height: 70px;
-            border-radius: 20px;
-            object-fit: cover;
+        .quantity-badge {
+            background: #eef5ea;
+            padding: 8px 14px;
+            border-radius: 32px;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
         }
     </style>
 </head>
@@ -540,112 +559,72 @@
 <div id="toastMsg" class="toast-msg"></div>
 
 <script>
-    // ==============================================
-    // GREEN GARDEN ORDERS SYSTEM
-    // Shows FULL PRODUCT DETAILS from actual purchases
-    // Connected to products.html (buy page)
-    // ==============================================
-    
     const CUSTOM_LOGO_URL = 'logo1.jpg';
     let ordersList = [];
     
-    // Sample products with full details for demo
-    const SAMPLE_ORDERS = [
-        {
-            id: "INV10001",
-            date: "Mar 25, 2026",
-            customer: "Akash Verma",
-            phone: "+91-9840012345",
-            address: "42, Green Colony, Anna Nagar, Chennai - 600040",
-            items: [
-                { 
-                    name: "Desert Rose Bonsai Plant", 
-                    qty: 1, 
-                    price: 1299, 
-                    total: 1299,
-                    image: null,
-                    icon: "fa-tree",
-                    category: "Bonsai Plants"
-                },
-                { 
-                    name: "Premium Ceramic Pot (Large)", 
-                    qty: 2, 
-                    price: 599, 
-                    total: 1198,
-                    image: null,
-                    icon: "fa-flask",
-                    category: "Planters"
-                }
-            ],
-            subtotal: 2497,
-            gstAmount: 449.46,
-            grandTotal: 2946.46,
-            paymentMethod: "UPI Payment",
-            status: "Delivered"
-        },
-        {
-            id: "INV10002",
-            date: "Mar 22, 2026",
-            customer: "Meera Krishnamoorthy",
-            phone: "+91-9876543210",
-            address: "15, Lake View Road, T. Nagar, Chennai - 600017",
-            items: [
-                { 
-                    name: "Money Plant (Golden Pothos)", 
-                    qty: 2, 
-                    price: 199, 
-                    total: 398,
-                    image: null,
-                    icon: "fa-leaf",
-                    category: "Indoor Plants"
-                },
-                { 
-                    name: "Organic Neem Fertilizer (1kg)", 
-                    qty: 1, 
-                    price: 299, 
-                    total: 299,
-                    image: null,
-                    icon: "fa-droplet",
-                    category: "Fertilizers"
-                },
-                { 
-                    name: "Self-Watering Pot (Medium)", 
-                    qty: 1, 
-                    price: 449, 
-                    total: 449,
-                    image: null,
-                    icon: "fa-flask",
-                    category: "Planters"
-                }
-            ],
-            subtotal: 1146,
-            gstAmount: 206.28,
-            grandTotal: 1352.28,
-            paymentMethod: "Credit Card",
-            status: "Shipped"
-        }
-    ];
-    
-    // Helper to get icon
     function getProductIcon(name) {
         const n = name.toLowerCase();
-        if (n.includes('rose') || n.includes('bonsai')) return 'fa-rose';
+        if (n.includes('rose')) return 'fa-rose';
         if (n.includes('seed')) return 'fa-seedling';
         if (n.includes('pot')) return 'fa-flask';
         if (n.includes('plant')) return 'fa-tree';
         if (n.includes('money')) return 'fa-leaf';
         if (n.includes('fertilizer')) return 'fa-droplet';
+        if (n.includes('apple')) return 'fa-apple-alt';
         return 'fa-seedling';
     }
     
-    // Load orders from localStorage (actual purchased orders)
+    // Sample orders with full product details
+    const SAMPLE_ORDERS = [
+        {
+            id: "ORD10001",
+            date: "Mar 25, 2026",
+            customer: "Akash Verma",
+            phone: "+91-9876543210",
+            address: "Green Avenue, Chennai - 600001",
+            items: [
+                { 
+                    name: "Apple Plant Hybrid", 
+                    qty: 1, 
+                    price: 100, 
+                    total: 100,
+                    image: null,
+                    icon: "fa-apple-alt",
+                    category: "Fruit Plants"
+                },
+                { 
+                    name: "Bitter Gourd Seeds", 
+                    qty: 1, 
+                    price: 99, 
+                    total: 99,
+                    image: null,
+                    icon: "fa-seedling",
+                    category: "Vegetable Seeds"
+                },
+                { 
+                    name: "Morning Jewel Rose Seed", 
+                    qty: 2, 
+                    price: 158, 
+                    total: 316,
+                    image: null,
+                    icon: "fa-rose",
+                    category: "Flowering Plants"
+                }
+            ],
+            subtotal: 515,
+            gstAmount: 92.7,
+            grandTotal: 607.7,
+            paymentMethod: "UPI Payment",
+            status: "Delivered"
+        }
+    ];
+    
     function loadOrders() {
         const stored = localStorage.getItem('green_garden_orders');
         if (stored && JSON.parse(stored).length > 0) {
             ordersList = JSON.parse(stored);
         } else {
-            // Add sample orders for demo
-            ordersList = [...SAMPLE_ORDERS];
+            ordersList = JSON.parse(JSON.stringify(SAMPLE_ORDERS));
             saveOrdersToLocal();
         }
     }
@@ -654,109 +633,11 @@
         localStorage.setItem('green_garden_orders', JSON.stringify(ordersList));
     }
     
-    // Function to add order from checkout (called when user buys products)
-    window.addOrderFromPurchase = function(orderData) {
-        if (!orderData || !orderData.items || orderData.items.length === 0) return;
-        
-        const newOrder = {
-            id: orderData.id || `INV${Date.now().toString().slice(-6)}`,
-            date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-            customer: orderData.customer || "Valued Customer",
-            phone: orderData.phone || "+91-XXXXXXXXXX",
-            address: orderData.address || "Chennai, Tamil Nadu",
-            items: orderData.items.map(item => ({
-                name: item.name,
-                qty: item.quantity || 1,
-                price: item.price,
-                total: (item.price * (item.quantity || 1)),
-                image: item.image || null,
-                icon: item.icon || getProductIcon(item.name),
-                category: item.category || "Garden Product"
-            })),
-            subtotal: orderData.subtotal,
-            gstAmount: orderData.gstAmount || (orderData.subtotal * 0.18),
-            grandTotal: orderData.grandTotal || (orderData.subtotal * 1.18),
-            paymentMethod: orderData.paymentMethod || "Online Payment",
-            status: "Processing"
-        };
-        
-        ordersList.unshift(newOrder);
-        saveOrdersToLocal();
-        renderOrdersList();
-        showToast(`✅ Order ${newOrder.id} placed! Check product details below.`);
-    };
-    
-    // Listen for orders from checkout page via localStorage
-    function checkForNewOrder() {
-        const pendingOrderJson = localStorage.getItem('pending_order_from_checkout');
-        if (pendingOrderJson) {
-            try {
-                const orderData = JSON.parse(pendingOrderJson);
-                addOrderFromPurchase(orderData);
-                localStorage.removeItem('pending_order_from_checkout');
-            } catch(e) {}
-        }
-    }
-    
-    // Also listen for cart completion (when user clicks place order)
-    function syncOrderFromCart() {
-        const cartData = localStorage.getItem('cart');
-        const checkoutComplete = localStorage.getItem('checkout_complete');
-        
-        if (checkoutComplete === 'true' && cartData) {
-            const cartItems = JSON.parse(cartData);
-            if (cartItems && cartItems.length > 0) {
-                const customerName = localStorage.getItem('checkout_name') || "Valued Customer";
-                const customerPhone = localStorage.getItem('checkout_phone') || "+91-XXXXXXXXXX";
-                const customerAddress = localStorage.getItem('checkout_address') || "Chennai, Tamil Nadu";
-                const paymentMethod = localStorage.getItem('checkout_payment') || "Online Payment";
-                
-                let subtotal = 0;
-                const items = cartItems.map(item => {
-                    const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
-                    const qty = item.quantity || 1;
-                    subtotal += price * qty;
-                    return {
-                        name: item.name,
-                        quantity: qty,
-                        price: price,
-                        image: item.image || null,
-                        icon: item.icon || getProductIcon(item.name),
-                        category: item.category || "Plant Product"
-                    };
-                });
-                
-                const newOrder = {
-                    id: `INV${Date.now().toString().slice(-6)}`,
-                    customer: customerName,
-                    phone: customerPhone,
-                    address: customerAddress,
-                    items: items,
-                    subtotal: subtotal,
-                    gstAmount: subtotal * 0.18,
-                    grandTotal: subtotal * 1.18,
-                    paymentMethod: paymentMethod
-                };
-                
-                addOrderFromPurchase(newOrder);
-                
-                // Clear cart and checkout flags
-                localStorage.setItem('cart', JSON.stringify([]));
-                localStorage.removeItem('checkout_complete');
-                localStorage.removeItem('checkout_name');
-                localStorage.removeItem('checkout_phone');
-                localStorage.removeItem('checkout_address');
-                localStorage.removeItem('checkout_payment');
-            }
-        }
-    }
-    
     function escapeHtml(str) {
         if (!str) return '';
         return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
     
-    // Render orders with FULL PRODUCT DETAILS
     function renderOrdersList() {
         const container = document.getElementById('ordersListContainer');
         
@@ -772,14 +653,16 @@
                 </div>
             `;
             const emptyBtn = document.getElementById('emptyShopBtn');
-            if (emptyBtn) emptyBtn.onclick = () => window.location.href = 'products.html';
+            if (emptyBtn) emptyBtn.onclick = () => {
+                window.location.href = 'products.html';
+            };
             return;
         }
         
         container.innerHTML = ordersList.map(order => {
-            // Build product rows with FULL DETAILS including images
             const itemsHtml = order.items.map(item => {
-                // Product image display
+                const quantity = item.qty || item.quantity || 1;
+                
                 let productImageHtml = '';
                 if (item.image) {
                     productImageHtml = `<img src="${item.image}" class="product-img-thumb" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'product-icon-fallback\'><i class=\'fas ${item.icon || 'fa-seedling'}\'></i></div>';">`;
@@ -787,26 +670,30 @@
                     productImageHtml = `<div class="product-icon-fallback"><i class="fas ${item.icon || 'fa-seedling'}"></i></div>`;
                 }
                 
+                const itemTotal = item.total || (item.price * quantity);
+                
                 return `
-                    <tr>
+                    <tr style="border-bottom: 1px solid #ecf3e8;">
                         <td style="padding: 14px 8px;">
                             <div class="product-name-cell">
                                 ${productImageHtml}
                                 <div class="product-detail-text">
                                     <div class="product-name-text">${escapeHtml(item.name)}</div>
-                                    <div class="product-category"><i class="fas fa-tag"></i> ${escapeHtml(item.category || 'Premium Plant')}</div>
+                                    <div class="product-category"><i class="fas fa-tag"></i> ${escapeHtml(item.category || 'Garden Product')}</div>
                                 </div>
                             </div>
                         </td>
                         <td style="text-align: center; padding: 14px 8px;">
-                            <span style="font-weight: 600;">${item.qty}</span>
-                            <div style="font-size: 11px; color: #7f9a6e;">pcs</div>
+                            <div class="quantity-badge">${quantity}</div>
+                            <div style="font-size: 11px; color: #7f9a6e;">unit(s)</div>
                         </td>
                         <td style="text-align: right; padding: 14px 8px;">₹${item.price.toLocaleString('en-IN')}</td>
-                        <td style="text-align: right; padding: 14px 8px; font-weight: 700; color: #2e7d32;">₹${item.total.toLocaleString('en-IN')}</td>
+                        <td style="text-align: right; padding: 14px 8px; font-weight: 700; color: #2e7d32;">₹${itemTotal.toLocaleString('en-IN')}</td>
                     </tr>
                 `;
             }).join('');
+            
+            const statusClass = order.status === 'Delivered' ? 'delivered' : 'processing';
             
             return `
                 <div class="order-card">
@@ -817,16 +704,17 @@
                         </div>
                         <div class="order-date"><i class="far fa-calendar-alt"></i> ${order.date}</div>
                         <div class="customer-chip"><i class="fas fa-user"></i> ${escapeHtml(order.customer)}</div>
+                        <div class="status-badge ${statusClass}"><i class="fas ${order.status === 'Delivered' ? 'fa-check-circle' : 'fa-clock'}"></i> ${order.status}</div>
                     </div>
                     
                     <div class="items-table-wrapper">
                         <table class="invoice-items-table">
                             <thead>
                                 <tr>
-                                    <th style="width: 50%">Product Details</th>
+                                    <th style="width: 45%">Product Details</th>
                                     <th style="text-align: center; width: 15%">Quantity</th>
-                                    <th style="text-align: right; width: 15%">Unit Price</th>
-                                    <th style="text-align: right; width: 20%">Total Amount</th>
+                                    <th style="text-align: right; width: 20%">Unit Price</th>
+                                    <th style="text-align: right; width: 20%">Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -837,7 +725,7 @@
                     
                     <div class="price-summary">
                         <div class="summary-row"><span>Subtotal:</span><span>₹${order.subtotal.toLocaleString('en-IN')}</span></div>
-                        <div class="summary-row gst-breakdown"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
+                        <div class="summary-row"><span>GST (18%):</span><span>₹${order.gstAmount.toLocaleString('en-IN')}</span></div>
                         <div class="summary-row total-row"><span>Grand Total:</span><span>₹${order.grandTotal.toLocaleString('en-IN')}</span></div>
                         <div class="summary-row"><span>Payment:</span><span style="color: #ff9800;">${order.paymentMethod}</span></div>
                     </div>
@@ -846,7 +734,7 @@
                         <button class="btn-invoice" onclick="viewInvoiceModal('${order.id}')">
                             <i class="fas fa-file-invoice"></i> View Invoice
                         </button>
-                        <button class="btn-invoice btn-buy-more" onclick="buyMore()">
+                        <button class="btn-invoice btn-buy-more" onclick="goToShop()">
                             <i class="fas fa-shopping-bag"></i> Buy More
                         </button>
                     </div>
@@ -855,26 +743,29 @@
         }).join('');
     }
     
-    // Generate Invoice HTML with custom logo
     function generateInvoiceHTML(order) {
-        const itemsRows = order.items.map(item => `
-            <tr style="border-bottom: 1px solid #e2f0e0;">
-                <td style="padding: 12px 8px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 48px; height: 48px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas ${item.icon || 'fa-seedling'}" style="color: #4caf50; font-size: 24px;"></i>
+        const itemsRows = order.items.map(item => {
+            const quantity = item.qty || item.quantity || 1;
+            const itemTotal = item.total || (item.price * quantity);
+            return `
+                <tr style="border-bottom: 1px solid #e2f0e0;">
+                    <td style="padding: 12px 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 48px; height: 48px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas ${item.icon || 'fa-seedling'}" style="color: #4caf50; font-size: 24px;"></i>
+                            </div>
+                            <div>
+                                <strong>${escapeHtml(item.name)}</strong>
+                                <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(item.category || 'Garden Product')}</div>
+                            </div>
                         </div>
-                        <div>
-                            <strong>${escapeHtml(item.name)}</strong>
-                            <div style="font-size: 11px; color: #7f9a6e;">${escapeHtml(item.category || 'Garden Product')}</div>
-                        </div>
-                    </div>
-                </td>
-                <td style="text-align: center;">${item.qty}</td>
-                <td style="text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
-                <td style="text-align: right; font-weight: 600;">₹${item.total.toLocaleString('en-IN')}</td>
-            </tr>
-        `).join('');
+                    </td>
+                    <td style="text-align: center; font-weight: 700;">${quantity}</td>
+                    <td style="text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
+                    <td style="text-align: right; font-weight: 600;">₹${itemTotal.toLocaleString('en-IN')}</td>
+                </tr>
+            `;
+        }).join('');
         
         return `
             <div class="invoice-preview-paper">
@@ -901,19 +792,27 @@
                 </div>
                 
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-                    <thead><tr style="background: #eef5ea;"><th style="padding: 12px; text-align: left;">Item</th><th>Qty</th><th style="text-align: right;">Price</th><th style="text-align: right;">Amount</th></tr></thead>
+                    <thead>
+                        <tr style="background: #eef5ea;">
+                            <th style="padding: 12px; text-align: left;">Item Description</th>
+                            <th style="text-align: center;">Qty</th>
+                            <th style="text-align: right;">Unit Price</th>
+                            <th style="text-align: right;">Amount</th>
+                        </tr>
+                    </thead>
                     <tbody>${itemsRows}</tbody>
                 </table>
                 
                 <div style="text-align: right; padding: 16px; background: #fefef8; border-radius: 20px;">
                     <p>Subtotal: ₹${order.subtotal.toLocaleString('en-IN')}</p>
                     <p>GST (18%): ₹${order.gstAmount.toLocaleString('en-IN')}</p>
-                    <h2 style="color: #2e7d32;">Total: ₹${order.grandTotal.toLocaleString('en-IN')}</h2>
+                    <h2 style="color: #2e7d32;">Grand Total: ₹${order.grandTotal.toLocaleString('en-IN')}</h2>
                     <p>Payment: ${order.paymentMethod}</p>
                 </div>
                 
-                <div style="text-align: center; font-size: 10px; margin-top: 24px; color: #8ba87a;">
-                    Thank you for shopping at Green Garden! 🌿
+                <div style="text-align: center; font-size: 10px; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2f0e0; color: #8ba87a;">
+                    <p>🌱 Thank you for shopping at Green Garden! Grow with Nature 🌿</p>
+                    <p>For queries: greengarden2427@gmail.com | +91-9944217247</p>
                 </div>
             </div>
         `;
@@ -927,7 +826,10 @@
     
     window.viewInvoiceModal = function(orderId) {
         const order = getOrderById(orderId);
-        if (!order) return;
+        if (!order) {
+            showToast("Order not found", true);
+            return;
+        }
         currentOrder = order;
         document.getElementById('modalInvoiceContent').innerHTML = generateInvoiceHTML(order);
         document.getElementById('invoiceModal').classList.add('active');
@@ -951,22 +853,31 @@
             const imgWidth = 190;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-            pdf.save(`Invoice_${order.id}.pdf`);
+            pdf.save(`Invoice_${order.id}_GreenGarden.pdf`);
             showToast(`✅ Invoice ${order.id} downloaded`);
-        } catch(e) { showToast("Error generating PDF", true); }
+        } catch(e) { 
+            showToast("Error generating PDF", true);
+            console.error(e);
+        }
         finally { document.body.removeChild(div); }
     };
     
-    window.buyMore = function() {
+    // Global function to navigate to shop page
+    window.goToShop = function() {
         window.location.href = 'products.html';
     };
     
     document.getElementById('downloadModalPdfBtn')?.addEventListener('click', async () => {
-        if (currentOrder) await downloadInvoiceDirect(currentOrder.id);
+        if (currentOrder) {
+            await downloadInvoiceDirect(currentOrder.id);
+        } else {
+            showToast("No invoice loaded", true);
+        }
     });
     
     function closeModal() {
         document.getElementById('invoiceModal').classList.remove('active');
+        currentOrder = null;
     }
     
     function showToast(msg, isErr = false) {
@@ -977,18 +888,28 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
     
-    // Navigation to buy page (products.html)
-    document.getElementById('backToShopBtn')?.addEventListener('click', () => {
+    // Navigation buttons - DIRECT CONNECTION to buy page
+    document.getElementById('backToShopBtn')?.addEventListener('click', function() {
         window.location.href = 'products.html';
     });
-    document.getElementById('viewCartNavBtn')?.addEventListener('click', () => {
+    
+    document.getElementById('viewCartNavBtn')?.addEventListener('click', function() {
         window.location.href = 'cart.html';
     });
-    document.getElementById('headerBuyBtn')?.addEventListener('click', () => {
+    
+    document.getElementById('headerBuyBtn')?.addEventListener('click', function() {
         window.location.href = 'products.html';
     });
+    
+    document.getElementById('brandLogo')?.addEventListener('click', function() {
+        window.location.href = 'index.html';
+    });
+    
     document.getElementById('closeModalBtn')?.addEventListener('click', closeModal);
-    window.onclick = (e) => { if (e.target === document.getElementById('invoiceModal')) closeModal(); };
+    
+    window.onclick = (e) => { 
+        if (e.target === document.getElementById('invoiceModal')) closeModal();
+    };
     
     function initLogo() {
         const logo = document.getElementById('siteLogo');
@@ -1002,14 +923,35 @@
         }
     }
     
-    // Initialize
+    // Check for new orders from checkout page
+    function checkForNewOrder() {
+        const newOrderFlag = localStorage.getItem('order_placed_flag');
+        if (newOrderFlag === 'true') {
+            localStorage.removeItem('order_placed_flag');
+            loadOrders();
+            renderOrdersList();
+            showToast("✅ New order added!");
+        }
+        
+        const pendingOrder = localStorage.getItem('pending_order_data');
+        if (pendingOrder) {
+            try {
+                const orderData = JSON.parse(pendingOrder);
+                ordersList.unshift(orderData);
+                saveOrdersToLocal();
+                localStorage.removeItem('pending_order_data');
+                renderOrdersList();
+                showToast(`✅ Order ${orderData.id} placed successfully!`);
+            } catch(e) {}
+        }
+    }
+    
     initLogo();
     loadOrders();
     checkForNewOrder();
-    syncOrderFromCart();
     renderOrdersList();
     
-    console.log("Orders page ready - Full product details displayed, connected to products.html");
+    console.log("Orders page ready - Connected to products.html (buy page)");
 </script>
 </body>
 </html>
