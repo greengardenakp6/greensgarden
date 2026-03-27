@@ -9,12 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #f8faf6 0%, #eef5e9 100%);
@@ -22,7 +17,7 @@
             min-height: 100vh;
         }
 
-        /* Premium Navbar */
+        /* Navbar */
         .navbar-green {
             background: linear-gradient(135deg, #1a3a2a 0%, #0e2a1a 100%);
             padding: 12px 48px;
@@ -37,16 +32,10 @@
             z-index: 100;
         }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-        }
+        .nav-brand { display: flex; align-items: center; gap: 14px; cursor: pointer; }
 
         .custom-logo-img {
-            width: 52px;
-            height: 52px;
+            width: 52px; height: 52px;
             border-radius: 16px;
             object-fit: cover;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -55,24 +44,15 @@
             padding: 4px;
         }
 
-        .custom-logo-img:hover {
-            transform: scale(1.05);
-        }
-
         .logo-fallback {
-            width: 52px;
-            height: 52px;
+            width: 52px; height: 52px;
             background: linear-gradient(145deg, #4caf50, #2e7d32);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
-        .logo-fallback i {
-            font-size: 28px;
-            color: white;
-        }
+        .logo-fallback i { font-size: 28px; color: white; }
 
         .brand-text {
             font-size: 24px;
@@ -84,19 +64,9 @@
             color: transparent;
         }
 
-        .brand-badge {
-            background: #ff9800;
-            font-size: 9px;
-            padding: 3px 8px;
-            border-radius: 30px;
-            color: white;
-            margin-left: 8px;
-        }
+        .brand-badge { background: #ff9800; font-size: 9px; padding: 3px 8px; border-radius: 30px; color: white; margin-left: 8px; }
 
-        .nav-actions {
-            display: flex;
-            gap: 18px;
-        }
+        .nav-actions { display: flex; gap: 18px; }
 
         .nav-btn {
             background: rgba(255,255,255,0.12);
@@ -120,21 +90,10 @@
             box-shadow: 0 4px 12px rgba(76,175,80,0.3);
         }
 
-        /* Main Container */
-        .orders-container {
-            max-width: 1280px;
-            margin: 40px auto;
-            padding: 0 28px;
-        }
+        /* Container */
+        .orders-container { max-width: 1280px; margin: 40px auto; padding: 0 28px; }
 
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
 
         .page-header h1 {
             font-size: 32px;
@@ -164,17 +123,10 @@
             box-shadow: 0 4px 12px rgba(255,152,0,0.3);
         }
 
-        .buy-now-btn-header:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,152,0,0.4);
-        }
+        .buy-now-btn-header:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,152,0,0.4); }
 
-        /* Orders Grid */
-        .orders-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
+        /* Grid */
+        .orders-grid { display: flex; flex-direction: column; gap: 32px; }
 
         .order-card {
             background: white;
@@ -185,10 +137,7 @@
             border: 1px solid #e0e8dc;
         }
 
-        .order-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 35px rgba(46,125,50,0.15);
-        }
+        .order-card:hover { transform: translateY(-4px); box-shadow: 0 20px 35px rgba(46,125,50,0.15); }
 
         .order-header {
             background: linear-gradient(135deg, #fafef7, #ffffff);
@@ -201,101 +150,30 @@
             gap: 12px;
         }
 
-        .order-id-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #eef5ea;
-            padding: 8px 18px;
-            border-radius: 40px;
-        }
+        .order-id-badge { display: flex; align-items: center; gap: 10px; background: #eef5ea; padding: 8px 18px; border-radius: 40px; }
+        .order-id-badge i { font-size: 18px; color: #4caf50; }
+        .order-id-badge span { font-weight: 700; font-size: 14px; font-family: monospace; color: #2e7d32; }
 
-        .order-id-badge i {
-            font-size: 18px;
-            color: #4caf50;
-        }
+        .order-date { display: flex; align-items: center; gap: 8px; background: #f8faf6; padding: 8px 16px; border-radius: 40px; font-size: 13px; color: #4a6741; }
 
-        .order-id-badge span {
-            font-weight: 700;
-            font-size: 14px;
-            font-family: monospace;
-            color: #2e7d32;
-        }
+        .customer-chip { background: #eef5ea; padding: 8px 16px; border-radius: 40px; font-size: 13px; font-weight: 600; color: #2c5e2a; display: flex; align-items: center; gap: 8px; }
 
-        .order-date {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #f8faf6;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 13px;
-            color: #4a6741;
-        }
-
-        .customer-chip {
-            background: #eef5ea;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #2c5e2a;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-badge {
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        .status-badge { padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
         .status-delivered { background: #d1fae5; color: #065f46; }
         .status-processing { background: #fed7aa; color: #9a3412; }
         .status-shipped { background: #dbeafe; color: #1e40af; }
         .status-paid { background: #d1fae5; color: #065f46; }
 
-        /* Items Table */
-        .items-table-wrapper {
-            padding: 24px 28px;
-            overflow-x: auto;
-        }
+        /* Table */
+        .items-table-wrapper { padding: 24px 28px; overflow-x: auto; }
+        .orders-table { width: 100%; border-collapse: collapse; }
+        .orders-table th { text-align: left; padding: 12px 8px; background: #f9fff7; color: #2e5c2e; font-weight: 700; font-size: 13px; border-bottom: 2px solid #cfe6cf; }
+        .orders-table td { padding: 16px 8px; border-bottom: 1px solid #ecf3e8; vertical-align: middle; }
 
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .orders-table th {
-            text-align: left;
-            padding: 12px 8px;
-            background: #f9fff7;
-            color: #2e5c2e;
-            font-weight: 700;
-            font-size: 13px;
-            border-bottom: 2px solid #cfe6cf;
-        }
-
-        .orders-table td {
-            padding: 16px 8px;
-            border-bottom: 1px solid #ecf3e8;
-            vertical-align: middle;
-        }
-
-        .product-cell {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+        .product-cell { display: flex; align-items: center; gap: 14px; }
 
         .product-img {
-            width: 56px;
-            height: 56px;
+            width: 56px; height: 56px;
             border-radius: 14px;
             background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
             display: flex;
@@ -303,71 +181,19 @@
             justify-content: center;
             overflow: hidden;
         }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
+        .product-img i { font-size: 26px; color: #4caf50; }
 
-        .product-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-img i {
-            font-size: 26px;
-            color: #4caf50;
-        }
-
-        .product-info h4 {
-            font-weight: 700;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-
+        .product-info h4 { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
         .product-cat { font-size: 11px; color: #7f9a6e; }
 
-        .quantity-badge {
-            background: #eef5ea;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 14px;
-            display: inline-block;
-            text-align: center;
-            min-width: 50px;
-        }
+        .quantity-badge { background: #eef5ea; padding: 6px 14px; border-radius: 30px; font-weight: 700; font-size: 14px; display: inline-block; text-align: center; min-width: 50px; }
 
-        .price-summary {
-            padding: 16px 28px;
-            background: #fefef8;
-            border-top: 1px solid #e0f0dd;
-            border-bottom: 1px solid #e0f0dd;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
+        .price-summary { padding: 16px 28px; background: #fefef8; border-top: 1px solid #e0f0dd; border-bottom: 1px solid #e0f0dd; display: flex; flex-direction: column; align-items: flex-end; }
+        .summary-item { display: flex; justify-content: flex-end; gap: 40px; padding: 6px 0; font-size: 14px; }
+        .summary-total { font-weight: 800; font-size: 20px; border-top: 2px dashed #bcdd9e; margin-top: 8px; padding-top: 12px; color: #1e5622; }
 
-        .summary-item {
-            display: flex;
-            justify-content: flex-end;
-            gap: 40px;
-            padding: 6px 0;
-            font-size: 14px;
-        }
-
-        .summary-total {
-            font-weight: 800;
-            font-size: 20px;
-            border-top: 2px dashed #bcdd9e;
-            margin-top: 8px;
-            padding-top: 12px;
-            color: #1e5622;
-        }
-
-        .card-footer {
-            padding: 20px 28px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 16px;
-            background: white;
-        }
+        .card-footer { padding: 20px 28px; display: flex; justify-content: flex-end; gap: 16px; background: white; }
 
         .btn-action {
             background: linear-gradient(135deg, #4caf50, #2e7d32);
@@ -383,40 +209,14 @@
             align-items: center;
             gap: 8px;
         }
-
-        .btn-action:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(76,175,80,0.4);
-        }
-
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(76,175,80,0.4); }
         .btn-buy { background: linear-gradient(135deg, #ff9800, #f57c00); }
 
         /* Modal */
-        .invoice-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
+        .invoice-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
         .invoice-modal.active { display: flex; }
 
-        .modal-card {
-            background: white;
-            border-radius: 32px;
-            max-width: 800px;
-            width: 92%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        }
+        .modal-card { background: white; border-radius: 32px; max-width: 800px; width: 92%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
 
         .modal-header {
             padding: 20px 28px;
@@ -430,75 +230,18 @@
             top: 0;
         }
 
-        .close-modal {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            color: white;
-            transition: 0.2s;
-        }
-
+        .close-modal { background: rgba(255,255,255,0.2); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; color: white; transition: 0.2s; }
         .close-modal:hover { background: #ff5722; }
 
-        .empty-state {
-            text-align: center;
-            background: white;
-            border-radius: 32px;
-            padding: 60px 40px;
-        }
+        .empty-state { text-align: center; background: white; border-radius: 32px; padding: 60px 40px; }
+        .empty-state i { font-size: 80px; color: #c8e6c9; margin-bottom: 20px; }
+        .empty-state h3 { font-size: 24px; margin-bottom: 12px; color: #2e7d32; }
+        .shop-btn-large { background: linear-gradient(135deg, #ff9800, #f57c00); border: none; padding: 14px 36px; border-radius: 50px; font-weight: 700; font-size: 16px; color: white; cursor: pointer; margin-top: 24px; display: inline-flex; align-items: center; gap: 10px; }
 
-        .empty-state i {
-            font-size: 80px;
-            color: #c8e6c9;
-            margin-bottom: 20px;
-        }
-
-        .empty-state h3 {
-            font-size: 24px;
-            margin-bottom: 12px;
-            color: #2e7d32;
-        }
-
-        .shop-btn-large {
-            background: linear-gradient(135deg, #ff9800, #f57c00);
-            border: none;
-            padding: 14px 36px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 16px;
-            color: white;
-            cursor: pointer;
-            margin-top: 24px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(80px);
-            background: #2e7d32;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 600;
-            z-index: 1100;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: #2e7d32; color: white; padding: 12px 28px; border-radius: 50px; font-weight: 600; z-index: 1100; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
-        .invoice-preview {
-            padding: 32px;
-            background: white;
-        }
+        .invoice-preview { padding: 32px; background: white; }
 
         @media (max-width: 768px) {
             .navbar-green { padding: 12px 20px; }
@@ -573,16 +316,8 @@
     function loadOrders() {
         const stored = localStorage.getItem('green_garden_orders');
         if (stored) {
-            try {
-                orders = JSON.parse(stored);
-            } catch(e) {
-                orders = [];
-            }
+            try { orders = JSON.parse(stored); } catch(e) { orders = []; }
         }
-    }
-
-    function saveOrders() {
-        localStorage.setItem('green_garden_orders', JSON.stringify(orders));
     }
 
     function renderOrders() {
@@ -605,42 +340,31 @@
         }
 
         container.innerHTML = orders.map(order => {
-            // --- DATA NORMALIZATION (Crucial Fix) ---
-            // Handle ID format
             const id = order.orderId || order.id || 'N/A';
-            
-            // Handle Customer format (Checkout saves object, Orders expects string)
             const customerName = order.customer?.name || order.customer || 'Guest';
             const customerPhone = order.customer?.phone || order.phone || 'N/A';
             const customerAddress = order.customer?.address || order.address || 'N/A';
-            
-            // Handle Payment format
             const paymentMethod = order.payment || order.paymentMethod || 'N/A';
-            
-            // Handle Totals format
             const grandTotal = order.total || order.grandTotal || 0;
             const subtotal = order.subtotal || 0;
             const platformFee = order.platformFee || 0;
             const codFee = order.codFee || 0;
             const couponDiscount = order.couponDiscount || 0;
             
-            // Handle Date format (Checkout saves ISO string)
             let dateStr = order.date;
             if (order.date && order.date.includes('T')) {
                  const d = new Date(order.date);
                  dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             }
 
-            // Items rendering
             const itemsHtml = order.items.map(item => {
                 const qty = item.qty || item.quantity || 1;
                 const total = item.total || (item.price * qty);
                 const icon = item.icon || getProductIcon(item.name);
                 const category = item.category || 'Garden Product';
                 
-                // Use image if available (from checkout), otherwise icon
                 const imgHtml = item.image ? 
-                    `<img src="${item.image}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    `<img src="${item.image}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                      <i class="fas ${icon}" style="display:none;"></i>` 
                      : `<i class="fas ${icon}"></i>`;
 
@@ -664,49 +388,30 @@
                 `;
             }).join('');
             
-            // Status logic
             let statusClass = 'status-processing';
             let statusIcon = 'fa-clock';
             const status = order.status || 'Processing';
             
             if (status === 'Delivered' || status === 'paid') {
-                statusClass = 'status-delivered'; 
-                statusIcon = 'fa-check-circle';
+                statusClass = 'status-delivered'; statusIcon = 'fa-check-circle';
             } else if (status === 'Shipped') {
-                statusClass = 'status-shipped';
-                statusIcon = 'fa-truck';
+                statusClass = 'status-shipped'; statusIcon = 'fa-truck';
             }
             
             return `
                 <div class="order-card">
                     <div class="order-header">
-                        <div class="order-id-badge">
-                            <i class="fas fa-receipt"></i>
-                            <span>${id}</span>
-                        </div>
-                        <div class="order-date">
-                            <i class="far fa-calendar-alt"></i>
-                            ${dateStr}
-                        </div>
-                        <div class="customer-chip">
-                            <i class="fas fa-user"></i>
-                            ${escapeHtml(customerName)}
-                        </div>
-                        <div class="status-badge ${statusClass}">
-                            <i class="fas ${statusIcon}"></i>
-                            ${status}
-                        </div>
+                        <div class="order-id-badge"><i class="fas fa-receipt"></i><span>${id}</span></div>
+                        <div class="order-date"><i class="far fa-calendar-alt"></i> ${dateStr}</div>
+                        <div class="customer-chip"><i class="fas fa-user"></i> ${escapeHtml(customerName)}</div>
+                        <div class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${status}</div>
                     </div>
-                    
                     <div class="items-table-wrapper">
                         <table class="orders-table">
-                            <thead>
-                                <tr><th>Product</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr>
-                            </thead>
+                            <thead><tr><th>Product</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr></thead>
                             <tbody>${itemsHtml}</tbody>
                         </table>
                     </div>
-                    
                     <div class="price-summary">
                         <div class="summary-item"><span>Subtotal:</span><span>₹${subtotal.toLocaleString('en-IN')}</span></div>
                         ${platformFee > 0 ? `<div class="summary-item"><span>Platform Fee:</span><span>₹${platformFee}</span></div>` : ''}
@@ -715,14 +420,9 @@
                         <div class="summary-item summary-total"><span>Grand Total:</span><span>₹${grandTotal.toLocaleString('en-IN')}</span></div>
                         <div class="summary-item"><span>Payment:</span><span style="color: #ff9800;">${paymentMethod.toUpperCase()}</span></div>
                     </div>
-                    
                     <div class="card-footer">
-                        <button class="btn-action" onclick="viewInvoice('${id}')">
-                            <i class="fas fa-eye"></i> View Invoice
-                        </button>
-                        <button class="btn-action btn-buy" onclick="buyMore()">
-                            <i class="fas fa-shopping-bag"></i> Buy More
-                        </button>
+                        <button class="btn-action" onclick="viewInvoice('${id}')"><i class="fas fa-eye"></i> View Invoice</button>
+                        <button class="btn-action btn-buy" onclick="buyMore()"><i class="fas fa-shopping-bag"></i> Buy More</button>
                     </div>
                 </div>
             `;
@@ -739,7 +439,6 @@
     }
 
     function generateInvoiceHTML(order) {
-        // Normalize data for invoice
         const id = order.orderId || order.id;
         const customerName = order.customer?.name || order.customer || 'Guest';
         const customerPhone = order.customer?.phone || order.phone || 'N/A';
@@ -761,17 +460,22 @@
             const qty = item.qty || item.quantity || 1;
             const total = item.total || (item.price * qty);
             const icon = item.icon || getProductIcon(item.name);
+
+            // ** FIX: Handle Image in Invoice **
+            const imgSrc = item.image || '';
+            const imgHtml = imgSrc ? 
+                `<img src="${imgSrc}" style="width: 48px; height: 48px; object-fit: cover; border-radius: 12px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                 <div style="display:none; width:48px; height:48px; background:#e8f5e9; border-radius:12px; align-items:center; justify-content:center;"><i class="fas ${icon}" style="color:#4caf50; font-size:24px;"></i></div>` 
+                : `<div style="width:48px; height:48px; background:#e8f5e9; border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fas ${icon}" style="color:#4caf50; font-size:24px;"></i></div>`;
             
             return `
                 <tr style="border-bottom: 1px solid #e8f0e5;">
                     <td style="padding: 12px 8px;">
                         <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 48px; height: 48px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas ${icon}" style="color: #4caf50; font-size: 24px;"></i>
+                            <div style="flex-shrink: 0;">
+                                ${imgHtml}
                             </div>
-                            <div>
-                                <strong>${escapeHtml(item.name)}</strong>
-                            </div>
+                            <div><strong>${escapeHtml(item.name)}</strong></div>
                         </div>
                     </td>
                     <td style="text-align: center; padding: 12px 8px;">${qty}</td>
@@ -784,8 +488,7 @@
         return `
             <div class="invoice-preview">
                 <div style="text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 3px solid #4caf50;">
-                    <img src="${CUSTOM_LOGO}" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 10px;" 
-                         onerror="this.style.display='none';">
+                    <img src="${CUSTOM_LOGO}" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; margin-bottom: 10px;" onerror="this.style.display='none';">
                     <h1 style="font-size: 28px; color: #1e3a2f;">GREEN GARDEN</h1>
                     <p style="color: #5a7a4a;">Premium Organic Garden Store</p>
                 </div>
@@ -831,10 +534,7 @@
 
     window.viewInvoice = function(orderId) {
         const order = getOrderById(orderId);
-        if (!order) {
-            showToast("Order not found", true);
-            return;
-        }
+        if (!order) { showToast("Order not found", true); return; }
         currentOrder = order;
         document.getElementById('invoiceContent').innerHTML = generateInvoiceHTML(order);
         document.getElementById('invoiceModal').classList.add('active');
@@ -854,7 +554,13 @@
         document.body.appendChild(div);
         
         try {
-            const canvas = await html2canvas(div, { scale: 2, backgroundColor: '#ffffff' });
+            // ** FIX: Added useCORS and allowTaint for images **
+            const canvas = await html2canvas(div, { 
+                scale: 2, 
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                allowTaint: true
+            });
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
@@ -864,6 +570,7 @@
             pdf.save(`Invoice_${order.orderId || order.id}_GreenGarden.pdf`);
             showToast(`✅ Invoice downloaded`);
         } catch(e) {
+            console.error(e);
             showToast("Error generating PDF", true);
         } finally {
             document.body.removeChild(div);
@@ -880,7 +587,6 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    // Event Listeners
     document.getElementById('backToShopBtn')?.addEventListener('click', () => window.location.href = 'products.html');
     document.getElementById('viewCartBtn')?.addEventListener('click', () => window.location.href = 'cart.html');
     document.getElementById('continueShoppingBtn')?.addEventListener('click', () => window.location.href = 'products.html');
@@ -901,7 +607,6 @@
         }
     };
     
-    // Initialize
     loadOrders();
     renderOrders();
 </script>
